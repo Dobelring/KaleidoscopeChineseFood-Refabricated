@@ -5,7 +5,7 @@
 > A Minecraft Fabric mod that adds a rich Chinese / Sichuan cuisine expansion to Kaleidoscope Cookery.
 
 ## Compendium
-- This is the **Fabric port** of [**Kaleidoscope Chinese Food**](https://modrinth.com/mod/kaleidoscope_chinesefood) (森罗物语：国味), corresponding to NeoForge `1.1.8`.
+- This is the **Fabric port** of [**Kaleidoscope Chinese Food**](https://modrinth.com/mod/kaleidoscopechinesefood) (森罗物语：国味), corresponding to NeoForge `1.1.8`.
 - Requires [**Kaleidoscope Cookery Refabricated**](https://modrinth.com/mod/kaleidoscope-cookery-refabricated) (森罗物语：厨房 重制) and [**Forge Config API Port**](https://modrinth.com/mod/forge-config-api-port).
 - No backport planned.
 
