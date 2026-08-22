@@ -1,0 +1,22 @@
+{
+  "type": "kaleidoscope_cookery:flex_pot",
+  "carrier": {
+    "item": "minecraft:bowl"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:beef"
+    },
+    {
+      "item": "kaleidoscope_cookery:green_chili"
+    },
+    {
+      "item": "kaleidoscope_cookery:red_chili"
+    }
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:stir_fried_yellow_beef"
+  },
+  "stir_fry_count": 3,
+  "time": 200
+}

@@ -1,0 +1,10 @@
+{
+  "parent": "kaleidoscope_chinesefood:custom/doll_4",
+  "textures": {
+    "all": "kaleidoscope_chinesefood:custom/doll_4",
+    "particle": "block/white_wool",
+    "0": "kaleidoscope_chinesefood:block/doll_4",
+    "missing": "kaleidoscope_chinesefood:block/doll_4"
+  },
+  "render_type": "cutout_mipped"
+}

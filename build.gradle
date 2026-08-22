@@ -1,0 +1,103 @@
+plugins {
+    id 'fabric-loom' version '1.9.2'
+    id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    maven {
+        name = 'Fabric'
+        url = 'https://maven.fabricmc.net/'
+    }
+    mavenCentral()
+}
+
+loom {
+    splitEnvironmentSourceSets()
+
+    mods {
+        "kaleidoscope_chinesefood" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings loom.officialMojangMappings()
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    // Forge Config API Port (provides net.neoforged.neoforge.common.ModConfigSpec on Fabric)
+    modImplementation files("libs/ForgeConfigAPIPort-v21.1.6-1.21.1-Fabric.jar")
+    // Kaleidoscope Cookery (dependency: BowlFoodOnlyItem, ModEffects)
+    modImplementation files("libs/kaleidoscope_cookery-1.4.1.4-fabric+mc1.21.1.jar")
+
+    // Optional compat integrations (compileOnly - not bundled)
+    modCompileOnly files("libs/jei-1.21.1-fabric-19.44.0.403.jar")
+    modCompileOnly files("libs/Jade-1.21.1-Fabric-15.10.6.jar")
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.release = 21
+}
+
+// With splitEnvironmentSourceSets, Loom emits the client mixin refmap as a separate
+// "client-<name>-refmap.json" that the mixin config does not reference. Merge it into the
+// main refmap so client-only mixins (e.g. FogRendererMixin) resolve their @Inject targets.
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+
+tasks.register('mergeClientRefmap') {
+    dependsOn tasks.named('compileClientJava')
+    def mainRefmap = layout.buildDirectory.file('classes/java/main/kaleidoscope_chinesefood-refmap.json')
+    def clientRefmap = layout.buildDirectory.file('classes/java/client/client-kaleidoscope_chinesefood-refmap.json')
+    doLast {
+        def mainFile = mainRefmap.get().asFile
+        def clientFile = clientRefmap.get().asFile
+        if (!clientFile.exists() || !mainFile.exists()) return
+        def main = new JsonSlurper().parse(mainFile)
+        def client = new JsonSlurper().parse(clientFile)
+        if (client.mappings) main.mappings.putAll(client.mappings)
+        if (client.data) {
+            client.data.each { ns, entries ->
+                if (main.data && main.data[ns]) main.data[ns].putAll(entries)
+                else if (main.data) main.data[ns] = entries
+            }
+        }
+        mainFile.text = JsonOutput.prettyPrint(JsonOutput.toJson(main))
+        logger.lifecycle('Merged client mixin refmap into main refmap')
+    }
+}
+
+tasks.named('jar') {
+    dependsOn 'mergeClientRefmap'
+    def projectName = project.name
+    inputs.property "projectName", projectName
+    from("LICENSE") {
+        rename { "${it}_${projectName}" }
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    withSourcesJar()
+}

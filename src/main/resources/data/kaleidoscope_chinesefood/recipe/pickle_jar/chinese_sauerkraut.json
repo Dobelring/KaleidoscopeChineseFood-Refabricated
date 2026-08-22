@@ -1,0 +1,19 @@
+{
+  "type": "kaleidoscope_chinesefood:pickle_jar",
+  "ingredients": [
+    {
+      "tag": "c:salt"
+    },
+    {
+      "item": "kaleidoscope_cookery:lettuce"
+    },
+    {
+      "tag": "c:salt"
+    }
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:chinese_sauerkraut",
+    "count": 1
+  },
+  "fermentTime": 3600
+}

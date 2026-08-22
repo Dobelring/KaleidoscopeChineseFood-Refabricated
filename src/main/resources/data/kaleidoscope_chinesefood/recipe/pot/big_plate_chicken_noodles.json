@@ -1,0 +1,34 @@
+{
+  "type": "kaleidoscope_cookery:pot",
+  "carrier": {
+    "item": "minecraft:bowl"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:potato"
+    },
+    {
+      "item": "minecraft:potato"
+    },
+    {
+      "item": "kaleidoscope_cookery:green_chili"
+    },
+    {
+      "item": "kaleidoscope_cookery:green_chili"
+    },
+    {
+      "tag": "c:foods/raw_chicken"
+    },
+    {
+      "tag": "c:foods/raw_chicken"
+    },
+    {
+      "item": "kaleidoscope_cookery:raw_noodles"
+    }
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:big_plate_chicken_noodles"
+  },
+  "stir_fry_count": 3,
+  "time": 200
+}

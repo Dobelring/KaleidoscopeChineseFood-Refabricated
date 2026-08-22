@@ -1,0 +1,22 @@
+{
+  "type": "kaleidoscope_chinesefood:pickle_jar",
+  "ingredients": [
+    {
+      "item": "minecraft:spider_eye"
+    },
+    {
+      "item": "minecraft:spider_eye"
+    },
+    {
+      "item": "minecraft:spider_eye"
+    },
+    {
+      "item": "minecraft:spider_eye"
+    }
+  ],
+  "result": {
+    "id": "minecraft:fermented_spider_eye",
+    "count": 4
+  },
+  "fermentTime": 3600
+}

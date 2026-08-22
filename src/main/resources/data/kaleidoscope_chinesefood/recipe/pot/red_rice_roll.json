@@ -1,0 +1,25 @@
+{
+  "type": "kaleidoscope_cookery:pot",
+  "carrier": {
+    "item": "minecraft:bowl"
+  },
+  "ingredients": [
+    {
+      "item": "kaleidoscope_cookery:rice"
+    },
+    {
+      "item": "minecraft:carrot"
+    },
+    {
+      "tag": "c:raw_meats"
+    },
+    {
+      "tag": "c:eggs"
+    }
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:red_rice_roll"
+  },
+  "stir_fry_count": 3,
+  "time": 200
+}
