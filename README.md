@@ -6,7 +6,7 @@
 
 ## Compendium
 - This is the **Fabric port** of [**Kaleidoscope Chinese Food**](https://modrinth.com/mod/kaleidoscope_chinesefood) (森罗物语：国味), corresponding to NeoForge `1.1.8`.
-- Requires [**Kaleidoscope Cookery**](https://modrinth.com/mod/kaleidoscope-cookery-refabricated) (森罗物语：厨房) and [**Forge Config API Port**](https://modrinth.com/mod/forge-config-api-port).
+- Requires [**Kaleidoscope Cookery Refabricated**](https://modrinth.com/mod/kaleidoscope-cookery-refabricated) (森罗物语：厨房 重制) and [**Forge Config API Port**](https://modrinth.com/mod/forge-config-api-port).
 - No backport planned.
 
 ## Overview
