@@ -1,0 +1,18 @@
+{
+  "type": "kaleidoscope_cookery:pot",
+  "carrier": "minecraft:bowl",
+  "ingredients": [
+    "kaleidoscope_chinesefood:eggplant",
+    "kaleidoscope_chinesefood:eggplant",
+    "kaleidoscope_chinesefood:eggplant",
+    "kaleidoscope_chinesefood:eggplant",
+    "kaleidoscope_cookery:raw_cut_small_meats",
+    "kaleidoscope_cookery:raw_cut_small_meats",
+    "kaleidoscope_cookery:raw_cut_small_meats",
+    "kaleidoscope_cookery:raw_cut_small_meats"
+  ],
+  "result": {
+    "count": 1,
+    "id": "kaleidoscope_chinesefood:stuffed_eggplant"
+  }
+}

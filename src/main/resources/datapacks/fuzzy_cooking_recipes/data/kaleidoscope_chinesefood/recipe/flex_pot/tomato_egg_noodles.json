@@ -1,0 +1,14 @@
+{
+  "type": "kaleidoscope_cookery:flex_pot",
+  "carrier": "minecraft:bowl",
+  "ingredients": [
+    "#c:eggs",
+    "#c:crops/tomato",
+    "kaleidoscope_cookery:raw_noodles"
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:tomato_egg_noodles"
+  },
+  "stir_fry_count": 3,
+  "time": 200
+}

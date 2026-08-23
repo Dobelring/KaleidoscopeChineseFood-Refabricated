@@ -1,0 +1,10 @@
+{
+  "type": "kaleidoscope_cookery:teapot",
+  "ingredient": "minecraft:redstone",
+  "ingredient_count": 12,
+  "result": {
+    "id": "kaleidoscope_chinesefood:lapsang"
+  },
+  "tea_fluid": "minecraft:water",
+  "time": 240
+}

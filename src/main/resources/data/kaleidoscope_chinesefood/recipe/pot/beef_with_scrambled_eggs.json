@@ -1,0 +1,16 @@
+{
+  "type": "kaleidoscope_cookery:pot",
+  "carrier": "minecraft:bowl",
+  "ingredients": [
+    "#c:eggs",
+    "#c:eggs",
+    "#c:eggs",
+    "minecraft:beef",
+    "minecraft:beef"
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:beef_with_scrambled_eggs"
+  },
+  "stir_fry_count": 3,
+  "time": 200
+}

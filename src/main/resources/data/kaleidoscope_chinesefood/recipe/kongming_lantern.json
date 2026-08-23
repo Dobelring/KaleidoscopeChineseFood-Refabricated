@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    "#@#",
+    " # "
+  ],
+  "key": {
+    "#": "minecraft:paper",
+    "@": "minecraft:torch"
+  },
+  "result": {
+    "id": "kaleidoscope_chinesefood:kongming_lantern",
+    "count": 2
+  }
+}

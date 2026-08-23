@@ -1,0 +1,20 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"render_type": "minecraft:cutout",
+	"textures": {
+		"2": "kaleidoscope_chinesefood:block/fu_character",
+		"particle": "kaleidoscope_chinesefood:block/fu_character"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 28.99],
+			"to": [16, 16, 28.99],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 29]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#2"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#2"}
+			}
+		}
+	]
+}

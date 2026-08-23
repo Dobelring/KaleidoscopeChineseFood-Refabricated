@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "kaleidoscope_chinesefood",
+  "ingredients": [
+    "minecraft:paper",
+    "minecraft:red_dye",
+    "minecraft:black_dye"
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:fu_character",
+    "count": 1
+  }
+}

@@ -1,0 +1,121 @@
+plugins {
+    id 'fabric-loom' version '1.17-SNAPSHOT'
+    id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+repositories {
+    maven {
+        name = 'Fabric'
+        url = 'https://maven.fabricmc.net/'
+    }
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+    }
+    maven {
+        // JEI files (since January 2023) / Patchouli
+        name = "Jared's maven"
+        url = 'https://maven.blamejared.com/'
+    }
+    maven {
+        // JEI mirror fallback
+        name = 'ModMaven'
+        url = 'https://modmaven.dev'
+    }
+    maven {
+        name = 'Fuzs Mod Resources'
+        url = 'https://raw.githubusercontent.com/Fuzss/modresources/main/maven/'
+    }
+    mavenCentral()
+}
+
+loom {
+    splitEnvironmentSourceSets()
+
+    mods {
+        "kaleidoscope_chinesefood" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    // MC 26.x 已不再发布官方 mappings（游戏为未混淆分发），无需 mappings 行
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    // Forge Config API Port (provides net.neoforged.neoforge.common.ModConfigSpec on Fabric)
+    implementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forge_config_api_version}"
+    // Kaleidoscope Cookery (dependency: BowlFoodOnlyItem, ModEffects)
+    implementation "maven.modrinth:kaleidoscope-cookery-refabricated:${project.kaleidoscope_cookery_version}-fabric+mc${project.minecraft_version}"
+
+    // Optional compat integrations (compileOnly - not bundled)
+    // TODO: 26.2 版 JEI 已有 (jei-26.2-fabric:30.11.0.67)，Jade 待确认；先注释，后续再恢复
+    // compileOnly "mezz.jei:jei-26.2-fabric:30.11.0.67"
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.encoding = "UTF-8"
+    it.options.release = 25
+}
+
+// With splitEnvironmentSourceSets, Loom emits the client mixin refmap as a separate
+// "client-<name>-refmap.json" that the mixin config does not reference. Merge it into the
+// main refmap so client-only mixins (e.g. FogRendererMixin) resolve their @Inject targets.
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+
+tasks.register('mergeClientRefmap') {
+    dependsOn tasks.named('compileClientJava')
+    def mainRefmap = layout.buildDirectory.file('classes/java/main/kaleidoscope_chinesefood-refmap.json')
+    def clientRefmap = layout.buildDirectory.file('classes/java/client/client-kaleidoscope_chinesefood-refmap.json')
+    doLast {
+        def mainFile = mainRefmap.get().asFile
+        def clientFile = clientRefmap.get().asFile
+        if (!clientFile.exists() || !mainFile.exists()) return
+        def main = new JsonSlurper().parse(mainFile)
+        def client = new JsonSlurper().parse(clientFile)
+        if (client.mappings) main.mappings.putAll(client.mappings)
+        if (client.data) {
+            client.data.each { ns, entries ->
+                if (main.data && main.data[ns]) main.data[ns].putAll(entries)
+                else if (main.data) main.data[ns] = entries
+            }
+        }
+        mainFile.text = JsonOutput.prettyPrint(JsonOutput.toJson(main))
+        logger.lifecycle('Merged client mixin refmap into main refmap')
+    }
+}
+
+tasks.named('jar') {
+    dependsOn 'mergeClientRefmap'
+    def projectName = project.name
+    inputs.property "projectName", projectName
+    from("LICENSE") {
+        rename { "${it}_${projectName}" }
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(26)
+    }
+    withSourcesJar()
+}

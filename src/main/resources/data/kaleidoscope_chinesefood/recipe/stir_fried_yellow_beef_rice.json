@@ -1,0 +1,8 @@
+{
+  "type": "kaleidoscope_cookery:rice_bowl",
+  "category": "misc",
+  "ingredient": "kaleidoscope_chinesefood:stir_fried_yellow_beef",
+  "result": {
+    "id": "kaleidoscope_chinesefood:stir_fried_yellow_beef_rice"
+  }
+}

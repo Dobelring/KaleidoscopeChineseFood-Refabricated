@@ -1,0 +1,8 @@
+{
+  "type": "kaleidoscope_cookery:rice_bowl",
+  "category": "misc",
+  "ingredient": "kaleidoscope_chinesefood:twice_cooked_pork",
+  "result": {
+    "id": "kaleidoscope_chinesefood:twice_cooked_pork_rice"
+  }
+}

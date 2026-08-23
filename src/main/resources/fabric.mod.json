@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "kaleidoscope_chinesefood",
+  "version": "${version}",
+  "name": "Kaleidoscope ChineseFood",
+  "description": "森罗物语：国味 - Chinese food for the Kaleidoscope series (Fabric port).",
+  "authors": [
+    "Dobelring"
+  ],
+  "contact": {
+    "homepage": "https://github.com/Dobelring/KaleidoscopeChineseFood-Refabricated",
+    "sources": "https://github.com/Dobelring/KaleidoscopeChineseFood-Refabricated"
+  },
+  "license": [
+    "MIT",
+    "CC-BY-NC-SA-4.0"
+  ],
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood"
+    ],
+    "client": [
+      "com.bmt.kaleidoscope_chinesefood.client.KaleidoscopeChineseFoodClient"
+    ]
+  },
+  "mixins": [
+    "kaleidoscope_chinesefood.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18",
+    "fabric-api": ">=0.158",
+    "minecraft": "~26.2",
+    "java": ">=25",
+    "kaleidoscope_cookery": "*",
+    "forgeconfigapiport": "*"
+  }
+}

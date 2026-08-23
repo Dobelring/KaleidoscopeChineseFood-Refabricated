@@ -1,0 +1,17 @@
+{
+  "type": "kaleidoscope_cookery:pot",
+  "carrier": "minecraft:bowl",
+  "ingredients": [
+    "minecraft:potato",
+    "minecraft:potato",
+    "kaleidoscope_cookery:green_chili",
+    "kaleidoscope_cookery:green_chili",
+    "#c:foods/raw_chicken",
+    "#c:foods/raw_chicken"
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:big_plate_chicken"
+  },
+  "stir_fry_count": 3,
+  "time": 200
+}

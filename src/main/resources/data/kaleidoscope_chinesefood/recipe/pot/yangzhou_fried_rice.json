@@ -1,0 +1,16 @@
+{
+  "type": "kaleidoscope_cookery:pot",
+  "carrier": "minecraft:bowl",
+  "ingredients": [
+    "minecraft:carrot",
+    "#c:eggs",
+    "#c:eggs",
+    "#c:raw_ham",
+    "#c:foods/cooked_rice"
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:yangzhou_fried_rice"
+  },
+  "stir_fry_count": 3,
+  "time": 200
+}

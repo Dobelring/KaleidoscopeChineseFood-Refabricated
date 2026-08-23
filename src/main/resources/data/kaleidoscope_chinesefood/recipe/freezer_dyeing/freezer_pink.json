@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#kaleidoscope_chinesefood:freezers",
+    "minecraft:pink_dye"
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:freezer_pink",
+    "count": 1
+  }
+}
