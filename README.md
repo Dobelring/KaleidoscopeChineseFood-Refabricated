@@ -11,7 +11,7 @@
 
 ## Overview
 ![Minecraft](https://img.shields.io/badge/Minecraft-Java%20Edition-brightgreen)
-![Fabric](https://img.shields.io/badge/Fabric-1.21.1-orange)
+![Fabric](https://img.shields.io/badge/Fabric-26.1.2-orange)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
 This mod brings a variety of Chinese cuisine and folk items to "Kaleidoscope: Cookery".
@@ -26,13 +26,14 @@ This mod brings a variety of Chinese cuisine and folk items to "Kaleidoscope: Co
 - Two unique status effects: Lava Swim (熔岩游泳) and Saturation Shield (饱食护盾).
 
 ## Compat
+JEI / Jade integration is **not yet available** for Minecraft 26.1 — neither mod has shipped a 26.1 build yet. The integration code is kept in `compat-staging/` and will be re-enabled once those builds are released.
 - **JEI**: view pickling / refrigerating / freezing recipes.
 - **Jade**: shows the pickle jar's progress.
 
 ## Build
-Requires JDK 21.
+Requires JDK 26 to build (the Gradle toolchain targets Java 25 bytecode); Minecraft 26.1 runs on Java 25.
 
-Dependency jars (Kaleidoscope Cookery, Forge Config API Port, JEI, Jade) are committed under `libs/` and referenced directly by `build.gradle`.
+Dependency jars (Kaleidoscope Cookery, Forge Config API Port) are committed under `libs/` and referenced directly by `build.gradle`.
 
 ```
 ./gradlew build
