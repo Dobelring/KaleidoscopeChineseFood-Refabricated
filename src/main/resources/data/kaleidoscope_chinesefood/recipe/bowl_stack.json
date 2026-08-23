@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "S S",
+    "WWW"
+  ],
+  "key": {
+    "W": "minecraft:oak_planks",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "id": "kaleidoscope_chinesefood:bowl_stack",
+    "count": 1
+  }
+}

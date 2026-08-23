@@ -1,0 +1,14 @@
+{
+  "type": "kaleidoscope_cookery:flex_pot",
+  "carrier": "minecraft:bowl",
+  "ingredients": [
+    "#c:foods/raw_pork",
+    "kaleidoscope_cookery:green_chili",
+    "kaleidoscope_cookery:raw_noodles"
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:pork_chili_noodles"
+  },
+  "stir_fry_count": 3,
+  "time": 200
+}

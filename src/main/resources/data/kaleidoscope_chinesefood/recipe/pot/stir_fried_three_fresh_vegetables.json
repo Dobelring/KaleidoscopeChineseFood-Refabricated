@@ -1,0 +1,17 @@
+{
+  "type": "kaleidoscope_cookery:pot",
+  "carrier": "minecraft:bowl",
+  "ingredients": [
+    "minecraft:potato",
+    "minecraft:potato",
+    "kaleidoscope_cookery:green_chili",
+    "kaleidoscope_cookery:green_chili",
+    "#c:crops/eggplant",
+    "#c:crops/eggplant"
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:stir_fried_three_fresh_vegetables"
+  },
+  "stir_fry_count": 3,
+  "time": 200
+}

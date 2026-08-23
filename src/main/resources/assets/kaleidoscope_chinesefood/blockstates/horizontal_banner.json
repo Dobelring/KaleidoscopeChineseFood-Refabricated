@@ -1,0 +1,132 @@
+{
+  "variants": {
+    "facing=north,part=single,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_single",
+      "y": 0
+    },
+    "facing=north,part=single,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_single",
+      "y": 0
+    },
+    "facing=north,part=left,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_left",
+      "y": 0
+    },
+    "facing=north,part=left,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_left",
+      "y": 0
+    },
+    "facing=north,part=middle,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_middle",
+      "y": 0
+    },
+    "facing=north,part=middle,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_middle",
+      "y": 0
+    },
+    "facing=north,part=right,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_right",
+      "y": 0
+    },
+    "facing=north,part=right,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_right",
+      "y": 0
+    },
+    "facing=east,part=single,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_single",
+      "y": 90
+    },
+    "facing=east,part=single,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_single",
+      "y": 90
+    },
+    "facing=east,part=left,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_left",
+      "y": 90
+    },
+    "facing=east,part=left,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_left",
+      "y": 90
+    },
+    "facing=east,part=middle,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_middle",
+      "y": 90
+    },
+    "facing=east,part=middle,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_middle",
+      "y": 90
+    },
+    "facing=east,part=right,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_right",
+      "y": 90
+    },
+    "facing=east,part=right,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_right",
+      "y": 90
+    },
+    "facing=south,part=single,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_single",
+      "y": 180
+    },
+    "facing=south,part=single,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_single",
+      "y": 180
+    },
+    "facing=south,part=left,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_left",
+      "y": 180
+    },
+    "facing=south,part=left,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_left",
+      "y": 180
+    },
+    "facing=south,part=middle,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_middle",
+      "y": 180
+    },
+    "facing=south,part=middle,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_middle",
+      "y": 180
+    },
+    "facing=south,part=right,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_right",
+      "y": 180
+    },
+    "facing=south,part=right,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_right",
+      "y": 180
+    },
+    "facing=west,part=single,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_single",
+      "y": 270
+    },
+    "facing=west,part=single,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_single",
+      "y": 270
+    },
+    "facing=west,part=left,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_left",
+      "y": 270
+    },
+    "facing=west,part=left,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_left",
+      "y": 270
+    },
+    "facing=west,part=middle,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_middle",
+      "y": 270
+    },
+    "facing=west,part=middle,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_middle",
+      "y": 270
+    },
+    "facing=west,part=right,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_right",
+      "y": 270
+    },
+    "facing=west,part=right,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/horizontal_banner/horizontal_banner_right",
+      "y": 270
+    }
+  }
+}

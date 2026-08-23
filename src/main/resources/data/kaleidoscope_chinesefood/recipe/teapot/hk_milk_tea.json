@@ -1,0 +1,10 @@
+{
+  "type": "kaleidoscope_cookery:teapot",
+  "ingredient": "minecraft:redstone",
+  "ingredient_count": 12,
+  "result": {
+    "id": "kaleidoscope_chinesefood:hk_milk_tea"
+  },
+  "tea_fluid": "minecraft:milk",
+  "time": 240
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "#kaleidoscope_chinesefood:freezers",
+    "minecraft:light_gray_dye"
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:freezer_light_gray",
+    "count": 1
+  }
+}

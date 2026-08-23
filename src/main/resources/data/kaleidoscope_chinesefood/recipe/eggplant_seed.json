@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "kaleidoscope_chinesefood:eggplant"
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:eggplant_seed",
+    "count": 1
+  }
+}
