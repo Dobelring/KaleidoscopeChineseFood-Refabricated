@@ -54,7 +54,11 @@ public class SimpleItemHandler implements Container {
 
     @Override
     public @NotNull ItemStack removeItemNoUpdate(int slot) {
-        return ContainerHelper.takeItem(this.stacks, slot);
+        ItemStack taken = ContainerHelper.takeItem(this.stacks, slot);
+        if (!taken.isEmpty()) {
+            this.onContentsChanged(slot);
+        }
+        return taken;
     }
 
     @Override
@@ -74,7 +78,11 @@ public class SimpleItemHandler implements Container {
 
     @Override
     public void clearContent() {
-        this.stacks.clear();
+        // NonNullList.withSize 是固定长度列表，clear() 会直接抛 UnsupportedOperationException；
+        // 逐槽置空并走 setItem 以触发 onContentsChanged 通知
+        for (int i = 0; i < this.size; i++) {
+            this.setItem(i, ItemStack.EMPTY);
+        }
     }
 
     // ----- ItemStackHandler-like API -----
@@ -155,14 +163,35 @@ public class SimpleItemHandler implements Container {
     }
 
     // ----- NBT -----
+    // 注意：不能用 ContainerHelper.saveAllItems/loadAllItems 的稀疏格式做同步！
+    // 稀疏格式跳过空槽位，而加载端只覆盖出现的槽位——取出物品后客户端会永久残留旧内容（幽灵渲染）。
+    // 这里改为密集格式：每个槽位都写条目；加载前先全量清空。对旧存档的稀疏标签同样兼容。
     public CompoundTag serializeNBT(HolderLookup.Provider registries) {
         CompoundTag tag = new CompoundTag();
         tag.putInt("Size", this.size);
-        ContainerHelper.saveAllItems(tag, this.stacks, registries);
+        net.minecraft.nbt.ListTag items = new net.minecraft.nbt.ListTag();
+        for (int i = 0; i < this.size; i++) {
+            CompoundTag entry = new CompoundTag();
+            entry.putByte("Slot", (byte) i);
+            ItemStack stack = this.stacks.get(i);
+            // 注意：save() 返回编码后的新标签（prefix 合并结果），必须用返回值，不能复用原 entry！
+            items.add(stack.isEmpty() ? entry : stack.save(registries, entry));
+        }
+        tag.put("Items", items);
         return tag;
     }
 
     public void deserializeNBT(HolderLookup.Provider registries, CompoundTag tag) {
-        ContainerHelper.loadAllItems(tag, this.stacks, registries);
+        for (int i = 0; i < this.size; i++) {
+            this.stacks.set(i, ItemStack.EMPTY);
+        }
+        net.minecraft.nbt.ListTag items = tag.getList("Items", net.minecraft.nbt.Tag.TAG_COMPOUND);
+        for (int i = 0; i < items.size(); i++) {
+            CompoundTag entry = items.getCompound(i);
+            int slot = entry.getByte("Slot") & 255;
+            if (slot < this.size) {
+                this.stacks.set(slot, ItemStack.parse(registries, entry).orElse(ItemStack.EMPTY));
+            }
+        }
     }
 }

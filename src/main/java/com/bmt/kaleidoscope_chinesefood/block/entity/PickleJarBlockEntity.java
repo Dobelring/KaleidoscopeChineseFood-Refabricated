@@ -13,6 +13,8 @@ import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
@@ -27,18 +29,24 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
     public static final int SLOT_LIMIT = 4;
     public static final int TOTAL_SLOTS = 4;
     private boolean hasValidRecipe = false;
+
     public final SimpleItemHandler inventory = new SimpleItemHandler(4) {
         @Override
         protected void onContentsChanged(int slot) {
             PickleJarBlockEntity.this.setChanged();
-            if (PickleJarBlockEntity.this.level != null && !PickleJarBlockEntity.this.level.isClientSide) {
-                PickleJarBlockEntity.this.level
-                        .sendBlockUpdated(
-                                PickleJarBlockEntity.this.worldPosition,
-                                PickleJarBlockEntity.this.getBlockState(),
-                                PickleJarBlockEntity.this.getBlockState(),
-                                3
-                        );
+            if (PickleJarBlockEntity.this.level instanceof ServerLevel serverLevel) {
+                BlockPos pos = PickleJarBlockEntity.this.worldPosition;
+                BlockState state = PickleJarBlockEntity.this.getBlockState();
+                PickleJarBlockEntity.this.level.sendBlockUpdated(pos, state, state, 3);
+                // NeoForge 会在方块更新时补发 BE 数据包，Fabric/原版管线的区块段广播则有时序差，
+                // 这里显式把最新 BE 数据推给附近玩家，确保腌菜罐内容物渲染立即刷新。
+                ClientboundBlockEntityDataPacket packet =
+                        ClientboundBlockEntityDataPacket.create(PickleJarBlockEntity.this);
+                for (ServerPlayer player : serverLevel.players()) {
+                    if (player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 64.0 * 64.0) {
+                        player.connection.send(packet);
+                    }
+                }
                 PickleJarBlockEntity.this.checkForValidRecipeAndTryStartFermenting();
             }
         }
