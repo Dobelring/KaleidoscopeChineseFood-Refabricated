@@ -95,7 +95,8 @@ public class HorizontalBannerBlockEntityRender implements BlockEntityRenderer<Ho
             Component singleCharComponent = Component.literal(String.valueOf(text.charAt(i))).withStyle(COUPLET_STYLE);
             FormattedCharSequence singleChar = singleCharComponent.getVisualOrderText();
             float x = baseX + i * charWidth;
-            collector.submitText(poseStack, x, currentY, singleChar, false, DisplayMode.NORMAL, state.lightCoords, 0, 0, 0);
+            // 同对联渲染器：第8参数是文字颜色(ARGB)，必须显式传不透明色，0 会全透明不可见。
+            collector.submitText(poseStack, x, currentY, singleChar, false, DisplayMode.NORMAL, state.lightCoords, 0xFF000000, 0, 0);
          }
 
          poseStack.popPose();
