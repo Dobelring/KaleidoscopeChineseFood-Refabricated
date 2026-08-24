@@ -74,7 +74,10 @@ public class SimpleItemHandler implements Container {
 
     @Override
     public void clearContent() {
-        this.stacks.clear();
+        // NonNullList.clear() 会抛 UnsupportedOperationException，必须逐槽置空（1.21.1 移植交接教训）
+        for (int i = 0; i < this.size; i++) {
+            this.stacks.set(i, ItemStack.EMPTY);
+        }
     }
 
     // ----- ItemStackHandler-like API -----
@@ -155,11 +158,37 @@ public class SimpleItemHandler implements Container {
     }
 
     // ----- NBT -----
+    // 必须密集序列化（1.21.1 移植交接教训）：原版 ContainerHelper.saveAllItems 只写非空槽位，
+    // 而 loadAllItems 只覆盖"出现的槽位"、不清空其余槽位。Fabric 的 BE 数据同步走
+    // getUpdateTag/loadAdditional 路径，罐子被取空后同步包不含任何条目，客户端旧内容残留 →
+    // "取出后幽灵渲染"。这里改为所有槽位都写条目：非空槽位用 ItemStack.MAP_CODEC 内联
+    // id/count/components（与旧稀疏存档格式读取兼容），空槽位仅写 Slot 索引。
     public void serializeNBT(ValueOutput output) {
-        ContainerHelper.saveAllItems(output, this.stacks);
+        ValueOutput.ValueOutputList list = output.childrenList("Items");
+        for (int i = 0; i < this.size; i++) {
+            ItemStack stack = this.stacks.get(i);
+            ValueOutput entry = list.addChild();
+            entry.putByte("Slot", (byte) i);
+            if (!stack.isEmpty()) {
+                entry.store(ItemStack.MAP_CODEC, stack);
+            }
+        }
     }
 
     public void deserializeNBT(ValueInput input) {
-        ContainerHelper.loadAllItems(input, this.stacks);
+        // 加载前先全部清空：即使遇到旧存档的稀疏格式（只有非空槽位）也能正确还原，
+        // 空堆栈不能直接交给 MAP_CODEC 编解码（会抛异常/得空结果），已由 isEmpty 分支规避
+        for (int i = 0; i < this.size; i++) {
+            this.stacks.set(i, ItemStack.EMPTY);
+        }
+        for (ValueInput entry : input.childrenListOrEmpty("Items")) {
+            int slot = entry.getByteOr("Slot", (byte) -1);
+            if (slot < 0) {
+                slot = entry.getIntOr("Slot", -1);
+            }
+            if (slot >= 0 && slot < this.size) {
+                this.stacks.set(slot, entry.read(ItemStack.MAP_CODEC).orElse(ItemStack.EMPTY));
+            }
+        }
     }
 }
