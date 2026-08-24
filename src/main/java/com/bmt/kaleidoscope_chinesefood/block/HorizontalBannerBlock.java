@@ -16,6 +16,7 @@ import net.minecraft.server.network.Filterable;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -248,7 +249,15 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
       return level.getBlockState(wallPos).isFaceSturdy(level, wallPos, facing);
    }
 
+   protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+      return this.tryWriteText(state, level, pos, stack);
+   }
+
    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+      return this.tryWriteText(state, level, pos, player.getMainHandItem());
+   }
+
+   private InteractionResult tryWriteText(BlockState state, Level level, BlockPos pos, ItemStack heldItem) {
       if (level.isClientSide()) {
          return InteractionResult.SUCCESS;
       } else {
@@ -265,7 +274,6 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
          }
 
          if (level.getBlockEntity(entityPos) instanceof HorizontalBannerBlockEntity bannerEntity) {
-            ItemStack heldItem = player.getMainHandItem();
             String targetText = this.getTextFromBook(heldItem);
             if (targetText != null && !targetText.isBlank()) {
                bannerEntity.setText(targetText);

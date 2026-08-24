@@ -14,6 +14,7 @@ import net.minecraft.server.network.Filterable;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -330,7 +331,15 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
       level.setBlock(masterPos, Blocks.AIR.defaultBlockState(), 35);
    }
 
+   protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+      return this.tryWriteText(level, pos, stack);
+   }
+
    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+      return this.tryWriteText(level, pos, player.getMainHandItem());
+   }
+
+   private InteractionResult tryWriteText(Level level, BlockPos pos, ItemStack heldItem) {
       if (level.isClientSide()) {
          return InteractionResult.SUCCESS;
       } else {
@@ -346,7 +355,6 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
          }
 
          if (level.getBlockEntity(targetPos) instanceof CoupletBlockEntity coupletEntity) {
-            ItemStack heldItem = player.getMainHandItem();
             String targetText = this.getTextFromBook(heldItem);
             if (targetText != null && !targetText.isBlank()) {
                coupletEntity.setText(targetText);
