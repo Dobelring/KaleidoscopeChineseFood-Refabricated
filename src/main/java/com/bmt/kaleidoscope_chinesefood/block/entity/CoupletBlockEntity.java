@@ -54,11 +54,14 @@ public class CoupletBlockEntity extends BlockEntity {
          if (this.level instanceof ServerLevel serverLevel) {
             ClientboundBlockEntityDataPacket packet = ClientboundBlockEntityDataPacket.create(this);
             BlockPos pos = this.getBlockPos();
+            int sent = 0;
             for (ServerPlayer player : serverLevel.players()) {
                if (player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 64.0 * 64.0) {
                   player.connection.send(packet);
+                  sent++;
                }
             }
+            org.slf4j.LoggerFactory.getLogger("kcf_write_debug").info("[字][服务端] setText='{}' 已推送数据包给 {} 名玩家", newText, sent);
          }
       }
    }

@@ -50,6 +50,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
+   private static final org.slf4j.Logger WRITE_LOG = org.slf4j.LoggerFactory.getLogger("kcf_write_debug");
    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
    public static final EnumProperty<CoupletBlock.CoupletPart> PART = EnumProperty.create("part", CoupletBlock.CoupletPart.class);
    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -344,6 +345,7 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
       if (level.isClientSide()) {
          return InteractionResult.SUCCESS;
       } else {
+         WRITE_LOG.info("[字][服务端] 收到交互 pos={} 手持={}", pos, heldItem.getItem());
          BlockPos targetPos = pos;
 
          for (int i = 0; i < 3; i++) {
@@ -355,8 +357,12 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
             targetPos = targetPos.below();
          }
 
+         boolean hasBE = level.getBlockEntity(targetPos) instanceof CoupletBlockEntity;
+         WRITE_LOG.info("[字][服务端] 目标BE pos={} 存在={}", targetPos, hasBE);
+
          if (level.getBlockEntity(targetPos) instanceof CoupletBlockEntity coupletEntity) {
             String targetText = this.getTextFromBook(heldItem);
+            WRITE_LOG.info("[字][服务端] 读到的书内容='{}'", targetText);
             if (targetText != null && !targetText.isBlank()) {
                coupletEntity.setText(targetText);
                return InteractionResult.CONSUME;
