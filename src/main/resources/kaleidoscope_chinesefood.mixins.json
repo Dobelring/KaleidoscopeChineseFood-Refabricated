@@ -6,7 +6,8 @@
     "EntityMixin",
     "PlayerEntityMixin",
     "LivingEntityMixin",
-    "PlayerTickMixin"
+    "PlayerTickMixin",
+    "BaseCropBlockMixin"
   ],
   "client": [
     "FogRendererMixin"
