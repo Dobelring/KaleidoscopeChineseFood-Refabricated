@@ -4,7 +4,9 @@ import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.crafting.BaseProcessingRecipe;
 import com.bmt.kaleidoscope_chinesefood.crafting.PickleJarRecipe;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlocks;
+import com.bmt.kaleidoscope_chinesefood.init.ModItems;
 import com.bmt.kaleidoscope_chinesefood.init.ModRecipes;
+import com.bmt.kaleidoscope_chinesefood.item.MooncakeMoldItem;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
@@ -12,9 +14,13 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Block;
@@ -35,6 +41,8 @@ public class EmiPlugins implements EmiPlugin {
             "jei.kaleidoscope_chinesefood.freezing");
     public static final EmiRecipeCategory REFRIGERATING = category("refrigerating", ModBlocks.FREEZER,
             "jei.kaleidoscope_chinesefood.refrigerating");
+    public static final EmiRecipeCategory MOONCAKE_MOLD = category("mooncake_mold", ModItems.MOONCAKE_MOLD,
+            "jei.kaleidoscope_chinesefood.mooncake_mold");
 
     private static final Block[] FREEZERS = {
             ModBlocks.FREEZER, ModBlocks.FREEZER_GREEN, ModBlocks.FREEZER_ORANGE,
@@ -42,7 +50,7 @@ public class EmiPlugins implements EmiPlugin {
             ModBlocks.FREEZER_YELLOW
     };
 
-    private static EmiRecipeCategory category(String path, Block icon, String nameKey) {
+    private static EmiRecipeCategory category(String path, ItemLike icon, String nameKey) {
         // EMI 默认按 emi.category.<命名空间>.<路径> 找翻译键，缺键时会显示原始键名；
         // 这里覆写 getName 直接复用 JEI 分类已有的翻译键（中英文均有现成译文）。
         return new EmiRecipeCategory(KaleidoscopeChineseFood.id("emi/" + path), EmiStack.of(icon)) {
@@ -58,8 +66,10 @@ public class EmiPlugins implements EmiPlugin {
         registry.addCategory(PICKLE_JAR);
         registry.addCategory(FREEZING);
         registry.addCategory(REFRIGERATING);
+        registry.addCategory(MOONCAKE_MOLD);
 
         registry.addWorkstation(PICKLE_JAR, EmiStack.of(ModBlocks.PICKLE_JAR));
+        registry.addWorkstation(MOONCAKE_MOLD, EmiStack.of(ModItems.MOONCAKE_MOLD));
         for (Block freezer : FREEZERS) {
             EmiStack stack = EmiStack.of(freezer);
             registry.addWorkstation(FREEZING, stack);
@@ -83,6 +93,9 @@ public class EmiPlugins implements EmiPlugin {
             registry.addRecipe(new ProcessingEmiRecipe(REFRIGERATING, holder.id(),
                     recipe.getIngredients(), recipe.getOutput(), 0, false));
         }
+
+        // 月饼模具是纯代码交互（非配方系统），提供静态虚拟展示条目
+        registry.addRecipe(new MoldEmiRecipe());
     }
 
     private static class ProcessingEmiRecipe extends BasicEmiRecipe {
@@ -136,6 +149,33 @@ public class EmiPlugins implements EmiPlugin {
                 widgets.addFillingArrow(58, 21, 2000);
                 widgets.addSlot(this.outputs.getFirst(), 87, 21).recipeContext(this);
             }
+        }
+    }
+
+    /** 虚拟展示：月饼模具（不消耗）+ 厨房乐事夹心面团 → 生月饼。 */
+    private static class MoldEmiRecipe extends BasicEmiRecipe {
+        MoldEmiRecipe() {
+            super(MOONCAKE_MOLD, KaleidoscopeChineseFood.id("emi/mooncake_mold"), 140, 60);
+            this.inputs.add(EmiStack.of(ModItems.MOONCAKE_MOLD));
+            Item dough = stuffedDoughItem();
+            this.inputs.add(dough != Items.AIR ? EmiStack.of(dough) : EmiStack.EMPTY);
+            this.outputs.add(EmiStack.of(ModItems.RAW_MOONCAKE));
+        }
+
+        private static Item stuffedDoughItem() {
+            String[] parts = MooncakeMoldItem.STUFFED_DOUGH_FOOD_ID.split(":", 2);
+            ResourceLocation id = ResourceLocation.fromNamespaceAndPath(parts[0], parts[1]);
+            return (Item) BuiltInRegistries.ITEM.getOptional(id).orElse(Items.AIR);
+        }
+
+        @Override
+        public void addWidgets(WidgetHolder widgets) {
+            widgets.addSlot(this.inputs.getFirst(), 36, 4);
+            widgets.addSlot(this.inputs.get(1), 36, 26);
+            widgets.addFillingArrow(68, 21, 2000);
+            widgets.addSlot(this.outputs.getFirst(), 106, 19).recipeContext(this);
+            widgets.addText(Component.translatable("jei.kaleidoscope_chinesefood.mold_hint"),
+                    8, 49, 0x555555, false);
         }
     }
 }

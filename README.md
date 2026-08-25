@@ -26,7 +26,7 @@ This mod brings a variety of Chinese cuisine and folk items to "Kaleidoscope: Co
 - Two unique status effects: Lava Swim (熔岩游泳) and Saturation Shield (饱食护盾).
 
 ## Compat
-- **JEI / EMI**: view pickling / refrigerating / freezing recipes in either recipe viewer.
+- **JEI / EMI**: view pickling / refrigerating / freezing recipes, plus a virtual mooncake-mold entry (mold + stuffed dough → raw mooncake).
 - **Jade**: shows the pickle jar's progress.
 
 ## Build
