@@ -31,9 +31,15 @@ public class KongmingLanternRender extends EntityRenderer<KongmingLanternEntity,
       super.extractRenderState(entity, state, partialTick);
       state.yRotInterpolated = entity.getYRot() + (entity.getYRot() - entity.yRotO) * partialTick;
       state.lanternBlock = ((KongmingLanternBlock)ModBlocks.KONGMING_LANTERN).defaultBlockState();
+      // 与 vanilla FallingBlockRenderer 对齐：MovingBlockRenderState 是以 blockPos 为锚点的
+      // 单方块假世界，块模型的光照/AO 都按 blockPos 在真实光照引擎里采样。此前写死
+      // BlockPos.ZERO 导致光照采到世界原点（y≈0），孔明灯一点燃（转为实体渲染）就整体变暗。
+      BlockPos pos = BlockPos.containing(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
+      state.movingBlock.randomSeedPos = pos;
+      state.movingBlock.blockPos = pos;
+      state.movingBlock.blockState = state.lanternBlock;
       Level level = entity.level();
       if (level instanceof ClientLevel clientLevel) {
-         BlockPos pos = entity.blockPosition();
          state.movingBlock.biome = clientLevel.getBiome(pos);
          state.movingBlock.cardinalLighting = clientLevel.cardinalLighting();
          state.movingBlock.lightEngine = clientLevel.getLightEngine();
@@ -42,9 +48,6 @@ public class KongmingLanternRender extends EntityRenderer<KongmingLanternEntity,
 
    public void submit(State state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
       if (state.lanternBlock.getRenderShape() == RenderShape.MODEL) {
-         state.movingBlock.randomSeedPos = BlockPos.containing(state.x, state.y, state.z);
-         state.movingBlock.blockPos = BlockPos.ZERO;
-         state.movingBlock.blockState = state.lanternBlock;
          poseStack.pushPose();
          poseStack.translate(-0.5, 0.0, -0.5);
          poseStack.mulPose(Axis.YP.rotationDegrees(state.yRotInterpolated));
