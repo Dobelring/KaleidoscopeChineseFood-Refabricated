@@ -49,6 +49,10 @@ dependencies {
     compileOnly "mezz.jei:jei-26.1.2-fabric-api:29.29.0.77"
     clientCompileOnly "mezz.jei:jei-26.1.2-common-api:29.29.0.77"
     clientCompileOnly "mezz.jei:jei-26.1.2-fabric-api:29.29.0.77"
+    // 完整 JEI 构件（仅编译期）：JeiRecipeSlotMixin 需要引用其内部类
+    // （ImmutableRect2i / SlotIngredient / Textures），把多候选角标移到右上角对齐 JEI 30
+    compileOnly "mezz.jei:jei-26.1.2-fabric:29.29.0.77"
+    clientCompileOnly "mezz.jei:jei-26.1.2-fabric:29.29.0.77"
 
     // Jade / EMI：
     // - Jade：26.1 版构建待确认，暂不接入。

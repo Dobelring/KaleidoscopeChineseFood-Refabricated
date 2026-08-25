@@ -10,7 +10,8 @@
     "BaseCropBlockMixin"
   ],
   "client": [
-    "FogRendererMixin"
+    "FogRendererMixin",
+    "JeiRecipeSlotMixin"
   ],
   "injectors": {
     "defaultRequire": 1
