@@ -103,14 +103,9 @@ public class PickleJarBlock extends BaseEntityBlock {
             level.playSound(null, pos, held.isEmpty() ? SoundEvents.ITEM_FRAME_REMOVE_ITEM : SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 0.8F, 1.1F);
             return InteractionResult.CONSUME;
          } else {
-            // 关闭状态下右键直接开盖（不要求潜行）。原 NeoForge 版依赖"潜行右键开盖"，
-            // 但 Fabric 的原版交互在"潜行 + 手持物品"时会跳过方块（保留给放置物品），
-            // 导致持有食材时无法开盖。这里改为普通右键即可开盖，潜行仍用于关盖发酵。
-            jar.resetProgress();
-            BlockState newState = (BlockState)((BlockState)((BlockState)state.setValue(OPEN, true)).setValue(FERMENTING, false)).setValue(DONE, false);
-            level.setBlock(pos, newState, 3);
-            level.playSound(null, pos, SoundEvents.BARREL_OPEN, SoundSource.BLOCKS, 1.0F, 1.0F);
-            return InteractionResult.CONSUME;
+            // 开关盖统一为"空手+潜行右键"切换；关闭状态下普通右键不做任何事(PASS)，
+            // 保留手持物品时原版"对着方块放置"的行为不被误触发。
+            return InteractionResult.PASS;
          }
       }
    }

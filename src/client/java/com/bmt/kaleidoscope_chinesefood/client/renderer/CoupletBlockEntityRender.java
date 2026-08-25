@@ -34,9 +34,6 @@ public class CoupletBlockEntityRender implements BlockEntityRenderer<CoupletBloc
       return new State();
    }
 
-   private static final org.slf4j.Logger WRITE_LOG = org.slf4j.LoggerFactory.getLogger("kcf_write_debug");
-   private static String lastLoggedClientText;
-
    public void extractRenderState(CoupletBlockEntity blockEntity, State state, float partialTick, net.minecraft.world.phys.Vec3 cameraPos, net.minecraft.client.renderer.feature.ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
       BlockEntityRenderState.extractBase(blockEntity, state, crumblingOverlay);
       state.text = null;
@@ -45,10 +42,6 @@ public class CoupletBlockEntityRender implements BlockEntityRenderer<CoupletBloc
       BlockState blockState = blockEntity.getBlockState();
       if (blockState.getValue(CoupletBlock.PART) == CoupletBlock.CoupletPart.LOWER) {
          String firstLineText = blockEntity.getTruncatedLine(0);
-         if (!java.util.Objects.equals(firstLineText, lastLoggedClientText)) {
-            WRITE_LOG.info("[字][客户端] 渲染器读到BE文字='{}'", firstLineText);
-            lastLoggedClientText = firstLineText;
-         }
          if (firstLineText != null && !firstLineText.isBlank()) {
             if (blockEntity.getLevel() != null) {
                BlockPos upperUpperPos = blockEntity.getBlockPos().above(2);

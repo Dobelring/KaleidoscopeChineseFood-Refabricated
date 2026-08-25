@@ -159,7 +159,7 @@
   "jade.kaleidoscope_chinesefood.pickle_jar.remaining_time": "Fermenting: %s",
   "config.jade.plugin_kaleidoscope_chinesefood.pickle_jar": "Pickling Jar",
   "kaleidoscope_chinesefood.ponder.pickle_jar.header": "Pickling Jar",
-  "kaleidoscope_chinesefood.pickle_jar.text_1": "Right-click to open lid (or sneak-right-click)",
+  "kaleidoscope_chinesefood.pickle_jar.text_1": "Sneak-right-click with empty hand to open lid",
   "kaleidoscope_chinesefood.pickle_jar.text_2": "Place ingredients inside",
   "kaleidoscope_chinesefood.pickle_jar.text_3": "Sneak to close lid and start fermentation",
   "kaleidoscope_chinesefood.pickle_jar.text_4": "Wait for fermentation to finish...",

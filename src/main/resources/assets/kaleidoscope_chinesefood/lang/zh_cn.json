@@ -163,7 +163,7 @@
   "jade.kaleidoscope_chinesefood.pickle_jar.remaining_time": "发酵中: %s",
   "config.jade.plugin_kaleidoscope_chinesefood.pickle_jar": "腌菜罐",
   "kaleidoscope_chinesefood.ponder.pickle_jar.header": "腌菜罐",
-  "kaleidoscope_chinesefood.ponder.pickle_jar.text_1": "右键打开盖子（潜行右键亦可）",
+  "kaleidoscope_chinesefood.ponder.pickle_jar.text_1": "空手潜行右键打开盖子",
   "kaleidoscope_chinesefood.ponder.pickle_jar.text_2": "放入需要腌制的食材",
   "kaleidoscope_chinesefood.ponder.pickle_jar.text_3": "潜行关盖，自动开始发酵",
   "kaleidoscope_chinesefood.ponder.pickle_jar.text_4": "等待发酵完成...",
