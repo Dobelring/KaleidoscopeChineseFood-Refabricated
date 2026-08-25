@@ -26,13 +26,13 @@ This mod brings a variety of Chinese cuisine and folk items to "Kaleidoscope: Co
 - Two unique status effects: Lava Swim (熔岩游泳) and Saturation Shield (饱食护盾).
 
 ## Compat
-- **JEI**: view pickling / refrigerating / freezing recipes.
+- **JEI / EMI**: view pickling / refrigerating / freezing recipes in either recipe viewer.
 - **Jade**: shows the pickle jar's progress.
 
 ## Build
 Requires JDK 21.
 
-Dependency jars (Kaleidoscope Cookery, Forge Config API Port, JEI, Jade) are committed under `libs/` and referenced directly by `build.gradle`.
+Dependency jars (Kaleidoscope Cookery, Forge Config API Port, JEI, EMI, Jade) are committed under `libs/` and referenced directly by `build.gradle`.
 
 ```
 ./gradlew build
