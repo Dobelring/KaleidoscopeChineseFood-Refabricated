@@ -155,7 +155,7 @@ public class EmiPlugins implements EmiPlugin {
     /** 虚拟展示：月饼模具（不消耗）+ 厨房乐事夹心面团 → 生月饼。 */
     private static class MoldEmiRecipe extends BasicEmiRecipe {
         MoldEmiRecipe() {
-            super(MOONCAKE_MOLD, KaleidoscopeChineseFood.id("emi/mooncake_mold"), 140, 60);
+            super(MOONCAKE_MOLD, KaleidoscopeChineseFood.id("emi/mooncake_mold"), 140, 46);
             this.inputs.add(EmiStack.of(ModItems.MOONCAKE_MOLD));
             Item dough = stuffedDoughItem();
             this.inputs.add(dough != Items.AIR ? EmiStack.of(dough) : EmiStack.EMPTY);
@@ -174,8 +174,6 @@ public class EmiPlugins implements EmiPlugin {
             widgets.addSlot(this.inputs.get(1), 36, 26);
             widgets.addFillingArrow(68, 21, 2000);
             widgets.addSlot(this.outputs.getFirst(), 106, 19).recipeContext(this);
-            widgets.addText(Component.translatable("jei.kaleidoscope_chinesefood.mold_hint"),
-                    8, 49, 0x555555, false);
         }
     }
 }

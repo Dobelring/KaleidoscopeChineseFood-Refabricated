@@ -38,7 +38,7 @@ public class MooncakeMoldRecipeCategory implements IRecipeCategory<MooncakeMoldR
    private final IDrawable icon;
 
    public MooncakeMoldRecipeCategory(IGuiHelper guiHelper) {
-      this.background = guiHelper.createBlankDrawable(126, 54);
+      this.background = guiHelper.createBlankDrawable(126, 40);
       this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModItems.MOONCAKE_MOLD));
    }
 
@@ -88,8 +88,6 @@ public class MooncakeMoldRecipeCategory implements IRecipeCategory<MooncakeMoldR
 
    @Override
    public void draw(Display display, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-      var font = Minecraft.getInstance().font;
-      guiGraphics.drawString(font, "→", 62, 17, 0xFF555555, false);
-      guiGraphics.drawString(font, Component.translatable("jei.kaleidoscope_chinesefood.mold_hint").getString(), 3, 44, 0xFF555555, false);
+      guiGraphics.drawString(Minecraft.getInstance().font, "→", 62, 17, 0xFF555555, false);
    }
 }
