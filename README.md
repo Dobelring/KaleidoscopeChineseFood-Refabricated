@@ -26,9 +26,11 @@ This mod brings a variety of Chinese cuisine and folk items to "Kaleidoscope: Co
 - Two unique status effects: Lava Swim (熔岩游泳) and Saturation Shield (饱食护盾).
 
 ## Compat
-JEI / Jade integration is **not yet bundled** for Minecraft 26.2 — the integration code is kept in `compat-staging/` and will be re-enabled once those builds are wired up (JEI 26.2 has shipped on Maven; Jade is still pending).
-- **JEI**: view pickling / refrigerating / freezing recipes.
-- **Jade**: shows the pickle jar's progress.
+- **JEI**（编译期 API，运行时需自行安装 JEI 26.2）：查看腌菜罐 / 冷冻 / 冷藏配方。
+  自定义配方通过 Fabric 配方同步（`RecipeSynchronization`）下发到客户端，JEI 未安装时自动跳过。
+- **EMI**: 暂不支持 —— 截至 2026-08-25 EMI 未发布任何 26.x 构建（Modrinth 最新为 1.1.24+1.21.1）。
+  TODO: 待上游发布后参照 1.21.1 版 `compat/emi` 移植。
+- **Jade**: 仍未接入（26.2 构建待确认），显示腌菜罐进度的功能暂缺。
 
 ## Build
 Requires JDK 26 to build (the Gradle toolchain targets Java 25 bytecode); Minecraft 26.2 runs on Java 25.
