@@ -14,6 +14,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.Recipe;
@@ -26,7 +27,9 @@ import org.jetbrains.annotations.NotNull;
 public class PickleJarRecipe implements Recipe<PickleJarInput> {
    public static final int DEFAULT_FERMENT_TIME = 200;
    private final NonNullList<Ingredient> inputs;
-   private final ItemStack output;
+   // 26.x 配方解析阶段 Item 组件尚未绑定，直接构造 ItemStack 会抛
+   // "does not have components yet"；原版配方已改用 ItemStackTemplate 延迟物化。
+   private final ItemStackTemplate output;
    private final int fermentTime;
    public static final MapCodec<PickleJarRecipe> CODEC = RecordCodecBuilder.mapCodec(
       inst -> inst.group(
@@ -39,14 +42,14 @@ public class PickleJarRecipe implements Recipe<PickleJarInput> {
                   return (NonNullList<Ingredient>)nonNullList;
                }, List::copyOf)
                .forGetter(r -> r.inputs),
-            ItemStack.CODEC.fieldOf("result").forGetter(r -> r.output),
+            ItemStackTemplate.CODEC.fieldOf("result").forGetter(r -> r.output),
             Codec.INT.optionalFieldOf("fermentTime", 200).forGetter(r -> r.fermentTime)
          )
          .apply(inst, PickleJarRecipe::new)
    );
    private static RecipeBookCategory BOOK_CATEGORY;
 
-   public PickleJarRecipe(NonNullList<Ingredient> inputs, ItemStack output, int fermentTime) {
+   public PickleJarRecipe(NonNullList<Ingredient> inputs, ItemStackTemplate output, int fermentTime) {
       this.inputs = inputs;
       this.output = output;
       this.fermentTime = fermentTime;
@@ -95,7 +98,13 @@ public class PickleJarRecipe implements Recipe<PickleJarInput> {
 
    @NotNull
    public ItemStack assemble(@NotNull PickleJarInput input) {
-      return this.output.copy();
+      return this.output.create();
+   }
+
+   /** 物化产物（运行期调用，此时 Item 组件已绑定）。 */
+   @NotNull
+   public ItemStack getOutput() {
+      return this.output.create();
    }
 
    public boolean showNotification() {
@@ -109,7 +118,7 @@ public class PickleJarRecipe implements Recipe<PickleJarInput> {
 
    @NotNull
    public ItemStack getResultItem(@NotNull net.minecraft.core.HolderLookup.Provider registries) {
-      return this.output;
+      return this.output.create();
    }
 
    @NotNull
@@ -156,7 +165,7 @@ public class PickleJarRecipe implements Recipe<PickleJarInput> {
                inputs.add((Ingredient)Ingredient.CONTENTS_STREAM_CODEC.decode(buf));
             }
 
-            ItemStack output = (ItemStack)ItemStack.STREAM_CODEC.decode(buf);
+            ItemStackTemplate output = (ItemStackTemplate)ItemStackTemplate.STREAM_CODEC.decode(buf);
             int time = buf.readVarInt();
             return new PickleJarRecipe(inputs, output, time);
          }
@@ -168,7 +177,7 @@ public class PickleJarRecipe implements Recipe<PickleJarInput> {
                Ingredient.CONTENTS_STREAM_CODEC.encode(buf, ing);
             }
 
-            ItemStack.STREAM_CODEC.encode(buf, recipe.output);
+            ItemStackTemplate.STREAM_CODEC.encode(buf, recipe.output);
             buf.writeVarInt(recipe.fermentTime);
          }
       };
