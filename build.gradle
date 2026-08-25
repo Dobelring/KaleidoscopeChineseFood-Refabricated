@@ -110,5 +110,6 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(26)
     }
-    withSourcesJar()
+    // 不再生成 sources jar：曾因误部署到 mods 目录（内含 fabric.mod.json）
+    // 与正式 jar 撞 mod id，导致 JEI 插件无法加载
 }

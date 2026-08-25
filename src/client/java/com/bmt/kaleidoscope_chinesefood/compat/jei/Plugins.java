@@ -2,6 +2,7 @@ package com.bmt.kaleidoscope_chinesefood.compat.jei;
 
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlocks;
+import com.bmt.kaleidoscope_chinesefood.init.ModItems;
 import com.bmt.kaleidoscope_chinesefood.init.ModRecipes;
 import java.util.List;
 import mezz.jei.api.IModPlugin;
@@ -34,6 +35,7 @@ public class Plugins implements IModPlugin {
       registration.addRecipeCategories(new PicklingJarRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
       registration.addRecipeCategories(new FreezingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
       registration.addRecipeCategories(new RefrigeratingRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+      registration.addRecipeCategories(new MooncakeMoldRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
    }
 
    public void registerRecipes(IRecipeRegistration registration) {
@@ -44,15 +46,19 @@ public class Plugins implements IModPlugin {
          registration.addRecipes(FreezingRecipeCategory.TYPE, List.copyOf(synced.getAllOfType(ModRecipes.FREEZING_TYPE)));
          registration.addRecipes(RefrigeratingRecipeCategory.TYPE, List.copyOf(synced.getAllOfType(ModRecipes.REFRIGERATING_TYPE)));
       }
+      // 手工压制生月饼：虚拟展示条目，机制在 MooncakeMoldItem（模具+夹心面团长按右键）
+      registration.addRecipes(MooncakeMoldRecipeCategory.TYPE, List.of(MooncakeMoldRecipeCategory.createDisplay()));
    }
 
    public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-      // 腌菜罐 → 腌菜罐分类；7 种颜色冰箱 → 冷冻 + 冷藏两个分类
+      // 腌菜罐 → 腌菜罐分类；7 种颜色冰箱 → 冷冻 + 冷藏两个分类；
+      // 月饼模具 → 压制生月饼分类（搜模具即可找到压制方法）
       registration.addCraftingStation(PicklingJarRecipeCategory.TYPE, new ItemStack(ModBlocks.PICKLE_JAR));
       for (Block freezer : FREEZERS) {
          registration.addCraftingStation(FreezingRecipeCategory.TYPE, new ItemStack(freezer));
          registration.addCraftingStation(RefrigeratingRecipeCategory.TYPE, new ItemStack(freezer));
       }
+      registration.addCraftingStation(MooncakeMoldRecipeCategory.TYPE, new ItemStack(ModItems.MOONCAKE_MOLD));
    }
 
    private static final Block[] FREEZERS = {
