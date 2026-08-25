@@ -29,9 +29,12 @@ import java.util.List;
  * EMI 的 jemi 桥会跳过已带原生 EMI 插件的模组的 JEI 插件，因此 JEI+EMI 双装不会重复显示。
  */
 public class EmiPlugins implements EmiPlugin {
-    public static final EmiRecipeCategory PICKLE_JAR = category("pickle_jar", ModBlocks.PICKLE_JAR);
-    public static final EmiRecipeCategory FREEZING = category("freezing", ModBlocks.FREEZER);
-    public static final EmiRecipeCategory REFRIGERATING = category("refrigerating", ModBlocks.FREEZER);
+    public static final EmiRecipeCategory PICKLE_JAR = category("pickle_jar", ModBlocks.PICKLE_JAR,
+            "jei.kaleidoscope_chinesefood.pickle_jar");
+    public static final EmiRecipeCategory FREEZING = category("freezing", ModBlocks.FREEZER,
+            "jei.kaleidoscope_chinesefood.freezing");
+    public static final EmiRecipeCategory REFRIGERATING = category("refrigerating", ModBlocks.FREEZER,
+            "jei.kaleidoscope_chinesefood.refrigerating");
 
     private static final Block[] FREEZERS = {
             ModBlocks.FREEZER, ModBlocks.FREEZER_GREEN, ModBlocks.FREEZER_ORANGE,
@@ -39,8 +42,15 @@ public class EmiPlugins implements EmiPlugin {
             ModBlocks.FREEZER_YELLOW
     };
 
-    private static EmiRecipeCategory category(String path, Block icon) {
-        return new EmiRecipeCategory(KaleidoscopeChineseFood.id("emi/" + path), EmiStack.of(icon));
+    private static EmiRecipeCategory category(String path, Block icon, String nameKey) {
+        // EMI 默认按 emi.category.<命名空间>.<路径> 找翻译键，缺键时会显示原始键名；
+        // 这里覆写 getName 直接复用 JEI 分类已有的翻译键（中英文均有现成译文）。
+        return new EmiRecipeCategory(KaleidoscopeChineseFood.id("emi/" + path), EmiStack.of(icon)) {
+            @Override
+            public Component getName() {
+                return Component.translatable(nameKey);
+            }
+        };
     }
 
     @Override
