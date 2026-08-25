@@ -22,11 +22,11 @@
     ],
     "client": [
       "com.bmt.kaleidoscope_chinesefood.client.KaleidoscopeChineseFoodClient"
+    ],
+    "jei_mod_plugin": [
+      "com.bmt.kaleidoscope_chinesefood.compat.jei.Plugins"
     ]
   },
-  "jei_mod_plugin": [
-    "com.bmt.kaleidoscope_chinesefood.compat.jei.Plugins"
-  ],
   "mixins": [
     "kaleidoscope_chinesefood.mixins.json"
   ],
