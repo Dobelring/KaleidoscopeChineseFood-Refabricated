@@ -59,8 +59,13 @@ dependencies {
     implementation "maven.modrinth:kaleidoscope-cookery-refabricated:${project.kaleidoscope_cookery_version}-fabric+mc${project.minecraft_version}"
 
     // Optional compat integrations (compileOnly - not bundled)
-    // TODO: 26.2 版 JEI 已有 (jei-26.2-fabric:30.11.0.67)，Jade 待确认；先注释，后续再恢复
-    // compileOnly "mezz.jei:jei-26.2-fabric:30.11.0.67"
+    // JEI 配方查看：仅编译期依赖 API，不打包进 jar（玩家运行时自行安装 JEI）
+    compileOnly "mezz.jei:jei-26.2-common-api:30.11.0.67"
+    compileOnly "mezz.jei:jei-26.2-fabric-api:30.11.0.67"
+    clientCompileOnly "mezz.jei:jei-26.2-common-api:30.11.0.67"
+    clientCompileOnly "mezz.jei:jei-26.2-fabric-api:30.11.0.67"
+    // TODO: EMI 截至 2026-08-25 未发布任何 26.x 构建（Modrinth 最新为 1.1.24+1.21.1，
+    //  与 TerraformersMC maven 双重确认）。待上游发布后参照 1.21.1 版 compat/emi 移植。
 }
 
 processResources {
