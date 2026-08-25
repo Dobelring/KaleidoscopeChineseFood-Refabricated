@@ -20,6 +20,7 @@ import com.bmt.kaleidoscope_chinesefood.init.ModTea;
 import com.bmt.kaleidoscope_chinesefood.init.kaleidoscope_twilight.KTItems;
 import com.bmt.kaleidoscope_chinesefood.integration.KaleidoscopeDollIntegration;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.Identifier;
 
@@ -45,6 +46,14 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         ModSounds.register();
         ModRecipes.register();
         ModCreativeModeTabs.register();
+
+        // JEI 客户端查看自定义配方需要完整配方对象：26.x 原版不再向客户端同步全部配方，
+        // 需通过 Fabric 配方同步 API 按序列化器显式注册（配置阶段自动下发）。
+        if (FabricLoader.getInstance().isModLoaded("jei")) {
+            RecipeSynchronization.synchronizeRecipeSerializer(ModRecipes.PICKLE_JAR_SERIALIZER);
+            RecipeSynchronization.synchronizeRecipeSerializer(ModRecipes.FREEZING_SERIALIZER);
+            RecipeSynchronization.synchronizeRecipeSerializer(ModRecipes.REFRIGERATING_SERIALIZER);
+        }
 
         KaleidoscopeDollIntegration.register();
         ModBuiltInResourcePacks.register();

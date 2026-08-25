@@ -12,6 +12,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.Recipe;
@@ -22,12 +23,14 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class BaseProcessingRecipe implements Recipe<FreezerInput> {
    protected final Ingredient input;
-   protected final ItemStack output;
+   // 26.x 配方解析阶段 Item 组件尚未绑定，直接构造 ItemStack 会抛
+   // "does not have components yet"；原版配方已改用 ItemStackTemplate 延迟物化。
+   protected final ItemStackTemplate output;
    protected final int baseTime;
    public static final int TIME_MULTIPLIER = 5;
    public static final int DEFAULT_BASE_TIME = 100;
 
-   public BaseProcessingRecipe(Ingredient input, ItemStack output, int baseTime) {
+   public BaseProcessingRecipe(Ingredient input, ItemStackTemplate output, int baseTime) {
       this.input = input;
       this.output = output;
       this.baseTime = baseTime;
@@ -43,7 +46,7 @@ public abstract class BaseProcessingRecipe implements Recipe<FreezerInput> {
 
    @NotNull
    public ItemStack assemble(@NotNull FreezerInput input) {
-      return this.output.copy();
+      return this.output.create();
    }
 
    public boolean showNotification() {
@@ -55,9 +58,15 @@ public abstract class BaseProcessingRecipe implements Recipe<FreezerInput> {
       return "";
    }
 
+   /** 物化产物（运行期调用，此时 Item 组件已绑定）。 */
+   @NotNull
+   public ItemStack getOutput() {
+      return this.output.create();
+   }
+
    @NotNull
    public ItemStack getResultItem(@NotNull Provider registries) {
-      return this.output;
+      return this.output.create();
    }
 
    @NotNull
@@ -84,7 +93,7 @@ public abstract class BaseProcessingRecipe implements Recipe<FreezerInput> {
       return RecordCodecBuilder.mapCodec(
          inst -> inst.group(
                Ingredient.CODEC.fieldOf("input").forGetter(r -> r.input),
-               ItemStack.CODEC.fieldOf("output").forGetter(r -> r.output),
+               ItemStackTemplate.CODEC.fieldOf("output").forGetter(r -> r.output),
                Codec.INT.optionalFieldOf("base_time", 100).forGetter(r -> r.baseTime)
             )
             .apply(inst, factory::create)
@@ -97,21 +106,21 @@ public abstract class BaseProcessingRecipe implements Recipe<FreezerInput> {
       return new StreamCodec<RegistryFriendlyByteBuf, T>() {
          public T decode(RegistryFriendlyByteBuf buf) {
             Ingredient ingredient = (Ingredient)Ingredient.CONTENTS_STREAM_CODEC.decode(buf);
-            ItemStack result = (ItemStack)ItemStack.STREAM_CODEC.decode(buf);
+            ItemStackTemplate result = (ItemStackTemplate)ItemStackTemplate.STREAM_CODEC.decode(buf);
             int time = buf.readVarInt();
             return factory.create(ingredient, result, time);
          }
 
          public void encode(RegistryFriendlyByteBuf buf, T recipe) {
             Ingredient.CONTENTS_STREAM_CODEC.encode(buf, recipe.input);
-            ItemStack.STREAM_CODEC.encode(buf, recipe.output);
+            ItemStackTemplate.STREAM_CODEC.encode(buf, recipe.output);
             buf.writeVarInt(recipe.baseTime);
          }
       };
    }
 
    /**
-    * 26.1: {@code RecipeSerializer} is now a final record of (MapCodec, StreamCodec);
+    * 26.x: {@code RecipeSerializer} is now a final record of (MapCodec, StreamCodec);
     * custom serializer classes can no longer implement it.
     */
    protected static <T extends BaseProcessingRecipe> RecipeSerializer<T> makeSerializer(BaseProcessingRecipe.RecipeFactory<T> factory) {
@@ -139,6 +148,6 @@ public abstract class BaseProcessingRecipe implements Recipe<FreezerInput> {
 
    @FunctionalInterface
    protected interface RecipeFactory<T extends BaseProcessingRecipe> {
-      T create(Ingredient var1, ItemStack var2, int var3);
+      T create(Ingredient var1, ItemStackTemplate var2, int var3);
    }
 }
