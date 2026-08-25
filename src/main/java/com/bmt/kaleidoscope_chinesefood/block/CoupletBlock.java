@@ -14,11 +14,13 @@ import net.minecraft.server.network.Filterable;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.WritableBookContent;
+import net.minecraft.world.item.component.WrittenBookContent;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -330,7 +332,15 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
       level.setBlock(masterPos, Blocks.AIR.defaultBlockState(), 35);
    }
 
+   protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+      return this.tryWriteText(level, pos, stack);
+   }
+
    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+      return this.tryWriteText(level, pos, player.getMainHandItem());
+   }
+
+   private InteractionResult tryWriteText(Level level, BlockPos pos, ItemStack heldItem) {
       if (level.isClientSide()) {
          return InteractionResult.SUCCESS;
       } else {
@@ -346,7 +356,6 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
          }
 
          if (level.getBlockEntity(targetPos) instanceof CoupletBlockEntity coupletEntity) {
-            ItemStack heldItem = player.getMainHandItem();
             String targetText = this.getTextFromBook(heldItem);
             if (targetText != null && !targetText.isBlank()) {
                coupletEntity.setText(targetText);
@@ -360,29 +369,42 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 
    @Nullable
    private String getTextFromBook(ItemStack stack) {
-      WritableBookContent bookContent = (WritableBookContent)stack.get(DataComponents.WRITABLE_BOOK_CONTENT);
-      if (bookContent != null && !bookContent.pages().isEmpty()) {
-         String firstPage = (String)((Filterable)bookContent.pages().get(0)).raw();
-         if (firstPage.isBlank()) {
-            return null;
-         } else {
-            try {
-               JsonElement element = JsonParser.parseString(firstPage);
-               if (element.isJsonObject()) {
-                  JsonObject obj = element.getAsJsonObject();
-                  if (obj.has("text")) {
-                     return obj.get("text").getAsString();
-                  }
-               } else if (element.isJsonPrimitive()) {
-                  return element.getAsString();
-               }
-            } catch (Exception var6) {
-            }
+      // 书与笔 (writable_book)：WRITABLE_BOOK_CONTENT，页为 Filterable<String>
+      WritableBookContent writableContent = (WritableBookContent)stack.get(DataComponents.WRITABLE_BOOK_CONTENT);
+      if (writableContent != null && !writableContent.pages().isEmpty()) {
+         String firstPage = (String)((Filterable)writableContent.pages().get(0)).raw();
+         return this.extractTextFromPage(firstPage);
+      }
 
-            return firstPage;
-         }
-      } else {
+      // 成书 (written_book)：WRITTEN_BOOK_CONTENT，页为 Filterable<Component>
+      WrittenBookContent writtenContent = (WrittenBookContent)stack.get(DataComponents.WRITTEN_BOOK_CONTENT);
+      if (writtenContent != null && !writtenContent.pages().isEmpty()) {
+         String text = writtenContent.pages().get(0).raw().getString();
+         return text.isBlank() ? null : text;
+      }
+
+      return null;
+   }
+
+   @Nullable
+   private String extractTextFromPage(String firstPage) {
+      if (firstPage.isBlank()) {
          return null;
+      } else {
+         try {
+            JsonElement element = JsonParser.parseString(firstPage);
+            if (element.isJsonObject()) {
+               JsonObject obj = element.getAsJsonObject();
+               if (obj.has("text")) {
+                  return obj.get("text").getAsString();
+               }
+            } else if (element.isJsonPrimitive()) {
+               return element.getAsString();
+            }
+         } catch (Exception var6) {
+         }
+
+         return firstPage;
       }
    }
 

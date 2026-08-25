@@ -7,6 +7,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -49,6 +51,17 @@ public class HorizontalBannerBlockEntity extends BlockEntity {
       this.setChanged();
       if (this.level != null && !this.level.isClientSide()) {
          this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+         // sendBlockUpdated 只同步方块状态，横幅文字属于 BlockEntity 数据，必须显式推送
+         // 数据包给附近玩家，否则客户端渲染器永远看不到新文字（与腌菜罐幽灵渲染同源）。
+         if (this.level instanceof ServerLevel serverLevel) {
+            ClientboundBlockEntityDataPacket packet = ClientboundBlockEntityDataPacket.create(this);
+            BlockPos pos = this.getBlockPos();
+            for (ServerPlayer player : serverLevel.players()) {
+               if (player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 64.0 * 64.0) {
+                  player.connection.send(packet);
+               }
+            }
+         }
       }
    }
 

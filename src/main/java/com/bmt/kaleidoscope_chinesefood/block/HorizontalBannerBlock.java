@@ -16,6 +16,7 @@ import net.minecraft.server.network.Filterable;
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -23,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.component.WritableBookContent;
+import net.minecraft.world.item.component.WrittenBookContent;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -155,7 +157,8 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
 
    @NotNull
    public BlockState playerWillDestroy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
-      return state;
+      // 必须调用 super 以触发 spawnDestroyParticles → levelEvent(2001)，否则破坏横幅没有声音。
+      return super.playerWillDestroy(level, pos, state, player);
    }
 
    public BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
@@ -248,7 +251,15 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
       return level.getBlockState(wallPos).isFaceSturdy(level, wallPos, facing);
    }
 
+   protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+      return this.tryWriteText(state, level, pos, stack);
+   }
+
    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+      return this.tryWriteText(state, level, pos, player.getMainHandItem());
+   }
+
+   private InteractionResult tryWriteText(BlockState state, Level level, BlockPos pos, ItemStack heldItem) {
       if (level.isClientSide()) {
          return InteractionResult.SUCCESS;
       } else {
@@ -265,7 +276,6 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
          }
 
          if (level.getBlockEntity(entityPos) instanceof HorizontalBannerBlockEntity bannerEntity) {
-            ItemStack heldItem = player.getMainHandItem();
             String targetText = this.getTextFromBook(heldItem);
             if (targetText != null && !targetText.isBlank()) {
                bannerEntity.setText(targetText);
@@ -279,29 +289,42 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
 
    @Nullable
    private String getTextFromBook(ItemStack stack) {
-      WritableBookContent bookContent = (WritableBookContent)stack.get(DataComponents.WRITABLE_BOOK_CONTENT);
-      if (bookContent != null && !bookContent.pages().isEmpty()) {
-         String firstPage = (String)((Filterable)bookContent.pages().get(0)).raw();
-         if (firstPage.isBlank()) {
-            return null;
-         } else {
-            try {
-               JsonElement element = JsonParser.parseString(firstPage);
-               if (element.isJsonObject()) {
-                  JsonObject obj = element.getAsJsonObject();
-                  if (obj.has("text")) {
-                     return obj.get("text").getAsString();
-                  }
-               } else if (element.isJsonPrimitive()) {
-                  return element.getAsString();
-               }
-            } catch (Exception var6) {
-            }
+      // 书与笔 (writable_book)：WRITABLE_BOOK_CONTENT，页为 Filterable<String>
+      WritableBookContent writableContent = (WritableBookContent)stack.get(DataComponents.WRITABLE_BOOK_CONTENT);
+      if (writableContent != null && !writableContent.pages().isEmpty()) {
+         String firstPage = (String)((Filterable)writableContent.pages().get(0)).raw();
+         return this.extractTextFromPage(firstPage);
+      }
 
-            return firstPage;
-         }
-      } else {
+      // 成书 (written_book)：WRITTEN_BOOK_CONTENT，页为 Filterable<Component>
+      WrittenBookContent writtenContent = (WrittenBookContent)stack.get(DataComponents.WRITTEN_BOOK_CONTENT);
+      if (writtenContent != null && !writtenContent.pages().isEmpty()) {
+         String text = writtenContent.pages().get(0).raw().getString();
+         return text.isBlank() ? null : text;
+      }
+
+      return null;
+   }
+
+   @Nullable
+   private String extractTextFromPage(String firstPage) {
+      if (firstPage.isBlank()) {
          return null;
+      } else {
+         try {
+            JsonElement element = JsonParser.parseString(firstPage);
+            if (element.isJsonObject()) {
+               JsonObject obj = element.getAsJsonObject();
+               if (obj.has("text")) {
+                  return obj.get("text").getAsString();
+               }
+            } else if (element.isJsonPrimitive()) {
+               return element.getAsString();
+            }
+         } catch (Exception var6) {
+         }
+
+         return firstPage;
       }
    }
 
