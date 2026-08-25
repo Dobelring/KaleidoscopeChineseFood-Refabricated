@@ -43,6 +43,7 @@ dependencies {
     // Optional compat integrations (compileOnly - not bundled)
     modCompileOnly files("libs/jei-1.21.1-fabric-19.44.0.403.jar")
     modCompileOnly files("libs/Jade-1.21.1-Fabric-15.10.6.jar")
+    modCompileOnly files("libs/emi-fabric-1.1.24+1.21.1.jar")
 }
 
 processResources {

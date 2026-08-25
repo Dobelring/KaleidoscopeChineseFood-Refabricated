@@ -46,6 +46,10 @@ public class PickleJarRecipe implements Recipe<PickleJarInput> {
       return this.fermentTime;
    }
 
+   public ItemStack getOutput() {
+      return this.output;
+   }
+
    public boolean matches(@NotNull PickleJarInput input, @NotNull Level level) {
       List<ItemStack> containerItems = new ArrayList<>();
 

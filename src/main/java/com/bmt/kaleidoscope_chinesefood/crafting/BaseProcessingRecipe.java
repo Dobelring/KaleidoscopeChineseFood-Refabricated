@@ -49,6 +49,10 @@ public abstract class BaseProcessingRecipe implements Recipe<FreezerInput> {
       return this.output;
    }
 
+   public ItemStack getOutput() {
+      return this.output;
+   }
+
    @NotNull
    public NonNullList<Ingredient> getIngredients() {
       NonNullList<Ingredient> ingredients = NonNullList.create();

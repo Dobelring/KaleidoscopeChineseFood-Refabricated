@@ -26,6 +26,9 @@
     "jei_mod_plugin": [
       "com.bmt.kaleidoscope_chinesefood.compat.jei.Plugins"
     ],
+    "emi": [
+      "com.bmt.kaleidoscope_chinesefood.compat.emi.EmiPlugins"
+    ],
     "jade": [
       "com.bmt.kaleidoscope_chinesefood.compat.jade.ModPlugin"
     ]
