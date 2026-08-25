@@ -16,6 +16,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
@@ -41,6 +42,9 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
                                 PickleJarBlockEntity.this.getBlockState(),
                                 3
                         );
+                // sendBlockUpdated 只广播方块状态；渲染器读取的是客户端 BE 数据，
+                // 必须显式构造数据包推送给附近玩家，否则取出物品后客户端仍渲染旧内容。
+                PickleJarBlockEntity.this.pushDataPacket();
                 PickleJarBlockEntity.this.checkForValidRecipeAndTryStartFermenting();
             }
         }
@@ -263,6 +267,7 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
         level.setBlock(pos, state.setValue(PickleJarBlock.FERMENTING, false).setValue(PickleJarBlock.DONE, recipe.isPresent()), 3);
         setChanged(level, pos, state);
         level.sendBlockUpdated(pos, state, this.getBlockState(), 3);
+        this.pushDataPacket();
         level.updateNeighborsAt(pos, state.getBlock());
         this.checkForValidRecipeAndTryStartFermenting();
     }
@@ -354,6 +359,22 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
 
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    /**
+     * 显式把 BE 数据包推送给附近的玩家。sendBlockUpdated 只同步方块状态，
+     * 客户端渲染器读取的是 BlockEntity 数据，需要这条额外的同步链路。
+     */
+    private void pushDataPacket() {
+        if (this.level instanceof ServerLevel serverLevel) {
+            ClientboundBlockEntityDataPacket packet = this.getUpdatePacket();
+            BlockPos pos = this.worldPosition;
+            for (ServerPlayer player : serverLevel.players()) {
+                if (player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 64.0 * 64.0) {
+                    player.connection.send(packet);
+                }
+            }
+        }
     }
 
     @Override
