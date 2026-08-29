@@ -1,0 +1,19 @@
+{
+  "type": "kaleidoscope_chinesefood:pickle_jar",
+  "ingredients": [
+    {
+      "tag": "c:salt"
+    },
+    {
+      "tag": "c:eggs"
+    },
+    {
+      "tag": "c:salt"
+    }
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:salted_egg",
+    "count": 1
+  },
+  "fermentTime": 3600
+}

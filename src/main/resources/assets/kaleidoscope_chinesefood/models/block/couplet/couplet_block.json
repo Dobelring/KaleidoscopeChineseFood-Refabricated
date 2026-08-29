@@ -1,0 +1,55 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "kaleidoscope_chinesefood:block/couplet_block",
+		"particle": "kaleidoscope_chinesefood:block/couplet_block"
+	},
+	"elements": [
+		{
+			"from": [4.25, 0, 7.9],
+			"to": [11.75, 28, 7.9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 0, 8]},
+			"faces": {
+				"north": {"uv": [6, 1, 9.75, 15], "texture": "#0"},
+				"east": {"uv": [2, 0, 2, 12], "texture": "#0"},
+				"south": {"uv": [6, 1, 9.75, 15], "texture": "#0"},
+				"west": {"uv": [0, 0, 0, 12], "texture": "#0"},
+				"up": {"uv": [0, 0, 6, 0], "texture": "#0"},
+				"down": {"uv": [0, 2, 6, 2], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [10, 0, 0],
+			"translation": [0, -0.75, 0.75],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, -0.75, 0.75],
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 75, 0],
+			"translation": [4.5, -3, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 75, 0],
+			"translation": [4.5, -3, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"ground": {
+			"scale": [0.4, 0.4, 0.4]
+		},
+		"gui": {
+			"translation": [0, -3.25, 0],
+			"scale": [0.55, 0.55, 0.55]
+		},
+		"fixed": {
+			"translation": [0, -3.25, 0],
+			"scale": [0.55, 0.55, 0.55]
+		}
+	}
+}

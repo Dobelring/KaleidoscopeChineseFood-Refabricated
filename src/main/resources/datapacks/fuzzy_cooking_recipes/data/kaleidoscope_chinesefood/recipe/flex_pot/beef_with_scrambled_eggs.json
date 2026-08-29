@@ -1,0 +1,19 @@
+{
+  "type": "kaleidoscope_cookery:flex_pot",
+  "carrier": {
+    "item": "minecraft:bowl"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:beef"
+    },
+    {
+      "tag": "c:eggs"
+    }
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:beef_with_scrambled_eggs"
+  },
+  "stir_fry_count": 3,
+  "time": 200
+}

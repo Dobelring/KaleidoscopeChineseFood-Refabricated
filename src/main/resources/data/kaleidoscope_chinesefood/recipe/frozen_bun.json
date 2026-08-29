@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "kaleidoscope_cookery:mantou"
+    },
+    "D": {
+      "item": "minecraft:ice"
+    }
+  },
+  "pattern": [
+    " D ",
+    "DED",
+    " D "
+  ],
+  "result": {
+    "id":  "kaleidoscope_twilight:frozen_bun"
+  }
+}

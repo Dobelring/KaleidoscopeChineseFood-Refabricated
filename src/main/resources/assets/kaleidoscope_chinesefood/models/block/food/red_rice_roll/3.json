@@ -1,0 +1,51 @@
+{
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
+	"render_type": "minecraft:cutout",
+	"ambientocclusion": false,
+	"textures": {
+		"0": "kaleidoscope_chinesefood:block/red_rice_roll",
+		"particle": "kaleidoscope_chinesefood:block/red_rice_roll"
+	},
+	"elements": [
+		{
+			"from": [1, 0, 1],
+			"to": [15, 2, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [3, 0, 1]},
+			"faces": {
+				"north": {"uv": [0.5, 7, 7.5, 8], "texture": "#0"},
+				"east": {"uv": [0.5, 7, 7.5, 8], "texture": "#0"},
+				"south": {"uv": [0.5, 7, 7.5, 8], "texture": "#0"},
+				"west": {"uv": [0.5, 7, 7.5, 8], "texture": "#0"},
+				"up": {"uv": [0.5, 0.5, 7.5, 7.5], "texture": "#0"},
+				"down": {"uv": [0.5, 0.5, 7.5, 7.5], "texture": "#0"}
+			}
+		},
+		{
+			"from": [3.5, 2, 10],
+			"to": [7.5, 4, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 2, 10]},
+			"faces": {
+				"north": {"uv": [12, 9, 14, 10], "texture": "#0"},
+				"east": {"uv": [12, 9, 14, 10], "texture": "#0"},
+				"south": {"uv": [12, 9, 14, 10], "texture": "#0"},
+				"west": {"uv": [12, 9, 14, 10], "texture": "#0"},
+				"up": {"uv": [9.5, 9, 11.5, 11], "texture": "#0"},
+				"down": {"uv": [0, 10, 4, 14], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8.5, 2, 10],
+			"to": [12.5, 4, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [10, 2, 10]},
+			"faces": {
+				"north": {"uv": [12, 9, 14, 10], "texture": "#0"},
+				"east": {"uv": [12, 9, 14, 10], "texture": "#0"},
+				"south": {"uv": [12, 9, 14, 10], "texture": "#0"},
+				"west": {"uv": [12, 9, 14, 10], "texture": "#0"},
+				"up": {"uv": [6, 9, 8, 11], "texture": "#0"},
+				"down": {"uv": [0, 10, 4, 14], "texture": "#0"}
+			}
+		}
+	]
+}

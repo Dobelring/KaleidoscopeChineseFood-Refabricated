@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "kaleidoscope_chinesefood",
+  "ingredients": [
+    { "item": "kaleidoscope_chinesefood:salt_bucket" }
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:salt",
+    "count": 3
+  }
+}

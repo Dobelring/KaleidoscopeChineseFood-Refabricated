@@ -1,0 +1,7 @@
+accessWidener	v2	named
+
+# 1.21.11 起 MenuType 构造器私有化，需要加宽以注册自定义菜单类型
+accessible method net/minecraft/world/inventory/MenuType <init> (Lnet/minecraft/world/inventory/MenuType$MenuSupplier;Lnet/minecraft/world/flag/FeatureFlagSet;)V
+
+# 1.21.11 起 BlockEntityRenderers.register 私有化，需要加宽以注册方块实体渲染器
+accessible method net/minecraft/client/renderer/blockentity/BlockEntityRenderers register (Lnet/minecraft/world/level/block/entity/BlockEntityType;Lnet/minecraft/client/renderer/blockentity/BlockEntityRendererProvider;)V

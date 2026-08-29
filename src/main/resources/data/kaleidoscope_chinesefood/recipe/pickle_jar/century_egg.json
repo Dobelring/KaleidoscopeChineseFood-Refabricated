@@ -1,0 +1,19 @@
+{
+  "type": "kaleidoscope_chinesefood:pickle_jar",
+  "ingredients": [
+    {
+      "tag": "c:eggs"
+    },
+    {
+      "item": "minecraft:charcoal"
+    },
+    {
+      "tag": "c:salt"
+    }
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:century_egg",
+    "count": 1
+  },
+  "fermentTime": 3600
+}

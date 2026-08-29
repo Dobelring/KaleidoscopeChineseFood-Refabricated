@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "package": "com.bmt.kaleidoscope_chinesefood.mixins",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "EntityMixin",
+    "PlayerEntityMixin",
+    "LivingEntityMixin",
+    "PlayerTickMixin"
+  ],
+  "client": [
+    "FogRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

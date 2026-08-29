@@ -1,0 +1,101 @@
+plugins {
+	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
+	id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+repositories {
+	maven {
+		name = "Modrinth"
+		url = "https://api.modrinth.com/maven"
+	}
+	maven {
+		name = "Jared's maven"
+		url = "https://maven.blamejared.com/"
+	}
+	maven {
+		name = "ModMaven"
+		url = "https://modmaven.dev"
+	}
+	maven {
+		name = "cassian's maven"
+		url = "https://maven.cassian.cc"
+	}
+	maven {
+		name = "Fuzs Mod Resources"
+		url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+	}
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings loom.officialMojangMappings()
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "maven.modrinth:kaleidoscope-cookery-refabricated:${project.kaleidoscope_cookery_version}-fabric+mc${project.minecraft_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+	modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:21.11.1"
+
+	// Optional compat integrations (compileOnly - not bundled)
+	modCompileOnly("mezz.jei:jei-${project.minecraft_version}-fabric:${project.jei_version}")
+	modCompileOnly "maven.modrinth:jade:${project.jade_version}"
+	modCompileOnly("cc.cassian.rrv:reliable-recipe-viewer-fabric:${project.rrv_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+		exclude(group: "eu.pb4")
+	}
+}
+
+processResources {
+	def version = project.version
+	inputs.property "version", version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 21
+}
+
+java {
+	withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
+}
+
+jar {
+	def projectName = project.name
+	inputs.property "projectName", projectName
+
+	from("LICENSE") {
+		rename { "${it}_$projectName"}
+	}
+}
+
+loom {
+	accessWidenerPath = file("src/main/resources/kaleidoscope_chinesefood.accesswidener")
+
+	splitEnvironmentSourceSets()
+
+	mods {
+		kaleidoscope_chinesefood {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+}
+
+// configure the maven publication
+publishing {
+	publications {
+		create("mavenJava", MavenPublication) {
+			from components.java
+		}
+	}
+
+	repositories {
+	}
+}
