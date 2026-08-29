@@ -1,8 +1,8 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {"tag": "kaleidoscope_chinesefood:freezers"},
-    {"item": "minecraft:white_dye"}
+    "#kaleidoscope_chinesefood:freezers",
+    "minecraft:white_dye"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:freezer",

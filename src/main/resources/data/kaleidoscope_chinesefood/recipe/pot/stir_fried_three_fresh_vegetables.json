@@ -1,27 +1,13 @@
 {
   "type": "kaleidoscope_cookery:pot",
-  "carrier": {
-    "item": "minecraft:bowl"
-  },
+  "carrier": "minecraft:bowl",
   "ingredients": [
-    {
-      "item": "minecraft:potato"
-    },
-    {
-      "item": "minecraft:potato"
-    },
-    {
-      "item": "kaleidoscope_cookery:green_chili"
-    },
-    {
-      "item": "kaleidoscope_cookery:green_chili"
-    },
-    {
-      "tag": "c:crops/eggplant"
-    },
-    {
-      "tag": "c:crops/eggplant"
-    }
+    "minecraft:potato",
+    "minecraft:potato",
+    "kaleidoscope_cookery:green_chili",
+    "kaleidoscope_cookery:green_chili",
+    "#c:crops/eggplant",
+    "#c:crops/eggplant"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:stir_fried_three_fresh_vegetables"

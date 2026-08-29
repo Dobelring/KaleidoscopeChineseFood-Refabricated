@@ -1,9 +1,7 @@
 {
   "type": "kaleidoscope_cookery:chopping_board",
   "cut_count": 4,
-  "ingredient": {
-    "item": "kaleidoscope_chinesefood:yellow_croaker"
-  },
+  "ingredient": "kaleidoscope_chinesefood:yellow_croaker",
   "model_id": "kaleidoscope_chinesefood:yelloe_croaker",
   "result": {
     "count": 2,

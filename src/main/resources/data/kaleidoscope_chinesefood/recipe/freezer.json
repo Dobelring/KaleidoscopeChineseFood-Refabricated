@@ -6,8 +6,8 @@
     "ICI"
   ],
   "key":{
-    "I":{"item":"minecraft:iron_ingot"},
-    "C":{"tag":"c:chests"}
+    "I":"minecraft:iron_ingot",
+    "C":"#c:chests"
   },
   "result":{
     "id":"kaleidoscope_chinesefood:freezer",

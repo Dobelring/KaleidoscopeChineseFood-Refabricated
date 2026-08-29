@@ -1,30 +1,14 @@
 {
   "type": "kaleidoscope_cookery:pot",
-  "carrier": {
-    "item": "minecraft:bowl"
-  },
+  "carrier": "minecraft:bowl",
   "ingredients": [
-    {
-      "tag": "c:foods/cooked_eggs"
-    },
-    {
-      "tag": "c:foods/cooked_eggs"
-    },
-    {
-      "tag": "c:foods/cooked_eggs"
-    },
-    {
-      "tag": "c:crops/tomato"
-    },
-    {
-      "tag": "c:crops/tomato"
-    },
-    {
-      "tag": "c:crops/tomato"
-    },
-    {
-      "item": "kaleidoscope_cookery:raw_noodles"
-    }
+    "#c:foods/cooked_eggs",
+    "#c:foods/cooked_eggs",
+    "#c:foods/cooked_eggs",
+    "#c:crops/tomato",
+    "#c:crops/tomato",
+    "#c:crops/tomato",
+    "kaleidoscope_cookery:raw_noodles"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:tomato_egg_noodles"

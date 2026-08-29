@@ -1,9 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "kaleidoscope_chinesefood:corn_ristra"
-    }
+    "kaleidoscope_chinesefood:corn_ristra"
   ],
   "result": {
     "id": "bountifulfares:maize",

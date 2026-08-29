@@ -2,21 +2,11 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:golden_apple"
-    },
-    {
-      "item": "minecraft:golden_apple"
-    },
-    {
-      "item": "minecraft:golden_apple"
-    },
-    {
-      "item": "minecraft:golden_apple"
-    },
-    {
-      "item": "minecraft:bowl"
-    }
+    "minecraft:golden_apple",
+    "minecraft:golden_apple",
+    "minecraft:golden_apple",
+    "minecraft:golden_apple",
+    "minecraft:bowl"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:golden_apple_platter"

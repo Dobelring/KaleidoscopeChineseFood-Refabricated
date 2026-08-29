@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "kaleidoscope_chinesefood:corn_ristra"
-    }
+    "kaleidoscope_chinesefood:corn_ristra"
   ],
   "result": {
     "id": "culturaldelights:corn_cob",

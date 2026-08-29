@@ -1,21 +1,11 @@
 {
   "type": "kaleidoscope_cookery:flex_pot",
-  "carrier": {
-    "item": "minecraft:bowl"
-  },
+  "carrier": "minecraft:bowl",
   "ingredients": [
-    {
-      "item": "minecraft:potato"
-    },
-    {
-      "item": "kaleidoscope_cookery:green_chili"
-    },
-    {
-      "tag": "c:foods/raw_chicken"
-    },
-    {
-      "item": "kaleidoscope_cookery:raw_noodles"
-    }
+    "minecraft:potato",
+    "kaleidoscope_cookery:green_chili",
+    "#c:foods/raw_chicken",
+    "kaleidoscope_cookery:raw_noodles"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:big_plate_chicken_noodles"

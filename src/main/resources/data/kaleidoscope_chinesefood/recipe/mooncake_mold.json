@@ -1,8 +1,8 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    { "item": "minecraft:stick" },
-    { "tag": "minecraft:planks" }
+    "minecraft:stick",
+    "#minecraft:planks"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:mooncake_mold"

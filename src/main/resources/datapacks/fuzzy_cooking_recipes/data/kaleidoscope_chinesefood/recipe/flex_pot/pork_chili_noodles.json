@@ -1,18 +1,10 @@
 {
   "type": "kaleidoscope_cookery:flex_pot",
-  "carrier": {
-    "item": "minecraft:bowl"
-  },
+  "carrier": "minecraft:bowl",
   "ingredients": [
-    {
-      "tag": "c:foods/raw_pork"
-    },
-    {
-      "item": "kaleidoscope_cookery:green_chili"
-    },
-    {
-      "item": "kaleidoscope_cookery:raw_noodles"
-    }
+    "#c:foods/raw_pork",
+    "kaleidoscope_cookery:green_chili",
+    "kaleidoscope_cookery:raw_noodles"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:pork_chili_noodles"

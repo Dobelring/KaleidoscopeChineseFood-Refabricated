@@ -1,24 +1,12 @@
 {
   "type": "kaleidoscope_cookery:pot",
-  "carrier": {
-    "item": "minecraft:bowl"
-  },
+  "carrier": "minecraft:bowl",
   "ingredients": [
-    {
-      "tag": "c:foods/cooked_pork"
-    },
-    {
-      "tag": "c:foods/cooked_pork"
-    },
-    {
-      "tag": "c:foods/cooked_pork"
-    },
-    {
-      "tag": "c:crops/chilipepper"
-    },
-    {
-      "tag": "c:crops/chilipepper"
-    }
+    "#c:foods/cooked_pork",
+    "#c:foods/cooked_pork",
+    "#c:foods/cooked_pork",
+    "#c:crops/chilipepper",
+    "#c:crops/chilipepper"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:twice_cooked_pork"

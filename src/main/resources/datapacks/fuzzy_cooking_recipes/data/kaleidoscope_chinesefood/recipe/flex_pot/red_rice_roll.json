@@ -1,21 +1,11 @@
 {
   "type": "kaleidoscope_cookery:flex_pot",
-  "carrier": {
-    "item": "minecraft:bowl"
-  },
+  "carrier": "minecraft:bowl",
   "ingredients": [
-    {
-      "item": "kaleidoscope_cookery:rice"
-    },
-    {
-      "item": "minecraft:carrot"
-    },
-    {
-      "tag": "c:raw_meats"
-    },
-    {
-      "tag": "c:eggs"
-    }
+    "kaleidoscope_cookery:rice",
+    "minecraft:carrot",
+    "#c:raw_meats",
+    "#c:eggs"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:red_rice_roll"

@@ -1,15 +1,9 @@
 {
   "type": "kaleidoscope_chinesefood:pickle_jar",
   "ingredients": [
-    {
-      "tag": "c:eggs"
-    },
-    {
-      "item": "minecraft:charcoal"
-    },
-    {
-      "tag": "c:salt"
-    }
+    "#c:eggs",
+    "minecraft:charcoal",
+    "#c:salt"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:century_egg",

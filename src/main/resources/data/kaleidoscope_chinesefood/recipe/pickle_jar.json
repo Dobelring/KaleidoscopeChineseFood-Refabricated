@@ -6,9 +6,7 @@
     "###"
   ],
   "key": {
-    "#": {
-      "item": "minecraft:brick"
-    }
+    "#": "minecraft:brick"
   },
   "result": {
     "id": "kaleidoscope_chinesefood:pickle_jar",

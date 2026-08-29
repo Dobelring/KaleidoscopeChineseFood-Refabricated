@@ -1,12 +1,12 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    { "tag": "c:flour" },
-    { "tag": "c:eggs" },
-    { "tag": "c:raw_meats" },
-    { "tag": "c:crops/lettuce" },
-    { "item": "minecraft:water_bucket" },
-    { "item": "minecraft:bowl" }
+    "#c:flour",
+    "#c:eggs",
+    "#c:raw_meats",
+    "#c:crops/lettuce",
+    "minecraft:water_bucket",
+    "minecraft:bowl"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:raw_steamed_rice_rolls",

@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "group": "kaleidoscope_chinesefood",
   "ingredients": [
-    { "item": "minecraft:paper" },
-    { "item": "minecraft:red_dye" }
+    "minecraft:paper",
+    "minecraft:red_dye"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:horizontal_banner",

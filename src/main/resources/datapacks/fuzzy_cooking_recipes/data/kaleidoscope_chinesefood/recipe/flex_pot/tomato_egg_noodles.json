@@ -1,18 +1,10 @@
 {
   "type": "kaleidoscope_cookery:flex_pot",
-  "carrier": {
-    "item": "minecraft:bowl"
-  },
+  "carrier": "minecraft:bowl",
   "ingredients": [
-    {
-      "tag": "c:eggs"
-    },
-    {
-      "tag": "c:crops/tomato"
-    },
-    {
-      "item": "kaleidoscope_cookery:raw_noodles"
-    }
+    "#c:eggs",
+    "#c:crops/tomato",
+    "kaleidoscope_cookery:raw_noodles"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:tomato_egg_noodles"

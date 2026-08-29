@@ -1,13 +1,9 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "minecraft:paper"
-    },
-    {
-      "item": "minecraft:gunpowder"
-    },
-    { "item": "minecraft:red_dye" }
+    "minecraft:paper",
+    "minecraft:gunpowder",
+    "minecraft:red_dye"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:firecracker",

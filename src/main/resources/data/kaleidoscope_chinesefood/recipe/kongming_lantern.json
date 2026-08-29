@@ -6,12 +6,8 @@
     " # "
   ],
   "key": {
-    "#": {
-      "item": "minecraft:paper"
-    },
-    "@": {
-      "item": "minecraft:torch"
-    }
+    "#": "minecraft:paper",
+    "@": "minecraft:torch"
   },
   "result": {
     "id": "kaleidoscope_chinesefood:kongming_lantern",

@@ -1,15 +1,9 @@
 {
   "type": "kaleidoscope_chinesefood:pickle_jar",
   "ingredients": [
-    {
-      "tag": "c:salt"
-    },
-    {
-      "item": "kaleidoscope_cookery:lettuce"
-    },
-    {
-      "tag": "c:salt"
-    }
+    "#c:salt",
+    "kaleidoscope_cookery:lettuce",
+    "#c:salt"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:chinese_sauerkraut",

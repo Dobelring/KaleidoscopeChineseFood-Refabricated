@@ -1,15 +1,9 @@
 {
   "type": "kaleidoscope_cookery:flex_pot",
-  "carrier": {
-    "item": "minecraft:bowl"
-  },
+  "carrier": "minecraft:bowl",
   "ingredients": [
-    {
-      "item": "minecraft:beef"
-    },
-    {
-      "tag": "c:eggs"
-    }
+    "minecraft:beef",
+    "#c:eggs"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:beef_with_scrambled_eggs"

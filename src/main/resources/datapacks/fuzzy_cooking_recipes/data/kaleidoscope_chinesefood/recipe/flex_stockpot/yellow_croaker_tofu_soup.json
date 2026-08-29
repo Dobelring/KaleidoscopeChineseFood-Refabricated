@@ -1,22 +1,14 @@
 {
   "type": "kaleidoscope_cookery:flex_stockpot",
-  "carrier": {
-    "item": "minecraft:bowl"
-  },
+  "carrier": "minecraft:bowl",
   "cooking_bubble_color": 16772291,
   "cooking_texture": "kaleidoscope_cookery:stockpot/default_cooking",
   "finished_bubble_color": 16034443,
   "finished_texture": "kaleidoscope_cookery:stockpot/default_finished",
   "ingredients": [
-    {
-      "item": "kaleidoscope_chinesefood:yellow_croaker"
-    },
-    {
-      "item": "kaleidoscope_cookery:lettuce"
-    },
-    {
-      "item": "kaleidoscope_cookery:flour"
-    }
+    "kaleidoscope_chinesefood:yellow_croaker",
+    "kaleidoscope_cookery:lettuce",
+    "kaleidoscope_cookery:flour"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:yellow_croaker_tofu_soup"

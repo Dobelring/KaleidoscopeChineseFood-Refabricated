@@ -1,24 +1,12 @@
 {
   "type": "kaleidoscope_cookery:pot",
-  "carrier": {
-    "item": "minecraft:bowl"
-  },
+  "carrier": "minecraft:bowl",
   "ingredients": [
-    {
-      "item": "minecraft:carrot"
-    },
-    {
-      "tag": "c:eggs"
-    },
-    {
-      "tag": "c:eggs"
-    },
-    {
-      "tag": "c:raw_ham"
-    },
-    {
-      "tag": "c:foods/cooked_rice"
-    }
+    "minecraft:carrot",
+    "#c:eggs",
+    "#c:eggs",
+    "#c:raw_ham",
+    "#c:foods/cooked_rice"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:yangzhou_fried_rice"

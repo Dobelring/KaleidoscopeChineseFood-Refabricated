@@ -1,31 +1,17 @@
 {
   "type": "kaleidoscope_cookery:stockpot",
-  "carrier": {
-    "item": "minecraft:bowl"
-  },
+  "carrier": "minecraft:bowl",
   "cooking_bubble_color": 16772291,
   "cooking_texture": "kaleidoscope_cookery:stockpot/default_cooking",
   "finished_bubble_color": 16034443,
   "finished_texture": "kaleidoscope_cookery:stockpot/default_finished",
   "ingredients": [
-    {
-      "item": "kaleidoscope_chinesefood:century_egg"
-    },
-    {
-      "item": "kaleidoscope_chinesefood:century_egg"
-    },
-    {
-      "tag": "c:foods/raw_pork"
-    },
-    {
-      "tag": "c:foods/raw_pork"
-    },
-    {
-      "tag": "c:crops/rice"
-    },
-    {
-      "tag": "c:crops/rice"
-    }
+    "kaleidoscope_chinesefood:century_egg",
+    "kaleidoscope_chinesefood:century_egg",
+    "#c:foods/raw_pork",
+    "#c:foods/raw_pork",
+    "#c:crops/rice",
+    "#c:crops/rice"
   ],
   "result": {
     "count": 1,
