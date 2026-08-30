@@ -70,17 +70,4 @@ public class CornBlock extends Block {
    public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext collisionContext) {
       return state.getValue(IS_HEAD) ? AABB_HEAD : AABB_BODY;
    }
-
-   // 用户反馈玉米串串放置/破坏音效偏小：音效类型仍为 GRASS（与原版一致），音量 1.0 提至 2.0
-   protected SoundType getSoundType(BlockState state) {
-      return new SoundType(
-         2.0F,
-         1.0F,
-         SoundType.GRASS.getBreakSound(),
-         SoundType.GRASS.getStepSound(),
-         SoundType.GRASS.getPlaceSound(),
-         SoundType.GRASS.getHitSound(),
-         SoundType.GRASS.getFallSound()
-      );
-   }
 }

@@ -1,7 +1,11 @@
 package com.bmt.kaleidoscope_chinesefood.inventory;
 
+import com.bmt.kaleidoscope_chinesefood.block.FreezerBlock;
 import com.bmt.kaleidoscope_chinesefood.block.entity.FreezerBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.init.ModMenuTypes;
+import com.bmt.kaleidoscope_chinesefood.init.ModSounds;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -10,6 +14,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class FreezerMenu extends AbstractContainerMenu {
@@ -24,6 +30,26 @@ public class FreezerMenu extends AbstractContainerMenu {
       this.container = container;
       this.isTop = container.getContainerSize() == 36;
       container.startOpen(playerInv.player);
+      // 在菜单构造器中处理开门声音和方块状态（绕过 ContainerUser 覆写导致的卡死）
+      if (container instanceof FreezerBlockEntity be) {
+         Level beLevel = be.getLevel();
+         if (beLevel != null && !beLevel.isClientSide()) {
+            BlockPos bePos = be.getBlockPos();
+            BlockState state = beLevel.getBlockState(bePos);
+            boolean isTop = state.getValue(FreezerBlock.TOP);
+            if (isTop) {
+               beLevel.setBlock(bePos, state.setValue(FreezerBlock.UPPER_OPEN, true), 3);
+            } else {
+               beLevel.setBlock(bePos, state.setValue(FreezerBlock.LOWER_OPEN, true), 3);
+               BlockPos upperPos = bePos.above();
+               BlockState upperState = beLevel.getBlockState(upperPos);
+               if (upperState.getBlock() instanceof FreezerBlock && upperState.getValue(FreezerBlock.TOP)) {
+                  beLevel.setBlock(upperPos, upperState.setValue(FreezerBlock.LOWER_OPEN, true), 3);
+               }
+            }
+            beLevel.playSound(null, bePos, ModSounds.FREEZER_OPEN, SoundSource.BLOCKS, 0.5F, 1.0F);
+         }
+      }
       this.addSlots(playerInv);
       int size = container.getContainerSize();
       this.progressSlots = new DataSlot[size];
@@ -104,6 +130,23 @@ public class FreezerMenu extends AbstractContainerMenu {
       this.container.stopOpen(pPlayer);
       if (this.container instanceof FreezerBlockEntity be) {
          be.removeOpenMenu(this);
+         Level beLevel = be.getLevel();
+         if (beLevel != null && !beLevel.isClientSide()) {
+            BlockPos bePos = be.getBlockPos();
+            BlockState state = beLevel.getBlockState(bePos);
+            boolean isTop = state.getValue(FreezerBlock.TOP);
+            if (isTop) {
+               beLevel.setBlock(bePos, state.setValue(FreezerBlock.UPPER_OPEN, false), 3);
+            } else {
+               beLevel.setBlock(bePos, state.setValue(FreezerBlock.LOWER_OPEN, false), 3);
+               BlockPos upperPos = bePos.above();
+               BlockState upperState = beLevel.getBlockState(upperPos);
+               if (upperState.getBlock() instanceof FreezerBlock && upperState.getValue(FreezerBlock.TOP)) {
+                  beLevel.setBlock(upperPos, upperState.setValue(FreezerBlock.LOWER_OPEN, false), 3);
+               }
+            }
+            beLevel.playSound(null, bePos, ModSounds.FREEZER_CLOSE, SoundSource.BLOCKS, 0.5F, 1.0F);
+         }
       }
    }
 
