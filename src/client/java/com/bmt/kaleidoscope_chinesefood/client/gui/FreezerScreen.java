@@ -74,7 +74,9 @@ public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
    }
 
    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-      guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 4210752, false);
-      guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 4210752, false);
+      // 1.21.6+ drawString 会跳过 alpha=0 的颜色（4210752 的 alpha 位为 0 导致文字不渲染），
+      // 用不透明深灰 -12566464（0xFF404040），与原版 AbstractContainerScreen 一致
+      guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, -12566464, false);
+      guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, -12566464, false);
    }
 }

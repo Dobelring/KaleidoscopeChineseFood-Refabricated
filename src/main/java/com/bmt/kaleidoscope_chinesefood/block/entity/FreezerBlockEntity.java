@@ -258,7 +258,7 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
             boolean stale = alreadyOpen && this.openMenus.isEmpty();
             this.level.setBlock(this.worldPosition, (BlockState)state.setValue(FreezerBlock.UPPER_OPEN, true), 3);
             if (!alreadyOpen || stale) {
-               this.level.playSound(null, this.worldPosition, ModSounds.FREEZER_OPEN, SoundSource.BLOCKS, 0.3F, 1.0F);
+               this.level.playSound(null, this.worldPosition, ModSounds.FREEZER_OPEN, SoundSource.BLOCKS, 1.0F, 1.0F);
             }
          } else {
             boolean alreadyOpen = (Boolean)state.getValue(FreezerBlock.LOWER_OPEN);
@@ -271,7 +271,8 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
             }
 
             if (!alreadyOpen || stale) {
-               this.level.playSound(null, this.worldPosition, ModSounds.FREEZER_OPEN, SoundSource.BLOCKS, 0.3F, 1.0F);
+               com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood.LOGGER.info("[诊断] 冰箱开门音: pos={}", this.worldPosition.toShortString());
+               this.level.playSound(null, this.worldPosition, ModSounds.FREEZER_OPEN, SoundSource.BLOCKS, 1.0F, 1.0F);
             }
          }
       }
@@ -285,7 +286,7 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
          if (isTop) {
             if ((Boolean)state.getValue(FreezerBlock.UPPER_OPEN)) {
                this.level.setBlock(this.worldPosition, (BlockState)state.setValue(FreezerBlock.UPPER_OPEN, false), 3);
-               this.level.playSound(null, this.worldPosition, ModSounds.FREEZER_CLOSE, SoundSource.BLOCKS, 0.3F, 1.0F);
+               this.level.playSound(null, this.worldPosition, ModSounds.FREEZER_CLOSE, SoundSource.BLOCKS, 1.0F, 1.0F);
             }
          } else if ((Boolean)state.getValue(FreezerBlock.LOWER_OPEN)) {
             this.level.setBlock(this.worldPosition, (BlockState)state.setValue(FreezerBlock.LOWER_OPEN, false), 3);
@@ -295,7 +296,7 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
                this.level.setBlock(upperPos, (BlockState)upperState.setValue(FreezerBlock.LOWER_OPEN, false), 3);
             }
 
-            this.level.playSound(null, this.worldPosition, ModSounds.FREEZER_CLOSE, SoundSource.BLOCKS, 0.3F, 1.0F);
+            this.level.playSound(null, this.worldPosition, ModSounds.FREEZER_CLOSE, SoundSource.BLOCKS, 1.0F, 1.0F);
          }
       }
    }
