@@ -53,7 +53,10 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         FoodEventHandler.register();
         LavaSwimDamageEvents.register();
 
-        KongmingLanternBlock.registerDispenserBehavior(ModBlocks.KONGMING_LANTERN.asItem());
+        // 注意：不要在 main 阶段调用 ModBlocks.X.asItem()——1.21.11 的 Block.asItem()
+        // 会把查找结果（此时 BlockItem 尚未注册，结果是 AIR）永久缓存进方块字段，
+        // 之后创造栏 accept 该方块就会拿到 count=0 的 AIR 堆栈而崩溃。
+        // 发射器行为注册移至 runFoodPhase（ModItems 注册之后）。
 
         // 1.21.2+ 原版不再向客户端同步完整配方：JEI 存在时声明需要同步这些配方序列化器，
         // 客户端 JEI 插件通过 RecipeSynchronization 读取完整配方（与厨房乐事做法一致）
@@ -87,6 +90,8 @@ public class KaleidoscopeChineseFood implements ModInitializer {
             }
             ModFoodBiteRegistry.init();
             ModItems.register();
+            // BlockItem 已注册，此时 asItem() 才能解析到真实物品（不会缓存 AIR）
+            KongmingLanternBlock.registerDispenserBehavior(ModBlocks.KONGMING_LANTERN.asItem());
             if (!FabricLoader.getInstance().isModLoaded("kaleidoscope_twilight")) {
                 KTItems.register();
             }
