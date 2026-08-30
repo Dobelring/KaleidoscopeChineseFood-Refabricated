@@ -6,10 +6,7 @@
   "finished_bubble_color": 16034443,
   "finished_texture": "kaleidoscope_cookery:stockpot/default_finished",
   "ingredients": [
-    [
-      "#c:foods/raw_pork",
-      "#c:foods/raw_beef"
-    ],
+    "#c:raw_pork_or_beef",
     "#c:crops/lettuce"
   ],
   "result": {

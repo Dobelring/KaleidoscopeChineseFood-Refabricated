@@ -80,7 +80,9 @@ public class CoupletBlockEntityRender implements BlockEntityRenderer<CoupletBloc
             FormattedCharSequence singleChar = singleCharComponent.getVisualOrderText();
             float x = -this.font.width(singleChar) / 2.0F + ClientConfig.COUPLET_HORIZONTAL_OFFSET;
             float y = currentY + i * wordHeight;
-            submitNodeCollector.submitText(poseStack, x, y, singleChar, false, DisplayMode.NORMAL, state.lightCoords, 0, 0, 0);
+            // 1.21.6+ submitText 的颜色参数 alpha=0 会被跳过导致文字隐形，
+            // 需传不透明黑色（等价 1.21.1 drawInBatch 的 color=0）
+            submitNodeCollector.submitText(poseStack, x, y, singleChar, false, DisplayMode.NORMAL, state.lightCoords, -16777216, 0, 0);
          }
 
          poseStack.popPose();

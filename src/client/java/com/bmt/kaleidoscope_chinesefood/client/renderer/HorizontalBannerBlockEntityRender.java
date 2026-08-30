@@ -98,7 +98,8 @@ public class HorizontalBannerBlockEntityRender implements BlockEntityRenderer<Ho
                Component singleCharComponent = Component.literal(singleCharStr).withStyle(coupletStyle);
                FormattedCharSequence singleChar = singleCharComponent.getVisualOrderText();
                float x = baseX + i * charWidth;
-               submitNodeCollector.submitText(poseStack, x, currentY, singleChar, false, DisplayMode.NORMAL, state.lightCoords, 0, 0, 0);
+               // 颜色 alpha=0 会被跳过导致文字隐形，传不透明黑色
+               submitNodeCollector.submitText(poseStack, x, currentY, singleChar, false, DisplayMode.NORMAL, state.lightCoords, -16777216, 0, 0);
             }
          }
 
