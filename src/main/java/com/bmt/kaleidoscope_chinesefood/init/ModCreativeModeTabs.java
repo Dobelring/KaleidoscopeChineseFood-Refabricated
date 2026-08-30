@@ -4,7 +4,6 @@ import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.init.kaleidoscope_twilight.KTItems;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.FoodBiteRegistry;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.TeacupRegistry;
-import java.util.Objects;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -12,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 public class ModCreativeModeTabs {
     public static CreativeModeTab KALEIDOSCOPE_SICHUAN_CUISINE_TAB;
@@ -67,7 +67,16 @@ public class ModCreativeModeTabs {
                             FoodBiteRegistry.FOOD_DATA_MAP.forEach((resourceLocation, foodData) -> {
                                 if (resourceLocation.getNamespace().equals("kaleidoscope_chinesefood")) {
                                     Item item = BuiltInRegistries.ITEM.getValue(resourceLocation);
-                                    output.accept(Objects.requireNonNull(item));
+                                    if (item == null || item == Items.AIR) {
+                                        KaleidoscopeChineseFood.LOGGER.warn("[CFD] FoodBite item not registered: {}", resourceLocation);
+                                        return;
+                                    }
+                                    // 诊断：预先对堆栈做与创造栏完全相同的 hash，若组件含空效果 MobEffectInstance，
+                                    // 异常会在这一行抛出并带上物品 id，便于精确定位
+                                    ItemStack diagnostics = new ItemStack(item);
+                                    int checksum = diagnostics.hashCode();
+                                    KaleidoscopeChineseFood.LOGGER.debug("[CFD] tab accept {} checksum={}", resourceLocation, checksum);
+                                    output.accept(item);
                                 }
                             });
                             output.accept(TeacupRegistry.getItem(ModTea.LAPSANG));

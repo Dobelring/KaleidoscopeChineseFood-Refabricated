@@ -22,9 +22,12 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.Identifier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KaleidoscopeChineseFood implements ModInitializer {
     public static final String MODID = "kaleidoscope_chinesefood";
+    public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
 
     @Override
     public void onInitialize() {
