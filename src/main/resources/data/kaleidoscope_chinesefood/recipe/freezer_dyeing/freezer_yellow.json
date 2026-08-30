@@ -1,13 +1,13 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {"item": "minecraft:yellow_dye"},
+    "minecraft:yellow_dye",
     [
-      {"item": "kaleidoscope_chinesefood:freezer_pink"},
-      {"item": "kaleidoscope_chinesefood:freezer_orange"},
-      {"item": "kaleidoscope_chinesefood:freezer_light_blue"},
-      {"item": "kaleidoscope_chinesefood:freezer"},
-      {"item": "kaleidoscope_chinesefood:freezer_green"}
+"kaleidoscope_chinesefood:freezer_pink",
+"kaleidoscope_chinesefood:freezer_orange",
+"kaleidoscope_chinesefood:freezer_light_blue",
+"kaleidoscope_chinesefood:freezer",
+"kaleidoscope_chinesefood:freezer_green"
     ]
   ],
   "result": {

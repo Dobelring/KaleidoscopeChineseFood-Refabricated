@@ -81,7 +81,7 @@ public abstract class RecipeManagerMixin {
                     new ShapelessRecipe(
                             new Recipe.CommonInfo(false),
                             new CraftingRecipe.CraftingBookInfo(CraftingBookCategory.MISC, ""),
-                            ItemStackTemplate.fromStack(new ItemStack(cornItem, 6)),
+                            new ItemStackTemplate(cornItem, 6),
                             List.of(Ingredient.of(inputItem))
                     )
             );
