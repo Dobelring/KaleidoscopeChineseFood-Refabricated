@@ -25,13 +25,18 @@ public class PickleJarRecipe implements Recipe<PickleJarInput> {
    private final NonNullList<Ingredient> inputs;
    private final ItemStack output;
    private final int fermentTime;
-   public static final Ingredient EMPTY_SLOT = Ingredient.of(net.minecraft.world.item.Items.AIR);
    public static final MapCodec<PickleJarRecipe> CODEC = RecordCodecBuilder.mapCodec(
       inst -> inst.group(
+            // 1.21.11 不再存在空 Ingredient（Ingredient.of(Items.AIR) 会抛异常），
+            // 输入列表只保存实际配料；matches() 按列表长度比较，无需占位填充
             Ingredient.CODEC
                .listOf()
                .fieldOf("ingredients")
-               .xmap(list -> NonNullList.of(EMPTY_SLOT, (Ingredient[])list.toArray(new Ingredient[0])), List::copyOf)
+               .xmap(list -> {
+                  NonNullList<Ingredient> inputs = NonNullList.create();
+                  inputs.addAll(list);
+                  return inputs;
+               }, List::copyOf)
                .forGetter(r -> r.inputs),
             ItemStack.CODEC.fieldOf("result").forGetter(r -> r.output),
             Codec.INT.optionalFieldOf("fermentTime", 200).forGetter(r -> r.fermentTime)
@@ -140,10 +145,10 @@ public class PickleJarRecipe implements Recipe<PickleJarInput> {
          return new StreamCodec<RegistryFriendlyByteBuf, PickleJarRecipe>() {
             public PickleJarRecipe decode(RegistryFriendlyByteBuf buf) {
                int size = buf.readVarInt();
-               NonNullList<Ingredient> inputs = NonNullList.withSize(size, EMPTY_SLOT);
+               NonNullList<Ingredient> inputs = NonNullList.create();
 
                for (int i = 0; i < size; i++) {
-                  inputs.set(i, (Ingredient)Ingredient.CONTENTS_STREAM_CODEC.decode(buf));
+                  inputs.add((Ingredient)Ingredient.CONTENTS_STREAM_CODEC.decode(buf));
                }
 
                ItemStack output = (ItemStack)ItemStack.STREAM_CODEC.decode(buf);

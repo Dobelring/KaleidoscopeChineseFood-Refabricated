@@ -1,5 +1,5 @@
 {
-  "type": "kaleidoscope_cookery:flex_pot",
+  "type": "kaleidoscope_cookery:pot",
   "carrier": "minecraft:bowl",
   "ingredients": [
     "kaleidoscope_chinesefood:eggplant",
