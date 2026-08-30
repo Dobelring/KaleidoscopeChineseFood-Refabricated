@@ -15,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.network.Filterable;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -334,6 +335,36 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
       }
 
       level.setBlock(masterPos, Blocks.AIR.defaultBlockState(), 35);
+   }
+
+   // 修复"书与笔不能给对联写字"：1.21.2+ 手持物品时调用 useItemOn 而非 useWithoutItem，
+   // 原写入逻辑只在空手分支中，永远无法触发
+   protected InteractionResult useItemOn(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+      if (level.isClientSide()) {
+         return InteractionResult.SUCCESS;
+      } else {
+         BlockPos targetPos = pos;
+
+         for (int i = 0; i < 3; i++) {
+            BlockState currentState = level.getBlockState(targetPos);
+            if (!currentState.is(this) || currentState.getValue(PART) == CoupletBlock.CoupletPart.LOWER) {
+               break;
+            }
+
+            targetPos = targetPos.below();
+         }
+
+         if (level.getBlockEntity(targetPos) instanceof CoupletBlockEntity coupletEntity) {
+            ItemStack heldItem = player.getItemInHand(hand);
+            String targetText = this.getTextFromBook(heldItem);
+            if (targetText != null && !targetText.isBlank()) {
+               coupletEntity.setText(targetText);
+               return InteractionResult.CONSUME;
+            }
+         }
+
+         return InteractionResult.PASS;
+      }
    }
 
    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {

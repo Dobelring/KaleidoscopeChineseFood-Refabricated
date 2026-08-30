@@ -87,6 +87,8 @@
   "tooltip.kaleidoscope_cookery.golden_apple_platter": "一盘金灿灿的苹果",
   "item.kaleidoscope_chinesefood.mooncake_block": "月饼",
   "block.kaleidoscope_chinesefood.mooncake_block": "月饼",
+  "item.kaleidoscope_chinesefood.mooncake": "月饼",
+  "block.kaleidoscope_chinesefood.mooncake": "月饼",
   "item.kaleidoscope_chinesefood.mooncake.tooltip": "可放置",
   "item.kaleidoscope_chinesefood.raw_mooncake": "生月饼",
   "item.kaleidoscope_chinesefood.mooncake_mold": "月饼模具",
@@ -99,6 +101,7 @@
   "item.kaleidoscope_chinesefood.firecracker.tooltip": "可直接扔出，或放置后用打火石点燃",
   "block.kaleidoscope_chinesefood.kongming_lantern": "孔明灯",
   "item.kaleidoscope_chinesefood.kongming_lantern": "孔明灯",
+  "item.kaleidoscope_chinesefood.kongming_lantern.tooltip": "放置后用打火石点燃即可升空",
   "entity.kaleidoscope_chinesefood.kongming_lantern": "孔明灯",
   "block.kaleidoscope_chinesefood.kongming_lantern.desc": "放置后用打火石点燃即可升空",
   "block.kaleidoscope_chinesefood.freezer": "冰箱",
@@ -133,9 +136,9 @@
   "advancement.kaleidoscope_chinesefood.first_step.description": "潜行右击开关",
 
   "effect.kaleidoscope_chinesefood.lava_swim": "岩浆畅游",
-  "effect.kaleidoscope_chinesefood.lava_swim.description": "允许玩家在岩浆中游泳，免疫火焰并获得夜视",
+  "effect.kaleidoscope_chinesefood.lava_swim.desc": "允许玩家在岩浆中游泳，免疫火焰并获得夜视",
   "effect.kaleidoscope_chinesefood.saturation_shield": "饱腹吸收",
-  "effect.kaleidoscope_chinesefood.saturation_shield.description": "拥有饱腹吸收时，吃任何食物溢出的饱食度将按比例转化为伤害吸收",
+  "effect.kaleidoscope_chinesefood.saturation_shield.desc": "拥有饱腹吸收时，吃任何食物溢出的饱食度将按比例转化为伤害吸收",
 
   "jei.kaleidoscope_chinesefood.pickle_jar": "腌菜罐",
   "jei.kaleidoscope_chinesefood.ferment_time": "发酵时间: %s",

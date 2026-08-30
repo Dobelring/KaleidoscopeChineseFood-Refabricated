@@ -14,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.network.Filterable;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -237,6 +238,36 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
       Direction facing = (Direction)state.getValue(FACING);
       BlockPos wallPos = pos.relative(facing.getOpposite());
       return level.getBlockState(wallPos).isFaceSturdy(level, wallPos, facing);
+   }
+
+   // 修复"书与笔不能给横幅写字"：1.21.2+ 手持物品时调用 useItemOn 而非 useWithoutItem
+   protected InteractionResult useItemOn(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+      if (level.isClientSide()) {
+         return InteractionResult.SUCCESS;
+      } else {
+         BlockPos entityPos = pos;
+         Direction facing = (Direction)state.getValue(FACING);
+
+         for (int i = 0; i < 2; i++) {
+            BlockPos left = entityPos.relative(facing.getClockWise());
+            if (!this.isBannerBlockWithFacing(level.getBlockState(left), facing)) {
+               break;
+            }
+
+            entityPos = left;
+         }
+
+         if (level.getBlockEntity(entityPos) instanceof HorizontalBannerBlockEntity bannerEntity) {
+            ItemStack heldItem = player.getItemInHand(hand);
+            String targetText = this.getTextFromBook(heldItem);
+            if (targetText != null && !targetText.isBlank()) {
+               bannerEntity.setText(targetText);
+               return InteractionResult.CONSUME;
+            }
+         }
+
+         return InteractionResult.PASS;
+      }
    }
 
    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {

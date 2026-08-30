@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 
 public class ModBlocks {
     public static CornBlock CORN_RISTRA;
@@ -44,7 +45,14 @@ public class ModBlocks {
     public static EggplantCropBlock EGGPLANT_CROP;
 
     public static void register() {
-        CORN_RISTRA = register("corn_ristra", p -> new CornBlock(p));
+        // 1.21.1 移植回归修复：原版类内部属性（GRASS 音效等）随外部化 Properties 一并丢失
+        CORN_RISTRA = register(
+                "corn_ristra",
+                p -> new CornBlock(
+                        p.mapColor(MapColor.COLOR_BROWN).noCollision().instabreak().sound(SoundType.GRASS)
+                                .pushReaction(PushReaction.DESTROY)
+                )
+        );
         FREEZER = registerFreezer("freezer");
         FREEZER_GREEN = registerFreezer("freezer_green");
         FREEZER_ORANGE = registerFreezer("freezer_orange");
@@ -80,8 +88,17 @@ public class ModBlocks {
         KONGMING_LANTERN = register(
                 "kongming_lantern", p -> new KongmingLanternBlock(p.instabreak().strength(0.1F).noOcclusion().sound(SoundType.WOOD))
         );
-        // lazy suppliers break the crop-block <-> seed-item registration cycle
-        EGGPLANT_CROP = register("eggplant_crop", p -> new EggplantCropBlock(p, () -> ModItems.EGGPLANT, () -> ModItems.EGGPLANT_SEED));
+        // 1.21.1 移植回归修复：对齐 cookery cropReg 的作物属性；缺 noCollission 时作物是实心方块，
+        // 会导致 FarmBlock.canSurvive 失败→耕地退化为泥土→作物被顶掉（放水也救不回来）
+        EGGPLANT_CROP = register(
+                "eggplant_crop",
+                p -> new EggplantCropBlock(
+                        p.mapColor(MapColor.PLANT).noCollision().randomTicks().instabreak()
+                                .sound(SoundType.CROP).pushReaction(PushReaction.DESTROY),
+                        () -> ModItems.EGGPLANT,
+                        () -> ModItems.EGGPLANT_SEED
+                )
+        );
     }
 
     private static FreezerBlock registerFreezer(String name) {
