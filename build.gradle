@@ -55,7 +55,9 @@ dependencies {
     clientCompileOnly "mezz.jei:jei-26.1.2-fabric:29.29.0.77"
 
     // Jade / EMI：
-    // - Jade：26.1 版构建待确认，暂不接入。
+    // - Jade：26.1 版构建已发布（26.1.9），接入腌菜罐发酵剩余时间显示（编译期依赖，运行时需自行安装 Jade）。
+    compileOnly files("libs/Jade-mc26.1-Fabric-26.1.9.jar")
+    clientCompileOnly files("libs/Jade-mc26.1-Fabric-26.1.9.jar")
     // - EMI：截至 2026-08-25 未发布任何 26.x 构建（Modrinth 最新为 1.1.24+1.21.1）。
     //   TODO: 待上游发布后参照 1.21.1 版 compat/emi 移植。
 }
