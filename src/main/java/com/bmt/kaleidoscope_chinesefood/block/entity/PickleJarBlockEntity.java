@@ -257,12 +257,14 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
             }
 
             ItemStack baseResult = r.getResultItem(level.registryAccess()).copy();
-            int originalCount = baseResult.getCount();
-            int perSlotCount = Math.min(originalCount, 4);
+            // 官方 1.1.10 修复：总产出 = 单次配方产出 × 4（每格最多 4），上限 16，按槽位分配
+            int totalOutput = Math.min(baseResult.getCount() * 4, 16);
+            int remaining = totalOutput;
 
-            for (int i = 0; i < 4; i++) {
-                ItemStack slotResult = baseResult.copyWithCount(perSlotCount);
-                this.inventory.setStackInSlot(i, slotResult);
+            for (int slot = 0; remaining > 0 && slot < 4; slot++) {
+                int count = Math.min(remaining, 4);
+                this.inventory.setStackInSlot(slot, baseResult.copyWithCount(count));
+                remaining -= count;
             }
         }
 

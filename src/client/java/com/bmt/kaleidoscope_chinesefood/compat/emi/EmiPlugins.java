@@ -46,7 +46,7 @@ public class EmiPlugins implements EmiPlugin {
 
     private static final Block[] FREEZERS = {
             ModBlocks.FREEZER, ModBlocks.FREEZER_GREEN, ModBlocks.FREEZER_ORANGE,
-            ModBlocks.FREEZER_LIGHT_GRAY, ModBlocks.FREEZER_PINK, ModBlocks.FREEZER_LIGHT_BLUE,
+            ModBlocks.FREEZER_PINK, ModBlocks.FREEZER_LIGHT_BLUE,
             ModBlocks.FREEZER_YELLOW
     };
 

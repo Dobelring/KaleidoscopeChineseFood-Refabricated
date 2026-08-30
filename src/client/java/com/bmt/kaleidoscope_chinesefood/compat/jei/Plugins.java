@@ -76,12 +76,6 @@ public class Plugins implements IModPlugin {
       registration.addRecipeCatalyst(
          new ItemStack((ItemLike)ModBlocks.FREEZER_ORANGE), new mezz.jei.api.recipe.RecipeType[]{RefrigeratingRecipeCategory.TYPE}
       );
-      registration.addRecipeCatalyst(
-         new ItemStack((ItemLike)ModBlocks.FREEZER_LIGHT_GRAY), new mezz.jei.api.recipe.RecipeType[]{FreezingRecipeCategory.TYPE}
-      );
-      registration.addRecipeCatalyst(
-         new ItemStack((ItemLike)ModBlocks.FREEZER_LIGHT_GRAY), new mezz.jei.api.recipe.RecipeType[]{RefrigeratingRecipeCategory.TYPE}
-      );
       registration.addRecipeCatalyst(new ItemStack((ItemLike)ModBlocks.FREEZER_PINK), new mezz.jei.api.recipe.RecipeType[]{FreezingRecipeCategory.TYPE});
       registration.addRecipeCatalyst(
          new ItemStack((ItemLike)ModBlocks.FREEZER_PINK), new mezz.jei.api.recipe.RecipeType[]{RefrigeratingRecipeCategory.TYPE}

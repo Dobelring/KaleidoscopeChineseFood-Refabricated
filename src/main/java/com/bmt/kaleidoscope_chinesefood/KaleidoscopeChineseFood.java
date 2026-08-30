@@ -22,9 +22,12 @@ import com.bmt.kaleidoscope_chinesefood.integration.KaleidoscopeDollIntegration;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KaleidoscopeChineseFood implements ModInitializer {
     public static final String MODID = "kaleidoscope_chinesefood";
+    public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
 
     @Override
     public void onInitialize() {
@@ -51,6 +54,13 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         FoodEventHandler.register();
         LavaSwimDamageEvents.register();
         DataMapsEvents.register();
+
+        // 1.1.10 新增：放置菜品与 Kaleidoscope Contraption 兼容（反射软依赖，
+        // create 与 kaleidoscope_contraption 均加载时才注册食物位交互行为）
+        if (FabricLoader.getInstance().isModLoaded("create")
+                && FabricLoader.getInstance().isModLoaded("kaleidoscope_contraption")) {
+            com.bmt.kaleidoscope_chinesefood.compat.kaleidoscope_contraption.KaleidoscopeContraptionCompat.register();
+        }
 
         KongmingLanternBlock.registerDispenserBehavior(ModBlocks.KONGMING_LANTERN.asItem());
     }

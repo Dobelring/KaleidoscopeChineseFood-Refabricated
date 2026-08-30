@@ -11,8 +11,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 
 public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
-   private static final ResourceLocation TEXTURE_TOP = ResourceLocation.fromNamespaceAndPath("kaleidoscope_chinesefood", "textures/gui/freezer_top.png");
-   private static final ResourceLocation TEXTURE_BOTTOM = ResourceLocation.withDefaultNamespace("textures/gui/container/generic_54.png");
+   // 1.1.10 官方版移除了自定义 freezer_top.png 贴图，两层统一使用原版箱子贴图，
+   // 上层通过裁剪拼贴出冷藏层布局（4 排 36 格），下层直接整图（6 排 54 格）
+   private static final ResourceLocation TEXTURE = ResourceLocation.withDefaultNamespace("textures/gui/container/generic_54.png");
    private final boolean isTop;
    private int guiOffsetY;
 
@@ -38,11 +39,19 @@ public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
       RenderSystem.setShader(GameRenderer::getPositionTexShader);
       RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-      ResourceLocation currentTexture = this.isTop ? TEXTURE_TOP : TEXTURE_BOTTOM;
-      RenderSystem.setShaderTexture(0, currentTexture);
+      RenderSystem.setShaderTexture(0, TEXTURE);
       int x = (this.width - this.imageWidth) / 2;
       int y = (this.height - this.imageHeight) / 2 + this.guiOffsetY;
-      guiGraphics.blit(currentTexture, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
+      if (this.isTop) {
+         // 冷藏层：用原版箱子贴图裁剪拼出 184 高布局
+         guiGraphics.blit(TEXTURE, x, y + 1, 0, 0, this.imageWidth, 18);
+         guiGraphics.blit(TEXTURE, x, y + 19, 0, 18, this.imageWidth, 72);
+         guiGraphics.blit(TEXTURE, x, y + 90, 0, 126, this.imageWidth, 14);
+         guiGraphics.blit(TEXTURE, x, y + 104, 0, 140, this.imageWidth, 81);
+      } else {
+         // 冷冻层：原版箱子贴图整图
+         guiGraphics.blit(TEXTURE, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
+      }
    }
 
    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
@@ -62,9 +71,9 @@ public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
             if (totalTime > 0 && progress < totalTime) {
                int x = this.leftPos + slot.x + 2;
                int y = this.topPos + slot.y + 15;
-               guiGraphics.fill(x, y, x + 13, y + 2, -11184811);
+               guiGraphics.fill(x, y, x + 12, y + 2, -11184811);
                float percent = (float)progress / totalTime;
-               int progressWidth = (int)(percent * 13.0F);
+               int progressWidth = (int)(percent * 12.0F);
                int color = this.isTop ? -11141121 : -16742145;
                guiGraphics.fill(x, y, x + progressWidth, y + 2, color);
             }
