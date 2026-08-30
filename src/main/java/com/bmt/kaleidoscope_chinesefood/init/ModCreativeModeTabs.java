@@ -8,6 +8,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -79,8 +80,8 @@ public class ModCreativeModeTabs {
                                     output.accept(item);
                                 }
                             });
-                            output.accept(TeacupRegistry.getItem(ModTea.LAPSANG));
-                            output.accept(TeacupRegistry.getItem(ModTea.HK_MILK_TEA));
+                            acceptTeaIfRegistered(output, ModTea.LAPSANG);
+                            acceptTeaIfRegistered(output, ModTea.HK_MILK_TEA);
                             output.accept(ModBlocks.BOWL_STACK);
                             output.accept(ModItems.MOONCAKE_MOLD);
                             output.accept(ModItems.CORN_RISTRA);
@@ -104,5 +105,15 @@ public class ModCreativeModeTabs {
                         })
                         .build()
         );
+    }
+
+    /** 未注册的茶杯（getItem 返回 AIR）跳过，避免 accept 非法堆栈 */
+    private static void acceptTeaIfRegistered(CreativeModeTab.Output output, Identifier teaId) {
+        Item item = TeacupRegistry.getItem(teaId);
+        if (item != null && item != Items.AIR) {
+            output.accept(item);
+        } else {
+            KaleidoscopeChineseFood.LOGGER.warn("[CFD] Teacup item not registered: {}", teaId);
+        }
     }
 }
