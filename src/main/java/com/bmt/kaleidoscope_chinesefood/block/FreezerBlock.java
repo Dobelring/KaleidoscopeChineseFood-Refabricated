@@ -129,8 +129,17 @@ public class FreezerBlock extends BaseEntityBlock {
    }
 
    private void tryOpenMenu(Level level, BlockPos pos, Player player) {
-      if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer && level.getBlockEntity(pos) instanceof FreezerBlockEntity freezerBE) {
-         serverPlayer.openMenu(freezerBE);
+      if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
+         if (level.getBlockEntity(pos) instanceof FreezerBlockEntity freezerBE) {
+            com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood.LOGGER.info(
+               "[诊断] 冰箱打开请求: pos={} top={}，创建菜单", pos.toShortString(), freezerBE.isTop()
+            );
+            serverPlayer.openMenu(freezerBE);
+         } else {
+            com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood.LOGGER.warn(
+               "[诊断] 冰箱打开失败: {} 处没有 FreezerBlockEntity（实际: {}）", pos.toShortString(), level.getBlockEntity(pos)
+            );
+         }
       }
    }
 

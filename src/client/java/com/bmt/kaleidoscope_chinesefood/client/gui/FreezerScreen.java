@@ -18,6 +18,9 @@ public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
    public FreezerScreen(FreezerMenu menu, Inventory playerInventory, Component title) {
       super(menu, playerInventory, title);
       this.isTop = menu.isTop();
+      com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood.LOGGER.info(
+         "[诊断] FreezerScreen 已创建 isTop={} menuType={}", this.isTop, menu.getType()
+      );
       this.imageWidth = 176;
       if (this.isTop) {
          this.imageHeight = 184;

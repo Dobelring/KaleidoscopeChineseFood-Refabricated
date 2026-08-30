@@ -10,7 +10,6 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.recipe.types.IRecipeType;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -38,10 +37,14 @@ public class MooncakeMoldRecipeCategory implements IRecipeCategory<MooncakeMoldR
 
    private final IDrawable background;
    private final IDrawable icon;
+   private final IDrawable arrow;
 
    public MooncakeMoldRecipeCategory(IGuiHelper guiHelper) {
       this.background = guiHelper.createBlankDrawable(WIDTH, HEIGHT);
       this.icon = guiHelper.createDrawableItemStack(new ItemStack(ModItems.MOONCAKE_MOLD));
+      // JEI 27.x 不再自动绘制槽位方框，需显式调用 setStandardSlotBackground；
+      // 箭头使用 JEI 自带样式（1.21.1 时 JEI 自动绘制的同款）
+      this.arrow = guiHelper.getRecipeArrow();
    }
 
    public static Display createDisplay() {
@@ -60,24 +63,24 @@ public class MooncakeMoldRecipeCategory implements IRecipeCategory<MooncakeMoldR
 
    @Override
    public void setRecipe(@NonNull IRecipeLayoutBuilder builder, Display display, @NonNull IFocusGroup focuses) {
-      builder.addSlot(RecipeIngredientRole.CRAFTING_STATION, 10, 12).add(display.mold())
+      builder.addSlot(RecipeIngredientRole.CRAFTING_STATION, 10, 12).setStandardSlotBackground().add(display.mold())
          .addRichTooltipCallback(
             (view, tooltip) -> tooltip.add(Component.translatable("jei.kaleidoscope_chinesefood.mold_keep"))
          );
 
       if (display.dough().isEmpty()) {
-         builder.addSlot(RecipeIngredientRole.INPUT, 34, 12);
+         builder.addSlot(RecipeIngredientRole.INPUT, 34, 12).setStandardSlotBackground();
       } else {
-         builder.addSlot(RecipeIngredientRole.INPUT, 34, 12).add(display.dough());
+         builder.addSlot(RecipeIngredientRole.INPUT, 34, 12).setStandardSlotBackground().add(display.dough());
       }
 
-      builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 11).add(display.result());
+      builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 11).setOutputSlotBackground().add(display.result());
    }
 
    @Override
    public void draw(@NonNull Display display, @NonNull IRecipeSlotsView recipeSlotsView, @NonNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
       this.background.draw(guiGraphics);
-      guiGraphics.drawString(Minecraft.getInstance().font, "→", 62, 17, 0xFF555555, false);
+      this.arrow.draw(guiGraphics, 59, 12);
    }
 
    @Override
