@@ -11,7 +11,7 @@
 
 ## Overview
 ![Minecraft](https://img.shields.io/badge/Minecraft-Java%20Edition-brightgreen)
-![Fabric](https://img.shields.io/badge/Fabric-1.21.1-orange)
+![Fabric](https://img.shields.io/badge/1.21.1%20%7C%2026.1.2%20%7C%2026.2-orange)
 ![License](https://img.shields.io/badge/License-MIT-blue)
 
 This mod brings a variety of Chinese cuisine and folk items to "Kaleidoscope: Cookery".
