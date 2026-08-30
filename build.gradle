@@ -66,6 +66,10 @@ dependencies {
     clientCompileOnly "mezz.jei:jei-26.2-fabric-api:30.11.0.67"
     // TODO: EMI 截至 2026-08-25 未发布任何 26.x 构建（Modrinth 最新为 1.1.24+1.21.1，
     //  与 TerraformersMC maven 双重确认）。待上游发布后参照 1.21.1 版 compat/emi 移植。
+
+    // Jade 26.x：显示腌菜罐发酵剩余时间（编译期依赖，运行时需自行安装 Jade）
+    compileOnly "maven.modrinth:jade:26.2.11+fabric"
+    clientCompileOnly "maven.modrinth:jade:26.2.11+fabric"
 }
 
 processResources {

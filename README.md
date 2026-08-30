@@ -30,7 +30,7 @@ This mod brings a variety of Chinese cuisine and folk items to "Kaleidoscope: Co
   自定义配方通过 Fabric 配方同步（`RecipeSynchronization`）下发到客户端，JEI 未安装时自动跳过。
 - **EMI**: 暂不支持 —— 截至 2026-08-25 EMI 未发布任何 26.x 构建（Modrinth 最新为 1.1.24+1.21.1）。
   TODO: 待上游发布后参照 1.21.1 版 `compat/emi` 移植。
-- **Jade**: 未接入（26.2 无 Jade 构建）。进度查看不受影响——右键发酵中的腌菜罐即可在快捷栏上方显示剩余发酵时间。
+- **Jade**：显示腌菜罐发酵剩余时间（编译期依赖，运行时需自行安装 Jade 26.2）。
 
 ## Build
 Requires JDK 26 to build (the Gradle toolchain targets Java 25 bytecode); Minecraft 26.2 runs on Java 25.
