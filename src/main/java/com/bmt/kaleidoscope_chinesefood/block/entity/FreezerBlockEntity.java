@@ -253,11 +253,16 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
          BlockState state = this.getBlockState();
          boolean isTop = (Boolean)state.getValue(FreezerBlock.TOP);
          if (isTop) {
-            if (!(Boolean)state.getValue(FreezerBlock.UPPER_OPEN)) {
-               this.level.setBlock(this.worldPosition, (BlockState)state.setValue(FreezerBlock.UPPER_OPEN, true), 3);
+            boolean alreadyOpen = (Boolean)state.getValue(FreezerBlock.UPPER_OPEN);
+            // 残留状态自愈：方块标记为开但当前没有任何打开的菜单（异常退出导致上次未正常关闭）
+            boolean stale = alreadyOpen && this.openMenus.isEmpty();
+            this.level.setBlock(this.worldPosition, (BlockState)state.setValue(FreezerBlock.UPPER_OPEN, true), 3);
+            if (!alreadyOpen || stale) {
                this.level.playSound(null, this.worldPosition, ModSounds.FREEZER_OPEN, SoundSource.BLOCKS, 0.3F, 1.0F);
             }
-         } else if (!(Boolean)state.getValue(FreezerBlock.LOWER_OPEN)) {
+         } else {
+            boolean alreadyOpen = (Boolean)state.getValue(FreezerBlock.LOWER_OPEN);
+            boolean stale = alreadyOpen && this.openMenus.isEmpty();
             this.level.setBlock(this.worldPosition, (BlockState)state.setValue(FreezerBlock.LOWER_OPEN, true), 3);
             BlockPos upperPos = this.worldPosition.above();
             BlockState upperState = this.level.getBlockState(upperPos);
@@ -265,7 +270,9 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
                this.level.setBlock(upperPos, (BlockState)upperState.setValue(FreezerBlock.LOWER_OPEN, true), 3);
             }
 
-            this.level.playSound(null, this.worldPosition, ModSounds.FREEZER_OPEN, SoundSource.BLOCKS, 0.3F, 1.0F);
+            if (!alreadyOpen || stale) {
+               this.level.playSound(null, this.worldPosition, ModSounds.FREEZER_OPEN, SoundSource.BLOCKS, 0.3F, 1.0F);
+            }
          }
       }
    }
