@@ -11,8 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 
 public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
-   private static final Identifier TEXTURE_TOP = Identifier.fromNamespaceAndPath("kaleidoscope_chinesefood", "textures/gui/freezer_top.png");
-   private static final Identifier TEXTURE_BOTTOM = Identifier.withDefaultNamespace("textures/gui/container/generic_54.png");
+   private static final Identifier TEXTURE = Identifier.withDefaultNamespace("textures/gui/container/generic_54.png");
    private final boolean isTop;
    private int guiOffsetY;
 
@@ -35,10 +34,16 @@ public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
       super.extractBackground(guiGraphics, mouseX, mouseY, partialTick);
       RenderPipeline pipeline = RenderPipelines.GUI_TEXTURED;
-      Identifier currentTexture = this.isTop ? TEXTURE_TOP : TEXTURE_BOTTOM;
       int x = (this.width - this.imageWidth) / 2;
       int y = (this.height - this.imageHeight) / 2 + this.guiOffsetY;
-      guiGraphics.blit(pipeline, currentTexture, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
+      if (this.isTop) {
+         guiGraphics.blit(pipeline, TEXTURE, x, y + 1, 0.0F, 0.0F, this.imageWidth, 18, 256, 256);
+         guiGraphics.blit(pipeline, TEXTURE, x, y + 19, 0.0F, 18.0F, this.imageWidth, 72, 256, 256);
+         guiGraphics.blit(pipeline, TEXTURE, x, y + 90, 0.0F, 126.0F, this.imageWidth, 14, 256, 256);
+         guiGraphics.blit(pipeline, TEXTURE, x, y + 104, 0.0F, 140.0F, this.imageWidth, 81, 256, 256);
+      } else {
+         guiGraphics.blit(pipeline, TEXTURE, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
+      }
    }
 
    @Override

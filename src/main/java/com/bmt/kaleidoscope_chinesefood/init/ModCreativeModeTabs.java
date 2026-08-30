@@ -77,7 +77,6 @@ public class ModCreativeModeTabs {
                             output.accept(ModBlocks.FREEZER);
                             output.accept(ModBlocks.FREEZER_GREEN);
                             output.accept(ModBlocks.FREEZER_ORANGE);
-                            output.accept(ModBlocks.FREEZER_LIGHT_GRAY);
                             output.accept(ModBlocks.FREEZER_PINK);
                             output.accept(ModBlocks.FREEZER_LIGHT_BLUE);
                             output.accept(ModBlocks.FREEZER_YELLOW);
