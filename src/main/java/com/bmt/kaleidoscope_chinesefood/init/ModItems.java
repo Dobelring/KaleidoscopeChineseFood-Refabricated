@@ -111,7 +111,6 @@ public class ModItems {
         registerBlockItem("freezer", ModBlocks.FREEZER);
         registerBlockItem("freezer_green", ModBlocks.FREEZER_GREEN);
         registerBlockItem("freezer_orange", ModBlocks.FREEZER_ORANGE);
-        registerBlockItem("freezer_light_gray", ModBlocks.FREEZER_LIGHT_GRAY);
         registerBlockItem("freezer_pink", ModBlocks.FREEZER_PINK);
         registerBlockItem("freezer_light_blue", ModBlocks.FREEZER_LIGHT_BLUE);
         registerBlockItem("freezer_yellow", ModBlocks.FREEZER_YELLOW);

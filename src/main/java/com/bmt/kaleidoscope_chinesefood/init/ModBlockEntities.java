@@ -23,7 +23,7 @@ public class ModBlockEntities {
 
     public static void register() {
         // 1.21.11 移除了原版 BlockEntityType.Builder，改用 Fabric API 的 FabricBlockEntityTypeBuilder
-        FREEZER = register("freezer", FabricBlockEntityTypeBuilder.create(FreezerBlockEntity::new, ModBlocks.FREEZER, ModBlocks.FREEZER_GREEN, ModBlocks.FREEZER_ORANGE, ModBlocks.FREEZER_LIGHT_GRAY, ModBlocks.FREEZER_PINK, ModBlocks.FREEZER_LIGHT_BLUE, ModBlocks.FREEZER_YELLOW));
+        FREEZER = register("freezer", FabricBlockEntityTypeBuilder.create(FreezerBlockEntity::new, ModBlocks.FREEZER, ModBlocks.FREEZER_GREEN, ModBlocks.FREEZER_ORANGE, ModBlocks.FREEZER_PINK, ModBlocks.FREEZER_LIGHT_BLUE, ModBlocks.FREEZER_YELLOW));
         PICKLE_JAR = register("pickle_jar", FabricBlockEntityTypeBuilder.create(PickleJarBlockEntity::new, ModBlocks.PICKLE_JAR));
         BOWL_STACK = register("bowl_stack", FabricBlockEntityTypeBuilder.create(BowlStackBlockEntity::new, ModBlocks.BOWL_STACK));
         FIRECRACKER = register("firecracker", FabricBlockEntityTypeBuilder.create(FirecrackerBlockEntity::new, ModBlocks.FIRECRACKER));

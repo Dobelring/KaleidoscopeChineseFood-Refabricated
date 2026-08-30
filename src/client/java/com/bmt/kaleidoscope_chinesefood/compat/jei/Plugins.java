@@ -64,8 +64,6 @@ public class Plugins implements IModPlugin {
       registration.addCraftingStation(RefrigeratingRecipeCategory.TYPE, ModBlocks.FREEZER_GREEN);
       registration.addCraftingStation(FreezingRecipeCategory.TYPE, ModBlocks.FREEZER_ORANGE);
       registration.addCraftingStation(RefrigeratingRecipeCategory.TYPE, ModBlocks.FREEZER_ORANGE);
-      registration.addCraftingStation(FreezingRecipeCategory.TYPE, ModBlocks.FREEZER_LIGHT_GRAY);
-      registration.addCraftingStation(RefrigeratingRecipeCategory.TYPE, ModBlocks.FREEZER_LIGHT_GRAY);
       registration.addCraftingStation(FreezingRecipeCategory.TYPE, ModBlocks.FREEZER_PINK);
       registration.addCraftingStation(RefrigeratingRecipeCategory.TYPE, ModBlocks.FREEZER_PINK);
       registration.addCraftingStation(FreezingRecipeCategory.TYPE, ModBlocks.FREEZER_LIGHT_BLUE);

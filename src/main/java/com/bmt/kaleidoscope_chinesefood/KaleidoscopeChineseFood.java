@@ -98,6 +98,12 @@ public class KaleidoscopeChineseFood implements ModInitializer {
                 KTItems.register();
             }
             DataMapsEvents.register();
+            // 1.1.10 新增：放置菜品与 Kaleidoscope Contraption 兼容（反射软依赖，
+            // create 与 kaleidoscope_contraption 均加载时才注册食物位交互行为）
+            if (FabricLoader.getInstance().isModLoaded("create")
+                    && FabricLoader.getInstance().isModLoaded("kaleidoscope_contraption")) {
+                com.bmt.kaleidoscope_chinesefood.compat.kaleidoscope_contraption.KaleidoscopeContraptionCompat.register();
+            }
             foodPhaseDone = true;
             LOGGER.info("Food phase initialized (cookery-dependent registrations complete)");
         }

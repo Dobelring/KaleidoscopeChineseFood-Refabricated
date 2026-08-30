@@ -10,17 +10,15 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 
 public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
-   private static final Identifier TEXTURE_TOP = Identifier.fromNamespaceAndPath("kaleidoscope_chinesefood", "textures/gui/freezer_top.png");
-   private static final Identifier TEXTURE_BOTTOM = Identifier.withDefaultNamespace("textures/gui/container/generic_54.png");
+   // 1.1.10 官方版移除了自定义 freezer_top.png 贴图，两层统一使用原版箱子贴图，
+   // 上层通过裁剪拼贴出冷藏层布局（4 排 36 格），下层直接整图（6 排 54 格）
+   private static final Identifier TEXTURE = Identifier.withDefaultNamespace("textures/gui/container/generic_54.png");
    private final boolean isTop;
    private int guiOffsetY;
 
    public FreezerScreen(FreezerMenu menu, Inventory playerInventory, Component title) {
       super(menu, playerInventory, title);
       this.isTop = menu.isTop();
-      com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood.LOGGER.info(
-         "[诊断] FreezerScreen 已创建 isTop={} menuType={}", this.isTop, menu.getType()
-      );
       this.imageWidth = 176;
       if (this.isTop) {
          this.imageHeight = 184;
@@ -38,12 +36,18 @@ public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
    }
 
    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-      Identifier currentTexture = this.isTop ? TEXTURE_TOP : TEXTURE_BOTTOM;
       int x = (this.width - this.imageWidth) / 2;
       int y = (this.height - this.imageHeight) / 2 + this.guiOffsetY;
-      // 修复冰箱界面空白：1.21.11 的 9 参 blit 重载是 (x0,y0,x1,y1,u0,u1,v0,v1) 边角语义，
-      // 旧版 (x,y,u,v,宽,高,贴图宽,贴图高) 语义需改用带 RenderPipeline 的重载
-      guiGraphics.blit(RenderPipelines.GUI_TEXTURED, currentTexture, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
+      if (this.isTop) {
+         // 冷藏层：用原版箱子贴图裁剪拼出 184 高布局
+         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y + 1, 0.0F, 0.0F, this.imageWidth, 18, 256, 256);
+         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y + 19, 0.0F, 18.0F, this.imageWidth, 72, 256, 256);
+         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y + 90, 0.0F, 126.0F, this.imageWidth, 14, 256, 256);
+         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y + 104, 0.0F, 140.0F, this.imageWidth, 81, 256, 256);
+      } else {
+         // 冷冻层：原版箱子贴图整图
+         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
+      }
    }
 
    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
@@ -56,16 +60,16 @@ public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
       int containerSize = ((FreezerMenu)this.menu).getContainer().getContainerSize();
 
       for (int i = 0; i < containerSize; i++) {
-         Slot slot = (Slot)((FreezerMenu)this.menu).slots.get(i);
+         Slot slot = ((FreezerMenu)this.menu).slots.get(i);
          if (slot.hasItem()) {
             int progress = ((FreezerMenu)this.menu).getProgress(i);
             int totalTime = ((FreezerMenu)this.menu).getTotalTime(i);
             if (totalTime > 0 && progress < totalTime) {
                int x = this.leftPos + slot.x + 2;
                int y = this.topPos + slot.y + 15;
-               guiGraphics.fill(x, y, x + 13, y + 2, -11184811);
+               guiGraphics.fill(x, y, x + 12, y + 2, -11184811);
                float percent = (float)progress / totalTime;
-               int progressWidth = (int)(percent * 13.0F);
+               int progressWidth = (int)(percent * 12.0F);
                int color = this.isTop ? -11141121 : -16742145;
                guiGraphics.fill(x, y, x + progressWidth, y + 2, color);
             }
