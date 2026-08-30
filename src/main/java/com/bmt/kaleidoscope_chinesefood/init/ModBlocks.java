@@ -29,7 +29,6 @@ public class ModBlocks {
     public static FreezerBlock FREEZER;
     public static FreezerBlock FREEZER_GREEN;
     public static FreezerBlock FREEZER_ORANGE;
-    public static FreezerBlock FREEZER_LIGHT_GRAY;
     public static FreezerBlock FREEZER_PINK;
     public static FreezerBlock FREEZER_LIGHT_BLUE;
     public static FreezerBlock FREEZER_YELLOW;
@@ -49,7 +48,6 @@ public class ModBlocks {
         FREEZER = registerFreezer("freezer");
         FREEZER_GREEN = registerFreezer("freezer_green");
         FREEZER_ORANGE = registerFreezer("freezer_orange");
-        FREEZER_LIGHT_GRAY = registerFreezer("freezer_light_gray");
         FREEZER_PINK = registerFreezer("freezer_pink");
         FREEZER_LIGHT_BLUE = registerFreezer("freezer_light_blue");
         FREEZER_YELLOW = registerFreezer("freezer_yellow");

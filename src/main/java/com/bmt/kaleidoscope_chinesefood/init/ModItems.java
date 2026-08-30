@@ -111,12 +111,11 @@ public class ModItems {
         registerBlockItem("freezer", ModBlocks.FREEZER);
         registerBlockItem("freezer_green", ModBlocks.FREEZER_GREEN);
         registerBlockItem("freezer_orange", ModBlocks.FREEZER_ORANGE);
-        registerBlockItem("freezer_light_gray", ModBlocks.FREEZER_LIGHT_GRAY);
         registerBlockItem("freezer_pink", ModBlocks.FREEZER_PINK);
         registerBlockItem("freezer_light_blue", ModBlocks.FREEZER_LIGHT_BLUE);
         registerBlockItem("freezer_yellow", ModBlocks.FREEZER_YELLOW);
         registerBlockItem("pickle_jar", ModBlocks.PICKLE_JAR);
-        registerBlockItem("bowl_stack", ModBlocks.BOWL_STACK);
+        registerBlockItem("bowl_stack", ModBlocks.BOWL_STACK, "block.kaleidoscope_chinesefood.bowl_stack.desc");
         registerBlockItem("fu_character", ModBlocks.FU_CHARACTER, "block.kaleidoscope_chinesefood.fu_character.desc");
         registerBlockItem("couplet_block", ModBlocks.COUPLET_BLOCK, "block.kaleidoscope_chinesefood.couplet.desc");
         registerBlockItem("horizontal_banner", ModBlocks.HORIZONTAL_BANNER, "block.kaleidoscope_chinesefood.horizontal_banner.desc");
