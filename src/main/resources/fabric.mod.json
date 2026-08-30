@@ -24,6 +24,9 @@
     "client": [
       "com.bmt.kaleidoscope_chinesefood.client.KaleidoscopeChineseFoodClient"
     ],
+    "server": [
+      "com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFoodServer"
+    ],
     "jei_mod_plugin": [
       "com.bmt.kaleidoscope_chinesefood.compat.jei.Plugins"
     ],
