@@ -28,7 +28,7 @@ This mod brings a variety of Chinese cuisine and folk items to "Kaleidoscope: Co
 ## Compat
 JEI / Jade integration is **not yet available** for Minecraft 26.1 — neither mod has shipped a 26.1 build yet. The integration code is kept in `compat-staging/` and will be re-enabled once those builds are released.
 - **JEI**: view pickling / refrigerating / freezing recipes.
-- **Jade**: shows the pickle jar's progress.
+- **Jade**: not integrated; pickle jar progress is still viewable by right-clicking the jar (shows remaining ferment time above the hotbar).
 
 ## Build
 Requires JDK 26 to build (the Gradle toolchain targets Java 25 bytecode); Minecraft 26.1 runs on Java 25.
