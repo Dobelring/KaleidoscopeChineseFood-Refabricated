@@ -3,7 +3,7 @@
   "id": "kaleidoscope_chinesefood",
   "version": "${version}",
   "name": "Kaleidoscope ChineseFood",
-  "description": "森罗物语：国味 - Chinese food for the Kaleidoscope series (Fabric port).",
+  "description": "妫綏鐗╄锛氬浗鍛?- Chinese food for the Kaleidoscope series (Fabric port).",
   "authors": [
     "Dobelring"
   ],
@@ -11,10 +11,7 @@
     "homepage": "https://github.com/Dobelring/KaleidoscopeChineseFood-Refabricated",
     "sources": "https://github.com/Dobelring/KaleidoscopeChineseFood-Refabricated"
   },
-  "license": [
-    "MIT",
-    "CC-BY-NC-SA-4.0"
-  ],
+  "license": "CC-BY-NC-ND-4.0",
   "environment": "*",
   "accessWidener": "kaleidoscope_chinesefood.accesswidener",
   "entrypoints": {
