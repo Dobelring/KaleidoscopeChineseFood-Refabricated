@@ -103,7 +103,7 @@ public class ModItems {
         EGGPLANT_SEED = register("eggplant_seed", p -> new BlockItem(ModBlocks.EGGPLANT_CROP, p.useItemDescriptionPrefix()));
         YELLOW_CROAKER = register("yellow_croaker", p -> new Item(p.food(ModFoods.YELLOW_CROAKER, ModFoods.YELLOW_CROAKER_C)));
         MOONCAKE = register("mooncake", p -> new MooncakeItem(ModBlocks.MOONCAKE_BLOCK, p.food(ModFoods.MOONCAKE, ModFoods.MOONCAKE_C)));
-        CORN_RISTRA = register("corn_ristra", p -> new BlockItem(ModBlocks.CORN_RISTRA, p));
+        CORN_RISTRA = register("corn_ristra", p -> new BlockItem(ModBlocks.CORN_RISTRA, p.useBlockDescriptionPrefix()));
         MOONCAKE_MOLD = register("mooncake_mold", p -> new MooncakeMoldItem(p.stacksTo(1)));
         FIRECRACKER = register("firecracker", p -> new FirecrackerItem(p));
 
@@ -125,7 +125,9 @@ public class ModItems {
     }
 
     private static Item registerBlockItem(String name, Block block) {
-        return register(name, p -> new BlockItem(block, p));
+        // 1.21.11：Item.Properties 默认名称键前缀为 item.，BlockItem 不再自动切换，
+        // 必须显式 useBlockDescriptionPrefix() 才能命中 block.<ns>.<path> 语言键
+        return register(name, p -> new BlockItem(block, p.useBlockDescriptionPrefix()));
     }
 
     private static Item register(String name, Function<Item.Properties, Item> factory) {

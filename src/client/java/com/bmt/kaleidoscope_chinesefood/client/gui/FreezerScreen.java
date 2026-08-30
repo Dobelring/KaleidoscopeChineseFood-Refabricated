@@ -3,6 +3,7 @@ package com.bmt.kaleidoscope_chinesefood.client.gui;
 import com.bmt.kaleidoscope_chinesefood.inventory.FreezerMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
@@ -34,11 +35,12 @@ public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
    }
 
    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-      // 1.21.11 移除了 RenderSystem 手动 shader 设置，GuiGraphics.blit 自带渲染管线
       Identifier currentTexture = this.isTop ? TEXTURE_TOP : TEXTURE_BOTTOM;
       int x = (this.width - this.imageWidth) / 2;
       int y = (this.height - this.imageHeight) / 2 + this.guiOffsetY;
-      guiGraphics.blit(currentTexture, x, y, 0, 0, this.imageWidth, this.imageHeight, 256, 256);
+      // 修复冰箱界面空白：1.21.11 的 9 参 blit 重载是 (x0,y0,x1,y1,u0,u1,v0,v1) 边角语义，
+      // 旧版 (x,y,u,v,宽,高,贴图宽,贴图高) 语义需改用带 RenderPipeline 的重载
+      guiGraphics.blit(RenderPipelines.GUI_TEXTURED, currentTexture, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
    }
 
    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
