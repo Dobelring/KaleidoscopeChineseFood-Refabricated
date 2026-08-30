@@ -20,8 +20,13 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
  * 茶杯注册：数据（TeacupData）+ 方块/物品。
  * <p>
  * cookery 1.3.0.9 只在其自身 ModBlocks/ModItems 里注册它自己的茶杯；
- * 我们的茶杯需要自行创建方块与物品，否则创造栏/配方拿到的是不存在的物品。
- * 效果通过 Supplier 懒加载，注册期不读取 cookery 的效果 Holder，因此本类可在 main 阶段调用。
+ * 我们的茶杯需要自行创建方块与物品。
+ * <p>
+ * ⚠ 运行时 TeacupItem 的构造器会立刻解析效果 supplier（存入 showEffects 字段），
+ * 而 supplier 读取 cookery 的效果 Holder——若在 cookery 初始化前构造，
+ * Holder 为 null 且 MobEffectInstance 不做检查，悬停提示时会 NPE。
+ * 因此 init()（main 阶段）只注册数据，registerTeacupBlocksAndItems() 由
+ * food phase（client/server 入口点阶段，cookery 初始化完毕后）调用。
  */
 public class ModTea {
     public static Identifier LAPSANG;
@@ -38,7 +43,10 @@ public class ModTea {
                 HK_MILK_TEA,
                 TeacupData.create(4).addEffect(() -> new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.SULFUR, 9600), 1.0F)
         );
+    }
 
+    /** 在 food phase 调用：此时 cookery 的效果 Holder 已就绪 */
+    public static void registerTeacupBlocksAndItems() {
         registerTeacup(LAPSANG);
         registerTeacup(HK_MILK_TEA);
     }

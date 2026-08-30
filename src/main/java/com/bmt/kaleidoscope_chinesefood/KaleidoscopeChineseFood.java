@@ -90,6 +90,8 @@ public class KaleidoscopeChineseFood implements ModInitializer {
             }
             ModFoodBiteRegistry.init();
             ModItems.register();
+            // TeacupItem 构造器会急切解析效果 supplier，必须等 cookery 效果注册完毕
+            ModTea.registerTeacupBlocksAndItems();
             // BlockItem 已注册，此时 asItem() 才能解析到真实物品（不会缓存 AIR）
             KongmingLanternBlock.registerDispenserBehavior(ModBlocks.KONGMING_LANTERN.asItem());
             if (!FabricLoader.getInstance().isModLoaded("kaleidoscope_twilight")) {
