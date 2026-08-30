@@ -7,16 +7,22 @@
   "finished_texture": "kaleidoscope_cookery:stockpot/default_finished",
   "ingredients": [
     [
-      "#c:foods/raw_pork",
-      "#c:foods/raw_beef"
+      "kaleidoscope_cookery:raw_pork_belly",
+      "minecraft:porkchop",
+      "minecraft:beef",
+      "kaleidoscope_cookery:raw_cow_offal"
     ],
     [
-      "#c:foods/raw_pork",
-      "#c:foods/raw_beef"
+      "kaleidoscope_cookery:raw_pork_belly",
+      "minecraft:porkchop",
+      "minecraft:beef",
+      "kaleidoscope_cookery:raw_cow_offal"
     ],
     [
-      "#c:foods/raw_pork",
-      "#c:foods/raw_beef"
+      "kaleidoscope_cookery:raw_pork_belly",
+      "minecraft:porkchop",
+      "minecraft:beef",
+      "kaleidoscope_cookery:raw_cow_offal"
     ],
     "#c:crops/lettuce",
     "#c:crops/lettuce"
