@@ -38,9 +38,7 @@ public class ClientSetup {
         registerBlockRenderLayers();
     }
 
-    // 原 NeoForge 版通过模型 JSON 的 "render_type" 声明渲染层，该字段是 Forge/NeoForge 补丁特性，
-    // Fabric 1.21.1 的原版模型加载器会静默忽略它；若不在客户端注册 BlockRenderLayerMap，
-    // 作物/菜肴等需要 cutout 的方块会落在 SOLID 层，透明像素被渲染成不透明底色（如茄子作物出现灰色十字）。
+    // 需要 cutout 渲染的方块通过 BlockRenderLayerMap 注册到 CUTOUT 层，避免透明像素渲染成不透明底色
     private static void registerBlockRenderLayers() {
         BlockRenderLayerMap.INSTANCE.putBlocks(
                 RenderType.cutout(),

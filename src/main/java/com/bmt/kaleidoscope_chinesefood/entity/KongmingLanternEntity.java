@@ -54,9 +54,7 @@ public class KongmingLanternEntity extends Entity {
                this.level().removeBlock(this.lastLightPos, false);
             }
 
-            // 只把尾焰光方块放进空气格：原版无条件 setBlock 会静默吞掉路径上的
-            // 任意方块（另一盏孔明灯、屋顶等）。跳过非空气格后，
-            // "上方实心即自毁"的判定也能正常生效（停在天花板下熄灭而非打洞）。
+            // 只在空气格放置尾焰光方块，保留路径上的其他方块
             if (this.level().getBlockState(currentPos).isAir()) {
                BlockState lightState = (BlockState)Blocks.LIGHT.defaultBlockState().setValue(LightBlock.LEVEL, 15);
                this.level().setBlock(currentPos, lightState, 3);

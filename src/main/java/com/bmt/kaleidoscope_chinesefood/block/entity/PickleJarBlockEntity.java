@@ -38,8 +38,7 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
                 BlockPos pos = PickleJarBlockEntity.this.worldPosition;
                 BlockState state = PickleJarBlockEntity.this.getBlockState();
                 PickleJarBlockEntity.this.level.sendBlockUpdated(pos, state, state, 3);
-                // NeoForge 会在方块更新时补发 BE 数据包，Fabric/原版管线的区块段广播则有时序差，
-                // 这里显式把最新 BE 数据推给附近玩家，确保腌菜罐内容物渲染立即刷新。
+                // 向附近玩家显式推送 BE 数据包，确保腌菜罐内容物渲染立即刷新
                 ClientboundBlockEntityDataPacket packet =
                         ClientboundBlockEntityDataPacket.create(PickleJarBlockEntity.this);
                 for (ServerPlayer player : serverLevel.players()) {
@@ -257,7 +256,7 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
             }
 
             ItemStack baseResult = r.getResultItem(level.registryAccess()).copy();
-            // 官方 1.1.10 修复：总产出 = 单次配方产出 × 4（每格最多 4），上限 16，按槽位分配
+            // 总产出 = 单次配方产出 × 4（每格最多 4），上限 16，按槽位分配
             int totalOutput = Math.min(baseResult.getCount() * 4, 16);
             int remaining = totalOutput;
 
