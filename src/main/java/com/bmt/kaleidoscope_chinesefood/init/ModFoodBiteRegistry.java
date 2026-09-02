@@ -30,7 +30,7 @@ public class ModFoodBiteRegistry {
    public static Identifier YELLOW_CROAKER_TOFU_SOUP;
 
    public static void init() {
-      // 1.21.11 的 FoodBiteRegistry 改为实例注册，FoodData.create 需要成对 FoodProperties + Consumable
+      // FoodBiteRegistry 改为实例注册，FoodData.create 需要成对 FoodProperties + Consumable
       FoodBiteRegistry registry = new FoodBiteRegistry();
       YELLOW_CROAKER_TOFU_SOUP = registry.registerFoodData(
          KaleidoscopeChineseFood.id("yellow_croaker_tofu_soup"),
@@ -60,10 +60,8 @@ public class ModFoodBiteRegistry {
    }
 
    /**
-    * cookery 1.3.0.9 把 FoodBite 方块/物品的创建移到了 CommonRegistry.registerFoodBiteBlocks，
-    * 该迭代发生在 cookery 自身初始化时——那时我们的 FoodData 还没进 map，
-    * 导致我们的食物方块与物品从未被注册（创造栏只能取到 AIR，还会引发后续崩溃）。
-    * 这里自行创建并注册，行为与 cookery / 下界端口的 registerFoodBiteBlocks 完全一致。
+    * 本模组的 FoodBite 方块/物品在此自行创建并注册，
+    * 行为与 cookery 的 registerFoodBiteBlocks 完全一致。
     */
    private static void registerFoodBiteBlocksAndItems() {
       FoodBiteRegistry.FOOD_DATA_MAP.forEach((id, data) -> {

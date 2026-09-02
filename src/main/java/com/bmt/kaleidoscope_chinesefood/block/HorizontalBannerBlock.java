@@ -240,7 +240,7 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
       return level.getBlockState(wallPos).isFaceSturdy(level, wallPos, facing);
    }
 
-   // 修复"书与笔不能给横幅写字"：1.21.2+ 手持物品时调用 useItemOn 而非 useWithoutItem
+   // 1.21.2+ 手持物品时走 useItemOn：书与笔写入横幅的逻辑在此实现
    protected InteractionResult useItemOn(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
       if (level.isClientSide()) {
          return InteractionResult.SUCCESS;

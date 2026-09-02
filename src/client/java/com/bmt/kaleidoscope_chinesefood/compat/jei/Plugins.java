@@ -18,10 +18,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NonNull;
 
 /**
- * JEI 27.x (MC 1.21.11) 插件。
- * 注意：1.21.2+ 原版不再向客户端同步完整配方列表，
- * 需要在主初始化（服务端）注册 RecipeSynchronization 同步，
- * 客户端这里通过 level.recipeAccess().getSynchronizedRecipes() 读取完整配方。
+ * JEI 插件。
+ * 服务端通过 RecipeSynchronization 同步配方序列化器，
+ * 客户端通过 level.recipeAccess().getSynchronizedRecipes() 读取完整配方列表。
  */
 @JeiPlugin
 public class Plugins implements IModPlugin {

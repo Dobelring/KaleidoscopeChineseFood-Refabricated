@@ -30,7 +30,7 @@ public class ModRecipes {
         REFRIGERATING_SERIALIZER = registerSerializer("refrigerating", new RefrigeratingRecipe.Serializer());
         FREEZING_TYPE = registerType("freezing");
         FREEZING_SERIALIZER = registerSerializer("freezing", new FreezingRecipe.Serializer());
-        // 1.21.11 起 Recipe 接口要求每个配方提供 recipeBookCategory()
+        // Recipe 接口要求每个配方提供 recipeBookCategory
         PICKLE_JAR_CATEGORY = registerCategory("pickle_jar");
         REFRIGERATING_CATEGORY = registerCategory("refrigerating");
         FREEZING_CATEGORY = registerCategory("freezing");

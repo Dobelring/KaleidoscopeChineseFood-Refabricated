@@ -55,8 +55,7 @@ public class PicklingJarRecipeCategory implements IRecipeCategory<RecipeHolder<P
          if (ing == null || ing.isEmpty()) {
             builder.addSlot(RecipeIngredientRole.INPUT, x, y);
          } else {
-            // 1.21.11 起 Ingredient#getItems() 已移除，改用 items() 流（对齐厨房乐事 Teapot 写法），
-            // 腌菜罐每格固定显示 4 个
+            // 通过 items() 流取配料物品（对齐厨房乐事 Teapot 写法），腌菜罐每格固定显示 4 个
             List<ItemStack> displayItems = ing.items()
                .map(item -> item.value().getDefaultInstance().copyWithCount(4))
                .toList();

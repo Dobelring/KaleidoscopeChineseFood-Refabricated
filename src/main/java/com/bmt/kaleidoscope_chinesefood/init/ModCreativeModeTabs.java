@@ -69,14 +69,8 @@ public class ModCreativeModeTabs {
                                 if (resourceLocation.getNamespace().equals("kaleidoscope_chinesefood")) {
                                     Item item = BuiltInRegistries.ITEM.getValue(resourceLocation);
                                     if (item == null || item == Items.AIR) {
-                                        KaleidoscopeChineseFood.LOGGER.warn("[CFD] FoodBite item not registered: {}", resourceLocation);
                                         return;
                                     }
-                                    // 诊断：预先对堆栈做与创造栏完全相同的 hash，若组件含空效果 MobEffectInstance，
-                                    // 异常会在这一行抛出并带上物品 id，便于精确定位
-                                    ItemStack diagnostics = new ItemStack(item);
-                                    int checksum = diagnostics.hashCode();
-                                    KaleidoscopeChineseFood.LOGGER.debug("[CFD] tab accept {} checksum={}", resourceLocation, checksum);
                                     output.accept(item);
                                 }
                             });
@@ -111,8 +105,6 @@ public class ModCreativeModeTabs {
         Item item = TeacupRegistry.getItem(teaId);
         if (item != null && item != Items.AIR) {
             output.accept(item);
-        } else {
-            KaleidoscopeChineseFood.LOGGER.warn("[CFD] Teacup item not registered: {}", teaId);
         }
     }
 }

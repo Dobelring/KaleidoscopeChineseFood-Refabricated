@@ -37,8 +37,8 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         ModEffects.register();
         ModTea.init(); // 茶杯效果是懒加载 supplier，注册期不读取 cookery 的 Holder，可留在 main 阶段
 
-        // 注意：不要在 main 阶段触发 ModFoods 的类初始化（会过早读取 cookery 的效果 Holder），
-        // ModItems / ModFoodBiteRegistry / KTItems / DataMapsEvents 统一推迟到 foodPhase
+        // 依赖 cookery 的注册（ModFoods / ModItems / ModFoodBiteRegistry / KTItems / DataMapsEvents）
+        // 统一推迟到 runFoodPhase（client/server 入口点阶段执行）
 
         ModBlocks.register();
         ModBlockEntities.register();
@@ -53,10 +53,7 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         FoodEventHandler.register();
         LavaSwimDamageEvents.register();
 
-        // 注意：不要在 main 阶段调用 ModBlocks.X.asItem()——1.21.11 的 Block.asItem()
-        // 会把查找结果（此时 BlockItem 尚未注册，结果是 AIR）永久缓存进方块字段，
-        // 之后创造栏 accept 该方块就会拿到 count=0 的 AIR 堆栈而崩溃。
-        // 发射器行为注册移至 runFoodPhase（ModItems 注册之后）。
+        // 发射器行为注册移至 runFoodPhase（ModItems 注册之后，BlockItem 已就绪）
 
         // 1.21.2+ 原版不再向客户端同步完整配方：JEI 存在时声明需要同步这些配方序列化器，
         // 客户端 JEI 插件通过 RecipeSynchronization 读取完整配方（与厨房乐事做法一致）
@@ -70,15 +67,9 @@ public class KaleidoscopeChineseFood implements ModInitializer {
     /**
      * 依赖 cookery 的注册阶段（食物消耗品、碗装食物方块/物品、数据映射）。
      * <p>
-     * Fabric Loader 按字母序调用入口点（kaleidoscope_chinesefood 排在 kaleidoscope_cookery
-     * 之前），depends 只校验存在性、不保证初始化顺序；若在 main 阶段构建 ModFoods 的消耗品，
-     * cookery 的效果 Holder（WARMTH/VIGOR/SATIATED_SHIELD）还是 null，会产出损坏的
-     * MobEffectInstance（打开创造物品栏哈希时 NPE），且我们的 FoodData 进入 cookery 的
-     * FOOD_DATA_MAP 后还会被 cookery 的 CommonRegistry 重复注册导致崩溃。
-     * <p>
-     * client / server 入口点阶段在所有 main 入口点之后运行，此时 cookery 必然初始化完毕，
-     * 其 CommonRegistry 对 FOOD_DATA_MAP 的迭代也已结束，两个问题一并消除。
-     * 由 client 与 server 入口点调用，一次性守护确保只执行一遍。
+     * 由 client 与 server 入口点调用：这两个阶段在所有 main 入口点之后运行，
+     * 此时 cookery 必然初始化完毕，效果 Holder 与 FOOD_DATA_MAP 均已就绪。
+     * 一次性守护确保只执行一遍。
      */
     public static void runFoodPhase() {
         if (foodPhaseDone) {
@@ -90,9 +81,9 @@ public class KaleidoscopeChineseFood implements ModInitializer {
             }
             ModFoodBiteRegistry.init();
             ModItems.register();
-            // TeacupItem 构造器会急切解析效果 supplier，必须等 cookery 效果注册完毕
+            // TeacupItem 构造器急切解析效果 supplier，此处 cookery 效果已注册完毕
             ModTea.registerTeacupBlocksAndItems();
-            // BlockItem 已注册，此时 asItem() 才能解析到真实物品（不会缓存 AIR）
+            // BlockItem 已注册，此时 asItem() 能解析到真实物品
             KongmingLanternBlock.registerDispenserBehavior(ModBlocks.KONGMING_LANTERN.asItem());
             if (!FabricLoader.getInstance().isModLoaded("kaleidoscope_twilight")) {
                 KTItems.register();
@@ -105,7 +96,6 @@ public class KaleidoscopeChineseFood implements ModInitializer {
                 com.bmt.kaleidoscope_chinesefood.compat.kaleidoscope_contraption.KaleidoscopeContraptionCompat.register();
             }
             foodPhaseDone = true;
-            LOGGER.info("Food phase initialized (cookery-dependent registrations complete)");
         }
     }
 

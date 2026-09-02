@@ -8,7 +8,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -19,7 +18,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -131,14 +129,7 @@ public class FreezerBlock extends BaseEntityBlock {
    private void tryOpenMenu(Level level, BlockPos pos, Player player) {
       if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
          if (level.getBlockEntity(pos) instanceof FreezerBlockEntity freezerBE) {
-            com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood.LOGGER.info(
-               "[诊断] 冰箱打开请求: pos={} top={}，创建菜单", pos.toShortString(), freezerBE.isTop()
-            );
             serverPlayer.openMenu(freezerBE);
-         } else {
-            com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood.LOGGER.warn(
-               "[诊断] 冰箱打开失败: {} 处没有 FreezerBlockEntity（实际: {}）", pos.toShortString(), level.getBlockEntity(pos)
-            );
          }
       }
    }

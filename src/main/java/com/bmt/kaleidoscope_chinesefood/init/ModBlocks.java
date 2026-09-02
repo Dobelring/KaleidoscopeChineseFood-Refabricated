@@ -44,7 +44,7 @@ public class ModBlocks {
     public static EggplantCropBlock EGGPLANT_CROP;
 
     public static void register() {
-        // 1.21.1 移植回归修复：原版类内部属性（GRASS 音效等）随外部化 Properties 一并丢失
+        // 外部化 Properties 显式指定 GRASS 音效等属性
         CORN_RISTRA = register(
                 "corn_ristra",
                 p -> new CornBlock(
@@ -86,8 +86,7 @@ public class ModBlocks {
         KONGMING_LANTERN = register(
                 "kongming_lantern", p -> new KongmingLanternBlock(p.instabreak().strength(0.1F).noOcclusion().sound(SoundType.WOOD))
         );
-        // 1.21.1 移植回归修复：对齐 cookery cropReg 的作物属性；缺 noCollission 时作物是实心方块，
-        // 会导致 FarmBlock.canSurvive 失败→耕地退化为泥土→作物被顶掉（放水也救不回来）
+        // 作物属性对齐 cookery：noCollision 保证作物非实心、可被耕地承接
         EGGPLANT_CROP = register(
                 "eggplant_crop",
                 p -> new EggplantCropBlock(

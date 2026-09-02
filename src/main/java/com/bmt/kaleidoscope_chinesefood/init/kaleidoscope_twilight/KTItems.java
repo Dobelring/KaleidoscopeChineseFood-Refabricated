@@ -15,7 +15,7 @@ public class KTItems {
     public static BunItem FROZEN_BUN;
 
     public static void register() {
-        // 1.21.11 起 Item.Properties 必须显式 setId，且需与注册 id 一致
+        // Item.Properties 通过 setId 与注册 id 一致
         FROZEN_BUN = Registry.register(
                 BuiltInRegistries.ITEM,
                 FROZEN_BUN_ID,

@@ -107,7 +107,7 @@ public class ModItems {
         MOONCAKE_MOLD = register("mooncake_mold", p -> new MooncakeMoldItem(p.stacksTo(1)));
         FIRECRACKER = register("firecracker", p -> new FirecrackerItem(p));
 
-        // plain block items that were auto-registered alongside their blocks on NeoForge
+        // 注册方块物品（BlockItem 需在对应 Block 注册后单独注册）
         registerBlockItem("freezer", ModBlocks.FREEZER);
         registerBlockItem("freezer_green", ModBlocks.FREEZER_GREEN);
         registerBlockItem("freezer_orange", ModBlocks.FREEZER_ORANGE);
@@ -124,8 +124,7 @@ public class ModItems {
     }
 
     private static Item registerBlockItem(String name, Block block) {
-        // 1.21.11：Item.Properties 默认名称键前缀为 item.，BlockItem 不再自动切换，
-        // 必须显式 useBlockDescriptionPrefix() 才能命中 block.<ns>.<path> 语言键
+        // BlockItem 使用 useBlockDescriptionPrefix() 以命中 block.<ns>.<path> 语言键
         return register(name, p -> new BlockItem(block, p.useBlockDescriptionPrefix()));
     }
 

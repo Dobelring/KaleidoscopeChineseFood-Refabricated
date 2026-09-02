@@ -10,8 +10,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 
 public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
-   // 1.1.10 官方版移除了自定义 freezer_top.png 贴图，两层统一使用原版箱子贴图，
-   // 上层通过裁剪拼贴出冷藏层布局（4 排 36 格），下层直接整图（6 排 54 格）
+   // 两层统一使用原版箱子贴图：上层裁剪拼贴出冷藏层布局（4 排 36 格），下层直接整图（6 排 54 格）
    private static final Identifier TEXTURE = Identifier.withDefaultNamespace("textures/gui/container/generic_54.png");
    private final boolean isTop;
    private int guiOffsetY;
@@ -78,8 +77,7 @@ public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
    }
 
    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-      // 1.21.6+ drawString 会跳过 alpha=0 的颜色（4210752 的 alpha 位为 0 导致文字不渲染），
-      // 用不透明深灰 -12566464（0xFF404040），与原版 AbstractContainerScreen 一致
+      // 使用不透明深灰 -12566464（0xFF404040），与原版 AbstractContainerScreen 一致
       guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, -12566464, false);
       guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, -12566464, false);
    }

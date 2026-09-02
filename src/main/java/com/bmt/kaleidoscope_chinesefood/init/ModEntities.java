@@ -16,7 +16,7 @@ public class ModEntities {
     public static EntityType<KongmingLanternEntity> KONGMING_LANTERN;
 
     public static void register() {
-        // 1.21.11：EntityType.Builder.build() 需要 ResourceKey 参数
+        // EntityType.Builder 通过 ResourceKey 构建
         FIRECRACKER = Registry.register(
                 BuiltInRegistries.ENTITY_TYPE,
                 KaleidoscopeChineseFood.id("firecracker"),

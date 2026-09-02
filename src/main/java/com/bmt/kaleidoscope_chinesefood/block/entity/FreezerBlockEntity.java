@@ -254,7 +254,7 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
          boolean isTop = (Boolean)state.getValue(FreezerBlock.TOP);
          if (isTop) {
             boolean alreadyOpen = (Boolean)state.getValue(FreezerBlock.UPPER_OPEN);
-            // 残留状态自愈：方块标记为开但当前没有任何打开的菜单（异常退出导致上次未正常关闭）
+            // 已在打开态且当前无打开菜单时视为需要重新触发（自愈）
             boolean stale = alreadyOpen && this.openMenus.isEmpty();
             this.level.setBlock(this.worldPosition, (BlockState)state.setValue(FreezerBlock.UPPER_OPEN, true), 3);
             if (!alreadyOpen || stale) {
@@ -271,7 +271,6 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
             }
 
             if (!alreadyOpen || stale) {
-               com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood.LOGGER.info("[诊断] 冰箱开门音: pos={}", this.worldPosition.toShortString());
                this.level.playSound(null, this.worldPosition, ModSounds.FREEZER_OPEN, SoundSource.BLOCKS, 1.0F, 1.0F);
             }
          }

@@ -46,10 +46,8 @@ public class DataMapsEvents {
                             // 剪刀剪下的草不掉种子（原版 inverted match_tool shears）
                             .when(InvertedLootItemCondition.invert(
                                     MatchTool.toolMatches(ItemPredicate.Builder.item().of(BuiltInRegistries.ITEM, Items.SHEARS))))
-                            // 头戴厨房乐事草帽才掉落（原版 advance_block_match_tool slot=head）
-                            // 1.21.11: ItemPredicate 的 TagKey 重载会在战利品表加载阶段急切解析标签，
-                            // 此时物品标签尚未绑定，会抛 Missing tag 并卡死世界加载；
-                            // 该标签内容就是两顶草帽，故直接按物品匹配，语义完全等价。
+                            // 头戴厨房乐事草帽才掉落（slot=head）
+                            // 直接按物品匹配（标签解析时机问题，语义等价）
                             .when(LootItemEntityPropertyCondition.hasProperties(
                                     LootContext.EntityTarget.THIS,
                                     EntityPredicate.Builder.entity()

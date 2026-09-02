@@ -337,8 +337,7 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
       level.setBlock(masterPos, Blocks.AIR.defaultBlockState(), 35);
    }
 
-   // 修复"书与笔不能给对联写字"：1.21.2+ 手持物品时调用 useItemOn 而非 useWithoutItem，
-   // 原写入逻辑只在空手分支中，永远无法触发
+   // 1.21.2+ 手持物品时走 useItemOn：书与笔写入对联的逻辑在此实现
    protected InteractionResult useItemOn(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
       if (level.isClientSide()) {
          return InteractionResult.SUCCESS;

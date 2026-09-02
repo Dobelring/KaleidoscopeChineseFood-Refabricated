@@ -1,6 +1,5 @@
 package com.bmt.kaleidoscope_chinesefood.compat.kaleidoscope_contraption;
 
-import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.init.ModFoodBiteRegistry;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.FoodBiteRegistry;
 import java.lang.reflect.Constructor;
@@ -33,8 +32,7 @@ public class KaleidoscopeContraptionCompat {
             register(ModFoodBiteRegistry.RED_RICE_ROLL, interaction);
             register(ModFoodBiteRegistry.YELLOW_CROAKER_TOFU_SOUP, interaction);
         } catch (Throwable t) {
-            // 反射失败（Create/contraption 缺失或 API 变动）时静默跳过，不影响主模组
-            KaleidoscopeChineseFood.LOGGER.info("[compat] KaleidoscopeContraption 兼容注册跳过: {}", t.toString());
+            // 静默跳过
         }
     }
 
@@ -53,9 +51,8 @@ public class KaleidoscopeContraptionCompat {
             Object registry = registryField.get(null);
             Method registerMethod = registry.getClass().getMethod("register", Block.class, behaviourClass);
             registerMethod.invoke(registry, block, interaction);
-            KaleidoscopeChineseFood.LOGGER.info("[compat] 已注册 contraption 食物位: {}", id);
         } catch (Throwable t) {
-            KaleidoscopeChineseFood.LOGGER.debug("[compat] contraption 注册 {} 失败: {}", id, t.toString());
+            // 静默跳过
         }
     }
 }

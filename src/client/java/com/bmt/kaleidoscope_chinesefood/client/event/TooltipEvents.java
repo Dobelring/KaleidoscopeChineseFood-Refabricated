@@ -46,7 +46,7 @@ public class TooltipEvents {
                 lines.add(Component.translatable("item.kaleidoscope_chinesefood.mooncake.tooltip").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
             }
 
-            // 1.21.11 移除了 Block 级 appendHoverText，方块描述文案迁移到客户端回调
+            // 方块描述文案在客户端提示回调中补充
             if (stack.getItem() instanceof BlockItem blockItem) {
                 MutableComponent desc = null;
                 if (blockItem.getBlock() instanceof FuCharacterBlock) {

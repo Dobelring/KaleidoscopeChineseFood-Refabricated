@@ -30,7 +30,7 @@ public class FreezerMenu extends AbstractContainerMenu {
       this.container = container;
       this.isTop = container.getContainerSize() == 36;
       container.startOpen(playerInv.player);
-      // 在菜单构造器中处理开门声音和方块状态（绕过 ContainerUser 覆写导致的卡死）
+      // 在菜单构造器中处理开门声音和方块状态
       if (container instanceof FreezerBlockEntity be) {
          Level beLevel = be.getLevel();
          if (beLevel != null && !beLevel.isClientSide()) {

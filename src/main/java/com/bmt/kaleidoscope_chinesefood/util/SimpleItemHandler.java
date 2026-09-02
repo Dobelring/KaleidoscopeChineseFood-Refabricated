@@ -78,7 +78,6 @@ public class SimpleItemHandler implements Container {
 
     @Override
     public void clearContent() {
-        // NonNullList.withSize 是固定长度列表，clear() 会直接抛 UnsupportedOperationException；
         // 逐槽置空并走 setItem 以触发 onContentsChanged 通知
         for (int i = 0; i < this.size; i++) {
             this.setItem(i, ItemStack.EMPTY);
@@ -163,10 +162,7 @@ public class SimpleItemHandler implements Container {
     }
 
     // ----- NBT -----
-    // 注意：不能用 ContainerHelper.saveAllItems/loadAllItems 的稀疏格式做同步！
-    // 稀疏格式跳过空槽位，而加载端只覆盖出现的槽位——取出物品后客户端会永久残留旧内容（幽灵渲染）。
-    // 这里改为密集格式：每个槽位都写条目；加载前先全量清空。条目内物品按原版 MAP_CODEC 平铺写入
-    // （{Slot, id, count, components}），与 1.21.1 的 ItemStack.save(registries, tag) 格式一致，旧存档兼容。
+    // 采用密集格式序列化：每个槽位都写条目，加载前先全量清空，旧存档兼容。
     public void serializeNBT(net.minecraft.world.level.storage.ValueOutput output) {
         net.minecraft.world.level.storage.ValueOutput.ValueOutputList items = output.childrenList("Items");
         for (int i = 0; i < this.size; i++) {

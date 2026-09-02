@@ -27,7 +27,6 @@ public class PickleJarRecipe implements Recipe<PickleJarInput> {
    private final int fermentTime;
    public static final MapCodec<PickleJarRecipe> CODEC = RecordCodecBuilder.mapCodec(
       inst -> inst.group(
-            // 1.21.11 不再存在空 Ingredient（Ingredient.of(Items.AIR) 会抛异常），
             // 输入列表只保存实际配料；matches() 按列表长度比较，无需占位填充
             Ingredient.CODEC
                .listOf()
@@ -121,8 +120,7 @@ public class PickleJarRecipe implements Recipe<PickleJarInput> {
 
    @NotNull
    public PlacementInfo placementInfo() {
-      // 1.21.2+ 原版 RecipeManager 会丢弃 placementInfo 为空的配方（日志 "can't be placed"），
-      // 必须返回由真实配料构造的 PlacementInfo
+      // 由真实配料构造 PlacementInfo，供原版 RecipeManager 使用
       return PlacementInfo.create(this.inputs);
    }
 

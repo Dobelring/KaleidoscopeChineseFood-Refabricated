@@ -15,7 +15,7 @@ import com.bmt.kaleidoscope_chinesefood.init.ModRecipes;
 import java.util.List;
 
 /**
- * Reliable Recipe Viewer (RRV) 插件，替代 1.21.11 上已不存在的 EMI。
+ * Reliable Recipe Viewer (RRV) 插件。
  * 通过 fabric.mod.json 的 "rrv" 入口点发现；覆盖腌菜罐 / 冷冻 / 冷藏 / 月饼模具四类展示。
  */
 public class ModRRVPlugin implements ReliableRecipeViewerPlugin {

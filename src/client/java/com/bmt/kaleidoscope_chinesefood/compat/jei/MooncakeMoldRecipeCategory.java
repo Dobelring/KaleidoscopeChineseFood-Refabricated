@@ -42,8 +42,7 @@ public class MooncakeMoldRecipeCategory implements IRecipeCategory<MooncakeMoldR
    public MooncakeMoldRecipeCategory(IGuiHelper guiHelper) {
       this.background = guiHelper.createBlankDrawable(WIDTH, HEIGHT);
       this.icon = guiHelper.createDrawableItemStack(new ItemStack(ModItems.MOONCAKE_MOLD));
-      // JEI 27.x 不再自动绘制槽位方框，需显式调用 setStandardSlotBackground；
-      // 箭头使用 JEI 自带样式（1.21.1 时 JEI 自动绘制的同款）
+      // 显式调用 setStandardSlotBackground 绘制槽位方框；箭头使用 JEI 自带样式
       this.arrow = guiHelper.getRecipeArrow();
    }
 

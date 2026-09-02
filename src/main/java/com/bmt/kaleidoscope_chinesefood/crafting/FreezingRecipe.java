@@ -26,8 +26,7 @@ public class FreezingRecipe extends BaseProcessingRecipe {
 
    @NotNull
    public PlacementInfo placementInfo() {
-      // 1.21.2+ 原版 RecipeManager 会丢弃 placementInfo 为空的配方（日志 "can't be placed"），
-      // 必须返回由真实配料构造的 PlacementInfo
+      // 由真实配料构造 PlacementInfo，供原版 RecipeManager 使用
       return PlacementInfo.create(this.input);
    }
 
