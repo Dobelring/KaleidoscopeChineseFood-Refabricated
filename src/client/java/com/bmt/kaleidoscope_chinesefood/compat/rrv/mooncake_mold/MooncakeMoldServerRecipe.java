@@ -21,18 +21,15 @@ public class MooncakeMoldServerRecipe implements ReliableServerRecipe {
             Identifier.fromNamespaceAndPath(KaleidoscopeChineseFood.MODID, "mooncake_mold"),
             MooncakeMoldServerRecipe::new
     );
-    private ItemStack mold;
     private ItemStack stuffedDough;
     private ItemStack result;
 
     public MooncakeMoldServerRecipe() {
-        this.mold = ItemStack.EMPTY;
         this.stuffedDough = ItemStack.EMPTY;
         this.result = ItemStack.EMPTY;
     }
 
-    private MooncakeMoldServerRecipe(ItemStack mold, ItemStack stuffedDough, ItemStack result) {
-        this.mold = mold;
+    private MooncakeMoldServerRecipe(ItemStack stuffedDough, ItemStack result) {
         this.stuffedDough = stuffedDough;
         this.result = result;
     }
@@ -40,7 +37,6 @@ public class MooncakeMoldServerRecipe implements ReliableServerRecipe {
     public static MooncakeMoldServerRecipe virtual() {
         Item dough = stuffedDoughItem();
         return new MooncakeMoldServerRecipe(
-                ModItems.MOONCAKE_MOLD.getDefaultInstance(),
                 dough != Items.AIR ? dough.getDefaultInstance() : ItemStack.EMPTY,
                 ModItems.RAW_MOONCAKE.getDefaultInstance()
         );
@@ -50,10 +46,6 @@ public class MooncakeMoldServerRecipe implements ReliableServerRecipe {
         String[] parts = MooncakeMoldItem.STUFFED_DOUGH_FOOD_ID.split(":", 2);
         Identifier id = Identifier.fromNamespaceAndPath(parts[0], parts[1]);
         return BuiltInRegistries.ITEM.getValue(id);
-    }
-
-    public ItemStack getMold() {
-        return this.mold;
     }
 
     public ItemStack getStuffedDough() {
@@ -66,14 +58,12 @@ public class MooncakeMoldServerRecipe implements ReliableServerRecipe {
 
     @Override
     public void writeToTag(CompoundTag tag) {
-        tag.put("mold", TagUtil.encodeItemStackOnServer(this.mold));
         tag.put("stuffed_dough", TagUtil.encodeItemStackOnServer(this.stuffedDough));
         tag.put("result", TagUtil.encodeItemStackOnServer(this.result));
     }
 
     @Override
     public void loadFromTag(CompoundTag tag) {
-        this.mold = TagUtil.decodeItemStackOnServer(tag.getCompound("mold").orElseGet(CompoundTag::new));
         this.stuffedDough = TagUtil.decodeItemStackOnServer(tag.getCompound("stuffed_dough").orElseGet(CompoundTag::new));
         this.result = TagUtil.decodeItemStackOnServer(tag.getCompound("result").orElseGet(CompoundTag::new));
     }

@@ -8,12 +8,10 @@ import java.util.List;
 import net.minecraft.world.item.ItemStack;
 
 public class MooncakeMoldViewRecipe implements ReliableClientRecipe {
-    private final ItemStack mold;
     private final ItemStack stuffedDough;
     private final ItemStack result;
 
     public MooncakeMoldViewRecipe(MooncakeMoldServerRecipe recipe) {
-        this.mold = recipe.getMold();
         this.stuffedDough = recipe.getStuffedDough();
         this.result = recipe.getResult();
     }
@@ -25,14 +23,13 @@ public class MooncakeMoldViewRecipe implements ReliableClientRecipe {
 
     @Override
     public void bindSlots(RecipeViewMenu.SlotFillContext slotFillContext) {
-        slotFillContext.bindSlot(0, SlotContent.of(this.mold));
-        slotFillContext.bindSlot(1, SlotContent.of(this.stuffedDough));
-        slotFillContext.bindSlot(2, SlotContent.of(this.result));
+        slotFillContext.bindSlot(0, SlotContent.of(this.stuffedDough));
+        slotFillContext.bindSlot(1, SlotContent.of(this.result));
     }
 
     @Override
     public List<SlotContent> getIngredients() {
-        return List.of(SlotContent.of(this.mold), SlotContent.of(this.stuffedDough));
+        return List.of(SlotContent.of(this.stuffedDough));
     }
 
     @Override

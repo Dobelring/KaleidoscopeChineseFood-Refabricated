@@ -37,15 +37,14 @@ public class MooncakeMoldViewType implements ReliableClientRecipeType {
 
     @Override
     public int getSlotCount() {
-        return 3;
+        return 2;
     }
 
     @Override
     public void placeSlots(RecipeViewMenu.SlotDefinition slotDefinition) {
-        // 模具 + 馅料 -> 生月饼
-        slotDefinition.addItemSlot(0, 34, 12);
-        slotDefinition.addItemSlot(1, 34, 47);
-        slotDefinition.addItemSlot(2, 91, 30);
+        // 馅料 -> 生月饼
+        slotDefinition.addItemSlot(0, 34, 30);
+        slotDefinition.addItemSlot(1, 91, 30);
     }
 
     @Override

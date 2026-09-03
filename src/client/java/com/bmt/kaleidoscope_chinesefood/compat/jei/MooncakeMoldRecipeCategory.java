@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
 /**
- * 月饼模具的虚拟展示条目：月饼模具（不消耗）+ 厨房乐事夹心面团 → 生月饼。
+ * 月饼模具的虚拟展示条目：厨房乐事夹心面团 → 生月饼。
  * 实际机制在 MooncakeMoldItem 里以代码实现（双手持物长按右键），
  * 不属于配方系统，因此查看器无法自动感知，这里手动提供展示。
  */
@@ -30,7 +30,7 @@ public class MooncakeMoldRecipeCategory implements IRecipeCategory<MooncakeMoldR
    public static final IRecipeType<Display> TYPE = IRecipeType.create("kaleidoscope_chinesefood", "mooncake_mold", Display.class);
 
    /** 虚拟条目（不对应任何 RecipeManager 配方）。 */
-   public record Display(ItemStack mold, ItemStack dough, ItemStack result) {}
+   public record Display(ItemStack dough, ItemStack result) {}
 
    public static final int WIDTH = 126;
    public static final int HEIGHT = 40;
@@ -48,7 +48,6 @@ public class MooncakeMoldRecipeCategory implements IRecipeCategory<MooncakeMoldR
 
    public static Display createDisplay() {
       return new Display(
-         new ItemStack(ModItems.MOONCAKE_MOLD),
          new ItemStack(stuffedDoughItem()),
          new ItemStack(ModItems.RAW_MOONCAKE)
       );
@@ -62,24 +61,20 @@ public class MooncakeMoldRecipeCategory implements IRecipeCategory<MooncakeMoldR
 
    @Override
    public void setRecipe(@NonNull IRecipeLayoutBuilder builder, Display display, @NonNull IFocusGroup focuses) {
-      builder.addSlot(RecipeIngredientRole.CRAFTING_STATION, 10, 12).setStandardSlotBackground().add(display.mold())
-         .addRichTooltipCallback(
-            (view, tooltip) -> tooltip.add(Component.translatable("jei.kaleidoscope_chinesefood.mold_keep"))
-         );
-
       if (display.dough().isEmpty()) {
-         builder.addSlot(RecipeIngredientRole.INPUT, 34, 12).setStandardSlotBackground();
+         builder.addSlot(RecipeIngredientRole.INPUT, 20, 12).setStandardSlotBackground();
       } else {
-         builder.addSlot(RecipeIngredientRole.INPUT, 34, 12).setStandardSlotBackground().add(display.dough());
+         builder.addSlot(RecipeIngredientRole.INPUT, 20, 12).setStandardSlotBackground().add(display.dough());
       }
 
-      builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 11).setOutputSlotBackground().add(display.result());
+      builder.addSlot(RecipeIngredientRole.OUTPUT, 86, 12).setOutputSlotBackground().add(display.result());
    }
 
    @Override
    public void draw(@NonNull Display display, @NonNull IRecipeSlotsView recipeSlotsView, @NonNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
       this.background.draw(guiGraphics);
-      this.arrow.draw(guiGraphics, 59, 12);
+      // 箭头中心 x=61 位于两物品中心 (28,20) 与 (94,20) 的正中点
+      this.arrow.draw(guiGraphics, 50, 12);
    }
 
    @Override
