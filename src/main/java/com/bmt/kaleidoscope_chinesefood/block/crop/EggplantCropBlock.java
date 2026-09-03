@@ -19,7 +19,7 @@ public class EggplantCropBlock extends BaseCropBlock {
 
     /**
      * 对齐 cookery 自家作物（ChiliCropBlock/LettuceCropBlock）：空手/镰刀右键成熟作物
-     * 直接收割并触发挥手动画。BaseCropBlock 只覆写了 useItemOn（手持路径），镰刀触发
+     * 直接收割并触发挥手动画。BaseCropBlock 只覆写了 useItemOn（手持物品路径），
      * TRY_WITH_EMPTY_HAND 回退后的 useWithoutItem 走原版默认 PASS，导致收割结果与
      * 挥手判定和辣椒/生菜不一致。手持骨粉等其他物品的路径由基类 useItemOn 处理
      * （成熟收割、未成熟催熟），与辣椒/生菜完全相同。

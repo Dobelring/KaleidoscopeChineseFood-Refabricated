@@ -388,8 +388,7 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
     @Override
     protected void loadAdditional(@NotNull ValueInput input) {
         super.loadAdditional(input);
-        // 必须先清空：BE 数据包是增量覆盖，取空后包内无 Items 数据，
-        // 直接 deserialize 会让客户端残留旧内容继续渲染（幽灵渲染）。
+        // 加载前先清空所有槽位，避免旧存档稀疏格式残留数据。
         this.inventory.clearAndDeserializeNBT(input.childOrEmpty("Inventory"));
         this.progress = input.getIntOr("Progress", 0);
         this.maxProgress = input.getIntOr("MaxProgress", 0);

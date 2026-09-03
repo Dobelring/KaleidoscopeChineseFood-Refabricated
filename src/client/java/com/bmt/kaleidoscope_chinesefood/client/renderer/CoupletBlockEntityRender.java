@@ -76,8 +76,7 @@ public class CoupletBlockEntityRender implements BlockEntityRenderer<CoupletBloc
             FormattedCharSequence singleChar = singleCharComponent.getVisualOrderText();
             float x = -this.font.width(singleChar) / 2.0F + ClientConfig.COUPLET_HORIZONTAL_OFFSET;
             float y = currentY + i * wordHeight;
-            // 注意：submitText 第8参数是文字颜色(ARGB)。旧版 drawInBatch 会把 0 自动调整为
-            // 不透明黑(adjustColor)，新管线不会——必须显式传 0xFF000000，否则文字全透明不可见。
+            // submitText 第 8 参数为文字颜色（ARGB 格式）。
             collector.submitText(poseStack, x, y, singleChar, false, DisplayMode.NORMAL, state.lightCoords, 0xFF000000, 0, 0);
          }
 

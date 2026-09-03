@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * cookery 作物（辣椒/生菜/稻米/番茄等所有继承 BaseCropBlock 的作物）
- * 26.1 骨粉催熟即掉落的本地修复。根因与我们 EggplantCropBlock 相同：
+ * 26.1 骨粉催熟即掉落：直接调用 doDrop 逻辑，不在 break 后额外处理。
  * 26.1 客户端 {@code BoneMealItem.useOn} 生长成功却返回 PASS（26.2 已改 SUCCESS），
  * 主手交互未消费 → 游戏继续尝试副手 → 副手空点击包到达服务端时作物已被主手包
  * 催熟到满级 → cookery 的满龄收获立即触发，表现为"骨粉一点又成熟又掉落"。

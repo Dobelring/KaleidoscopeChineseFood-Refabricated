@@ -74,8 +74,7 @@ public class SimpleItemHandler implements Container {
 
     @Override
     public void clearContent() {
-        // 注意保持容器尺寸：NonNullList.clear() 会把列表清成 0 长，
-        // 之后任何 getStackInSlot 都会越界；应逐格置空。
+        // NonNullList 不支持 clear()，逐槽置空。
         for (int i = 0; i < this.size; i++) {
             this.stacks.set(i, ItemStack.EMPTY);
         }
@@ -168,9 +167,7 @@ public class SimpleItemHandler implements Container {
     }
 
     /**
-     * 先逐格清空再反序列化。原版 {@code saveAllItems} 跳过空格子、{@code loadAllItems}
-     * 只覆盖列表里存在的格子：客户端增量同步（BE 数据包）时，罐子被取空的场景下
-     * 包内没有 Items 数据，旧内容会残留在客户端 BE 上造成"幽灵渲染"。
+     * 密集序列化：所有槽位（含空槽）都写入 NBT，确保客户端同步后不会残留旧数据。
      */
     public void clearAndDeserializeNBT(ValueInput input) {
         for (int i = 0; i < this.size; i++) {

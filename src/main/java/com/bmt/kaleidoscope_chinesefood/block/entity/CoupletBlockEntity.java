@@ -49,8 +49,7 @@ public class CoupletBlockEntity extends BlockEntity {
       this.setChanged();
       if (this.level != null && !this.level.isClientSide()) {
          this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
-         // sendBlockUpdated 只同步方块状态，对联文字属于 BlockEntity 数据，必须显式推送
-         // 数据包给附近玩家，否则客户端渲染器永远看不到新文字（与腌菜罐幽灵渲染同源）。
+         // sendBlockUpdated 只同步方块状态；对联文字属于 BlockEntity 数据，需显式推送数据包给附近玩家。
          if (this.level instanceof ServerLevel serverLevel) {
             ClientboundBlockEntityDataPacket packet = ClientboundBlockEntityDataPacket.create(this);
             BlockPos pos = this.getBlockPos();

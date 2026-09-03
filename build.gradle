@@ -58,8 +58,7 @@ dependencies {
     // - Jade：26.1 版构建已发布（26.1.9），接入腌菜罐发酵剩余时间显示（编译期依赖，运行时需自行安装 Jade）。
     compileOnly files("libs/Jade-mc26.1-Fabric-26.1.9.jar")
     clientCompileOnly files("libs/Jade-mc26.1-Fabric-26.1.9.jar")
-    // - EMI：截至 2026-08-25 未发布任何 26.x 构建（Modrinth 最新为 1.1.24+1.21.1）。
-    //   TODO: 待上游发布后参照 1.21.1 版 compat/emi 移植。
+    // EMI：截至 2026-08-25 未发布任何 26.x 构建，待上游发布后移植。
 }
 
 processResources {
@@ -116,6 +115,5 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(26)
     }
-    // 不再生成 sources jar：曾因误部署到 mods 目录（内含 fabric.mod.json）
-    // 与正式 jar 撞 mod id，导致 JEI 插件无法加载
+    // 不生成 sources jar（含 fabric.mod.json 会与正式 jar 冲突）。
 }

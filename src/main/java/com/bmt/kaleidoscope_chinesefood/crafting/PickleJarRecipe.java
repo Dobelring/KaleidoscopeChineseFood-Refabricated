@@ -27,8 +27,7 @@ import org.jetbrains.annotations.NotNull;
 public class PickleJarRecipe implements Recipe<PickleJarInput> {
    public static final int DEFAULT_FERMENT_TIME = 200;
    private final NonNullList<Ingredient> inputs;
-   // 26.x 配方解析阶段 Item 组件尚未绑定，直接构造 ItemStack 会抛
-   // "does not have components yet"；原版配方已改用 ItemStackTemplate 延迟物化。
+   // 26.x 配方解析阶段尚未绑定 Item 组件，使用 ItemStackTemplate 构造配方结果。
    private final ItemStackTemplate output;
    private final int fermentTime;
    public static final MapCodec<PickleJarRecipe> CODEC = RecordCodecBuilder.mapCodec(
