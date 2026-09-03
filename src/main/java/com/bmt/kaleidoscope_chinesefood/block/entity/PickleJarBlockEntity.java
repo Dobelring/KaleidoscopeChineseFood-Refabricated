@@ -159,7 +159,7 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
     public void clearRemoved() {
         super.clearRemoved();
         if (this.level != null && !this.level.isClientSide()) {
-            this.checkForValidRecipe();
+            this.hasValidRecipe = this.getCurrentRecipe().isPresent();
         }
     }
 
@@ -393,7 +393,7 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
         this.progress = input.getIntOr("Progress", 0);
         this.maxProgress = input.getIntOr("MaxProgress", 0);
         if (this.level != null && !this.level.isClientSide()) {
-            this.checkForValidRecipe();
+            this.hasValidRecipe = this.getCurrentRecipe().isPresent();
         }
     }
 
