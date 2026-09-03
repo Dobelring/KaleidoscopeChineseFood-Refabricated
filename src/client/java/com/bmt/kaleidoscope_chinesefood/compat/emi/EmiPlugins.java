@@ -152,11 +152,10 @@ public class EmiPlugins implements EmiPlugin {
         }
     }
 
-    /** 虚拟展示：月饼模具（不消耗）+ 厨房乐事夹心面团 → 生月饼。 */
+    /** 虚拟展示：厨房乐事夹心面团 → 生月饼。 */
     private static class MoldEmiRecipe extends BasicEmiRecipe {
         MoldEmiRecipe() {
             super(MOONCAKE_MOLD, KaleidoscopeChineseFood.id("emi/mooncake_mold"), 140, 46);
-            this.inputs.add(EmiStack.of(ModItems.MOONCAKE_MOLD));
             Item dough = stuffedDoughItem();
             this.inputs.add(dough != Items.AIR ? EmiStack.of(dough) : EmiStack.EMPTY);
             this.outputs.add(EmiStack.of(ModItems.RAW_MOONCAKE));
@@ -170,10 +169,11 @@ public class EmiPlugins implements EmiPlugin {
 
         @Override
         public void addWidgets(WidgetHolder widgets) {
-            widgets.addSlot(this.inputs.getFirst(), 36, 4);
-            widgets.addSlot(this.inputs.get(1), 36, 26);
-            widgets.addFillingArrow(68, 21, 2000);
-            widgets.addSlot(this.outputs.getFirst(), 106, 19).recipeContext(this);
+            // 输入槽 18x18、输出槽 large 26x26（生月饼方框更大），三者整体在 140 宽面板中水平居中
+            // 箭头中心 x=68 位于两物品中心 (33,23) 与 (103,23) 的中点，垂直中心均对齐 y≈23
+            widgets.addSlot(this.inputs.getFirst(), 24, 14);
+            widgets.addFillingArrow(56, 14, 2000);
+            widgets.addSlot(this.outputs.getFirst(), 90, 10).large(true).recipeContext(this);
         }
     }
 }
