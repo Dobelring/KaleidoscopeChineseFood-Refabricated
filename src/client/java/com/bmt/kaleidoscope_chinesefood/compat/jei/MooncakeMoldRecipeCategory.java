@@ -3,7 +3,6 @@ package com.bmt.kaleidoscope_chinesefood.compat.jei;
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.init.ModItems;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -19,10 +18,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * 月饼模具的虚拟展示条目：月饼模具（不消耗）+ 厨房乐事夹心面团 → 生月饼。
+ * 生月饼的虚拟展示条目：厨房乐事裹馅面食 → 生月饼。
  * 实际机制在 MooncakeMoldItem 里以代码实现（双手持物长按右键），
  * 不属于配方系统，在 JEI 查看器中手动提供展示条目。
- * 样式与 1.21.1 版一致：空白背景，模具槽为催化剂角色。
  */
 public class MooncakeMoldRecipeCategory implements IRecipeCategory<MooncakeMoldRecipeCategory.Display> {
     public static final IRecipeType<Display> TYPE =
@@ -37,11 +35,10 @@ public class MooncakeMoldRecipeCategory implements IRecipeCategory<MooncakeMoldR
     private final IDrawable arrow;
 
     /** 虚拟条目（不对应任何 RecipeManager 配方）。 */
-    public record Display(ItemStack mold, ItemStack dough, ItemStack result) {}
+    public record Display(ItemStack dough, ItemStack result) {}
 
     public MooncakeMoldRecipeCategory(IGuiHelper guiHelper) {
         this.icon = guiHelper.createDrawableItemLike(ModItems.MOONCAKE_MOLD);
-        // 原版风格的槽位方框：输入格普通样式，输出格带高亮
         this.slot = guiHelper.getSlotDrawable();
         this.outputSlot = guiHelper.getOutputSlot();
         this.arrow = guiHelper.createDrawable(FREEZER_TEXTURE, 49, 22, 25, 15);
@@ -49,7 +46,6 @@ public class MooncakeMoldRecipeCategory implements IRecipeCategory<MooncakeMoldR
 
     public static Display createDisplay() {
         return new Display(
-                new ItemStack(ModItems.MOONCAKE_MOLD),
                 new ItemStack(stuffedDoughItem()),
                 new ItemStack(ModItems.RAW_MOONCAKE)
         );
@@ -66,20 +62,12 @@ public class MooncakeMoldRecipeCategory implements IRecipeCategory<MooncakeMoldR
     public void draw(Display display, IRecipeSlotsView recipeSlotsView, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
         // 槽位方框：输入格 18x18 在物品坐标外扩 1px；输出格 26x26，物品在框内 +5,+5
         this.slot.draw(guiGraphics, 9, 11);
-        this.slot.draw(guiGraphics, 33, 11);
         this.outputSlot.draw(guiGraphics, 91, 6);
-        this.arrow.draw(guiGraphics, 59, 12);
+        this.arrow.draw(guiGraphics, 48, 12);
     }
 
     public void setRecipe(IRecipeLayoutBuilder builder, Display display, IFocusGroup focuses) {
-        // JEI 29.x 移除了 CATALYST 角色，CRAFTING_STATION 即旧版催化剂（工具、不消耗）
-        IRecipeSlotBuilder mold = builder.addSlot(RecipeIngredientRole.CRAFTING_STATION, 10, 12)
-                .add(display.mold());
-        // 模具不会被消耗，悬浮提示说明
-        mold.addRichTooltipCallback((view, tooltip) ->
-                tooltip.add(Component.translatable("jei.kaleidoscope_chinesefood.mold_keep")));
-
-        builder.addSlot(RecipeIngredientRole.INPUT, 34, 12)
+        builder.addSlot(RecipeIngredientRole.INPUT, 10, 12)
                 .add(display.dough());
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 11)

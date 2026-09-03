@@ -158,32 +158,17 @@ public class SimpleItemHandler implements Container {
     }
 
     // ----- NBT -----
-    // 密集序列化：所有槽位（含空槽）都写入 NBT，确保客户端同步后不会残留旧数据。
+    // 稀疏序列化（原版 ContainerHelper 格式）：跳过空槽位，仅写非空槽条目。
     public void serializeNBT(ValueOutput output) {
-        ValueOutput.ValueOutputList list = output.childrenList("Items");
-        for (int i = 0; i < this.size; i++) {
-            ItemStack stack = this.stacks.get(i);
-            ValueOutput entry = list.addChild();
-            entry.putByte("Slot", (byte) i);
-            if (!stack.isEmpty()) {
-                entry.store(ItemStack.MAP_CODEC, stack);
-            }
-        }
+        ContainerHelper.saveAllItems(output, this.stacks);
     }
 
     public void deserializeNBT(ValueInput input) {
-        // 加载前清空所有槽位，避免旧存档稀疏格式残留数据。
+        // 加载前清空所有槽位：ContainerHelper 稀疏格式只覆盖出现的槽位，
+        // 先清空可避免旧存档残留数据。
         for (int i = 0; i < this.size; i++) {
             this.stacks.set(i, ItemStack.EMPTY);
         }
-        for (ValueInput entry : input.childrenListOrEmpty("Items")) {
-            int slot = entry.getByteOr("Slot", (byte) -1);
-            if (slot < 0) {
-                slot = entry.getIntOr("Slot", -1);
-            }
-            if (slot >= 0 && slot < this.size) {
-                this.stacks.set(slot, entry.read(ItemStack.MAP_CODEC).orElse(ItemStack.EMPTY));
-            }
-        }
+        ContainerHelper.loadAllItems(input, this.stacks);
     }
 }
