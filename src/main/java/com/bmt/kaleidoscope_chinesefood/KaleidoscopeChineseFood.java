@@ -47,8 +47,7 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         ModRecipes.register();
         ModCreativeModeTabs.register();
 
-        // JEI 客户端查看自定义配方需要完整配方对象：26.x 原版不再向客户端同步全部配方，
-        // 需通过 Fabric 配方同步 API 按序列化器显式注册（配置阶段自动下发）。
+        // JEI 客户端查看自定义配方需要完整配方对象：通过 Fabric 配方同步 API 按序列化器显式注册，客户端自动下发。
         if (FabricLoader.getInstance().isModLoaded("jei")) {
             RecipeSynchronization.synchronizeRecipeSerializer(ModRecipes.PICKLE_JAR_SERIALIZER);
             RecipeSynchronization.synchronizeRecipeSerializer(ModRecipes.FREEZING_SERIALIZER);
@@ -66,9 +65,5 @@ public class KaleidoscopeChineseFood implements ModInitializer {
 
     public static Identifier id(String name) {
         return Identifier.fromNamespaceAndPath(MODID, name);
-    }
-
-    public static Identifier fromNamespaceAndPath(String namespace, String id) {
-        return Identifier.fromNamespaceAndPath(namespace, id);
     }
 }

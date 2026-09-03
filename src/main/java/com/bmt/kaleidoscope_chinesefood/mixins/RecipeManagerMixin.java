@@ -32,13 +32,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
- * 官方 1.1.10：修复玉米串串配方注册缺失 bug。
- * 原版在 recipe/cron/ 下以静态 json 逐个注册特定 mod 玉米的反解配方（1 串 → 6 玉米），
- * 遇到未覆盖的玉米物品（不在那几个 json 里）就没有反解配方。官方改为在配方加载完成后
- * 动态读取 c:crops/corn 标签，为每个玉米物品自动注册反解配方。
+ * 动态注册玉米串串反解配方。
+ * 在 RecipeManager.apply 尾部，读取 c:crops/corn 标签，为每个玉米物品自动注册
+ * 反解配方（1 串 → 6 玉米），确保所有 mod 的玉米物品都有反解途径。
  *
- * 26.x 的 RecipeManager 已重构为 RecipeMap（apply 只接收构建好的 RecipeMap，无 byType/byName
- * 字段），因此这里在 apply TAIL 收集现有配方 + 动态玉米反解配方，重建 RecipeMap 写回。
+ * 26.x 的 RecipeManager 已重构为 RecipeMap（apply 只接收构建好的 RecipeMap），
+ * 因此收集现有配方 + 动态玉米反解配方后重建 RecipeMap 写回。
  */
 @Mixin(RecipeManager.class)
 public abstract class RecipeManagerMixin {

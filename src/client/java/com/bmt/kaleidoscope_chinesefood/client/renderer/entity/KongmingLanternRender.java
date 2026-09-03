@@ -31,9 +31,8 @@ public class KongmingLanternRender extends EntityRenderer<KongmingLanternEntity,
       super.extractRenderState(entity, state, partialTick);
       state.yRotInterpolated = entity.getYRot() + (entity.getYRot() - entity.yRotO) * partialTick;
       state.lanternBlock = ((KongmingLanternBlock)ModBlocks.KONGMING_LANTERN).defaultBlockState();
-      // 与 vanilla FallingBlockRenderer 对齐：MovingBlockRenderState 是以 blockPos 为锚点的
-      // 单方块假世界，块模型的光照/AO 都按 blockPos 在真实光照引擎里采样。此前写死
-      // BlockPos.ZERO 导致光照采到世界原点（y≈0），孔明灯一点燃（转为实体渲染）就整体变暗。
+      // 与 vanilla FallingBlockRenderer 对齐：MovingBlockRenderState 以实体位置为锚点，
+      // 让块模型的光照/AO 按该位置在真实光照引擎中采样。
       BlockPos pos = BlockPos.containing(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
       state.movingBlock.randomSeedPos = pos;
       state.movingBlock.blockPos = pos;

@@ -30,8 +30,7 @@ public class FreezerMenu extends AbstractContainerMenu {
       this.container = container;
       this.isTop = container.getContainerSize() == 36;
       container.startOpen(playerInv.player);
-      // 26.x 的 Container.startOpen(ContainerUser) 是空默认方法，不会触达方块实体；
-      // 在菜单构造器中直接处理开门声音和方块状态（与 1.21.11 分支一致）
+      // 在菜单构造器中直接处理开门声音和方块状态。
       if (container instanceof FreezerBlockEntity be) {
          Level beLevel = be.getLevel();
          if (beLevel != null && !beLevel.isClientSide()) {
@@ -131,8 +130,7 @@ public class FreezerMenu extends AbstractContainerMenu {
       this.container.stopOpen(pPlayer);
       if (this.container instanceof FreezerBlockEntity be) {
          be.removeOpenMenu(this);
-         // 26.x 的 Container.stopOpen(ContainerUser) 是空默认方法，不会触达方块实体；
-         // 与 1.21.11 分支一致，在菜单关闭时直接处理关门声音和方块状态
+         // 在菜单关闭时直接处理关门声音和方块状态。
          Level beLevel = be.getLevel();
          if (beLevel != null && !beLevel.isClientSide()) {
             BlockPos bePos = be.getBlockPos();

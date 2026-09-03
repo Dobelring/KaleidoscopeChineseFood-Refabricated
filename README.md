@@ -28,8 +28,7 @@ This mod brings a variety of Chinese cuisine and folk items to "Kaleidoscope: Co
 ## Compat
 - **JEI**（编译期 API，运行时需自行安装 JEI 26.2）：查看腌菜罐 / 冷冻 / 冷藏配方。
   自定义配方通过 Fabric 配方同步（`RecipeSynchronization`）下发到客户端，JEI 未安装时自动跳过。
-- **EMI**: 暂不支持 —— 截至 2026-08-25 EMI 未发布任何 26.x 构建（Modrinth 最新为 1.1.24+1.21.1）。
-  TODO: 待上游发布后参照 1.21.1 版 `compat/emi` 移植。
+- **EMI**: 暂不支持（截至 2026-08-25 EMI 未发布 26.x 构建）。
 - **Jade**：显示腌菜罐发酵剩余时间（编译期依赖，运行时需自行安装 Jade 26.2）。
 
 ## Build

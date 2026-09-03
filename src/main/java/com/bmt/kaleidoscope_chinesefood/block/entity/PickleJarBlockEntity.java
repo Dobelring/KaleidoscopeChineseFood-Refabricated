@@ -42,8 +42,7 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
                                 PickleJarBlockEntity.this.getBlockState(),
                                 3
                         );
-                // sendBlockUpdated 只广播方块状态；渲染器读取的是客户端 BE 数据，
-                // 必须显式构造数据包推送给附近玩家（1.21.1 交接教训）
+                // sendBlockUpdated 只广播方块状态；同步 BE 数据需额外推送数据包给附近玩家。
                 PickleJarBlockEntity.this.pushDataPacket();
                 PickleJarBlockEntity.this.checkForValidRecipeAndTryStartFermenting();
             }
@@ -255,8 +254,7 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
             }
 
             ItemStack baseResult = r.getResultItem(level.registryAccess()).copy();
-            // 官方 1.1.10：修复成品数量异常——总量 = min(单份数量*4, 16)，
-            // 从前往后每槽最多 4 个填充（不再是四槽均分导致超量）
+            // 成品总量 = min(单份数量 × 4, 16)，每槽最多 4 个，从前往后依次填充。
             int totalOutput = Math.min(baseResult.getCount() * 4, 16);
             int remaining = totalOutput;
             for (int slot = 0; remaining > 0 && slot < 4; slot++) {

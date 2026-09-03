@@ -21,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 /**
  * 月饼模具的虚拟展示条目：月饼模具（不消耗）+ 厨房乐事夹心面团 → 生月饼。
  * 实际机制在 MooncakeMoldItem 里以代码实现（双手持物长按右键），
- * 不属于配方系统，因此查看器无法自动感知，这里手动提供展示。
+ * 不属于配方系统，在 JEI 查看器中手动提供展示条目。
  * 样式与 1.21.1 版一致：空白背景，模具槽为催化剂角色。
  */
 public class MooncakeMoldRecipeCategory implements IRecipeCategory<MooncakeMoldRecipeCategory.Display> {

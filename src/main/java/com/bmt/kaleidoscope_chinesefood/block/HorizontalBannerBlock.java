@@ -44,7 +44,6 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -158,7 +157,7 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
    @NotNull
    public BlockState playerWillDestroy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
       // 必须调用 super 以触发 spawnDestroyParticles → levelEvent(2001)，否则破坏横幅没有声音。
-      // 注意：26.2 中 onDestroyedByPlayer 已改名为 playerDestroy，此前的同名方法是死代码。
+      // 调用 super 触发 spawnDestroyParticles 播放破坏音效。
       return super.playerWillDestroy(level, pos, state, player);
    }
 

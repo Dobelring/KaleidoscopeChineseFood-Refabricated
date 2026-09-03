@@ -74,7 +74,7 @@ public class SimpleItemHandler implements Container {
 
     @Override
     public void clearContent() {
-        // NonNullList.clear() 会抛 UnsupportedOperationException，必须逐槽置空（1.21.1 移植交接教训）
+        // NonNullList 不支持 clear()，逐槽置空。
         for (int i = 0; i < this.size; i++) {
             this.stacks.set(i, ItemStack.EMPTY);
         }
@@ -158,11 +158,7 @@ public class SimpleItemHandler implements Container {
     }
 
     // ----- NBT -----
-    // 必须密集序列化（1.21.1 移植交接教训）：原版 ContainerHelper.saveAllItems 只写非空槽位，
-    // 而 loadAllItems 只覆盖"出现的槽位"、不清空其余槽位。Fabric 的 BE 数据同步走
-    // getUpdateTag/loadAdditional 路径，罐子被取空后同步包不含任何条目，客户端旧内容残留 →
-    // "取出后幽灵渲染"。这里改为所有槽位都写条目：非空槽位用 ItemStack.MAP_CODEC 内联
-    // id/count/components（与旧稀疏存档格式读取兼容），空槽位仅写 Slot 索引。
+    // 密集序列化：所有槽位（含空槽）都写入 NBT，确保客户端同步后不会残留旧数据。
     public void serializeNBT(ValueOutput output) {
         ValueOutput.ValueOutputList list = output.childrenList("Items");
         for (int i = 0; i < this.size; i++) {
@@ -176,8 +172,7 @@ public class SimpleItemHandler implements Container {
     }
 
     public void deserializeNBT(ValueInput input) {
-        // 加载前先全部清空：即使遇到旧存档的稀疏格式（只有非空槽位）也能正确还原，
-        // 空堆栈不能直接交给 MAP_CODEC 编解码（会抛异常/得空结果），已由 isEmpty 分支规避
+        // 加载前清空所有槽位，避免旧存档稀疏格式残留数据。
         for (int i = 0; i < this.size; i++) {
             this.stacks.set(i, ItemStack.EMPTY);
         }
