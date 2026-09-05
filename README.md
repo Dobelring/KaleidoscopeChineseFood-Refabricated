@@ -43,4 +43,7 @@ The artifact is produced in `build/libs/`.
 ## License
 This project is a **Fabric port** of the original Kaleidoscope Chinese Food (森罗物语：国味), which is licensed under **CC BY-NC-ND 4.0**. As a derivative work, the whole port is distributed under the same license — see [LICENSE](LICENSE).
 
+## Permission form the author
+<img width="837" height="307" alt="d0932e68-9eae-4895-9ad9-696ac16d4eaf" src="https://github.com/user-attachments/assets/28f601af-c46e-417d-a903-cc3f54a4b6b0" />
+
 Original mod by 辰笺渡月 (chenjdy / ChenjdyUltra), 白馒头 (BmtUltra), 白帆小喵L (bf_meow), witzig梦行粥. Fabric port by [Dobelring](https://github.com/Dobelring).
