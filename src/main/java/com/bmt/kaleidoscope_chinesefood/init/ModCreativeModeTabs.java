@@ -3,7 +3,6 @@ package com.bmt.kaleidoscope_chinesefood.init;
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.init.kaleidoscope_twilight.KTItems;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.FoodBiteRegistry;
-import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.PlateRegistry;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.TeacupRegistry;
 import java.util.Objects;
 import net.fabricmc.loader.api.FabricLoader;
@@ -73,12 +72,6 @@ public class ModCreativeModeTabs {
                             });
                             output.accept(TeacupRegistry.getItem(ModTea.LAPSANG));
                             output.accept(TeacupRegistry.getItem(ModTea.HK_MILK_TEA));
-                            PlateRegistry.PLATE_DATA_MAP.forEach((resourceLocation, plateData) -> {
-                                if (resourceLocation.getNamespace().equals("kaleidoscope_chinesefood")) {
-                                    Item plateItem = BuiltInRegistries.ITEM.get(resourceLocation);
-                                    output.accept(Objects.requireNonNull(plateItem));
-                                }
-                            });
                             output.accept(ModBlocks.BOWL_STACK);
                             output.accept(ModItems.MOONCAKE_MOLD);
                             output.accept(ModItems.CORN_RISTRA);
