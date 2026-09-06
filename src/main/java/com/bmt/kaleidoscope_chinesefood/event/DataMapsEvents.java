@@ -6,14 +6,18 @@ import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 import net.minecraft.advancements.critereon.EntityEquipmentPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.InvertedLootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
@@ -40,10 +44,12 @@ public class DataMapsEvents {
         CompostingChanceRegistry.INSTANCE.add(ModItems.EGGPLANT, 0.65F);
         CompostingChanceRegistry.INSTANCE.add(ModItems.EGGPLANT_SEED, 0.3F);
 
-        LootTableEvents.MODIFY.register((key, tableBuilder, source, conditions) -> {
+        LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
             if (source.isBuiltin()) {
                 ResourceLocation loc = key.location();
                 if (SHORT_GRASS.equals(loc) || TALL_GRASS.equals(loc)) {
+                    // 1.21 附魔为数据驱动注册表，Holder 需从 reload 提供的 registries 查询
+                    Holder<Enchantment> fortune = registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
                     tableBuilder.withPool(LootPool.lootPool()
                             .setRolls(ConstantValue.exactly(1.0F))
                             // 15% 概率
@@ -59,6 +65,8 @@ public class DataMapsEvents {
                                                     .head(ItemPredicate.Builder.item().of(STRAW_HATS)))
                                             .build()))
                             .when(ExplosionCondition.survivesExplosion())
+                            // 原版 loot JSON 的 apply_bonus fortune uniform_bonus_count ×2
+                            .apply(ApplyBonusCount.addUniformBonusCount(fortune, 2))
                             .add(LootItem.lootTableItem(ModItems.EGGPLANT_SEED)));
                 }
             }

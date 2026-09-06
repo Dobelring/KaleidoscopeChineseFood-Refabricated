@@ -2,5 +2,5 @@
   "type": "kaleidoscope_chinesefood:refrigerating",
   "input": { "item": "minecraft:water_bucket" },
   "output": { "id": "minecraft:powder_snow_bucket" },
-  "base_time": 2400
+  "base_time": 1200
 }

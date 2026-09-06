@@ -167,7 +167,7 @@ public class ModFoods {
    public static final FoodProperties STUFFED_EGGPLANT = new Builder()
       .nutrition(13)
       .saturationModifier(0.61F)
-      .effect(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.WARMTH, 3600), 1.0F)
+      .effect(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.WARMTH, 9600), 1.0F)
       .alwaysEdible()
       .build();
    public static final FoodProperties DRY_POT_POTATOES = new Builder()
