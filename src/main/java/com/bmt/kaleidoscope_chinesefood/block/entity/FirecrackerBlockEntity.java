@@ -7,7 +7,6 @@ import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -138,9 +137,4 @@ public class FirecrackerBlockEntity extends BlockEntity {
       return ClientboundBlockEntityDataPacket.create(this);
    }
 
-   public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-      if (pkt.getTag() != null) {
-         this.fuse = pkt.getTag().getInt("Fuse");
-      }
-   }
 }

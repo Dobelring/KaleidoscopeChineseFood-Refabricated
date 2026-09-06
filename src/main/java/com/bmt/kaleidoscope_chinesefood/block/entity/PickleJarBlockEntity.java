@@ -11,7 +11,6 @@ import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -29,6 +28,7 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
     public static final int SLOT_LIMIT = 4;
     public static final int TOTAL_SLOTS = 4;
     private boolean hasValidRecipe = false;
+    private boolean pendingRecipeCheck = false;
 
     public final SimpleItemHandler inventory = new SimpleItemHandler(4) {
         @Override
@@ -159,13 +159,19 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
     @Override
     public void clearRemoved() {
         super.clearRemoved();
+        // clearRemoved 在区块加载（promotePendingBlockEntity）期间被调用，此时对世界的任何同步 getChunk
+        // 都可能 getChunkBlocking 永久阻塞（watchdog 死锁崩溃），因此只打标记，延迟到下一个 tick 再查配方
         if (this.level != null && !this.level.isClientSide) {
-            this.checkForValidRecipe();
+            this.pendingRecipeCheck = true;
         }
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, PickleJarBlockEntity be) {
         if (!level.isClientSide) {
+            if (be.pendingRecipeCheck) {
+                be.pendingRecipeCheck = false;
+                be.checkForValidRecipeAndTryStartFermenting();
+            }
             if (!state.getValue(PickleJarBlock.OPEN) && state.getValue(PickleJarBlock.FERMENTING)) {
                 be.progress++;
                 if (be.progress >= be.maxProgress) {
@@ -363,9 +369,6 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    public void onDataPacket(@NotNull Connection net, @NotNull ClientboundBlockEntityDataPacket pkt, @NotNull Provider registries) {
-        this.loadCustomOnly(pkt.getTag(), registries);
-    }
 
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag, @NotNull Provider registries) {

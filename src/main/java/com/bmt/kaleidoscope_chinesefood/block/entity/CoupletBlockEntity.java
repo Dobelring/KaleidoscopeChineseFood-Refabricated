@@ -4,7 +4,6 @@ import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -34,23 +33,13 @@ public class CoupletBlockEntity extends BlockEntity {
       return ClientboundBlockEntityDataPacket.create(this);
    }
 
-   public void onDataPacket(@NotNull Connection net, ClientboundBlockEntityDataPacket pkt, @NotNull Provider registries) {
-      CompoundTag tag = pkt.getTag();
-      if (tag != null) {
-         this.loadAdditional(tag, registries);
-         this.setChanged();
-      }
-   }
-
+   // 客户端同步链路：sendBlockUpdated → getUpdatePacket → loadWithComponents → loadAdditional
+   // （1.21.1 BlockEntity 已无 onDataPacket/handleUpdateTag，勿覆写）
    @NotNull
    public CompoundTag getUpdateTag(@NotNull Provider registries) {
       CompoundTag tag = super.getUpdateTag(registries);
       tag.putString("CoupletText", this.coupletText);
       return tag;
-   }
-
-   public void handleUpdateTag(@NotNull CompoundTag tag, @NotNull Provider registries) {
-      this.loadAdditional(tag, registries);
    }
 
    public void setText(String newText) {

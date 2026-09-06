@@ -5,6 +5,7 @@ import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.mojang.serialization.MapCodec;
 import java.util.List;
 import java.util.Optional;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
@@ -13,8 +14,11 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -147,6 +151,14 @@ public class BowlStackBlock extends BaseEntityBlock {
 
    public boolean canBeReplaced(BlockState state, Fluid fluid) {
       return false;
+   }
+
+   public void appendHoverText(ItemStack stack, @NotNull Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+      super.appendHoverText(stack, context, tooltip, flag);
+      tooltip.add(
+         Component.translatable("block.kaleidoscope_chinesefood.bowl_stack.desc")
+            .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)
+      );
    }
 
    protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
