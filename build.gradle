@@ -39,6 +39,8 @@ dependencies {
     modImplementation files("libs/ForgeConfigAPIPort-v21.1.6-1.21.1-Fabric.jar")
     // Kaleidoscope Cookery (dependency: BowlFoodOnlyItem, ModEffects)
     modImplementation files("libs/kaleidoscope_cookery-1.4.1.4-fabric+mc1.21.1.jar")
+    // Kaleidoscope Doll (soft integration: contributor dolls via DollBlock/DollItem/DollEntityItem; runtime uses user's own doll jar)
+    modImplementation files("libs/kaleidoscopedoll-1.21.1-fabric-1.0.9.jar")
 
     // Optional compat integrations (compileOnly - not bundled)
     modCompileOnly files("libs/jei-1.21.1-fabric-19.44.0.403.jar")
