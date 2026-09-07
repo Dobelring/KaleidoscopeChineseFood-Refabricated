@@ -6,7 +6,6 @@ import com.bmt.kaleidoscope_chinesefood.crafting.FreezingRecipe;
 import com.bmt.kaleidoscope_chinesefood.crafting.RefrigeratingRecipe;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.bmt.kaleidoscope_chinesefood.init.ModRecipes;
-import com.bmt.kaleidoscope_chinesefood.init.ModSounds;
 import com.bmt.kaleidoscope_chinesefood.inventory.FreezerMenu;
 import java.util.Collections;
 import java.util.Optional;
@@ -18,13 +17,11 @@ import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -243,64 +240,14 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
       }
    }
 
-   public void removeOpenMenu(FreezerMenu menu) {
-      this.openMenus.remove(menu);
-   }
+    public void removeOpenMenu(FreezerMenu menu) {
+        this.openMenus.remove(menu);
+    }
 
-   public void startOpen(Player player) {
-      super.startOpen(player);
-      if (this.level != null && !this.level.isClientSide()) {
-         BlockState state = this.getBlockState();
-         boolean isTop = (Boolean)state.getValue(FreezerBlock.TOP);
-         if (isTop) {
-            boolean alreadyOpen = (Boolean)state.getValue(FreezerBlock.UPPER_OPEN);
-            // 已在打开态且当前无打开菜单时视为需要重新触发（自愈）
-            boolean stale = alreadyOpen && this.openMenus.isEmpty();
-            this.level.setBlock(this.worldPosition, (BlockState)state.setValue(FreezerBlock.UPPER_OPEN, true), 3);
-            if (!alreadyOpen || stale) {
-               this.level.playSound(null, this.worldPosition, ModSounds.FREEZER_OPEN, SoundSource.BLOCKS, 1.0F, 1.0F);
-            }
-         } else {
-            boolean alreadyOpen = (Boolean)state.getValue(FreezerBlock.LOWER_OPEN);
-            boolean stale = alreadyOpen && this.openMenus.isEmpty();
-            this.level.setBlock(this.worldPosition, (BlockState)state.setValue(FreezerBlock.LOWER_OPEN, true), 3);
-            BlockPos upperPos = this.worldPosition.above();
-            BlockState upperState = this.level.getBlockState(upperPos);
-            if (upperState.getBlock() instanceof FreezerBlock && (Boolean)upperState.getValue(FreezerBlock.TOP)) {
-               this.level.setBlock(upperPos, (BlockState)upperState.setValue(FreezerBlock.LOWER_OPEN, true), 3);
-            }
+    // 注意：1.21.11 的 Container.startOpen/stopOpen 参数是 ContainerUser，
+    // 不要在此覆写 Player 版本（不构成覆写、永不执行）；开关状态与音效由 FreezerMenu 负责。
 
-            if (!alreadyOpen || stale) {
-               this.level.playSound(null, this.worldPosition, ModSounds.FREEZER_OPEN, SoundSource.BLOCKS, 1.0F, 1.0F);
-            }
-         }
-      }
-   }
-
-   public void stopOpen(Player player) {
-      super.stopOpen(player);
-      if (this.level != null && !this.level.isClientSide()) {
-         BlockState state = this.getBlockState();
-         boolean isTop = (Boolean)state.getValue(FreezerBlock.TOP);
-         if (isTop) {
-            if ((Boolean)state.getValue(FreezerBlock.UPPER_OPEN)) {
-               this.level.setBlock(this.worldPosition, (BlockState)state.setValue(FreezerBlock.UPPER_OPEN, false), 3);
-               this.level.playSound(null, this.worldPosition, ModSounds.FREEZER_CLOSE, SoundSource.BLOCKS, 1.0F, 1.0F);
-            }
-         } else if ((Boolean)state.getValue(FreezerBlock.LOWER_OPEN)) {
-            this.level.setBlock(this.worldPosition, (BlockState)state.setValue(FreezerBlock.LOWER_OPEN, false), 3);
-            BlockPos upperPos = this.worldPosition.above();
-            BlockState upperState = this.level.getBlockState(upperPos);
-            if (upperState.getBlock() instanceof FreezerBlock && (Boolean)upperState.getValue(FreezerBlock.TOP)) {
-               this.level.setBlock(upperPos, (BlockState)upperState.setValue(FreezerBlock.LOWER_OPEN, false), 3);
-            }
-
-            this.level.playSound(null, this.worldPosition, ModSounds.FREEZER_CLOSE, SoundSource.BLOCKS, 1.0F, 1.0F);
-         }
-      }
-   }
-
-   private static class ProcessingResult {
+    private static class ProcessingResult {
       final boolean updated;
 
       ProcessingResult(boolean updated) {

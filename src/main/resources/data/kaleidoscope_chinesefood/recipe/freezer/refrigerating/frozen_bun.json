@@ -2,5 +2,5 @@
   "type": "kaleidoscope_chinesefood:refrigerating",
   "input": "kaleidoscope_cookery:mantou",
   "output": { "id": "kaleidoscope_twilight:frozen_bun" },
-  "base_time": 2400
+  "base_time": 1200
 }

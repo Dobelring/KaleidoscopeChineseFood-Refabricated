@@ -2,6 +2,7 @@ package com.bmt.kaleidoscope_chinesefood.init;
 
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.init.kaleidoscope_twilight.KTItems;
+import com.bmt.kaleidoscope_chinesefood.integration.KaleidoscopeDollIntegration;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.FoodBiteRegistry;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.TeacupRegistry;
 import net.fabricmc.loader.api.FabricLoader;
@@ -92,6 +93,8 @@ public class ModCreativeModeTabs {
                             output.accept(ModBlocks.HORIZONTAL_BANNER);
                             output.accept(ModBlocks.KONGMING_LANTERN);
                             output.accept(ModItems.EGGPLANT_SEED);
+                            // 贡献者玩偶（1.21.11 无 doll 模组，代注册进本模组物品栏）
+                            KaleidoscopeDollIntegration.DOLL_BLOCKS.forEach(block -> output.accept(block));
                             if (!FabricLoader.getInstance().isModLoaded("kaleidoscope_twilight")) {
                                 output.accept(KTItems.FROZEN_BUN);
                             }

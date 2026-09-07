@@ -9,10 +9,12 @@ import net.minecraft.sounds.SoundEvent;
 public class ModSounds {
     public static SoundEvent FREEZER_OPEN;
     public static SoundEvent FREEZER_CLOSE;
+    public static SoundEvent DUCK_TOY;
 
     public static void register() {
         FREEZER_OPEN = register("freezer_open");
         FREEZER_CLOSE = register("freezer_close");
+        DUCK_TOY = register("duck_toy");
     }
 
     private static SoundEvent register(String name) {

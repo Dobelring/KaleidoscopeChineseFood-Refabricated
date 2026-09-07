@@ -1,6 +1,7 @@
 {
   "pack": {
-    "pack_format": 34,
+    "pack_format": 75,
+    "supported_formats": [15, 255],
     "description": "KaleidoscopeChineseFood"
   }
 }

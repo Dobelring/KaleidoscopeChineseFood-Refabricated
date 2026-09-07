@@ -7,11 +7,14 @@ import net.minecraft.advancements.criterion.EntityEquipmentPredicate;
 import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.InvertedLootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
@@ -57,7 +60,10 @@ public class DataMapsEvents {
                                                             com.github.ysbbbbbb.kaleidoscopecookery.init.ModItems.STRAW_HAT_FLOWER)))
                                             .build()))
                             .when(ExplosionCondition.survivesExplosion())
-                            .add(LootItem.lootTableItem(ModItems.EGGPLANT_SEED)));
+                            .add(LootItem.lootTableItem(ModItems.EGGPLANT_SEED)
+                                    // 原版 apply_bonus fortune uniform_bonus_count bonusMultiplier 2
+                                    .apply(ApplyBonusCount.addUniformBonusCount(
+                                            conditions.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE), 2))));
                 }
             }
         });

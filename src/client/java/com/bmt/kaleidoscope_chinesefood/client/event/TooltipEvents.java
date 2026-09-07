@@ -57,6 +57,8 @@ public class TooltipEvents {
                     desc = Component.translatable("block.kaleidoscope_chinesefood.horizontal_banner.desc");
                 } else if (blockItem.getBlock() instanceof KongmingLanternBlock) {
                     desc = Component.translatable("block.kaleidoscope_chinesefood.kongming_lantern.desc");
+                } else if (blockItem.getBlock() instanceof com.bmt.kaleidoscope_chinesefood.block.BowlStackBlock) {
+                    desc = Component.translatable("block.kaleidoscope_chinesefood.bowl_stack.desc");
                 }
 
                 if (desc != null) {

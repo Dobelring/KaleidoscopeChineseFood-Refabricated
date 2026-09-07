@@ -1,10 +1,20 @@
 {
   "freezer_open": {
     "subtitle": "subtitles.block.freezer.open",
-    "sounds": ["kaleidoscope_chinesefood:freezer_open"]
+    "sounds": [
+      "kaleidoscope_chinesefood:freezer_open"
+    ]
   },
   "freezer_close": {
     "subtitle": "subtitles.block.freezer.close",
-    "sounds": ["kaleidoscope_chinesefood:freezer_close"]
+    "sounds": [
+      "kaleidoscope_chinesefood:freezer_close"
+    ]
+  },
+  "duck_toy": {
+    "subtitle": "subtitle.kaleidoscope_chinesefood.duck_toy",
+    "sounds": [
+      "kaleidoscope_chinesefood:duck_toy"
+    ]
   }
 }

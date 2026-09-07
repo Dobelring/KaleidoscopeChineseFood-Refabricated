@@ -1,6 +1,5 @@
 package com.bmt.kaleidoscope_chinesefood.client;
 
-import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.client.gui.FreezerScreen;
 import com.bmt.kaleidoscope_chinesefood.client.renderer.CoupletBlockEntityRender;
 import com.bmt.kaleidoscope_chinesefood.client.renderer.HorizontalBannerBlockEntityRender;
@@ -12,6 +11,7 @@ import com.bmt.kaleidoscope_chinesefood.init.ModEntities;
 import com.bmt.kaleidoscope_chinesefood.init.ModFoodBiteRegistry;
 import com.bmt.kaleidoscope_chinesefood.init.ModMenuTypes;
 import com.bmt.kaleidoscope_chinesefood.init.ModTea;
+import com.bmt.kaleidoscope_chinesefood.integration.KaleidoscopeDollIntegration;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -50,7 +50,7 @@ public class ClientSetup {
                 ModBlocks.KONGMING_LANTERN
         );
 
-        // 菜肴 / 盘子 / 茶杯 / 人偶方块由数据注册表驱动生成，按 id 从注册表反查后注册
+        // 菜肴 / 茶杯方块由数据注册表驱动生成，按 id 从注册表反查后注册
         List<Identifier> cutoutIds = new ArrayList<>(List.of(
                 ModFoodBiteRegistry.SICHUAN_BOILED_PORK_SLICES,
                 ModFoodBiteRegistry.SICHUAN_BOILED_FISH,
@@ -60,14 +60,18 @@ public class ClientSetup {
                 ModTea.LAPSANG,
                 ModTea.HK_MILK_TEA
         ));
-        for (int i = 0; i <= 5; i++) {
-            cutoutIds.add(KaleidoscopeChineseFood.id("doll_" + i));
-        }
         for (Identifier id : cutoutIds) {
             Block block = BuiltInRegistries.BLOCK.getValue(id);
             if (block != Blocks.AIR) {
                 BlockRenderLayerMap.putBlock(block, ChunkSectionLayer.CUTOUT);
             }
+        }
+
+        // 贡献者玩偶（1.21.11 ChunkSectionLayer 无 CUTOUT_MIPPED，按 liquor 1.21.11 实测用 CUTOUT；
+        // DollIntegration 注册的方块直接引用）
+        if (!KaleidoscopeDollIntegration.DOLL_BLOCKS.isEmpty()) {
+            BlockRenderLayerMap.putBlocks(ChunkSectionLayer.CUTOUT,
+                    KaleidoscopeDollIntegration.DOLL_BLOCKS.toArray(new Block[0]));
         }
     }
 }

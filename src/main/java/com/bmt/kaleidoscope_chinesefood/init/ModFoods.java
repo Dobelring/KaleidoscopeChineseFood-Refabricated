@@ -227,7 +227,7 @@ public class ModFoods {
       .alwaysEdible()
       .build();
    public static final Consumable STUFFED_EGGPLANT_C = Consumables.defaultFood()
-      .onConsume(new ApplyStatusEffectsConsumeEffect(List.of(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.WARMTH, 3600)), 1.0F))
+      .onConsume(new ApplyStatusEffectsConsumeEffect(List.of(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.WARMTH, 9600)), 1.0F))
       .build();
    public static final FoodProperties DRY_POT_POTATOES = new Builder()
       .nutrition(13)
