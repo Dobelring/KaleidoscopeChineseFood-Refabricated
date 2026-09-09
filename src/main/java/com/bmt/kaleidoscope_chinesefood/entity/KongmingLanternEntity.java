@@ -1,13 +1,12 @@
 package com.bmt.kaleidoscope_chinesefood.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.SynchedEntityData.Builder;
 import net.minecraft.server.level.ServerEntity;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
@@ -50,37 +49,40 @@ public class KongmingLanternEntity extends Entity {
       }
 
       this.setDeltaMovement(this.getDeltaMovement().multiply(0.95, 0.98, 0.95));
-      if (!this.level().isClientSide()) {
-         BlockPos abovePos = this.blockPosition().above();
-         if (this.spawnTick > 1 && this.level().getBlockState(abovePos).isSolid()) {
-            // 上方被实体方块挡住：直接熄灭，绝不覆盖对方的方块。
-            // remove() 会顺带清理尾焰光方块。
-            this.discard();
-         } else {
-            // 尾焰光源只允许放进空气中；遇到草/花等可替换方块时跳过，
-            // 不更新 lastLightPos（等飞回空中再继续），保证任何方块都不会被吞掉。
-            if (this.spawnTick > 1 && !abovePos.equals(this.lastLightPos) && this.level().getBlockState(abovePos).isAir()) {
-               if (this.level().getBlockState(this.lastLightPos).is(Blocks.LIGHT)) {
-                  this.level().removeBlock(this.lastLightPos, false);
-               }
+      if (!this.level().isClientSide() && this.spawnTick > 1) {
+         BlockPos currentPos = this.blockPosition().above();
+         if (!currentPos.equals(this.lastLightPos)) {
+            if (this.level().getBlockState(this.lastLightPos).is(Blocks.LIGHT)) {
+               this.level().removeBlock(this.lastLightPos, false);
+            }
 
+            // 只在空气格放置尾焰光方块，保留路径上的其他方块
+            if (this.level().getBlockState(currentPos).isAir()) {
                BlockState lightState = (BlockState)Blocks.LIGHT.defaultBlockState().setValue(LightBlock.LEVEL, 15);
-               this.level().setBlock(abovePos, lightState, 3);
-               this.lastLightPos = abovePos;
+               this.level().setBlock(currentPos, lightState, 3);
+               this.lastLightPos = currentPos;
             }
+         }
+      }
 
-            this.lifeTime--;
-            if (this.lifeTime <= 0) {
+      if (!this.level().isClientSide()) {
+         this.lifeTime--;
+         if (this.lifeTime <= 0) {
+            this.discard();
+         }
+
+         if (this.spawnTick > 1) {
+            if (this.level().getBlockState(this.blockPosition().above()).isSolid()) {
                this.discard();
             }
 
-            if (this.spawnTick > 1 && this.level().getBlockState(this.blockPosition()).is(Blocks.WATER)) {
+            if (this.level().getBlockState(this.blockPosition()).is(Blocks.WATER)) {
                this.discard();
             }
+         }
 
-            if (this.getY() > this.level().getMaxY() + 20) {
-               this.discard();
-            }
+         if (this.getY() > this.level().getMaxY() + 20) {
+            this.discard();
          }
       }
    }
@@ -90,7 +92,7 @@ public class KongmingLanternEntity extends Entity {
    }
 
    @Override
-   public boolean hurtServer(@NotNull ServerLevel serverLevel, @NotNull DamageSource damageSource, float amount) {
+   public boolean hurtServer(@NotNull net.minecraft.server.level.ServerLevel level, @NotNull net.minecraft.world.damagesource.DamageSource source, float amount) {
       return false;
    }
 

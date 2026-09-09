@@ -2,6 +2,7 @@ package com.bmt.kaleidoscope_chinesefood.client.renderer;
 
 import com.bmt.kaleidoscope_chinesefood.block.HorizontalBannerBlock;
 import com.bmt.kaleidoscope_chinesefood.block.entity.HorizontalBannerBlockEntity;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.renderstate.HorizontalBannerBlockEntityRenderState;
 import com.bmt.kaleidoscope_chinesefood.config.ClientConfig;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -10,7 +11,7 @@ import net.minecraft.client.gui.Font.DisplayMode;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
-import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer.CrumblingOverlay;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,57 +21,57 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import org.jspecify.annotations.Nullable;
 
-public class HorizontalBannerBlockEntityRender implements BlockEntityRenderer<HorizontalBannerBlockEntity, HorizontalBannerBlockEntityRender.State> {
+public class HorizontalBannerBlockEntityRender implements BlockEntityRenderer<HorizontalBannerBlockEntity, HorizontalBannerBlockEntityRenderState> {
    private static final Identifier COUPLET_FONT = Identifier.fromNamespaceAndPath("kaleidoscope_chinesefood", "couplet_font");
-   private static final Style COUPLET_STYLE = Style.EMPTY.withFont(new FontDescription.Resource(COUPLET_FONT));
    private final Font font;
 
    public HorizontalBannerBlockEntityRender(Context context) {
       this.font = context.font();
    }
 
-   public State createRenderState() {
-      return new State();
+   public HorizontalBannerBlockEntityRenderState createRenderState() {
+      return new HorizontalBannerBlockEntityRenderState();
    }
 
-   public void extractRenderState(HorizontalBannerBlockEntity blockEntity, State state, float partialTick, net.minecraft.world.phys.Vec3 cameraPos, net.minecraft.client.renderer.feature.ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
-      BlockEntityRenderState.extractBase(blockEntity, state, crumblingOverlay);
+   public void extractRenderState(
+      HorizontalBannerBlockEntity blockEntity, HorizontalBannerBlockEntityRenderState state, float partialTick, Vec3 vec3, @Nullable CrumblingOverlay crumblingOverlay
+   ) {
+      BlockEntityRenderer.super.extractRenderState(blockEntity, state, partialTick, vec3, crumblingOverlay);
       state.text = null;
-      state.facing = Direction.NORTH;
-      state.totalWidth = 1;
       BlockState blockState = blockEntity.getBlockState();
       if (blockState.getValue(HorizontalBannerBlock.PART) == HorizontalBannerBlock.BannerPart.SINGLE
-         || blockState.getValue(HorizontalBannerBlock.PART) == HorizontalBannerBlock.BannerPart.LEFT) {
+         || blockState.getValue(HorizontalBannerBlock.PART) == HorizontalBannerBlock.BannerPart.LEFT
+      ) {
          String firstLineText = blockEntity.getTruncatedLine(0);
          if (firstLineText != null && !firstLineText.isBlank()) {
             int totalWidth = 1;
             Direction facing = (Direction)blockState.getValue(HorizontalBannerBlock.FACING);
 
-            for (
-               BlockPos currentPos = blockEntity.getBlockPos().relative(facing.getCounterClockWise());
+            for (BlockPos currentPos = blockEntity.getBlockPos().relative(facing.getCounterClockWise());
                blockEntity.getLevel() != null
-                  && blockEntity.getLevel().getBlockState(currentPos).is(blockState.getBlock())
+                  && blockEntity.getLevel().getBlockState(currentPos).is(blockEntity.getBlockState().getBlock())
                   && blockEntity.getLevel().getBlockState(currentPos).getValue(HorizontalBannerBlock.FACING) == facing;
                currentPos = currentPos.relative(facing.getCounterClockWise())
             ) {
                totalWidth++;
             }
 
-            state.facing = facing;
-            state.totalWidth = totalWidth;
             state.text = firstLineText;
+            state.totalWidth = totalWidth;
+            state.facing = facing;
          }
       }
    }
 
-   public void submit(State state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
+   public void submit(HorizontalBannerBlockEntityRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
       String text = state.text;
       if (text != null) {
-         Direction facing = state.facing;
          poseStack.pushPose();
          poseStack.translate(0.5, 0.5, 0.5);
-         poseStack.mulPose(Axis.YP.rotationDegrees(-facing.toYRot()));
+         poseStack.mulPose(Axis.YP.rotationDegrees(-state.facing.toYRot()));
          poseStack.translate(0.0, 0.0, -0.48);
          float scale = ClientConfig.BANNER_TEXT_SCALE;
          poseStack.scale(scale, -scale, scale);
@@ -89,14 +90,17 @@ public class HorizontalBannerBlockEntityRender implements BlockEntityRenderer<Ho
 
          float baseX = unitCenterOffset + textCenterOffset + extraOffset;
          float currentY = ClientConfig.BANNER_VERTICAL_OFFSET;
+         Style coupletStyle = Style.EMPTY.withFont(new FontDescription.Resource(COUPLET_FONT));
          int charCount = text.length();
-
-         for (int i = 0; i < charCount; i++) {
-            Component singleCharComponent = Component.literal(String.valueOf(text.charAt(i))).withStyle(COUPLET_STYLE);
-            FormattedCharSequence singleChar = singleCharComponent.getVisualOrderText();
-            float x = baseX + i * charWidth;
-            // 同对联渲染器：第8参数是文字颜色(ARGB)，必须显式传不透明色，0 会全透明不可见。
-            collector.submitText(poseStack, x, currentY, singleChar, false, DisplayMode.NORMAL, state.lightCoords, 0xFF000000, 0, 0);
+         if (charCount > 0) {
+            for (int i = 0; i < charCount; i++) {
+               String singleCharStr = String.valueOf(text.charAt(i));
+               Component singleCharComponent = Component.literal(singleCharStr).withStyle(coupletStyle);
+               FormattedCharSequence singleChar = singleCharComponent.getVisualOrderText();
+               float x = baseX + i * charWidth;
+               // 传不透明黑色，保证文字始终可见
+               submitNodeCollector.submitText(poseStack, x, currentY, singleChar, false, DisplayMode.NORMAL, state.lightCoords, -16777216, 0, 0);
+            }
          }
 
          poseStack.popPose();
@@ -109,14 +113,5 @@ public class HorizontalBannerBlockEntityRender implements BlockEntityRenderer<Ho
 
    public int getViewDistance() {
       return 96;
-   }
-
-   public static class State extends BlockEntityRenderState {
-      public String text;
-      public Direction facing = Direction.NORTH;
-      public int totalWidth = 1;
-
-      public State() {
-      }
    }
 }

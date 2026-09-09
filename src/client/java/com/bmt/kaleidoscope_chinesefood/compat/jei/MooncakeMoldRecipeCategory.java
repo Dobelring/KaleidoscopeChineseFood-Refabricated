@@ -1,7 +1,7 @@
 package com.bmt.kaleidoscope_chinesefood.compat.jei;
 
-import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.init.ModItems;
+import com.bmt.kaleidoscope_chinesefood.item.MooncakeMoldItem;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -16,77 +16,90 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NonNull;
 
 /**
- * 生月饼的虚拟展示条目：厨房乐事裹馅面食 → 生月饼。
+ * 月饼模具的虚拟展示条目：厨房乐事夹心面团 → 生月饼。
  * 实际机制在 MooncakeMoldItem 里以代码实现（双手持物长按右键），
- * 不属于配方系统，在 JEI 查看器中手动提供展示条目。
+ * 不属于配方系统，因此查看器无法自动感知，这里手动提供展示。
  */
 public class MooncakeMoldRecipeCategory implements IRecipeCategory<MooncakeMoldRecipeCategory.Display> {
-    public static final IRecipeType<Display> TYPE =
-            IRecipeType.create(KaleidoscopeChineseFood.id("mooncake_mold"), Display.class);
-    private static final int WIDTH = 126;
-    private static final int HEIGHT = 40;
-    /** 复用 freezer 贴图中的进度箭头区域（与其他分类观感一致） */
-    private static final Identifier FREEZER_TEXTURE = KaleidoscopeChineseFood.id("textures/gui/jei/freezer.png");
-    private final IDrawable icon;
-    private final IDrawable slot;
-    private final IDrawable outputSlot;
-    private final IDrawable arrow;
+   public static final IRecipeType<Display> TYPE = IRecipeType.create("kaleidoscope_chinesefood", "mooncake_mold", Display.class);
 
-    /** 虚拟条目（不对应任何 RecipeManager 配方）。 */
-    public record Display(ItemStack dough, ItemStack result) {}
+   /** 虚拟条目（不对应任何 RecipeManager 配方）。 */
+   public record Display(ItemStack dough, ItemStack result) {}
 
-    public MooncakeMoldRecipeCategory(IGuiHelper guiHelper) {
-        this.icon = guiHelper.createDrawableItemLike(ModItems.MOONCAKE_MOLD);
-        this.slot = guiHelper.getSlotDrawable();
-        this.outputSlot = guiHelper.getOutputSlot();
-        this.arrow = guiHelper.createDrawable(FREEZER_TEXTURE, 49, 22, 25, 15);
-    }
+   public static final int WIDTH = 126;
+   public static final int HEIGHT = 40;
 
-    public static Display createDisplay() {
-        return new Display(
-                new ItemStack(stuffedDoughItem()),
-                new ItemStack(ModItems.RAW_MOONCAKE)
-        );
-    }
+   private final IDrawable background;
+   private final IDrawable icon;
+   private final IDrawable arrow;
 
-    private static Item stuffedDoughItem() {
-        return BuiltInRegistries.ITEM.getValue(Identifier.fromNamespaceAndPath("kaleidoscope_cookery", "stuffed_dough_food"));
-    }
+   public MooncakeMoldRecipeCategory(IGuiHelper guiHelper) {
+      this.background = guiHelper.createBlankDrawable(WIDTH, HEIGHT);
+      this.icon = guiHelper.createDrawableItemStack(new ItemStack(ModItems.MOONCAKE_MOLD));
+      // 显式调用 setStandardSlotBackground 绘制槽位方框；箭头使用 JEI 自带样式
+      this.arrow = guiHelper.getRecipeArrow();
+   }
 
-    public IRecipeType<Display> getRecipeType() {
-        return TYPE;
-    }
+   public static Display createDisplay() {
+      return new Display(
+         new ItemStack(stuffedDoughItem()),
+         new ItemStack(ModItems.RAW_MOONCAKE)
+      );
+   }
 
-    public void draw(Display display, IRecipeSlotsView recipeSlotsView, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
-        // 槽位方框：输入格 18x18 在物品坐标外扩 1px；输出格 26x26，物品在框内 +5,+5
-        this.slot.draw(guiGraphics, 9, 11);
-        this.outputSlot.draw(guiGraphics, 91, 6);
-        this.arrow.draw(guiGraphics, 48, 12);
-    }
+   private static Item stuffedDoughItem() {
+      String[] parts = MooncakeMoldItem.STUFFED_DOUGH_FOOD_ID.split(":", 2);
+      Identifier id = Identifier.fromNamespaceAndPath(parts[0], parts[1]);
+      return BuiltInRegistries.ITEM.getOptional(id).orElse(Items.AIR);
+   }
 
-    public void setRecipe(IRecipeLayoutBuilder builder, Display display, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 10, 12)
-                .add(display.dough());
+   @Override
+   public void setRecipe(@NonNull IRecipeLayoutBuilder builder, Display display, @NonNull IFocusGroup focuses) {
+      if (display.dough().isEmpty()) {
+         builder.addSlot(RecipeIngredientRole.INPUT, 20, 12).setStandardSlotBackground();
+      } else {
+         builder.addSlot(RecipeIngredientRole.INPUT, 20, 12).setStandardSlotBackground().add(display.dough());
+      }
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 11)
-                .add(display.result());
-    }
+      builder.addSlot(RecipeIngredientRole.OUTPUT, 86, 12).setOutputSlotBackground().add(display.result());
+   }
 
-    public Component getTitle() {
-        return Component.translatable("jei.kaleidoscope_chinesefood.mooncake_mold");
-    }
+   @Override
+   public void draw(@NonNull Display display, @NonNull IRecipeSlotsView recipeSlotsView, @NonNull GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
+      this.background.draw(guiGraphics);
+      // 箭头中心 x=61 位于两物品中心 (28,20) 与 (94,20) 的正中点
+      this.arrow.draw(guiGraphics, 50, 12);
+   }
 
-    public int getWidth() {
-        return WIDTH;
-    }
+   @Override
+   public @NotNull IRecipeType<Display> getRecipeType() {
+      return TYPE;
+   }
 
-    public int getHeight() {
-        return HEIGHT;
-    }
+   @Override
+   public @NotNull Component getTitle() {
+      return Component.translatable("jei.kaleidoscope_chinesefood.mooncake_mold");
+   }
 
-    public IDrawable getIcon() {
-        return this.icon;
-    }
+   @Override
+   public int getWidth() {
+      return WIDTH;
+   }
+
+   @Override
+   public int getHeight() {
+      return HEIGHT;
+   }
+
+   @Override
+   @Nullable
+   public IDrawable getIcon() {
+      return this.icon;
+   }
 }

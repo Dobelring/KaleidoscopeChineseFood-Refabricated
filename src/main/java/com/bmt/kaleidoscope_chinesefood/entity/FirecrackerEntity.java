@@ -15,19 +15,19 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
+import org.joml.Vector3f;
 
 public class FirecrackerEntity extends ThrowableItemProjectile {
    private static final Random RANDOM = new Random();
-   // 26.1: DustParticleOptions now takes an ARGB int color instead of Vector3f
-   private static final int[] FIREWORK_COLORS = new int[]{
-      0xFF0000,
-      0xFF8000,
-      0xFFFF00,
-      0x00FF00,
-      0x00FFFF,
-      0x0000FF,
-      0x8000FF,
-      0xFF00FF
+   private static final Vector3f[] FIREWORK_COLORS = new Vector3f[]{
+      new Vector3f(1.0F, 0.0F, 0.0F),
+      new Vector3f(1.0F, 0.5F, 0.0F),
+      new Vector3f(1.0F, 1.0F, 0.0F),
+      new Vector3f(0.0F, 1.0F, 0.0F),
+      new Vector3f(0.0F, 1.0F, 1.0F),
+      new Vector3f(0.0F, 0.0F, 1.0F),
+      new Vector3f(0.5F, 0.0F, 1.0F),
+      new Vector3f(1.0F, 0.0F, 1.0F)
    };
 
    public FirecrackerEntity(EntityType<FirecrackerEntity> pEntityType, Level pLevel) {
@@ -53,8 +53,8 @@ public class FirecrackerEntity extends ThrowableItemProjectile {
 
    private static void spawnFireworks(ServerLevel level, double x, double y, double z) {
       int type = RANDOM.nextInt(5);
-      int color = FIREWORK_COLORS[RANDOM.nextInt(FIREWORK_COLORS.length)];
-      DustParticleOptions dust = new DustParticleOptions(color, 1.0F);
+      Vector3f color = FIREWORK_COLORS[RANDOM.nextInt(FIREWORK_COLORS.length)];
+      DustParticleOptions dust = new DustParticleOptions(toARGB(color), 1.0F);
       switch (type) {
          case 0:
             level.sendParticles(dust, x, y, z, 50, 0.3, 0.3, 0.3, 0.1);
@@ -69,8 +69,8 @@ public class FirecrackerEntity extends ThrowableItemProjectile {
             level.sendParticles(ParticleTypes.FIREWORK, x, y, z, 18, 0.2, 0.6, 0.2, 0.12);
             break;
          case 3:
-            int color2 = FIREWORK_COLORS[RANDOM.nextInt(FIREWORK_COLORS.length)];
-            DustParticleOptions dust2 = new DustParticleOptions(color2, 1.0F);
+            Vector3f color2 = FIREWORK_COLORS[RANDOM.nextInt(FIREWORK_COLORS.length)];
+            DustParticleOptions dust2 = new DustParticleOptions(toARGB(color2), 1.0F);
             level.sendParticles(dust, x, y, z, 35, 0.35, 0.35, 0.35, 0.08);
             level.sendParticles(dust2, x, y + 0.4, z, 28, 0.5, 0.5, 0.5, 0.12);
             level.sendParticles(ParticleTypes.FIREWORK, x, y + 0.2, z, 24, 0.4, 0.4, 0.4, 0.1);
@@ -82,5 +82,11 @@ public class FirecrackerEntity extends ThrowableItemProjectile {
             level.sendParticles(dust, x, y, z, 22, 0.0, 0.2, -0.6, 0.12);
             level.sendParticles(ParticleTypes.FIREWORK, x, y, z, 14, 0.4, 0.2, 0.4, 0.12);
       }
+   }
+   private static int toARGB(Vector3f color) {
+      int r = (int)(color.x() * 255.0F) & 255;
+      int g = (int)(color.y() * 255.0F) & 255;
+      int b = (int)(color.z() * 255.0F) & 255;
+      return (r << 16) | (g << 8) | b;
    }
 }

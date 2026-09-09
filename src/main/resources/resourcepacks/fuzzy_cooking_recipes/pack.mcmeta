@@ -1,0 +1,7 @@
+{
+  "pack": {
+    "description": "模糊烹饪配方数据包",
+    "min_format": [107, 1],
+    "max_format": 107
+  }
+}

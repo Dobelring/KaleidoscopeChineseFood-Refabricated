@@ -11,12 +11,13 @@ import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
@@ -30,20 +31,23 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
     public static final int SLOT_LIMIT = 4;
     public static final int TOTAL_SLOTS = 4;
     private boolean hasValidRecipe = false;
+
     public final SimpleItemHandler inventory = new SimpleItemHandler(4) {
         @Override
         protected void onContentsChanged(int slot) {
             PickleJarBlockEntity.this.setChanged();
-            if (PickleJarBlockEntity.this.level != null && !PickleJarBlockEntity.this.level.isClientSide()) {
-                PickleJarBlockEntity.this.level
-                        .sendBlockUpdated(
-                                PickleJarBlockEntity.this.worldPosition,
-                                PickleJarBlockEntity.this.getBlockState(),
-                                PickleJarBlockEntity.this.getBlockState(),
-                                3
-                        );
-                // sendBlockUpdated 只广播方块状态；同步 BE 数据需额外推送数据包给附近玩家。
-                PickleJarBlockEntity.this.pushDataPacket();
+            if (PickleJarBlockEntity.this.level instanceof ServerLevel serverLevel) {
+                BlockPos pos = PickleJarBlockEntity.this.worldPosition;
+                BlockState state = PickleJarBlockEntity.this.getBlockState();
+                PickleJarBlockEntity.this.level.sendBlockUpdated(pos, state, state, 3);
+                // 向附近玩家显式推送 BE 数据包，确保腌菜罐内容物渲染立即刷新
+                ClientboundBlockEntityDataPacket packet =
+                        ClientboundBlockEntityDataPacket.create(PickleJarBlockEntity.this);
+                for (ServerPlayer player : serverLevel.players()) {
+                    if (player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 64.0 * 64.0) {
+                        player.connection.send(packet);
+                    }
+                }
                 PickleJarBlockEntity.this.checkForValidRecipeAndTryStartFermenting();
             }
         }
@@ -158,6 +162,10 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
     public void clearRemoved() {
         super.clearRemoved();
         if (this.level != null && !this.level.isClientSide()) {
+            // 26.2 死锁修复：clearRemoved 在区块 postLoad 期间执行，此阶段调用 setChanged →
+            // blockEntityChanged → getChunk 会同步等待"自身区块加载完成"，永久卡死地形加载。
+            // hasValidRecipe 不持久化，加载期只需静默刷新内存标记（配方查询不碰区块，安全）；
+            // setChanged/sendBlockUpdated 由发酵 tick 或交互路径（checkForValidRecipeAndTryStartFermenting）提交。
             this.hasValidRecipe = this.getCurrentRecipe().isPresent();
         }
     }
@@ -253,10 +261,11 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
                 this.inventory.setStackInSlot(i, ItemStack.EMPTY);
             }
 
-            ItemStack baseResult = r.getResultItem(level.registryAccess()).copy();
-            // 成品总量 = min(单份数量 × 4, 16)，每槽最多 4 个，从前往后依次填充。
+            ItemStack baseResult = r.getOutput();
+            // 总产出 = 单次配方产出 × 4（每格最多 4），上限 16，按槽位分配
             int totalOutput = Math.min(baseResult.getCount() * 4, 16);
             int remaining = totalOutput;
+
             for (int slot = 0; remaining > 0 && slot < 4; slot++) {
                 int count = Math.min(remaining, 4);
                 this.inventory.setStackInSlot(slot, baseResult.copyWithCount(count));
@@ -267,7 +276,6 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
         level.setBlock(pos, state.setValue(PickleJarBlock.FERMENTING, false).setValue(PickleJarBlock.DONE, recipe.isPresent()), 3);
         setChanged(level, pos, state);
         level.sendBlockUpdated(pos, state, this.getBlockState(), 3);
-        this.pushDataPacket();
         level.updateNeighborsAt(pos, state.getBlock());
         this.checkForValidRecipeAndTryStartFermenting();
     }
@@ -361,21 +369,6 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    /**
-     * 显式把 BE 数据包推送给附近的玩家。sendBlockUpdated 只同步方块状态，
-     * 客户端渲染器读取的是 BlockEntity 数据，需要这条额外的同步链路。
-     */
-    private void pushDataPacket() {
-        if (this.level instanceof ServerLevel serverLevel) {
-            ClientboundBlockEntityDataPacket packet = this.getUpdatePacket();
-            BlockPos pos = this.worldPosition;
-            for (ServerPlayer player : serverLevel.players()) {
-                if (player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 64.0 * 64.0) {
-                    player.connection.send(packet);
-                }
-            }
-        }
-    }
 
     @Override
     protected void saveAdditional(@NotNull ValueOutput output) {
@@ -392,7 +385,22 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
         this.progress = input.getIntOr("Progress", 0);
         this.maxProgress = input.getIntOr("MaxProgress", 0);
         if (this.level != null && !this.level.isClientSide()) {
-            this.hasValidRecipe = this.getCurrentRecipe().isPresent();
+            this.checkForValidRecipe();
+        }
+    }
+
+    @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+        super.preRemoveSideEffects(pos, state);
+        // 容器内容掉落迁移到 BlockEntity.preRemoveSideEffects
+        if (this.level != null && !this.level.isClientSide()) {
+            for (int i = 0; i < 4; i++) {
+                ItemStack stack = this.inventory.getStackInSlot(i);
+                if (!stack.isEmpty()) {
+                    net.minecraft.world.Containers.dropItemStack(this.level, pos.getX(), pos.getY(), pos.getZ(), stack);
+                }
+            }
+            this.level.updateNeighbourForOutputSignal(pos, state.getBlock());
         }
     }
 

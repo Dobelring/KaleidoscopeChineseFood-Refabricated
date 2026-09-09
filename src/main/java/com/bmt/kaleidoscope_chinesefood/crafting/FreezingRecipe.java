@@ -3,7 +3,7 @@ package com.bmt.kaleidoscope_chinesefood.crafting;
 import com.bmt.kaleidoscope_chinesefood.init.ModRecipes;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import org.jetbrains.annotations.NotNull;
@@ -13,22 +13,17 @@ public class FreezingRecipe extends BaseProcessingRecipe {
       super(input, output, baseTime);
    }
 
-   @Override
-   protected String bookCategoryName() {
-      return "freezing";
-   }
-
    @NotNull
-   public RecipeSerializer<? extends Recipe<FreezerInput>> getSerializer() {
+   public RecipeSerializer<FreezingRecipe> getSerializer() {
       return ModRecipes.FREEZING_SERIALIZER;
    }
 
    @NotNull
-   public RecipeType<? extends Recipe<FreezerInput>> getType() {
+   public RecipeType<FreezingRecipe> getType() {
       return ModRecipes.FREEZING_TYPE;
    }
 
-   public static RecipeSerializer<FreezingRecipe> makeBaseSerializer() {
-      return BaseProcessingRecipe.makeSerializer(FreezingRecipe::new);
+   public RecipeBookCategory recipeBookCategory() {
+      return ModRecipes.FREEZING_CATEGORY;
    }
 }

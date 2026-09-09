@@ -14,9 +14,9 @@ import com.bmt.kaleidoscope_chinesefood.block.SaltBlock;
 import com.bmt.kaleidoscope_chinesefood.block.crop.EggplantCropBlock;
 import com.bmt.kaleidoscope_chinesefood.block.misc.CornBlock;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -44,7 +44,14 @@ public class ModBlocks {
     public static EggplantCropBlock EGGPLANT_CROP;
 
     public static void register() {
-        CORN_RISTRA = register("corn_ristra", CornBlock::new);
+        // 外部化 Properties 显式指定 GRASS 音效等属性
+        CORN_RISTRA = register(
+                "corn_ristra",
+                p -> new CornBlock(
+                        p.mapColor(MapColor.COLOR_BROWN).noCollision().instabreak().sound(SoundType.GRASS)
+                                .pushReaction(PushReaction.DESTROY)
+                )
+        );
         FREEZER = registerFreezer("freezer");
         FREEZER_GREEN = registerFreezer("freezer_green");
         FREEZER_ORANGE = registerFreezer("freezer_orange");
@@ -79,11 +86,12 @@ public class ModBlocks {
         KONGMING_LANTERN = register(
                 "kongming_lantern", p -> new KongmingLanternBlock(p.instabreak().strength(0.1F).noOcclusion().sound(SoundType.WOOD))
         );
-        // lazy suppliers break the crop-block <-> seed-item registration cycle
+        // 作物属性对齐 cookery：noCollision 保证作物非实心、可被耕地承接
         EGGPLANT_CROP = register(
                 "eggplant_crop",
                 p -> new EggplantCropBlock(
-                        p.mapColor(MapColor.PLANT).noCollision().randomTicks().instabreak().sound(SoundType.CROP).pushReaction(PushReaction.DESTROY),
+                        p.mapColor(MapColor.PLANT).noCollision().randomTicks().instabreak()
+                                .sound(SoundType.CROP).pushReaction(PushReaction.DESTROY),
                         () -> ModItems.EGGPLANT,
                         () -> ModItems.EGGPLANT_SEED
                 )
@@ -93,12 +101,15 @@ public class ModBlocks {
     private static FreezerBlock registerFreezer(String name) {
         return register(
                 name,
-                p -> new FreezerBlock(p.mapColor(MapColor.METAL).strength(5.0F, 1200.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion())
+                p -> new FreezerBlock(
+                        p.mapColor(MapColor.METAL).strength(5.0F, 1200.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion()
+                )
         );
     }
 
     private static <T extends Block> T register(String name, Function<Properties, T> factory) {
-        ResourceKey<Block> key = ResourceKey.create(BuiltInRegistries.BLOCK.key(), KaleidoscopeChineseFood.id(name));
-        return Registry.register(BuiltInRegistries.BLOCK, key, factory.apply(Properties.of().setId(key)));
+        ResourceKey<Block> key = ResourceKey.create(Registries.BLOCK, KaleidoscopeChineseFood.id(name));
+        T block = factory.apply(Properties.of().setId(key));
+        return Registry.register(BuiltInRegistries.BLOCK, key, block);
     }
 }

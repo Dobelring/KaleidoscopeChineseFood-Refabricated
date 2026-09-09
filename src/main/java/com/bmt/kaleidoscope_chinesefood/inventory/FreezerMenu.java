@@ -30,14 +30,14 @@ public class FreezerMenu extends AbstractContainerMenu {
       this.container = container;
       this.isTop = container.getContainerSize() == 36;
       container.startOpen(playerInv.player);
-      // 在菜单构造器中直接处理开门声音和方块状态。
+      // 在菜单构造器中处理开门声音和方块状态
       if (container instanceof FreezerBlockEntity be) {
          Level beLevel = be.getLevel();
          if (beLevel != null && !beLevel.isClientSide()) {
             BlockPos bePos = be.getBlockPos();
             BlockState state = beLevel.getBlockState(bePos);
-            boolean isTopState = state.getValue(FreezerBlock.TOP);
-            if (isTopState) {
+            boolean isTop = state.getValue(FreezerBlock.TOP);
+            if (isTop) {
                beLevel.setBlock(bePos, state.setValue(FreezerBlock.UPPER_OPEN, true), 3);
             } else {
                beLevel.setBlock(bePos, state.setValue(FreezerBlock.LOWER_OPEN, true), 3);
@@ -130,13 +130,12 @@ public class FreezerMenu extends AbstractContainerMenu {
       this.container.stopOpen(pPlayer);
       if (this.container instanceof FreezerBlockEntity be) {
          be.removeOpenMenu(this);
-         // 在菜单关闭时直接处理关门声音和方块状态。
          Level beLevel = be.getLevel();
          if (beLevel != null && !beLevel.isClientSide()) {
             BlockPos bePos = be.getBlockPos();
             BlockState state = beLevel.getBlockState(bePos);
-            boolean isTopState = state.getValue(FreezerBlock.TOP);
-            if (isTopState) {
+            boolean isTop = state.getValue(FreezerBlock.TOP);
+            if (isTop) {
                beLevel.setBlock(bePos, state.setValue(FreezerBlock.UPPER_OPEN, false), 3);
             } else {
                beLevel.setBlock(bePos, state.setValue(FreezerBlock.LOWER_OPEN, false), 3);

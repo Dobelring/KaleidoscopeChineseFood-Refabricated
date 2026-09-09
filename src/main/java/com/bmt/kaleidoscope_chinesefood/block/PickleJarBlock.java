@@ -6,11 +6,9 @@ import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -55,15 +53,7 @@ public class PickleJarBlock extends BaseEntityBlock {
       return CODEC;
    }
 
-   protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-      return this.handleUse(state, level, pos, player, stack);
-   }
-
    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-      return this.handleUse(state, level, pos, player, player.getMainHandItem());
-   }
-
-   private InteractionResult handleUse(BlockState state, Level level, BlockPos pos, Player player, ItemStack held) {
       if (level.isClientSide()) {
          return InteractionResult.SUCCESS;
       } else {
@@ -93,6 +83,7 @@ public class PickleJarBlock extends BaseEntityBlock {
             level.playSound(null, pos, isOpen ? SoundEvents.BARREL_CLOSE : SoundEvents.BARREL_OPEN, SoundSource.BLOCKS, 1.0F, 1.0F);
             return InteractionResult.CONSUME;
          } else if ((Boolean)state.getValue(OPEN)) {
+            ItemStack held = player.getMainHandItem();
             if (held.isEmpty()) {
                jar.extractItem(player);
             } else {
@@ -102,24 +93,8 @@ public class PickleJarBlock extends BaseEntityBlock {
             level.playSound(null, pos, held.isEmpty() ? SoundEvents.ITEM_FRAME_REMOVE_ITEM : SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 0.8F, 1.1F);
             return InteractionResult.CONSUME;
          } else {
-            // 开关盖统一为"空手+潜行右键"切换；关闭状态下普通右键不做任何事(PASS)，
-            // 保留手持物品时原版"对着方块放置"的行为不被误触发。
             return InteractionResult.PASS;
          }
-      }
-   }
-
-   @Override
-   protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean moved) {
-      if (level.getBlockEntity(pos) instanceof PickleJarBlockEntity be) {
-         for (int i = 0; i < 4; i++) {
-            ItemStack stack = be.inventory.getStackInSlot(i);
-            if (!stack.isEmpty()) {
-               Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), stack);
-            }
-         }
-
-         level.updateNeighbourForOutputSignal(pos, this);
       }
    }
 

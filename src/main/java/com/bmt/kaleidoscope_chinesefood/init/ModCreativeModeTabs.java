@@ -2,10 +2,14 @@ package com.bmt.kaleidoscope_chinesefood.init;
 
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.init.kaleidoscope_twilight.KTItems;
+import com.bmt.kaleidoscope_chinesefood.integration.KaleidoscopeDollIntegration;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.FoodBiteRegistry;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.TeacupRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -62,15 +66,17 @@ public class ModCreativeModeTabs {
                             output.accept(ModItems.YANGZHOU_FRIED_RICE);
                             output.accept(ModItems.LAMB_PILAF);
                             output.accept(ModItems.STEAMED_RICE_ROLLS);
-                            ModFoodBiteRegistry.forEach((id, foodData) -> {
-                                Item item = BuiltInRegistries.ITEM.getValue(id);
-                                if (item != Items.AIR) {
+                            FoodBiteRegistry.FOOD_DATA_MAP.forEach((resourceLocation, foodData) -> {
+                                if (resourceLocation.getNamespace().equals("kaleidoscope_chinesefood")) {
+                                    Item item = BuiltInRegistries.ITEM.getValue(resourceLocation);
+                                    if (item == null || item == Items.AIR) {
+                                        return;
+                                    }
                                     output.accept(item);
                                 }
                             });
-                            output.accept(ModTea.LAPSANG_ITEM);
-                            output.accept(ModTea.HK_MILK_TEA_ITEM);
-                            output.accept(ModPlateRegistry.GOLDEN_APPLE_PLATTER_ITEM);
+                            acceptTeaIfRegistered(output, ModTea.LAPSANG);
+                            acceptTeaIfRegistered(output, ModTea.HK_MILK_TEA);
                             output.accept(ModBlocks.BOWL_STACK);
                             output.accept(ModItems.MOONCAKE_MOLD);
                             output.accept(ModItems.CORN_RISTRA);
@@ -87,11 +93,21 @@ public class ModCreativeModeTabs {
                             output.accept(ModBlocks.HORIZONTAL_BANNER);
                             output.accept(ModBlocks.KONGMING_LANTERN);
                             output.accept(ModItems.EGGPLANT_SEED);
+                            // 贡献者玩偶（1.21.11 无 doll 模组，代注册进本模组物品栏）
+                            KaleidoscopeDollIntegration.DOLL_BLOCKS.forEach(block -> output.accept(block));
                             if (!FabricLoader.getInstance().isModLoaded("kaleidoscope_twilight")) {
                                 output.accept(KTItems.FROZEN_BUN);
                             }
                         })
                         .build()
         );
+    }
+
+    /** 未注册的茶杯（getItem 返回 AIR）跳过，避免 accept 非法堆栈 */
+    private static void acceptTeaIfRegistered(CreativeModeTab.Output output, Identifier teaId) {
+        Item item = TeacupRegistry.getItem(teaId);
+        if (item != null && item != Items.AIR) {
+            output.accept(item);
+        }
     }
 }

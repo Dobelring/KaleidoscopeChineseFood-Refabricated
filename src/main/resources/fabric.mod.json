@@ -20,11 +20,20 @@
     "client": [
       "com.bmt.kaleidoscope_chinesefood.client.KaleidoscopeChineseFoodClient"
     ],
+    "server": [
+      "com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFoodServer"
+    ],
     "jei_mod_plugin": [
       "com.bmt.kaleidoscope_chinesefood.compat.jei.Plugins"
     ],
     "jade": [
       "com.bmt.kaleidoscope_chinesefood.compat.jade.ModPlugin"
+    ],
+    "rrv": [
+      "com.bmt.kaleidoscope_chinesefood.compat.rrv.ModRRVCommonPlugin"
+    ],
+    "rrv_client": [
+      "com.bmt.kaleidoscope_chinesefood.compat.rrv.ModRRVPlugin"
     ]
   },
   "mixins": [
@@ -32,7 +41,7 @@
   ],
   "depends": {
     "fabricloader": ">=0.18",
-    "fabric-api": ">=0.158",
+    "fabric-api": ">=0.153",
     "minecraft": "~26.2",
     "java": ">=25",
     "kaleidoscope_cookery": "*",

@@ -2,5 +2,5 @@
   "type": "kaleidoscope_chinesefood:freezing",
   "input": "minecraft:ice",
   "output": { "id": "minecraft:packed_ice" },
-  "base_time": 3600
+  "base_time": 1800
 }

@@ -1,29 +1,29 @@
 package com.bmt.kaleidoscope_chinesefood.crafting;
 
-import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * 26.1.2 Recipe 接口：assemble(T) 不再接收 HolderLookup；group()/showNotification()
+ * 变为抽象方法必须实现；getResultItem 已从接口删除（JEI 展示走本类 getOutput()）。
+ * 26.1 起 decode 期 item 组件未初始化，配方 result 必须用 ItemStackTemplate 存储，
+ * JSON 格式 {"id","count"} 与 ItemStack 完全兼容。
+ */
 public abstract class BaseProcessingRecipe implements Recipe<FreezerInput> {
    protected final Ingredient input;
-   // 26.x 配方解析阶段尚未绑定 Item 组件，使用 ItemStackTemplate 构造配方结果。
    protected final ItemStackTemplate output;
    protected final int baseTime;
    public static final int TIME_MULTIPLIER = 5;
@@ -48,7 +48,7 @@ public abstract class BaseProcessingRecipe implements Recipe<FreezerInput> {
       return this.output.create();
    }
 
-   public boolean showNotification() {
+   public boolean isSpecial() {
       return false;
    }
 
@@ -57,14 +57,12 @@ public abstract class BaseProcessingRecipe implements Recipe<FreezerInput> {
       return "";
    }
 
-   /** 物化产物（运行期调用，此时 Item 组件已绑定）。 */
-   @NotNull
-   public ItemStack getOutput() {
-      return this.output.create();
+   public boolean showNotification() {
+      return false;
    }
 
-   @NotNull
-   public ItemStack getResultItem(@NotNull Provider registries) {
+   /** 供 JEI/RRV 展示：模板即时物化成 ItemStack */
+   public ItemStack getOutput() {
       return this.output.create();
    }
 
@@ -77,18 +75,10 @@ public abstract class BaseProcessingRecipe implements Recipe<FreezerInput> {
 
    @NotNull
    public PlacementInfo placementInfo() {
-      return PlacementInfo.NOT_PLACEABLE;
+      return PlacementInfo.create(this.input);
    }
 
-   @NotNull
-   public RecipeBookCategory recipeBookCategory() {
-      return ProcessingBookCategories.get(this.bookCategoryName());
-   }
-
-   /** Subclasses provide the category name registered under the mod namespace. */
-   protected abstract String bookCategoryName();
-
-   protected static <T extends BaseProcessingRecipe> MapCodec<T> buildCodec(BaseProcessingRecipe.RecipeFactory<T> factory) {
+   public static <T extends BaseProcessingRecipe> MapCodec<T> buildCodec(BaseProcessingRecipe.RecipeFactory<T> factory) {
       return RecordCodecBuilder.mapCodec(
          inst -> inst.group(
                Ingredient.CODEC.fieldOf("input").forGetter(r -> r.input),
@@ -99,13 +89,13 @@ public abstract class BaseProcessingRecipe implements Recipe<FreezerInput> {
       );
    }
 
-   protected static <T extends BaseProcessingRecipe> StreamCodec<RegistryFriendlyByteBuf, T> buildStreamCodec(
+   public static <T extends BaseProcessingRecipe> StreamCodec<RegistryFriendlyByteBuf, T> buildStreamCodec(
       final BaseProcessingRecipe.RecipeFactory<T> factory
    ) {
       return new StreamCodec<RegistryFriendlyByteBuf, T>() {
          public T decode(RegistryFriendlyByteBuf buf) {
-            Ingredient ingredient = (Ingredient)Ingredient.CONTENTS_STREAM_CODEC.decode(buf);
-            ItemStackTemplate result = (ItemStackTemplate)ItemStackTemplate.STREAM_CODEC.decode(buf);
+            Ingredient ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buf);
+            ItemStackTemplate result = ItemStackTemplate.STREAM_CODEC.decode(buf);
             int time = buf.readVarInt();
             return factory.create(ingredient, result, time);
          }
@@ -118,35 +108,8 @@ public abstract class BaseProcessingRecipe implements Recipe<FreezerInput> {
       };
    }
 
-   /**
-    * 26.1: {@code RecipeSerializer} is now a final record of (MapCodec, StreamCodec);
-    * custom serializer classes can no longer implement it.
-    */
-   protected static <T extends BaseProcessingRecipe> RecipeSerializer<T> makeSerializer(BaseProcessingRecipe.RecipeFactory<T> factory) {
-      return new RecipeSerializer<>(buildCodec(factory), buildStreamCodec(factory));
-   }
-
-   /** Lazily registers and caches RecipeBookCategory entries under the mod namespace. */
-   static final class ProcessingBookCategories {
-      private static RecipeBookCategory FREEZING;
-      private static RecipeBookCategory REFRIGERATING;
-
-      static RecipeBookCategory get(String name) {
-         return switch (name) {
-            case "freezing" -> FREEZING != null ? FREEZING : (FREEZING = register("freezing"));
-            case "refrigerating" -> REFRIGERATING != null ? REFRIGERATING : (REFRIGERATING = register("refrigerating"));
-            default -> throw new IllegalArgumentException("Unknown processing book category: " + name);
-         };
-      }
-
-      private static RecipeBookCategory register(String name) {
-         Identifier id = Identifier.fromNamespaceAndPath(KaleidoscopeChineseFood.MODID, name);
-         return (RecipeBookCategory)Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY, id, new RecipeBookCategory());
-      }
-   }
-
    @FunctionalInterface
-   protected interface RecipeFactory<T extends BaseProcessingRecipe> {
-      T create(Ingredient var1, ItemStackTemplate var2, int var3);
+   public interface RecipeFactory<T extends BaseProcessingRecipe> {
+      T create(Ingredient input, ItemStackTemplate output, int baseTime);
    }
 }
