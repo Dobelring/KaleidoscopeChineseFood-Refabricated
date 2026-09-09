@@ -3,6 +3,8 @@ package com.bmt.kaleidoscope_chinesefood.integration;
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.block.DollBlock;
 import com.bmt.kaleidoscope_chinesefood.item.DollItem;
+import net.fabricmc.loader.api.FabricLoader;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,19 +24,22 @@ import net.minecraft.world.level.material.PushReaction;
 
 /**
  * 贡献者玩偶联动（1.21.11 无 kaleidoscope_doll 模组，国味自实现，与 liquor 1.21.11 同方案）：
- * doll_0..5 以 kaleidoscope_chinesefood 命名空间无条件注册（贡献者收藏品，无合成配方）。
- * 原版 1.1.10 的"仅 doll 在场且无 nether/liquor 时注册"选择器与 Impl 内部的
- * "doll 在场即跳过"守卫互相矛盾（死代码），故此处不复刻条件。
+ * doll_0..5 以 kaleidoscope_chinesefood 命名空间注册（贡献者收藏品，无合成配方）。
+ * liquor 自实现同款玩偶且其玩偶带贡献者命名与波奇布丁交互——liquor 在场时本模组跳过注册，
+ * 避免两套玩偶重复（与 1.21.1/原版 1.1.10 的 "仅 liquor 缺席时注册" 语义一致）。
  * 作者名 tooltip 键 contributor_0..5 在国味 lang 中已有。
  */
 public final class KaleidoscopeDollIntegration {
-    /** 注册后的全部玩偶方块（客户端渲染层注册用） */
+    /** 注册后的全部玩偶方块（客户端渲染层注册用；liquor 在场时保持为空） */
     public static final List<Block> DOLL_BLOCKS = new ArrayList<>();
 
     private KaleidoscopeDollIntegration() {
     }
 
     public static void register() {
+        if (FabricLoader.getInstance().isModLoaded("kaleidoscope_world_liquor")) {
+            return;
+        }
         Map<String, String> authorTooltips = new LinkedHashMap<>();
         authorTooltips.put("doll_0", "tooltip.kaleidoscope_doll.doll.contributor_0");
         authorTooltips.put("doll_1", "tooltip.kaleidoscope_doll.doll.contributor_1");
