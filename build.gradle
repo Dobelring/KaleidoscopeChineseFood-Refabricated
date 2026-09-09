@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.9.2'
+    id 'net.fabricmc.fabric-loom-remap' version '1.17-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -15,7 +15,23 @@ repositories {
         name = 'Fabric'
         url = 'https://maven.fabricmc.net/'
     }
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+    }
+    maven {
+        name = "Jared's maven"
+        url = 'https://maven.blamejared.com/'
+    }
+    maven {
+        name = 'ModMaven'
+        url = 'https://modmaven.dev'
+    }
     mavenCentral()
+    maven {
+        name = 'Fuzs Mod Resources'
+        url = 'https://raw.githubusercontent.com/Fuzss/modresources/main/maven/'
+    }
 }
 
 loom {
@@ -36,16 +52,20 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     // Forge Config API Port (provides net.neoforged.neoforge.common.ModConfigSpec on Fabric)
-    modImplementation files("libs/ForgeConfigAPIPort-v21.1.6-1.21.1-Fabric.jar")
+    modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forgeconfigapiport_version}"
     // Kaleidoscope Cookery (dependency: BowlFoodOnlyItem, ModEffects)
-    modImplementation files("libs/kaleidoscope_cookery-1.4.1.4-fabric+mc1.21.1.jar")
+    modImplementation "maven.modrinth:kaleidoscope-cookery-refabricated:${project.kaleidoscope_cookery_version}"
     // Kaleidoscope Doll (soft integration: contributor dolls via DollBlock/DollItem/DollEntityItem; runtime uses user's own doll jar)
-    modImplementation files("libs/kaleidoscopedoll-1.21.1-fabric-1.0.9.jar")
+    modImplementation "maven.modrinth:kaleidoscope-doll:${project.kaleidoscope_doll_version}"
 
     // Optional compat integrations (compileOnly - not bundled)
-    modCompileOnly files("libs/jei-1.21.1-fabric-19.44.0.403.jar")
-    modCompileOnly files("libs/Jade-1.21.1-Fabric-15.10.6.jar")
-    modCompileOnly files("libs/emi-fabric-1.1.24+1.21.1.jar")
+    modCompileOnly("mezz.jei:jei-${project.minecraft_version}-fabric:${project.jei_version}")
+    modCompileOnly("maven.modrinth:jade:${project.jade_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+    modCompileOnly("maven.modrinth:emi:${project.emi_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
 }
 
 processResources {
