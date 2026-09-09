@@ -31,6 +31,9 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
     public static final int SLOT_LIMIT = 4;
     public static final int TOTAL_SLOTS = 4;
     private boolean hasValidRecipe = false;
+    // 区块加载（setBlockEntity→clearRemoved）期间对世界的同步 getChunk 可能永久阻塞（watchdog 死锁），
+    // clearRemoved 只打标记，延迟到下一个 tick 再查配方
+    private boolean pendingRecipeCheck = false;
 
     public final SimpleItemHandler inventory = new SimpleItemHandler(4) {
         @Override
@@ -161,13 +164,19 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
     @Override
     public void clearRemoved() {
         super.clearRemoved();
+        // clearRemoved 在区块加载（setBlockEntity）期间被调用，此时对世界的任何同步 getChunk
+        // 都可能永久阻塞（watchdog 死锁崩溃），因此只打标记，延迟到下一个 tick 再查配方
         if (this.level != null && !this.level.isClientSide()) {
-            this.checkForValidRecipe();
+            this.pendingRecipeCheck = true;
         }
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, PickleJarBlockEntity be) {
         if (!level.isClientSide()) {
+            if (be.pendingRecipeCheck) {
+                be.pendingRecipeCheck = false;
+                be.checkForValidRecipeAndTryStartFermenting();
+            }
             if (!state.getValue(PickleJarBlock.OPEN) && state.getValue(PickleJarBlock.FERMENTING)) {
                 be.progress++;
                 if (be.progress >= be.maxProgress) {
