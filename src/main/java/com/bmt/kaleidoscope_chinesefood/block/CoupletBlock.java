@@ -5,27 +5,32 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.serialization.MapCodec;
+import java.util.List;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.network.Filterable;
-import net.minecraft.util.ProblemReporter;
-import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.component.WritableBookContent;
-import net.minecraft.world.item.component.WrittenBookContent;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -38,10 +43,10 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -156,9 +161,9 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
          BlockState aboveState = level.getBlockState(above);
          if (this.isCoupletBlockWithPart(aboveState, (Direction)state.getValue(FACING), CoupletBlock.CoupletPart.LOWER)) {
             if (level.getBlockEntity(above) instanceof CoupletBlockEntity oldCoupletBE) {
-               CompoundTag data = oldCoupletBE.saveCustomOnly(level.registryAccess());
+               String coupletText = oldCoupletBE.getText();
                if (level.getBlockEntity(pos) instanceof CoupletBlockEntity newCoupletBE) {
-                  newCoupletBE.loadCustomOnly(TagValueInput.create(ProblemReporter.DISCARDING, level.registryAccess(), data));
+                  newCoupletBE.setText(coupletText);
                   newCoupletBE.setChanged();
                }
             }
@@ -220,8 +225,8 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
       }
 
       if (shouldBreak) {
-         if (!level.isClientSide() && level instanceof Level actualLevel) {
-            this.destroyAndDrop(actualLevel, pos);
+         if (!level.isClientSide()) {
+            this.destroyAndDrop((Level)level, pos);
          }
 
          return Blocks.AIR.defaultBlockState();
@@ -332,15 +337,8 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
       level.setBlock(masterPos, Blocks.AIR.defaultBlockState(), 35);
    }
 
-   protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-      return this.tryWriteText(level, pos, stack);
-   }
-
-   protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-      return this.tryWriteText(level, pos, player.getMainHandItem());
-   }
-
-   private InteractionResult tryWriteText(Level level, BlockPos pos, ItemStack heldItem) {
+   // 1.21.2+ 手持物品时走 useItemOn：书与笔写入对联的逻辑在此实现
+   protected InteractionResult useItemOn(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
       if (level.isClientSide()) {
          return InteractionResult.SUCCESS;
       } else {
@@ -356,6 +354,35 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
          }
 
          if (level.getBlockEntity(targetPos) instanceof CoupletBlockEntity coupletEntity) {
+            ItemStack heldItem = player.getItemInHand(hand);
+            String targetText = this.getTextFromBook(heldItem);
+            if (targetText != null && !targetText.isBlank()) {
+               coupletEntity.setText(targetText);
+               return InteractionResult.CONSUME;
+            }
+         }
+
+         return InteractionResult.PASS;
+      }
+   }
+
+   protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+      if (level.isClientSide()) {
+         return InteractionResult.SUCCESS;
+      } else {
+         BlockPos targetPos = pos;
+
+         for (int i = 0; i < 3; i++) {
+            BlockState currentState = level.getBlockState(targetPos);
+            if (!currentState.is(this) || currentState.getValue(PART) == CoupletBlock.CoupletPart.LOWER) {
+               break;
+            }
+
+            targetPos = targetPos.below();
+         }
+
+         if (level.getBlockEntity(targetPos) instanceof CoupletBlockEntity coupletEntity) {
+            ItemStack heldItem = player.getMainHandItem();
             String targetText = this.getTextFromBook(heldItem);
             if (targetText != null && !targetText.isBlank()) {
                coupletEntity.setText(targetText);
@@ -369,42 +396,29 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 
    @Nullable
    private String getTextFromBook(ItemStack stack) {
-      // 书与笔 (writable_book)：WRITABLE_BOOK_CONTENT，页为 Filterable<String>
-      WritableBookContent writableContent = (WritableBookContent)stack.get(DataComponents.WRITABLE_BOOK_CONTENT);
-      if (writableContent != null && !writableContent.pages().isEmpty()) {
-         String firstPage = (String)((Filterable)writableContent.pages().get(0)).raw();
-         return this.extractTextFromPage(firstPage);
-      }
-
-      // 成书 (written_book)：WRITTEN_BOOK_CONTENT，页为 Filterable<Component>
-      WrittenBookContent writtenContent = (WrittenBookContent)stack.get(DataComponents.WRITTEN_BOOK_CONTENT);
-      if (writtenContent != null && !writtenContent.pages().isEmpty()) {
-         String text = writtenContent.pages().get(0).raw().getString();
-         return text.isBlank() ? null : text;
-      }
-
-      return null;
-   }
-
-   @Nullable
-   private String extractTextFromPage(String firstPage) {
-      if (firstPage.isBlank()) {
-         return null;
-      } else {
-         try {
-            JsonElement element = JsonParser.parseString(firstPage);
-            if (element.isJsonObject()) {
-               JsonObject obj = element.getAsJsonObject();
-               if (obj.has("text")) {
-                  return obj.get("text").getAsString();
+      WritableBookContent bookContent = (WritableBookContent)stack.get(DataComponents.WRITABLE_BOOK_CONTENT);
+      if (bookContent != null && !bookContent.pages().isEmpty()) {
+         String firstPage = (String)((Filterable)bookContent.pages().get(0)).raw();
+         if (firstPage.isBlank()) {
+            return null;
+         } else {
+            try {
+               JsonElement element = JsonParser.parseString(firstPage);
+               if (element.isJsonObject()) {
+                  JsonObject obj = element.getAsJsonObject();
+                  if (obj.has("text")) {
+                     return obj.get("text").getAsString();
+                  }
+               } else if (element.isJsonPrimitive()) {
+                  return element.getAsString();
                }
-            } else if (element.isJsonPrimitive()) {
-               return element.getAsString();
+            } catch (Exception var6) {
             }
-         } catch (Exception var6) {
-         }
 
-         return firstPage;
+            return firstPage;
+         }
+      } else {
+         return null;
       }
    }
 

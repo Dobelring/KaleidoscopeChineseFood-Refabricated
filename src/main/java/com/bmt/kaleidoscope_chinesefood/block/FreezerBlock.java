@@ -5,7 +5,6 @@ import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -14,9 +13,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -81,6 +82,11 @@ public class FreezerBlock extends BaseEntityBlock {
       level.setBlock(abovePos, aboveState, 3);
    }
 
+      @NotNull
+   public BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
+      return super.updateShape(state, level, tickAccess, pos, direction, neighborPos, neighborState, random);
+   }
+
    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
       return SHAPE;
    }
@@ -90,14 +96,11 @@ public class FreezerBlock extends BaseEntityBlock {
    }
 
    @Override
-   protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean moved) {
+   protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
+      super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
       BlockPos otherPos = state.getValue(TOP) ? pos.below() : pos.above();
       if (level.getBlockState(otherPos).getBlock() instanceof FreezerBlock) {
          level.destroyBlock(otherPos, false);
-      }
-
-      if (level.getBlockEntity(pos) instanceof FreezerBlockEntity freezerBE) {
-         freezerBE.drops();
       }
    }
 
@@ -112,7 +115,7 @@ public class FreezerBlock extends BaseEntityBlock {
       @NotNull BlockHitResult hit
    ) {
       this.tryOpenMenu(level, pos, player);
-      return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
+      return InteractionResult.SUCCESS;
    }
 
    @NotNull
@@ -120,12 +123,14 @@ public class FreezerBlock extends BaseEntityBlock {
       @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hit
    ) {
       this.tryOpenMenu(level, pos, player);
-      return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
+      return InteractionResult.SUCCESS;
    }
 
    private void tryOpenMenu(Level level, BlockPos pos, Player player) {
-      if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer && level.getBlockEntity(pos) instanceof FreezerBlockEntity freezerBE) {
-         serverPlayer.openMenu(freezerBE);
+      if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
+         if (level.getBlockEntity(pos) instanceof FreezerBlockEntity freezerBE) {
+            serverPlayer.openMenu(freezerBE);
+         }
       }
    }
 

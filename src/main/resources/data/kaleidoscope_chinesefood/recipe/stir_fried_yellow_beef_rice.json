@@ -1,7 +1,10 @@
 {
-  "type": "kaleidoscope_cookery:rice_bowl",
+  "type": "minecraft:crafting_shapeless",
   "category": "misc",
-  "ingredient": "kaleidoscope_chinesefood:stir_fried_yellow_beef",
+  "ingredients": [
+    "kaleidoscope_chinesefood:stir_fried_yellow_beef",
+    "kaleidoscope_cookery:rice"
+  ],
   "result": {
     "id": "kaleidoscope_chinesefood:stir_fried_yellow_beef_rice"
   }

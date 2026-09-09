@@ -79,7 +79,7 @@ public class SaltBlock extends Block {
             }
          }
 
-         return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
+         return InteractionResult.SUCCESS;
       }
    }
 

@@ -50,6 +50,7 @@ public class ClientConfig {
     private static final double BANNER_VERTICAL_OFFSET_MAX = 5.0;
 
     public static void init() {
+        // FCAP v5：注册 + 事件挂载 API 改名
         ConfigRegistry.INSTANCE.register(KaleidoscopeChineseFood.MODID, ModConfig.Type.CLIENT, SPEC);
         ModConfigEvents.loading(KaleidoscopeChineseFood.MODID).register(ClientConfig::onLoad);
         ModConfigEvents.reloading(KaleidoscopeChineseFood.MODID).register(ClientConfig::onReload);

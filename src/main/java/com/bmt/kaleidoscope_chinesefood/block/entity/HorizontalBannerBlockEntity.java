@@ -6,9 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,12 +26,12 @@ public class HorizontalBannerBlockEntity extends BlockEntity {
 
    protected void saveAdditional(@NotNull ValueOutput output) {
       super.saveAdditional(output);
-      output.putString("BannerText", this.bannerText);
+      output.putString(BANNER_TEXT_KEY, this.bannerText);
    }
 
    protected void loadAdditional(@NotNull ValueInput input) {
       super.loadAdditional(input);
-      this.bannerText = input.getStringOr("BannerText", "");
+      this.bannerText = input.getStringOr(BANNER_TEXT_KEY, "");
    }
 
    public ClientboundBlockEntityDataPacket getUpdatePacket() {
@@ -42,7 +41,7 @@ public class HorizontalBannerBlockEntity extends BlockEntity {
    @NotNull
    public CompoundTag getUpdateTag(@NotNull Provider registries) {
       CompoundTag tag = super.getUpdateTag(registries);
-      tag.putString("BannerText", this.bannerText);
+      tag.putString(BANNER_TEXT_KEY, this.bannerText);
       return tag;
    }
 
@@ -51,16 +50,6 @@ public class HorizontalBannerBlockEntity extends BlockEntity {
       this.setChanged();
       if (this.level != null && !this.level.isClientSide()) {
          this.level.sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
-         // sendBlockUpdated 只同步方块状态；横幅文字属于 BlockEntity 数据，需显式推送数据包给附近玩家。
-         if (this.level instanceof ServerLevel serverLevel) {
-            ClientboundBlockEntityDataPacket packet = ClientboundBlockEntityDataPacket.create(this);
-            BlockPos pos = this.getBlockPos();
-            for (ServerPlayer player : serverLevel.players()) {
-               if (player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 64.0 * 64.0) {
-                  player.connection.send(packet);
-               }
-            }
-         }
       }
    }
 

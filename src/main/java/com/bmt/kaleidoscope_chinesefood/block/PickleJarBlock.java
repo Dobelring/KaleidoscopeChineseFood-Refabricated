@@ -6,7 +6,6 @@ import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
@@ -96,20 +95,6 @@ public class PickleJarBlock extends BaseEntityBlock {
          } else {
             return InteractionResult.PASS;
          }
-      }
-   }
-
-   @Override
-   protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean moved) {
-      if (level.getBlockEntity(pos) instanceof PickleJarBlockEntity be) {
-         for (int i = 0; i < 4; i++) {
-            ItemStack stack = be.inventory.getStackInSlot(i);
-            if (!stack.isEmpty()) {
-               Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), stack);
-            }
-         }
-
-         level.updateNeighbourForOutputSignal(pos, this);
       }
    }
 

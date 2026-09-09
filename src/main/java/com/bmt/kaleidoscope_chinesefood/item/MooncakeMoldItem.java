@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class MooncakeMoldItem extends Item {
    private static final int CRAFTING_TIME = 20;
-   private static final String STUFFED_DOUGH_FOOD_ID = "kaleidoscope_cookery:stuffed_dough_food";
+   public static final String STUFFED_DOUGH_FOOD_ID = "kaleidoscope_cookery:stuffed_dough_food";
 
    public MooncakeMoldItem(Properties properties) {
       super(properties);
@@ -29,7 +29,7 @@ public class MooncakeMoldItem extends Item {
       ItemStack doughStack = player.getItemInHand(otherHand);
       if (this.isStuffedDoughFood(doughStack)) {
          player.startUsingItem(hand);
-         return InteractionResult.SUCCESS;
+         return InteractionResult.CONSUME;
       } else {
          return InteractionResult.PASS;
       }

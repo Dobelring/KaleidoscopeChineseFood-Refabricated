@@ -5,6 +5,7 @@ import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Plane;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -77,7 +78,7 @@ public class FirecrackerBlock extends BaseEntityBlock {
             stack.hurtAndBreak(1, player, slot);
          }
 
-         return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
+         return InteractionResult.SUCCESS;
       } else {
          return super.useItemOn(stack, state, level, pos, player, hand, hit);
       }

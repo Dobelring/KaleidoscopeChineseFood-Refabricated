@@ -1,7 +1,6 @@
 package com.bmt.kaleidoscope_chinesefood.client.gui;
 
 import com.bmt.kaleidoscope_chinesefood.inventory.FreezerMenu;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -11,19 +10,22 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 
 public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
+   // 两层统一使用原版箱子贴图：上层裁剪拼贴出冷藏层布局（4 排 36 格），下层直接整图（6 排 54 格）
    private static final Identifier TEXTURE = Identifier.withDefaultNamespace("textures/gui/container/generic_54.png");
    private final boolean isTop;
    private int guiOffsetY;
 
    public FreezerScreen(FreezerMenu menu, Inventory playerInventory, Component title) {
+      // 26.1.2 imageWidth/imageHeight 为 final，经 5 参构造传入（176 宽 + 按层数的高）
       super(menu, playerInventory, title, 176, menu.isTop() ? 184 : 222);
       this.isTop = menu.isTop();
-      this.titleLabelX = 8;
       if (this.isTop) {
+         this.titleLabelX = 8;
          this.titleLabelY = 5;
          this.inventoryLabelY = this.imageHeight - 93;
          this.guiOffsetY = -1;
       } else {
+         this.titleLabelX = 8;
          this.titleLabelY = 6;
          this.inventoryLabelY = this.imageHeight - 94;
          this.guiOffsetY = 0;
@@ -33,26 +35,28 @@ public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
    @Override
    public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
       super.extractBackground(guiGraphics, mouseX, mouseY, partialTick);
-      RenderPipeline pipeline = RenderPipelines.GUI_TEXTURED;
       int x = (this.width - this.imageWidth) / 2;
       int y = (this.height - this.imageHeight) / 2 + this.guiOffsetY;
       if (this.isTop) {
-         guiGraphics.blit(pipeline, TEXTURE, x, y + 1, 0.0F, 0.0F, this.imageWidth, 18, 256, 256);
-         guiGraphics.blit(pipeline, TEXTURE, x, y + 19, 0.0F, 18.0F, this.imageWidth, 72, 256, 256);
-         guiGraphics.blit(pipeline, TEXTURE, x, y + 90, 0.0F, 126.0F, this.imageWidth, 14, 256, 256);
-         guiGraphics.blit(pipeline, TEXTURE, x, y + 104, 0.0F, 140.0F, this.imageWidth, 81, 256, 256);
+         // 冷藏层：用原版箱子贴图裁剪拼出 184 高布局
+         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y + 1, 0.0F, 0.0F, this.imageWidth, 18, 256, 256);
+         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y + 19, 0.0F, 18.0F, this.imageWidth, 72, 256, 256);
+         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y + 90, 0.0F, 126.0F, this.imageWidth, 14, 256, 256);
+         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y + 104, 0.0F, 140.0F, this.imageWidth, 81, 256, 256);
       } else {
-         guiGraphics.blit(pipeline, TEXTURE, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
+         // 冷冻层：原版箱子贴图整图
+         guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0.0F, 0.0F, this.imageWidth, this.imageHeight, 256, 256);
       }
    }
 
+   // 26.1 GUI 提取模型：进度条插入在槽位物品之后、tooltip 之前（与 1.21.11 render 顺序一致）
    @Override
-   public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
-      super.extractContents(guiGraphics, mouseX, mouseY, partialTick);
-      this.extractProcessingProgress(guiGraphics);
+   protected void extractTooltip(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+      this.renderProcessingProgress(guiGraphics);
+      super.extractTooltip(guiGraphics, mouseX, mouseY);
    }
 
-   private void extractProcessingProgress(GuiGraphicsExtractor guiGraphics) {
+   private void renderProcessingProgress(GuiGraphicsExtractor guiGraphics) {
       int containerSize = ((FreezerMenu)this.menu).getContainer().getContainerSize();
 
       for (int i = 0; i < containerSize; i++) {
@@ -63,13 +67,20 @@ public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
             if (totalTime > 0 && progress < totalTime) {
                int x = this.leftPos + slot.x + 2;
                int y = this.topPos + slot.y + 15;
-               guiGraphics.fill(x, y, x + 13, y + 2, -11184811);
+               guiGraphics.fill(x, y, x + 12, y + 2, -11184811);
                float percent = (float)progress / totalTime;
-               int progressWidth = (int)(percent * 13.0F);
+               int progressWidth = (int)(percent * 12.0F);
                int color = this.isTop ? -11141121 : -16742145;
                guiGraphics.fill(x, y, x + progressWidth, y + 2, color);
             }
          }
       }
+   }
+
+   @Override
+   protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
+      // 使用不透明深灰 -12566464（0xFF404040），与原版 AbstractContainerScreen 一致
+      guiGraphics.text(this.font, this.title, this.titleLabelX, this.titleLabelY, -12566464, false);
+      guiGraphics.text(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, -12566464, false);
    }
 }

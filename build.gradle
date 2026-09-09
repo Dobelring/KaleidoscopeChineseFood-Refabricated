@@ -1,119 +1,101 @@
 plugins {
-    id 'fabric-loom' version '1.17-SNAPSHOT'
-    id 'maven-publish'
+	id 'net.fabricmc.fabric-loom' version "${loom_version}"
+	id 'maven-publish'
 }
 
 version = project.mod_version
 group = project.maven_group
 
-base {
-    archivesName = project.archives_base_name
-}
-
 repositories {
-    maven {
-        name = 'Fabric'
-        url = 'https://maven.fabricmc.net/'
-    }
-    maven {
-        name = 'BlameJared'
-        url = 'https://maven.blamejared.com/'
-    }
-    mavenCentral()
-}
-
-loom {
-    splitEnvironmentSourceSets()
-
-    mods {
-        "kaleidoscope_chinesefood" {
-            sourceSet sourceSets.main
-            sourceSet sourceSets.client
-        }
-    }
+	maven {
+		name = "Modrinth"
+		url = "https://api.modrinth.com/maven"
+	}
+	maven {
+		name = "Jared's maven"
+		url = "https://maven.blamejared.com/"
+	}
+	maven {
+		name = "ModMaven"
+		url = "https://modmaven.dev"
+	}
+	maven {
+		name = "cassian's maven"
+		url = "https://maven.cassian.cc"
+	}
+	maven {
+		name = "Fuzs Mod Resources"
+		url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+	}
 }
 
 dependencies {
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    // MC 26.1.x 已不再发布官方 mappings（游戏为未混淆分发），无需 mappings 行
-    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 
-    // Forge Config API Port (provides net.neoforged.neoforge.common.ModConfigSpec on Fabric)
-    implementation files("libs/ForgeConfigAPIPort-v26.1.5-mc26.1.x-Fabric.jar")
-    // Kaleidoscope Cookery (dependency: BowlFoodOnlyItem, ModEffects)
-    implementation files("libs/kaleidoscope_cookery-1.4.1.5-fabric+mc26.1.2.jar")
+	// 26.1 起 Minecraft 无混淆，loom 自动识别 mod jar，modImplementation 等价于普通依赖
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation "maven.modrinth:kaleidoscope-cookery-refabricated:${project.kaleidoscope_cookery_version}-fabric+mc${project.minecraft_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+	implementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forge_config_api_version}"
 
-    // JEI 配方查看（编译期 API，运行时需自行安装 JEI；插件经 entrypoints.jei_mod_plugin 声明）
-    compileOnly "mezz.jei:jei-26.1.2-common-api:29.29.0.77"
-    compileOnly "mezz.jei:jei-26.1.2-fabric-api:29.29.0.77"
-    clientCompileOnly "mezz.jei:jei-26.1.2-common-api:29.29.0.77"
-    clientCompileOnly "mezz.jei:jei-26.1.2-fabric-api:29.29.0.77"
-    // 完整 JEI 构件（仅编译期）：JeiRecipeSlotMixin 需要引用其内部类
-    // （ImmutableRect2i / SlotIngredient / Textures），把多候选角标移到右上角对齐 JEI 30
-    compileOnly "mezz.jei:jei-26.1.2-fabric:29.29.0.77"
-    clientCompileOnly "mezz.jei:jei-26.1.2-fabric:29.29.0.77"
-
-    // Jade / EMI：
-    // - Jade：26.1 版构建已发布（26.1.9），接入腌菜罐发酵剩余时间显示（编译期依赖，运行时需自行安装 Jade）。
-    compileOnly files("libs/Jade-mc26.1-Fabric-26.1.9.jar")
-    clientCompileOnly files("libs/Jade-mc26.1-Fabric-26.1.9.jar")
-    // EMI：截至 2026-08-25 未发布任何 26.x 构建，待上游发布后移植。
+	// Optional compat integrations (compileOnly - not bundled)
+	compileOnly("mezz.jei:jei-${project.minecraft_version}-fabric:${project.jei_version}")
+	compileOnly "maven.modrinth:jade:${project.jade_version}"
+	compileOnly("maven.modrinth:rrv:${project.rrv_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+		exclude(group: "eu.pb4")
+	}
 }
 
 processResources {
-    inputs.property "version", project.version
+	def version = project.version
+	inputs.property "version", version
 
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-    }
+	filesMatching("fabric.mod.json") {
+		expand "version": version
+	}
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.encoding = "UTF-8"
-    it.options.release = 25
-}
-
-// With splitEnvironmentSourceSets, Loom emits the client mixin refmap as a separate
-// "client-<name>-refmap.json" that the mixin config does not reference. Merge it into the
-// main refmap so client-only mixins (e.g. FogRendererMixin) resolve their @Inject targets.
-import groovy.json.JsonSlurper
-import groovy.json.JsonOutput
-
-tasks.register('mergeClientRefmap') {
-    dependsOn tasks.named('compileClientJava')
-    def mainRefmap = layout.buildDirectory.file('classes/java/main/kaleidoscope_chinesefood-refmap.json')
-    def clientRefmap = layout.buildDirectory.file('classes/java/client/client-kaleidoscope_chinesefood-refmap.json')
-    doLast {
-        def mainFile = mainRefmap.get().asFile
-        def clientFile = clientRefmap.get().asFile
-        if (!clientFile.exists() || !mainFile.exists()) return
-        def main = new JsonSlurper().parse(mainFile)
-        def client = new JsonSlurper().parse(clientFile)
-        if (client.mappings) main.mappings.putAll(client.mappings)
-        if (client.data) {
-            client.data.each { ns, entries ->
-                if (main.data && main.data[ns]) main.data[ns].putAll(entries)
-                else if (main.data) main.data[ns] = entries
-            }
-        }
-        mainFile.text = JsonOutput.prettyPrint(JsonOutput.toJson(main))
-        logger.lifecycle('Merged client mixin refmap into main refmap')
-    }
-}
-
-tasks.named('jar') {
-    dependsOn 'mergeClientRefmap'
-    def projectName = project.name
-    inputs.property "projectName", projectName
-    from("LICENSE") {
-        rename { "${it}_${projectName}" }
-    }
+	it.options.release = 25
 }
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(26)
-    }
-    // 不生成 sources jar（含 fabric.mod.json 会与正式 jar 冲突）。
+	withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
+}
+
+jar {
+	def projectName = project.name
+	inputs.property "projectName", projectName
+
+	from("LICENSE") {
+		rename { "${it}_$projectName"}
+	}
+}
+
+loom {
+	// 26.1.2 无需 accessWidener：MenuType 构造器与 BlockEntityRenderers.register 均已 public
+	splitEnvironmentSourceSets()
+
+	mods {
+		kaleidoscope_chinesefood {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+}
+
+// configure the maven publication
+publishing {
+	publications {
+		create("mavenJava", MavenPublication) {
+			from components.java
+		}
+	}
+
+	repositories {
+	}
 }

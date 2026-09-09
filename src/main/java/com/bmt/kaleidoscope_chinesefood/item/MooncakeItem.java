@@ -44,7 +44,7 @@ public class MooncakeItem extends BlockItem {
                }
             }
 
-            return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
+            return InteractionResult.SUCCESS;
          }
       } else {
          return context.getPlayer() != null && context.getPlayer().isCrouching() ? super.place(context) : InteractionResult.PASS;

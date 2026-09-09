@@ -13,8 +13,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.network.Filterable;
-import net.minecraft.util.ProblemReporter;
-import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -24,14 +22,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.component.WritableBookContent;
-import net.minecraft.world.item.component.WrittenBookContent;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -115,49 +113,35 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
       super.setPlacedBy(level, pos, state, placer, stack);
       Direction facing = (Direction)state.getValue(FACING);
       BlockPos rightPos = pos.relative(facing.getCounterClockWise());
-      CompoundTag savedData = null;
       if (this.isBannerBlockWithPart(level.getBlockState(rightPos), facing, HorizontalBannerBlock.BannerPart.LEFT)
-         && level.getBlockEntity(rightPos) instanceof HorizontalBannerBlockEntity oldBannerBE) {
-         savedData = oldBannerBE.saveCustomOnly(level.registryAccess());
+         && level.getBlockEntity(rightPos) instanceof HorizontalBannerBlockEntity oldBannerBE
+         && level.getBlockEntity(pos) instanceof HorizontalBannerBlockEntity newBannerBE) {
+         newBannerBE.setText(oldBannerBE.getText());
       }
 
       this.updateNeighbors(level, pos, state);
-      if (savedData != null && level.getBlockEntity(pos) instanceof HorizontalBannerBlockEntity newBannerBE) {
-         newBannerBE.loadCustomOnly(TagValueInput.create(ProblemReporter.DISCARDING, level.registryAccess(), savedData));
-         newBannerBE.setChanged();
-      }
    }
 
-   public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+   // 26.1 已删除 onDestroyedByPlayer 钩子：文本迁移与邻居重算并入 playerWillDestroy；
+   // 掉落交还原版战利品表（避免与手动 popResource 双掉），方块移除由原版 removeBlock 完成
+   @NotNull
+   public BlockState playerWillDestroy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
       if (!level.isClientSide()) {
          Direction facing = (Direction)state.getValue(FACING);
-         CompoundTag savedData = null;
+         String bannerText = null;
          if (state.getValue(PART) == HorizontalBannerBlock.BannerPart.LEFT && level.getBlockEntity(pos) instanceof HorizontalBannerBlockEntity oldBannerBE) {
-            savedData = oldBannerBE.saveCustomOnly(level.registryAccess());
-         }
-
-         if (!player.isCreative()) {
-            popResource(level, pos, new ItemStack(this.asItem()));
+            bannerText = oldBannerBE.getText();
          }
 
          level.setBlock(pos, Blocks.AIR.defaultBlockState(), 35);
          this.updateNeighbors(level, pos, state);
-         if (savedData != null) {
-            BlockPos newLeftPos = this.findNewLeftPosition(level, pos, facing);
-            if (newLeftPos != null && level.getBlockEntity(newLeftPos) instanceof HorizontalBannerBlockEntity newBannerBE) {
-               newBannerBE.loadCustomOnly(TagValueInput.create(ProblemReporter.DISCARDING, level.registryAccess(), savedData));
-               newBannerBE.setChanged();
-            }
+         BlockPos newLeftPos = this.findNewLeftPosition(level, pos, facing);
+         if (newLeftPos != null && bannerText != null && level.getBlockEntity(newLeftPos) instanceof HorizontalBannerBlockEntity newBannerBE) {
+            newBannerBE.setText(bannerText);
          }
       }
 
-      return true;
-   }
-
-   @NotNull
-   public BlockState playerWillDestroy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
-      // 调用 super 触发 spawnDestroyParticles 播放破坏音效。
-      return super.playerWillDestroy(level, pos, state, player);
+      return state;
    }
 
    public BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction direction, BlockPos neighborPos, BlockState neighborState, RandomSource random) {
@@ -250,15 +234,8 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
       return level.getBlockState(wallPos).isFaceSturdy(level, wallPos, facing);
    }
 
-   protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-      return this.tryWriteText(state, level, pos, stack);
-   }
-
-   protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-      return this.tryWriteText(state, level, pos, player.getMainHandItem());
-   }
-
-   private InteractionResult tryWriteText(BlockState state, Level level, BlockPos pos, ItemStack heldItem) {
+   // 1.21.2+ 手持物品时走 useItemOn：书与笔写入横幅的逻辑在此实现
+   protected InteractionResult useItemOn(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
       if (level.isClientSide()) {
          return InteractionResult.SUCCESS;
       } else {
@@ -275,6 +252,36 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
          }
 
          if (level.getBlockEntity(entityPos) instanceof HorizontalBannerBlockEntity bannerEntity) {
+            ItemStack heldItem = player.getItemInHand(hand);
+            String targetText = this.getTextFromBook(heldItem);
+            if (targetText != null && !targetText.isBlank()) {
+               bannerEntity.setText(targetText);
+               return InteractionResult.CONSUME;
+            }
+         }
+
+         return InteractionResult.PASS;
+      }
+   }
+
+   protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+      if (level.isClientSide()) {
+         return InteractionResult.SUCCESS;
+      } else {
+         BlockPos entityPos = pos;
+         Direction facing = (Direction)state.getValue(FACING);
+
+         for (int i = 0; i < 2; i++) {
+            BlockPos left = entityPos.relative(facing.getClockWise());
+            if (!this.isBannerBlockWithFacing(level.getBlockState(left), facing)) {
+               break;
+            }
+
+            entityPos = left;
+         }
+
+         if (level.getBlockEntity(entityPos) instanceof HorizontalBannerBlockEntity bannerEntity) {
+            ItemStack heldItem = player.getMainHandItem();
             String targetText = this.getTextFromBook(heldItem);
             if (targetText != null && !targetText.isBlank()) {
                bannerEntity.setText(targetText);
@@ -288,42 +295,29 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
 
    @Nullable
    private String getTextFromBook(ItemStack stack) {
-      // 书与笔 (writable_book)：WRITABLE_BOOK_CONTENT，页为 Filterable<String>
-      WritableBookContent writableContent = (WritableBookContent)stack.get(DataComponents.WRITABLE_BOOK_CONTENT);
-      if (writableContent != null && !writableContent.pages().isEmpty()) {
-         String firstPage = (String)((Filterable)writableContent.pages().get(0)).raw();
-         return this.extractTextFromPage(firstPage);
-      }
-
-      // 成书 (written_book)：WRITTEN_BOOK_CONTENT，页为 Filterable<Component>
-      WrittenBookContent writtenContent = (WrittenBookContent)stack.get(DataComponents.WRITTEN_BOOK_CONTENT);
-      if (writtenContent != null && !writtenContent.pages().isEmpty()) {
-         String text = writtenContent.pages().get(0).raw().getString();
-         return text.isBlank() ? null : text;
-      }
-
-      return null;
-   }
-
-   @Nullable
-   private String extractTextFromPage(String firstPage) {
-      if (firstPage.isBlank()) {
-         return null;
-      } else {
-         try {
-            JsonElement element = JsonParser.parseString(firstPage);
-            if (element.isJsonObject()) {
-               JsonObject obj = element.getAsJsonObject();
-               if (obj.has("text")) {
-                  return obj.get("text").getAsString();
+      WritableBookContent bookContent = (WritableBookContent)stack.get(DataComponents.WRITABLE_BOOK_CONTENT);
+      if (bookContent != null && !bookContent.pages().isEmpty()) {
+         String firstPage = (String)((Filterable)bookContent.pages().get(0)).raw();
+         if (firstPage.isBlank()) {
+            return null;
+         } else {
+            try {
+               JsonElement element = JsonParser.parseString(firstPage);
+               if (element.isJsonObject()) {
+                  JsonObject obj = element.getAsJsonObject();
+                  if (obj.has("text")) {
+                     return obj.get("text").getAsString();
+                  }
+               } else if (element.isJsonPrimitive()) {
+                  return element.getAsString();
                }
-            } else if (element.isJsonPrimitive()) {
-               return element.getAsString();
+            } catch (Exception var6) {
             }
-         } catch (Exception var6) {
-         }
 
-         return firstPage;
+            return firstPage;
+         }
+      } else {
+         return null;
       }
    }
 

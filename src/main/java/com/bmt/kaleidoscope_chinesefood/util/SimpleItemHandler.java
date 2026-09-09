@@ -1,12 +1,12 @@
 package com.bmt.kaleidoscope_chinesefood.util;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -54,7 +54,11 @@ public class SimpleItemHandler implements Container {
 
     @Override
     public @NotNull ItemStack removeItemNoUpdate(int slot) {
-        return ContainerHelper.takeItem(this.stacks, slot);
+        ItemStack taken = ContainerHelper.takeItem(this.stacks, slot);
+        if (!taken.isEmpty()) {
+            this.onContentsChanged(slot);
+        }
+        return taken;
     }
 
     @Override
@@ -74,9 +78,9 @@ public class SimpleItemHandler implements Container {
 
     @Override
     public void clearContent() {
-        // NonNullList 不支持 clear()，逐槽置空。
+        // 逐槽置空并走 setItem 以触发 onContentsChanged 通知
         for (int i = 0; i < this.size; i++) {
-            this.stacks.set(i, ItemStack.EMPTY);
+            this.setItem(i, ItemStack.EMPTY);
         }
     }
 
@@ -158,21 +162,28 @@ public class SimpleItemHandler implements Container {
     }
 
     // ----- NBT -----
-    public void serializeNBT(ValueOutput output) {
-        ContainerHelper.saveAllItems(output, this.stacks);
+    // 采用密集格式序列化：每个槽位都写条目，加载前先全量清空，旧存档兼容。
+    public void serializeNBT(net.minecraft.world.level.storage.ValueOutput output) {
+        net.minecraft.world.level.storage.ValueOutput.ValueOutputList items = output.childrenList("Items");
+        for (int i = 0; i < this.size; i++) {
+            ItemStack stack = this.stacks.get(i);
+            net.minecraft.world.level.storage.ValueOutput entry = items.addChild();
+            entry.putByte("Slot", (byte) i);
+            if (!stack.isEmpty()) {
+                entry.store(ItemStack.MAP_CODEC, stack);
+            }
+        }
     }
 
-    public void deserializeNBT(ValueInput input) {
-        ContainerHelper.loadAllItems(input, this.stacks);
-    }
-
-    /**
-     * 密集序列化：所有槽位（含空槽）都写入 NBT，确保客户端同步后不会残留旧数据。
-     */
-    public void clearAndDeserializeNBT(ValueInput input) {
+    public void deserializeNBT(net.minecraft.world.level.storage.ValueInput input) {
         for (int i = 0; i < this.size; i++) {
             this.stacks.set(i, ItemStack.EMPTY);
         }
-        ContainerHelper.loadAllItems(input, this.stacks);
+        for (net.minecraft.world.level.storage.ValueInput entry : input.childrenListOrEmpty("Items")) {
+            int slot = entry.getByteOr("Slot", (byte) 0) & 255;
+            if (slot < this.size) {
+                this.stacks.set(slot, entry.read(ItemStack.MAP_CODEC).orElse(ItemStack.EMPTY));
+            }
+        }
     }
 }

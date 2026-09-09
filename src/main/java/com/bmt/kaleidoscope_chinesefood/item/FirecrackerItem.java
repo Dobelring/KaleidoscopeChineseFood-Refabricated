@@ -50,7 +50,7 @@ public class FirecrackerItem extends Item {
                itemstack.shrink(1);
             }
 
-            return level.isClientSide() ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
+            return InteractionResult.SUCCESS;
          }
       }
 

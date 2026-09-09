@@ -7,6 +7,7 @@ import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -17,20 +18,20 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import org.joml.Vector3f;
 
 public class FirecrackerBlockEntity extends BlockEntity {
    private int fuse = -1;
    private static final Random RANDOM = new Random();
-   // 26.1: DustParticleOptions now takes an ARGB int color instead of Vector3f
-   private static final int[] FIREWORK_COLORS = new int[]{
-      0xFF0000,
-      0xFF8000,
-      0xFFFF00,
-      0x00FF00,
-      0x00FFFF,
-      0x0000FF,
-      0x8000FF,
-      0xFF00FF
+   private static final Vector3f[] FIREWORK_COLORS = new Vector3f[]{
+      new Vector3f(1.0F, 0.0F, 0.0F),
+      new Vector3f(1.0F, 0.5F, 0.0F),
+      new Vector3f(1.0F, 1.0F, 0.0F),
+      new Vector3f(0.0F, 1.0F, 0.0F),
+      new Vector3f(0.0F, 1.0F, 1.0F),
+      new Vector3f(0.0F, 0.0F, 1.0F),
+      new Vector3f(0.5F, 0.0F, 1.0F),
+      new Vector3f(1.0F, 0.0F, 1.0F)
    };
 
    public FirecrackerBlockEntity(BlockPos pPos, BlockState pBlockState) {
@@ -88,8 +89,8 @@ public class FirecrackerBlockEntity extends BlockEntity {
 
    private static void spawnFireworks(ServerLevel level, double x, double y, double z) {
       int type = RANDOM.nextInt(5);
-      int color = FIREWORK_COLORS[RANDOM.nextInt(FIREWORK_COLORS.length)];
-      DustParticleOptions dust = new DustParticleOptions(color, 1.0F);
+      Vector3f color = FIREWORK_COLORS[RANDOM.nextInt(FIREWORK_COLORS.length)];
+      DustParticleOptions dust = new DustParticleOptions(toARGB(color), 1.0F);
       switch (type) {
          case 0:
             level.sendParticles(dust, x, y, z, 50, 0.3, 0.3, 0.3, 0.1);
@@ -104,8 +105,8 @@ public class FirecrackerBlockEntity extends BlockEntity {
             level.sendParticles(ParticleTypes.FIREWORK, x, y, z, 18, 0.2, 0.6, 0.2, 0.12);
             break;
          case 3:
-            int color2 = FIREWORK_COLORS[RANDOM.nextInt(FIREWORK_COLORS.length)];
-            DustParticleOptions dust2 = new DustParticleOptions(color2, 1.0F);
+            Vector3f color2 = FIREWORK_COLORS[RANDOM.nextInt(FIREWORK_COLORS.length)];
+            DustParticleOptions dust2 = new DustParticleOptions(toARGB(color2), 1.0F);
             level.sendParticles(dust, x, y, z, 35, 0.35, 0.35, 0.35, 0.08);
             level.sendParticles(dust2, x, y + 0.4, z, 28, 0.5, 0.5, 0.5, 0.12);
             level.sendParticles(ParticleTypes.FIREWORK, x, y + 0.2, z, 24, 0.4, 0.4, 0.4, 0.1);
@@ -124,7 +125,7 @@ public class FirecrackerBlockEntity extends BlockEntity {
       output.putInt("Fuse", this.fuse);
    }
 
-   protected void loadAdditional(ValueInput input) {
+   public void loadAdditional(ValueInput input) {
       super.loadAdditional(input);
       this.fuse = input.getIntOr("Fuse", -1);
    }
@@ -137,5 +138,11 @@ public class FirecrackerBlockEntity extends BlockEntity {
 
    public ClientboundBlockEntityDataPacket getUpdatePacket() {
       return ClientboundBlockEntityDataPacket.create(this);
+   }
+   private static int toARGB(Vector3f color) {
+      int r = (int)(color.x() * 255.0F) & 255;
+      int g = (int)(color.y() * 255.0F) & 255;
+      int b = (int)(color.z() * 255.0F) & 255;
+      return (r << 16) | (g << 8) | b;
    }
 }

@@ -5,6 +5,7 @@ import com.bmt.kaleidoscope_chinesefood.entity.FirecrackerEntity;
 import com.bmt.kaleidoscope_chinesefood.entity.KongmingLanternEntity;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityType.Builder;
@@ -15,6 +16,7 @@ public class ModEntities {
     public static EntityType<KongmingLanternEntity> KONGMING_LANTERN;
 
     public static void register() {
+        // EntityType.Builder 通过 ResourceKey 构建
         FIRECRACKER = Registry.register(
                 BuiltInRegistries.ENTITY_TYPE,
                 KaleidoscopeChineseFood.id("firecracker"),
@@ -22,7 +24,7 @@ public class ModEntities {
                         .sized(0.25F, 0.25F)
                         .clientTrackingRange(4)
                         .updateInterval(10)
-                        .build(entityKey("firecracker"))
+                        .build(ResourceKey.create(Registries.ENTITY_TYPE, KaleidoscopeChineseFood.id("firecracker")))
         );
         KONGMING_LANTERN = Registry.register(
                 BuiltInRegistries.ENTITY_TYPE,
@@ -31,11 +33,7 @@ public class ModEntities {
                         .sized(0.5F, 1.0F)
                         .clientTrackingRange(10)
                         .updateInterval(1)
-                        .build(entityKey("kongming_lantern"))
+                        .build(ResourceKey.create(Registries.ENTITY_TYPE, KaleidoscopeChineseFood.id("kongming_lantern")))
         );
-    }
-
-    private static ResourceKey<EntityType<?>> entityKey(String name) {
-        return ResourceKey.create(BuiltInRegistries.ENTITY_TYPE.key(), KaleidoscopeChineseFood.id(name));
     }
 }

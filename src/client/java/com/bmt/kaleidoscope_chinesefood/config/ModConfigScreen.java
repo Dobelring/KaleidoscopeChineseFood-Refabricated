@@ -429,9 +429,10 @@ public class ModConfigScreen extends Screen {
       this.minecraft.setScreen(this.parent);
    }
 
+   // 26.1 GUI 提取模型：render(GuiGraphics) -> extractRenderState(GuiGraphicsExtractor)；
+   // 背景变暗由 Screen.extractBackground 默认处理，无需手动 renderBackground
    @Override
    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
-      this.extractBackground(graphics, mouseX, mouseY, partialTick);
       graphics.centeredText(this.font, this.title, this.width / 2, 15, 16777215);
       super.extractRenderState(graphics, mouseX, mouseY, partialTick);
    }

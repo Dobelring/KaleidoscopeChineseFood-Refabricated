@@ -13,6 +13,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.HolderLookup.Provider;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.ContainerHelper;
@@ -21,7 +23,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -195,9 +196,7 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
       boolean hasRecipe = false;
       int recipeTime = 100;
       if (isTop) {
-         Optional<RecipeHolder<RefrigeratingRecipe>> recipe = ((ServerLevel)this.level)
-            .recipeAccess()
-            .getRecipeFor(ModRecipes.REFRIGERATING_TYPE, input, this.level);
+         Optional<RecipeHolder<RefrigeratingRecipe>> recipe = ((ServerLevel)this.level).recipeAccess().getRecipeFor(ModRecipes.REFRIGERATING_TYPE, input, this.level);
          if (recipe.isPresent()) {
             RefrigeratingRecipe r = (RefrigeratingRecipe)recipe.get().value();
             hasRecipe = true;
@@ -212,9 +211,7 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
             }
          }
       } else {
-         Optional<RecipeHolder<FreezingRecipe>> recipe = ((ServerLevel)this.level)
-            .recipeAccess()
-            .getRecipeFor(ModRecipes.FREEZING_TYPE, input, this.level);
+         Optional<RecipeHolder<FreezingRecipe>> recipe = ((ServerLevel)this.level).recipeAccess().getRecipeFor(ModRecipes.FREEZING_TYPE, input, this.level);
          if (recipe.isPresent()) {
             FreezingRecipe r = (FreezingRecipe)recipe.get().value();
             hasRecipe = true;
@@ -243,11 +240,14 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
       }
    }
 
-   public void removeOpenMenu(FreezerMenu menu) {
-      this.openMenus.remove(menu);
-   }
+    public void removeOpenMenu(FreezerMenu menu) {
+        this.openMenus.remove(menu);
+    }
 
-   private static class ProcessingResult {
+    // 注意：1.21.11 的 Container.startOpen/stopOpen 参数是 ContainerUser，
+    // 不要在此覆写 Player 版本（不构成覆写、永不执行）；开关状态与音效由 FreezerMenu 负责。
+
+    private static class ProcessingResult {
       final boolean updated;
 
       ProcessingResult(boolean updated) {

@@ -1,49 +1,28 @@
 # gradle
-
 .gradle/
 build/
 out/
 classes/
 
-# eclipse
-
-*.launch
-
 # idea
-
 .idea/
 *.iml
 *.ipr
 *.iws
 
 # vscode
-
 .settings/
 .vscode/
 bin/
 .classpath
 .project
 
-# macos
+# fabric
+run/
+remappedSrc/
 
+# macos
 *.DS_Store
 
-# fabric
-
-run/
-
-# java
-
-hs_err_*.log
-replay_*.log
-*.hprof
-*.jfr
-
-# local porting staging area
-
-compat-staging/
-
-# build artifacts
-
-build-log.txt
-*.log
+# local docs (private migration notes)
+_docs/
