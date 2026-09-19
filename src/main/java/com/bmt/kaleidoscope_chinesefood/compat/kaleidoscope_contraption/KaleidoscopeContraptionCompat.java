@@ -27,6 +27,8 @@ public class KaleidoscopeContraptionCompat {
             register(ModFoodBiteRegistry.YELLOW_CROAKER_SOUP, interaction);
             register(ModFoodBiteRegistry.RED_RICE_ROLL, interaction);
             register(ModFoodBiteRegistry.YELLOW_CROAKER_TOFU_SOUP, interaction);
+            register(ModFoodBiteRegistry.STEAMED_RICE_ROLLS, interaction);
+            register(ModFoodBiteRegistry.FOUR_JOY_MEATBALLS, interaction);
         } catch (Throwable t) {
             // 反射失败时静默跳过
         }

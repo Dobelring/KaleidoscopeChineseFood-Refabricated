@@ -11,6 +11,7 @@ public class KaleidoscopeChineseFoodClient implements ClientModInitializer {
         ClientConfig.init();
         ModConfigScreenHandler.register();
         ClientSetup.init();
+        ClientNetworkHandlers.register();
         TooltipEvents.register();
     }
 }

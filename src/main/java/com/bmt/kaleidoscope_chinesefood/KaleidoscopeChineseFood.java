@@ -18,9 +18,14 @@ import com.bmt.kaleidoscope_chinesefood.init.ModSounds;
 import com.bmt.kaleidoscope_chinesefood.init.ModTea;
 import com.bmt.kaleidoscope_chinesefood.init.kaleidoscope_twilight.KTItems;
 import com.bmt.kaleidoscope_chinesefood.integration.KaleidoscopeDollIntegration;
+import com.bmt.kaleidoscope_chinesefood.network.ModNetwork;
+import com.github.ysbbbbbb.kaleidoscopecookery.crafting.soupbase.SoupBaseManager;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.Biomes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,10 +43,11 @@ public class KaleidoscopeChineseFood implements ModInitializer {
             KTItems.register();
         }
 
+        // 实体类型必须先于物品注册：黄花鱼桶 / 刷怪蛋在构造时就要拿到 EntityType
+        ModEntities.register();
         ModBlocks.register();
         ModItems.register();
         ModBlockEntities.register();
-        ModEntities.register();
         ModMenuTypes.register();
         ModSounds.register();
         ModRecipes.register();
@@ -49,6 +55,7 @@ public class KaleidoscopeChineseFood implements ModInitializer {
 
         KaleidoscopeDollIntegration.register();
         ModBuiltInResourcePacks.register();
+        ModNetwork.register();
         FoodEventHandler.register();
         LavaSwimDamageEvents.register();
         DataMapsEvents.register();
@@ -61,6 +68,20 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         }
 
         KongmingLanternBlock.registerDispenserBehavior(ModBlocks.KONGMING_LANTERN.asItem());
+
+        // 黄花鱼桶作为高汤锅汤底（1.1.11 新增，对应官方 CommonRegistry 里的 registerMobSoupBase）
+        SoupBaseManager.registerMobSoupBase(KaleidoscopeChineseFood.id("yellow_croaker_bucket"), ModItems.YELLOW_CROAKER_BUCKET);
+        // 黄花鱼海洋生成（官方用 neoforge biome_modifier json，Fabric 走 BiomeModifications）
+        BiomeModifications.addSpawn(
+                context -> context.getBiomeKey().equals(Biomes.OCEAN)
+                        || context.getBiomeKey().equals(Biomes.COLD_OCEAN)
+                        || context.getBiomeKey().equals(Biomes.LUKEWARM_OCEAN),
+                MobCategory.WATER_AMBIENT,
+                ModEntities.YELLOW_CROAKER,
+                10,
+                3,
+                6
+        );
     }
 
     public static ResourceLocation id(String name) {

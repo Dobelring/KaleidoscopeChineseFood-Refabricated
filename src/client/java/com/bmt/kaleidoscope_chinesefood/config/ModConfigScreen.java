@@ -38,17 +38,17 @@ public class ModConfigScreen extends Screen {
    private Button resetBannerTripleOffsetButton;
    private ModConfigScreen.ConfigSlider bannerCharWidthSlider;
    private Button resetBannerCharWidthButton;
-   private static final double DEFAULT_COUPLET_TEXT_SCALE = 0.025;
+   private static final double DEFAULT_COUPLET_TEXT_SCALE = 0.018;
    private static final double DEFAULT_COUPLET_HORIZONTAL_OFFSET = 0.2;
-   private static final double DEFAULT_COUPLET_DOUBLE_BASE_Y = -21.5;
-   private static final double DEFAULT_COUPLET_TRIPLE_BASE_Y = -41.0;
-   private static final double DEFAULT_COUPLET_VERTICAL_SPACING = 9.6;
-   private static final double DEFAULT_BANNER_TEXT_SCALE = 0.022;
-   private static final double DEFAULT_BANNER_VERTICAL_OFFSET = 0.99;
-   private static final double DEFAULT_BANNER_SINGLE_OFFSET = -0.9;
-   private static final double DEFAULT_BANNER_DOUBLE_OFFSET = 14.0;
-   private static final double DEFAULT_BANNER_TRIPLE_OFFSET = 28.9;
-   private static final double DEFAULT_BANNER_CHAR_WIDTH = 9.5;
+   private static final double DEFAULT_COUPLET_DOUBLE_BASE_Y = -26.5;
+   private static final double DEFAULT_COUPLET_TRIPLE_BASE_Y = -54.5;
+   private static final double DEFAULT_COUPLET_VERTICAL_SPACING = 11.0;
+   private static final double DEFAULT_BANNER_TEXT_SCALE = 0.018;
+   private static final double DEFAULT_BANNER_VERTICAL_OFFSET = 4.0;
+   private static final double DEFAULT_BANNER_SINGLE_OFFSET = -0.5;
+   private static final double DEFAULT_BANNER_DOUBLE_OFFSET = 19.0;
+   private static final double DEFAULT_BANNER_TRIPLE_OFFSET = 38.9;
+   private static final double DEFAULT_BANNER_CHAR_WIDTH = 11.0;
 
    public ModConfigScreen(Screen parent) {
       super(Component.translatable("config.kaleidoscope_chinesefood.title"));
@@ -129,7 +129,7 @@ public class ModConfigScreen extends Screen {
          value -> ClientConfig._COUPLET_TEXT_SCALE.set(value)
       );
       this.resetCoupletTextScaleButton = Button.builder(
-            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.coupletTextScaleSlider.setValue(0.025)
+            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.coupletTextScaleSlider.setValue(0.018)
          )
          .pos(centerX + 100, y)
          .size(50, 20)
@@ -171,7 +171,7 @@ public class ModConfigScreen extends Screen {
          value -> ClientConfig._COUPLET_DOUBLE_BASE_Y.set(value)
       );
       this.resetCoupletDoubleBaseYButton = Button.builder(
-            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.coupletDoubleBaseYSlider.setValue(-21.5)
+            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.coupletDoubleBaseYSlider.setValue(-26.5)
          )
          .pos(centerX + 100, y)
          .size(50, 20)
@@ -192,7 +192,7 @@ public class ModConfigScreen extends Screen {
          value -> ClientConfig._COUPLET_TRIPLE_BASE_Y.set(value)
       );
       this.resetCoupletTripleBaseYButton = Button.builder(
-            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.coupletTripleBaseYSlider.setValue(-41.0)
+            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.coupletTripleBaseYSlider.setValue(-54.5)
          )
          .pos(centerX + 100, y)
          .size(50, 20)
@@ -213,7 +213,7 @@ public class ModConfigScreen extends Screen {
          value -> ClientConfig._COUPLET_VERTICAL_SPACING.set(value)
       );
       this.resetCoupletVerticalSpacingButton = Button.builder(
-            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.coupletVerticalSpacingSlider.setValue(9.6)
+            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.coupletVerticalSpacingSlider.setValue(11.0)
          )
          .pos(centerX + 100, y)
          .size(50, 20)
@@ -238,7 +238,7 @@ public class ModConfigScreen extends Screen {
          value -> ClientConfig._BANNER_TEXT_SCALE.set(value)
       );
       this.resetBannerTextScaleButton = Button.builder(
-            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.bannerTextScaleSlider.setValue(0.022)
+            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.bannerTextScaleSlider.setValue(0.018)
          )
          .pos(centerX + 100, y)
          .size(50, 20)
@@ -259,7 +259,7 @@ public class ModConfigScreen extends Screen {
          value -> ClientConfig._BANNER_VERTICAL_OFFSET.set(value)
       );
       this.resetBannerVerticalOffsetButton = Button.builder(
-            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.bannerVerticalOffsetSlider.setValue(0.99)
+            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.bannerVerticalOffsetSlider.setValue(4.0)
          )
          .pos(centerX + 100, y)
          .size(50, 20)
@@ -280,7 +280,7 @@ public class ModConfigScreen extends Screen {
          value -> ClientConfig._BANNER_SINGLE_OFFSET.set(value)
       );
       this.resetBannerSingleOffsetButton = Button.builder(
-            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.bannerSingleOffsetSlider.setValue(-0.9)
+            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.bannerSingleOffsetSlider.setValue(-0.5)
          )
          .pos(centerX + 100, y)
          .size(50, 20)
@@ -301,7 +301,7 @@ public class ModConfigScreen extends Screen {
          value -> ClientConfig._BANNER_DOUBLE_OFFSET.set(value)
       );
       this.resetBannerDoubleOffsetButton = Button.builder(
-            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.bannerDoubleOffsetSlider.setValue(14.0)
+            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.bannerDoubleOffsetSlider.setValue(19.0)
          )
          .pos(centerX + 100, y)
          .size(50, 20)
@@ -322,7 +322,7 @@ public class ModConfigScreen extends Screen {
          value -> ClientConfig._BANNER_TRIPLE_OFFSET.set(value)
       );
       this.resetBannerTripleOffsetButton = Button.builder(
-            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.bannerTripleOffsetSlider.setValue(28.9)
+            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.bannerTripleOffsetSlider.setValue(38.9)
          )
          .pos(centerX + 100, y)
          .size(50, 20)
@@ -343,7 +343,7 @@ public class ModConfigScreen extends Screen {
          value -> ClientConfig._BANNER_CHAR_WIDTH.set(value)
       );
       this.resetBannerCharWidthButton = Button.builder(
-            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.bannerCharWidthSlider.setValue(9.5)
+            Component.translatable("config.kaleidoscope_chinesefood.reset"), button -> this.bannerCharWidthSlider.setValue(11.0)
          )
          .pos(centerX + 100, y)
          .size(50, 20)

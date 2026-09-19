@@ -14,7 +14,7 @@
       "tag": "c:raw_ham"
     },
     {
-      "item": "kaleidoscope_cookery:cooked_rice"
+      "tag": "c:foods/cooked_rice"
     }
   ],
   "result": {

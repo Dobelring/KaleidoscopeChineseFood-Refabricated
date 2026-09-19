@@ -7,7 +7,11 @@
     "PlayerEntityMixin",
     "LivingEntityMixin",
     "PlayerTickMixin",
-    "RecipeManagerMixin"
+    "RecipeManagerMixin",
+    "DoorBlockMixin",
+    "TrapDoorBlockMixin",
+    "accessor.TrapDoorBlockAccessor",
+    "accessor.SpawnPlacementsInvoker"
   ],
   "client": [
     "FogRendererMixin"

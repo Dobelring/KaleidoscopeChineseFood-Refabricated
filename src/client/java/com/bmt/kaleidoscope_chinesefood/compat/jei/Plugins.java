@@ -42,19 +42,12 @@ public class Plugins implements IModPlugin {
       ClientLevel level = Minecraft.getInstance().level;
       if (level != null) {
          RecipeManager recipeManager = level.getRecipeManager();
-         List<PickleJarRecipe> pickleRecipes = recipeManager.getAllRecipesFor(ModRecipes.PICKLE_JAR_TYPE)
-            .stream()
-            .map(RecipeHolder::value)
-            .toList();
+         List<RecipeHolder<PickleJarRecipe>> pickleRecipes = recipeManager.getAllRecipesFor(ModRecipes.PICKLE_JAR_TYPE).stream().toList();
          registration.addRecipes(PicklingJarRecipeCategory.TYPE, pickleRecipes);
-         List<FreezingRecipe> freezingRecipes = recipeManager.getAllRecipesFor(ModRecipes.FREEZING_TYPE)
-            .stream()
-            .map(RecipeHolder::value)
-            .toList();
+         List<RecipeHolder<FreezingRecipe>> freezingRecipes = recipeManager.getAllRecipesFor(ModRecipes.FREEZING_TYPE).stream().toList();
          registration.addRecipes(FreezingRecipeCategory.TYPE, freezingRecipes);
-         List<RefrigeratingRecipe> refrigeratingRecipes = recipeManager.getAllRecipesFor(ModRecipes.REFRIGERATING_TYPE)
+         List<RecipeHolder<RefrigeratingRecipe>> refrigeratingRecipes = recipeManager.getAllRecipesFor(ModRecipes.REFRIGERATING_TYPE)
             .stream()
-            .map(RecipeHolder::value)
             .toList();
          registration.addRecipes(RefrigeratingRecipeCategory.TYPE, refrigeratingRecipes);
       }

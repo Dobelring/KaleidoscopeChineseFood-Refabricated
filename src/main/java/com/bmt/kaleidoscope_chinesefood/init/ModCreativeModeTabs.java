@@ -25,7 +25,9 @@ public class ModCreativeModeTabs {
                         .title(Component.translatable("itemGroup.kaleidoscope_chinesefood_tab"))
                         .displayItems((parameters, output) -> {
                             output.accept(ModItems.RAW_STEAMED_RICE_ROLLS);
+                            output.accept(ModItems.RAW_BAMBOO_STEAMED_EGG);
                             output.accept(ModItems.RAW_MOONCAKE);
+                            output.accept(ModItems.YELLOW_CROAKER_BUCKET);
                             output.accept(ModItems.SALT_BUCKET);
                             output.accept(ModItems.SALT);
                             output.accept(ModItems.SALTED_EGG);
@@ -34,6 +36,7 @@ public class ModCreativeModeTabs {
                             output.accept(ModItems.EGGPLANT);
                             output.accept(ModItems.YELLOW_CROAKER);
                             output.accept(ModItems.MOONCAKE);
+                            output.accept(ModItems.BAMBOO_STEAMED_EGG);
                             output.accept(ModItems.SICHUAN_WONTON);
                             output.accept(ModItems.WONTON_NOODLES);
                             output.accept(ModItems.YANGROU_PAOMO);
@@ -56,14 +59,12 @@ public class ModCreativeModeTabs {
                             output.accept(ModItems.BIG_PLATE_CHICKEN_NOODLES);
                             output.accept(ModItems.TOMATO_EGG_NOODLES);
                             output.accept(ModItems.PORK_CHILI_NOODLES);
-                            output.accept(ModItems.FOUR_JOY_MEATBALLS);
                             output.accept(ModItems.STUFFED_EGGPLANT);
                             output.accept(ModItems.DRY_POT_POTATOES);
                             output.accept(ModItems.DRY_POT_CHICKEN);
                             output.accept(ModItems.DRY_POT_SPARE_RIBS);
                             output.accept(ModItems.YANGZHOU_FRIED_RICE);
                             output.accept(ModItems.LAMB_PILAF);
-                            output.accept(ModItems.STEAMED_RICE_ROLLS);
                             FoodBiteRegistry.FOOD_DATA_MAP.forEach((resourceLocation, foodData) -> {
                                 if (resourceLocation.getNamespace().equals("kaleidoscope_chinesefood")) {
                                     Item item = BuiltInRegistries.ITEM.get(resourceLocation);
@@ -88,6 +89,7 @@ public class ModCreativeModeTabs {
                             output.accept(ModBlocks.HORIZONTAL_BANNER);
                             output.accept(ModBlocks.KONGMING_LANTERN);
                             output.accept(ModItems.EGGPLANT_SEED);
+                            output.accept(ModItems.YELLOW_CROAKER_SPAWN_EGG);
                             if (!FabricLoader.getInstance().isModLoaded("kaleidoscope_twilight")) {
                                 output.accept(KTItems.FROZEN_BUN);
                             }

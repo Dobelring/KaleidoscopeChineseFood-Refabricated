@@ -22,11 +22,13 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -39,16 +41,19 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BowlStackBlock extends BaseEntityBlock {
+public class BowlStackBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
    public static final IntegerProperty BOWL_COUNT = IntegerProperty.create("bowl_count", 0, 3);
    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
    public static final BooleanProperty IS_WOODEN = BooleanProperty.create("is_wooden");
+   public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
    private static final VoxelShape SHAPE_NORTH_SOUTH = Block.box(2.0, 0.0, 1.0, 14.0, 5.0, 15.0);
    private static final VoxelShape SHAPE_EAST_WEST = Block.box(1.0, 0.0, 2.0, 15.0, 5.0, 14.0);
    private static final SoundEvent PLACE_BOWL_SOUND = SoundEvents.ITEM_FRAME_ADD_ITEM;
@@ -59,8 +64,9 @@ public class BowlStackBlock extends BaseEntityBlock {
    public BowlStackBlock(Properties properties) {
       super(properties);
       this.registerDefaultState(
-         (BlockState)((BlockState)((BlockState)((BlockState)this.stateDefinition.any()).setValue(BOWL_COUNT, 0)).setValue(FACING, Direction.NORTH))
-            .setValue(IS_WOODEN, false)
+         (BlockState)((BlockState)((BlockState)((BlockState)((BlockState)this.stateDefinition.any()).setValue(BOWL_COUNT, 0)).setValue(FACING, Direction.NORTH))
+               .setValue(IS_WOODEN, false))
+            .setValue(WATERLOGGED, false)
       );
    }
 
@@ -86,7 +92,21 @@ public class BowlStackBlock extends BaseEntityBlock {
    }
 
    public BlockState getStateForPlacement(BlockPlaceContext context) {
-      return (BlockState)this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+      FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
+      return (BlockState)((BlockState)this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite()))
+         .setValue(WATERLOGGED, fluid.getType() == Fluids.WATER);
+   }
+
+   public FluidState getFluidState(BlockState state) {
+      return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+   }
+
+   public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+      if ((Boolean)state.getValue(WATERLOGGED)) {
+         level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+      }
+
+      return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
    }
 
    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
@@ -149,8 +169,17 @@ public class BowlStackBlock extends BaseEntityBlock {
       return level.getBlockEntity(pos, ModBlockEntities.BOWL_STACK);
    }
 
+   public boolean hasAnalogOutputSignal(BlockState state) {
+      return true;
+   }
+
+   /** 比较器输出 = min(bowl_count * 5, 15) */
+   public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+      return Math.min((Integer)state.getValue(BOWL_COUNT) * 5, 15);
+   }
+
    public boolean canBeReplaced(BlockState state, Fluid fluid) {
-      return false;
+      return !(Boolean)state.getValue(WATERLOGGED) && fluid == Fluids.WATER;
    }
 
    public void appendHoverText(ItemStack stack, @NotNull Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
@@ -162,7 +191,7 @@ public class BowlStackBlock extends BaseEntityBlock {
    }
 
    protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-      builder.add(new Property[]{BOWL_COUNT, FACING, IS_WOODEN});
+      builder.add(new Property[]{BOWL_COUNT, FACING, IS_WOODEN, WATERLOGGED});
    }
 
    @NotNull

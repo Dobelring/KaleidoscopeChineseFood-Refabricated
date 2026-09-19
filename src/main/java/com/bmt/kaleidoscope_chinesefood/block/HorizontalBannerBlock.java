@@ -1,26 +1,31 @@
 package com.bmt.kaleidoscope_chinesefood.block;
 
 import com.bmt.kaleidoscope_chinesefood.block.entity.HorizontalBannerBlockEntity;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.bmt.kaleidoscope_chinesefood.network.TextEditOpenS2CPayload;
 import com.mojang.serialization.MapCodec;
+import java.util.ArrayList;
 import java.util.List;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.network.Filterable;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.Item.TooltipContext;
-import net.minecraft.world.item.component.WritableBookContent;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -92,72 +97,142 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
       BlockPos pos = context.getClickedPos();
       Level level = context.getLevel();
       Direction clickedFace = context.getClickedFace();
-      if (!clickedFace.getAxis().isHorizontal()) {
+      BlockState clickedBlock = level.getBlockState(pos.relative(clickedFace.getOpposite()));
+      Direction facing;
+      if (clickedBlock.getBlock() instanceof HorizontalBannerBlock) {
+         facing = (Direction)clickedBlock.getValue(FACING);
+      } else {
+         if (!clickedFace.getAxis().isHorizontal()) {
+            return null;
+         }
+
+         facing = clickedFace;
+      }
+
+      BlockPos leftOwner = ownerOf(level, pos.relative(facing.getClockWise()), facing);
+      BlockPos rightOwner = ownerOf(level, pos.relative(facing.getCounterClockWise()), facing);
+      boolean joinLeft = leftOwner != null && groupSize(level, leftOwner, facing) < 3;
+      boolean joinRight = rightOwner != null && groupSize(level, rightOwner, facing) < 3;
+      if (joinLeft && joinRight && groupSize(level, leftOwner, facing) + 1 + groupSize(level, rightOwner, facing) > 3) {
          return null;
       } else {
-         int leftCount = this.countAdjacentBanners(level, pos, clickedFace, true);
-         int rightCount = this.countAdjacentBanners(level, pos, clickedFace, false);
-         if (leftCount + 1 + rightCount > 3) {
-            return null;
-         } else {
-            BlockState state = this.createState(clickedFace, level.getFluidState(pos));
-            return state.canSurvive(level, pos) ? state : null;
-         }
+         BlockState state = this.createState(facing, level.getFluidState(pos));
+         return state.canSurvive(level, pos) ? state : null;
       }
    }
 
    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
       super.setPlacedBy(level, pos, state, placer, stack);
       Direction facing = (Direction)state.getValue(FACING);
-      BlockPos rightPos = pos.relative(facing.getCounterClockWise());
-      CompoundTag savedData = null;
-      if (this.isBannerBlockWithPart(level.getBlockState(rightPos), facing, HorizontalBannerBlock.BannerPart.LEFT)
-         && level.getBlockEntity(rightPos) instanceof HorizontalBannerBlockEntity oldBannerBE) {
-         savedData = oldBannerBE.saveWithFullMetadata(level.registryAccess());
-         savedData.remove("x");
-         savedData.remove("y");
-         savedData.remove("z");
+      BlockPos leftOwner = ownerOf(level, pos.relative(facing.getClockWise()), facing);
+      BlockPos rightOwner = ownerOf(level, pos.relative(facing.getCounterClockWise()), facing);
+      boolean joinLeft = leftOwner != null && groupSize(level, leftOwner, facing) < 3;
+      boolean joinRight = rightOwner != null && groupSize(level, rightOwner, facing) < 3;
+      if (joinLeft && joinRight) {
+         if (level.getBlockEntity(pos) instanceof HorizontalBannerBlockEntity be) {
+            be.setOwnerPos(leftOwner);
+         }
+
+         if (level.getBlockEntity(rightOwner) instanceof HorizontalBannerBlockEntity rightBe) {
+            rightBe.setText("");
+         }
+
+         reassignOwner(level, pos, rightOwner, leftOwner, facing);
+      } else if (joinRight) {
+         if (level.getBlockEntity(rightOwner) instanceof HorizontalBannerBlockEntity rightBe) {
+            migrateText(level, rightOwner, pos);
+            rightBe.setText("");
+         }
+
+         reassignOwner(level, pos, rightOwner, pos, facing);
+      } else if (joinLeft && level.getBlockEntity(pos) instanceof HorizontalBannerBlockEntity be) {
+         be.setOwnerPos(leftOwner);
       }
 
-      this.updateNeighbors(level, pos, state);
-      if (savedData != null && level.getBlockEntity(pos) instanceof HorizontalBannerBlockEntity newBannerBE) {
-         newBannerBE.loadCustomOnly(savedData, level.registryAccess());
-         newBannerBE.setChanged();
-      }
+      updateGroupParts(level, pos, facing);
    }
 
-   public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
-      if (!level.isClientSide) {
-         Direction facing = (Direction)state.getValue(FACING);
-         CompoundTag savedData = null;
-         if (state.getValue(PART) == HorizontalBannerBlock.BannerPart.LEFT && level.getBlockEntity(pos) instanceof HorizontalBannerBlockEntity oldBannerBE) {
-            savedData = oldBannerBE.saveWithFullMetadata(level.registryAccess());
-            savedData.remove("x");
-            savedData.remove("y");
-            savedData.remove("z");
-         }
-
-         if (!player.isCreative()) {
-            popResource(level, pos, new ItemStack(this.asItem()));
-         }
-
-         level.setBlock(pos, Blocks.AIR.defaultBlockState(), 35);
-         this.updateNeighbors(level, pos, state);
-         if (savedData != null) {
-            BlockPos newLeftPos = this.findNewLeftPosition(level, pos, facing);
-            if (newLeftPos != null && level.getBlockEntity(newLeftPos) instanceof HorizontalBannerBlockEntity newBannerBE) {
-               newBannerBE.loadCustomOnly(savedData, level.registryAccess());
-               newBannerBE.setChanged();
-            }
-         }
-      }
-
-      return true;
-   }
-
+   /**
+    * 1.21.1 原版没有 {@code Block#onDestroyedByPlayer}（那是 NeoForge 追加的钩子），
+    * 玩家破坏的唯一入口就是 playerWillDestroy。在这里就地拆掉整组并掉落；
+    * 之后原版会自行把 pos 置空（此时已是空气，不会重复处理），掉落也由本方法负责，
+    * 所以 loot table 是空 pools，playerDestroy 保持空实现避免双掉。
+    */
    @NotNull
    public BlockState playerWillDestroy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
-      return state;
+      if (!level.isClientSide) {
+         this.performBreak(level, pos, state, !player.isCreative(), false);
+      }
+
+      return super.playerWillDestroy(level, pos, state, player);
+   }
+
+   public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity be, ItemStack tool) {
+   }
+
+   public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+      if (!this.canSurvive(state, level, pos)) {
+         this.performBreak(level, pos, state, true, true);
+      }
+   }
+
+   private boolean performBreak(Level level, BlockPos pos, BlockState state, boolean dropItems, boolean eventAtClicked) {
+      if (!(level.getBlockEntity(pos) instanceof HorizontalBannerBlockEntity be)) {
+         return false;
+      } else {
+         Direction facing = (Direction)state.getValue(FACING);
+         BlockPos owner = be.getOwnerPos();
+         ArrayList<BlockPos> members = new ArrayList<>();
+         BlockPos cur = owner;
+
+         for (int size = 0; size < 4 && isOwner(level, cur, owner, facing); size++) {
+            members.add(cur);
+            cur = cur.relative(facing.getCounterClockWise());
+         }
+
+         int size = members.size();
+         int index = members.indexOf(pos);
+         if (index < 0) {
+            return false;
+         } else {
+            boolean destroyAll = size == 3 && index == 1;
+            if (destroyAll) {
+               for (BlockPos m : members) {
+                  boolean play = m.equals(pos) ? eventAtClicked : true;
+                  this.removeBlock(level, m, play);
+               }
+
+               if (dropItems) {
+                  for (int k = 0; k < size; k++) {
+                     popResource(level, pos, new ItemStack(this.asItem()));
+                  }
+               }
+            } else {
+               if (index == 0 && size > 1) {
+                  BlockPos newMaster = members.get(1);
+                  migrateText(level, pos, newMaster);
+                  reassignOwner(level, newMaster, owner, newMaster, facing);
+               }
+
+               this.removeBlock(level, pos, eventAtClicked);
+               if (dropItems) {
+                  popResource(level, pos, new ItemStack(this.asItem()));
+               }
+
+               updateGroupParts(level, size > 1 ? members.get(1) : pos, facing);
+            }
+
+            return true;
+         }
+      }
+   }
+
+   private void removeBlock(Level level, BlockPos m, boolean playEvent) {
+      if (playEvent) {
+         level.destroyBlock(m, false);
+      } else {
+         level.setBlock(m, Blocks.AIR.defaultBlockState(), 35);
+      }
    }
 
    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
@@ -166,82 +241,21 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
       }
 
       Direction facing = (Direction)state.getValue(FACING);
-      if (direction == facing.getClockWise() || direction == facing.getCounterClockWise()) {
-         this.enforceMaxBannerLength(level, pos, facing);
-         return this.calculateSimplePart(level, pos, facing);
+      if (direction == facing.getOpposite() && !this.canSurvive(state, level, pos)) {
+         level.scheduleTick(pos, this, 1);
+         return state;
+      } else if ((direction == facing.getClockWise() || direction == facing.getCounterClockWise())
+         && level.getBlockEntity(pos) instanceof HorizontalBannerBlockEntity be) {
+         BlockPos owner = be.getOwnerPos();
+         boolean left = isOwner(level, pos.relative(facing.getClockWise()), owner, facing);
+         boolean right = isOwner(level, pos.relative(facing.getCounterClockWise()), owner, facing);
+         HorizontalBannerBlock.BannerPart part = left && right
+            ? HorizontalBannerBlock.BannerPart.MIDDLE
+            : (left ? HorizontalBannerBlock.BannerPart.RIGHT : (right ? HorizontalBannerBlock.BannerPart.LEFT : HorizontalBannerBlock.BannerPart.SINGLE));
+         return (BlockState)state.setValue(PART, part);
       } else {
-         return direction == facing.getOpposite() && !this.canSurvive(state, level, pos)
-            ? Blocks.AIR.defaultBlockState()
-            : super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+         return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
       }
-   }
-
-   private void enforceMaxBannerLength(LevelAccessor level, BlockPos pos, Direction facing) {
-      BlockPos leftmost = pos;
-
-      while (true) {
-         BlockPos next = leftmost.relative(facing.getClockWise());
-         if (!this.isBannerBlockWithFacing(level.getBlockState(next), facing)) {
-            int length = 0;
-            BlockPos current = leftmost;
-
-            while (true) {
-               BlockState state = level.getBlockState(current);
-               if (!this.isBannerBlockWithFacing(state, facing)) {
-                  return;
-               }
-
-               if (++length > 3) {
-                  level.destroyBlock(current, true);
-               }
-
-               current = current.relative(facing.getCounterClockWise());
-            }
-         }
-
-         leftmost = next;
-      }
-   }
-
-   private BlockState calculateSimplePart(LevelAccessor level, BlockPos pos, Direction facing) {
-      boolean hasLeft = this.isBannerBlockWithFacing(level.getBlockState(pos.relative(facing.getClockWise())), facing);
-      boolean hasRight = this.isBannerBlockWithFacing(level.getBlockState(pos.relative(facing.getCounterClockWise())), facing);
-      if (hasLeft && hasRight) {
-         return (BlockState)level.getBlockState(pos).setValue(PART, HorizontalBannerBlock.BannerPart.MIDDLE);
-      } else if (hasLeft) {
-         return (BlockState)level.getBlockState(pos).setValue(PART, HorizontalBannerBlock.BannerPart.RIGHT);
-      } else {
-         return hasRight
-            ? (BlockState)level.getBlockState(pos).setValue(PART, HorizontalBannerBlock.BannerPart.LEFT)
-            : (BlockState)level.getBlockState(pos).setValue(PART, HorizontalBannerBlock.BannerPart.SINGLE);
-      }
-   }
-
-   private void updateNeighbors(Level level, BlockPos pos, BlockState state) {
-      Direction facing = (Direction)state.getValue(FACING);
-      Direction sideDir = facing.getClockWise();
-
-      for (int i = -2; i <= 2; i++) {
-         BlockPos updatePos = pos.offset(sideDir.getStepX() * i, sideDir.getStepY() * i, sideDir.getStepZ() * i);
-         if (this.isBannerBlockWithFacing(level.getBlockState(updatePos), facing)) {
-            level.setBlock(updatePos, this.calculateSimplePart(level, updatePos, facing), 3);
-         }
-      }
-   }
-
-   @Nullable
-   private BlockPos findNewLeftPosition(Level level, BlockPos oldLeftPos, Direction facing) {
-      BlockPos current = oldLeftPos.relative(facing.getCounterClockWise());
-
-      for (int i = 0; i < 2; i++) {
-         if (this.isBannerBlockWithFacing(level.getBlockState(current), facing)) {
-            return current;
-         }
-
-         current = current.relative(facing.getCounterClockWise());
-      }
-
-      return null;
    }
 
    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
@@ -250,61 +264,48 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
       return level.getBlockState(wallPos).isFaceSturdy(level, wallPos, facing);
    }
 
-   protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-      if (level.isClientSide) {
-         return InteractionResult.SUCCESS;
-      } else {
-         BlockPos entityPos = pos;
-         Direction facing = (Direction)state.getValue(FACING);
+   protected ItemInteractionResult useItemOn(
+      ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
+   ) {
+      if (!level.isClientSide && level.getBlockEntity(pos) instanceof HorizontalBannerBlockEntity be) {
+         BlockPos owner = be.getOwnerPos();
+         if (level.getBlockEntity(owner) instanceof HorizontalBannerBlockEntity master) {
+            if (stack.is(Items.GLOW_INK_SAC)) {
+               master.setGlowing(true);
+               level.playSound(null, owner, SoundEvents.GLOW_INK_SAC_USE, SoundSource.BLOCKS);
+               if (!player.isCreative()) {
+                  stack.shrink(1);
+               }
 
-         for (int i = 0; i < 2; i++) {
-            BlockPos left = entityPos.relative(facing.getClockWise());
-            if (!this.isBannerBlockWithFacing(level.getBlockState(left), facing)) {
-               break;
+               return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
 
-            entityPos = left;
-         }
+            if (stack.is(Items.INK_SAC)) {
+               master.setGlowing(false);
+               level.playSound(null, owner, SoundEvents.INK_SAC_USE, SoundSource.BLOCKS);
+               if (!player.isCreative()) {
+                  stack.shrink(1);
+               }
 
-         if (level.getBlockEntity(entityPos) instanceof HorizontalBannerBlockEntity bannerEntity) {
-            ItemStack heldItem = player.getMainHandItem();
-            String targetText = this.getTextFromBook(heldItem);
-            if (targetText != null && !targetText.isBlank()) {
-               bannerEntity.setText(targetText);
-               return InteractionResult.CONSUME;
+               return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
          }
-
-         return InteractionResult.PASS;
       }
+
+      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
    }
 
-   @Nullable
-   private String getTextFromBook(ItemStack stack) {
-      WritableBookContent bookContent = (WritableBookContent)stack.get(DataComponents.WRITABLE_BOOK_CONTENT);
-      if (bookContent != null && !bookContent.pages().isEmpty()) {
-         String firstPage = (String)((Filterable)bookContent.pages().get(0)).raw();
-         if (firstPage.isBlank()) {
-            return null;
-         } else {
-            try {
-               JsonElement element = JsonParser.parseString(firstPage);
-               if (element.isJsonObject()) {
-                  JsonObject obj = element.getAsJsonObject();
-                  if (obj.has("text")) {
-                     return obj.get("text").getAsString();
-                  }
-               } else if (element.isJsonPrimitive()) {
-                  return element.getAsString();
-               }
-            } catch (Exception var6) {
-            }
-
-            return firstPage;
+   protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+      if (!level.isClientSide && level.getBlockEntity(pos) instanceof HorizontalBannerBlockEntity be && player instanceof ServerPlayer serverPlayer) {
+         BlockPos owner = be.getOwnerPos();
+         if (level.getBlockEntity(owner) instanceof HorizontalBannerBlockEntity master) {
+            ServerPlayNetworking.send(
+               serverPlayer, new TextEditOpenS2CPayload(owner, master.getText(), master.getMaxChars(), master.getSegmentCount(), false)
+            );
          }
-      } else {
-         return null;
       }
+
+      return InteractionResult.SUCCESS;
    }
 
    public FluidState getFluidState(BlockState state) {
@@ -313,9 +314,7 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
 
    @Nullable
    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-      return state.getValue(PART) != HorizontalBannerBlock.BannerPart.SINGLE && state.getValue(PART) != HorizontalBannerBlock.BannerPart.LEFT
-         ? null
-         : new HorizontalBannerBlockEntity(pos, state);
+      return new HorizontalBannerBlockEntity(pos, state);
    }
 
    public void appendHoverText(ItemStack stack, @NotNull TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
@@ -326,29 +325,77 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
       );
    }
 
-   private boolean isBannerBlockWithFacing(BlockState state, Direction facing) {
-      return state.is(this) && state.getValue(FACING) == facing;
+   @Nullable
+   private static BlockPos ownerOf(Level level, BlockPos p, Direction facing) {
+      BlockState s = level.getBlockState(p);
+      return s.getBlock() instanceof HorizontalBannerBlock && s.getValue(FACING) == facing && level.getBlockEntity(p) instanceof HorizontalBannerBlockEntity be
+         ? be.getOwnerPos()
+         : null;
    }
 
-   private boolean isBannerBlockWithPart(BlockState state, Direction facing, HorizontalBannerBlock.BannerPart part) {
-      return this.isBannerBlockWithFacing(state, facing) && state.getValue(PART) == part;
+   private static boolean isOwner(BlockGetter level, BlockPos p, BlockPos owner, Direction facing) {
+      BlockState s = level.getBlockState(p);
+      return s.getBlock() instanceof HorizontalBannerBlock
+         && s.getValue(FACING) == facing
+         && level.getBlockEntity(p) instanceof HorizontalBannerBlockEntity be
+         && be.getOwnerPos().equals(owner);
+   }
+
+   private static int groupSize(Level level, BlockPos owner, Direction facing) {
+      int count = 0;
+      BlockPos cur = owner;
+
+      for (int i = 0; i < 4 && isOwner(level, cur, owner, facing); i++) {
+         count++;
+         cur = cur.relative(facing.getCounterClockWise());
+      }
+
+      return count;
+   }
+
+   private static void reassignOwner(Level level, BlockPos around, BlockPos oldOwner, BlockPos newOwner, Direction facing) {
+      for (int i = -3; i <= 3; i++) {
+         BlockPos p = around.relative(facing.getClockWise(), i);
+         if (isOwner(level, p, oldOwner, facing) && level.getBlockEntity(p) instanceof HorizontalBannerBlockEntity be) {
+            be.setOwnerPos(newOwner);
+         }
+      }
+   }
+
+   private static void updateGroupParts(Level level, BlockPos around, Direction facing) {
+      for (int i = -3; i <= 3; i++) {
+         BlockPos p = around.relative(facing.getClockWise(), i);
+         BlockState s = level.getBlockState(p);
+         if (s.getBlock() instanceof HorizontalBannerBlock
+            && s.getValue(FACING) == facing
+            && level.getBlockEntity(p) instanceof HorizontalBannerBlockEntity be) {
+            BlockPos owner = be.getOwnerPos();
+            boolean left = isOwner(level, p.relative(facing.getClockWise()), owner, facing);
+            boolean right = isOwner(level, p.relative(facing.getCounterClockWise()), owner, facing);
+            HorizontalBannerBlock.BannerPart part = left && right
+               ? HorizontalBannerBlock.BannerPart.MIDDLE
+               : (left ? HorizontalBannerBlock.BannerPart.RIGHT : (right ? HorizontalBannerBlock.BannerPart.LEFT : HorizontalBannerBlock.BannerPart.SINGLE));
+            if (s.getValue(PART) != part) {
+               level.setBlock(p, (BlockState)s.setValue(PART, part), 3);
+            }
+         }
+      }
+   }
+
+   private static void migrateText(Level level, BlockPos from, BlockPos to) {
+      if (level.getBlockEntity(from) instanceof HorizontalBannerBlockEntity fromBe && level.getBlockEntity(to) instanceof HorizontalBannerBlockEntity toBe) {
+         CompoundTag data = fromBe.saveWithFullMetadata(level.registryAccess());
+         data.remove("x");
+         data.remove("y");
+         data.remove("z");
+         toBe.loadCustomOnly(data, level.registryAccess());
+         toBe.setChanged();
+         level.sendBlockUpdated(to, toBe.getBlockState(), toBe.getBlockState(), 3);
+      }
    }
 
    private BlockState createState(Direction facing, FluidState fluidState) {
       return (BlockState)((BlockState)this.defaultBlockState().setValue(FACING, facing)).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
-   }
-
-   private int countAdjacentBanners(Level level, BlockPos pos, Direction facing, boolean countLeft) {
-      int count = 0;
-
-      for (BlockPos current = pos.relative(countLeft ? facing.getClockWise() : facing.getCounterClockWise());
-         this.isBannerBlockWithFacing(level.getBlockState(current), facing);
-         current = current.relative(countLeft ? facing.getClockWise() : facing.getCounterClockWise())
-      ) {
-         count++;
-      }
-
-      return count;
    }
 
    static {

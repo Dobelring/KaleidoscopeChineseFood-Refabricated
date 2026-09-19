@@ -20,10 +20,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.ItemLike;
 
-public class PicklingJarRecipeCategory implements IRecipeCategory<PickleJarRecipe> {
-   public static final RecipeType<PickleJarRecipe> TYPE = RecipeType.create("kaleidoscope_chinesefood", "pickle_jar", PickleJarRecipe.class);
+public class PicklingJarRecipeCategory implements IRecipeCategory<RecipeHolder<PickleJarRecipe>> {
+   public static final RecipeType<RecipeHolder<PickleJarRecipe>> TYPE = RecipeType.createRecipeHolderType(
+      KaleidoscopeChineseFood.id("pickle_jar")
+   );
    private static final ResourceLocation BACKGROUND_TEXTURE = KaleidoscopeChineseFood.id("textures/gui/jei/pickle_jar.png");
    private final IDrawable background;
    private final IDrawable icon;
@@ -33,7 +36,7 @@ public class PicklingJarRecipeCategory implements IRecipeCategory<PickleJarRecip
       this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack((ItemLike)ModBlocks.PICKLE_JAR));
    }
 
-   public RecipeType<PickleJarRecipe> getRecipeType() {
+   public RecipeType<RecipeHolder<PickleJarRecipe>> getRecipeType() {
       return TYPE;
    }
 
@@ -49,8 +52,9 @@ public class PicklingJarRecipeCategory implements IRecipeCategory<PickleJarRecip
       return this.icon;
    }
 
-   public void setRecipe(IRecipeLayoutBuilder builder, PickleJarRecipe recipe, IFocusGroup focuses) {
-      NonNullList<Ingredient> ingredients = recipe.getIngredients();
+   public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<PickleJarRecipe> recipe, IFocusGroup focuses) {
+      PickleJarRecipe actualRecipe = recipe.value();
+      NonNullList<Ingredient> ingredients = actualRecipe.getIngredients();
 
       for (int i = 0; i < 4; i++) {
          int x = i % 2 * 17 + 12;
@@ -74,10 +78,10 @@ public class PicklingJarRecipeCategory implements IRecipeCategory<PickleJarRecip
       Minecraft minecraft = Minecraft.getInstance();
       if (minecraft.level != null) {
          Provider registries = minecraft.level.registryAccess();
-         ItemStack result = recipe.getResultItem(registries).copy();
+         ItemStack result = actualRecipe.getResultItem(registries).copy();
          int originalCount = result.getCount();
          result.setCount(originalCount * 4);
-         int fermentTime = recipe.getFermentTime();
+         int fermentTime = actualRecipe.getFermentTime();
          int seconds = fermentTime / 20;
          ((IRecipeSlotBuilder)builder.addSlot(RecipeIngredientRole.OUTPUT, 113, 23).addItemStack(result))
             .addTooltipCallback(

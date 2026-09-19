@@ -6,6 +6,7 @@ import com.bmt.kaleidoscope_chinesefood.client.renderer.CoupletBlockEntityRender
 import com.bmt.kaleidoscope_chinesefood.client.renderer.HorizontalBannerBlockEntityRender;
 import com.bmt.kaleidoscope_chinesefood.client.renderer.PickleJarRender;
 import com.bmt.kaleidoscope_chinesefood.client.renderer.entity.KongmingLanternRender;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.entity.YellowCroakerRenderer;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlocks;
 import com.bmt.kaleidoscope_chinesefood.init.ModEntities;
@@ -37,6 +38,7 @@ public class ClientSetup {
         BlockEntityRenderers.register(ModBlockEntities.COUPLET_BLOCK_ENTITY, CoupletBlockEntityRender::new);
         BlockEntityRenderers.register(ModBlockEntities.HORIZONTAL_BANNER, HorizontalBannerBlockEntityRender::new);
         EntityRendererRegistry.register(ModEntities.KONGMING_LANTERN, KongmingLanternRender::new);
+        EntityRendererRegistry.register(ModEntities.YELLOW_CROAKER, YellowCroakerRenderer::new);
         registerBlockRenderLayers();
         registerDollIntegrationClient();
     }
@@ -62,7 +64,8 @@ public class ClientSetup {
                 ModBlocks.SALT_BLOCK,
                 ModBlocks.FIRECRACKER,
                 ModBlocks.FU_CHARACTER,
-                ModBlocks.KONGMING_LANTERN
+                ModBlocks.KONGMING_LANTERN,
+                ModBlocks.BAMBOO_STEAMED_EGG
         );
 
         // 菜肴 / 盘子 / 茶杯 / 人偶方块由数据注册表驱动生成，按 id 从注册表反查后注册
@@ -72,6 +75,8 @@ public class ClientSetup {
                 ModFoodBiteRegistry.YELLOW_CROAKER_SOUP,
                 ModFoodBiteRegistry.RED_RICE_ROLL,
                 ModFoodBiteRegistry.YELLOW_CROAKER_TOFU_SOUP,
+                ModFoodBiteRegistry.STEAMED_RICE_ROLLS,
+                ModFoodBiteRegistry.FOUR_JOY_MEATBALLS,
                 ModTea.LAPSANG,
                 ModTea.HK_MILK_TEA
         ));

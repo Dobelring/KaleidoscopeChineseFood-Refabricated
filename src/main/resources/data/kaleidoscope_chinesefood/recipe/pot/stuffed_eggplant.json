@@ -5,16 +5,16 @@
   },
   "ingredients": [
     {
-      "item": "kaleidoscope_chinesefood:eggplant"
+      "tag": "c:crops/eggplant"
     },
     {
-      "item": "kaleidoscope_chinesefood:eggplant"
+      "tag": "c:crops/eggplant"
     },
     {
-      "item": "kaleidoscope_chinesefood:eggplant"
+      "tag": "c:crops/eggplant"
     },
     {
-      "item": "kaleidoscope_chinesefood:eggplant"
+      "tag": "c:crops/eggplant"
     },
     {
       "item": "kaleidoscope_cookery:raw_cut_small_meats"

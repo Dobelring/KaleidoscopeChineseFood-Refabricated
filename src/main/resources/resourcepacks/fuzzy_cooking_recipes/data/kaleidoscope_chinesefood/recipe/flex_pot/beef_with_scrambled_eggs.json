@@ -5,7 +5,7 @@
   },
   "ingredients": [
     {
-      "item": "minecraft:beef"
+      "tag": "c:foods/raw_beef"
     },
     {
       "tag": "c:eggs"

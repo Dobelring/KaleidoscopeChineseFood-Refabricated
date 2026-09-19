@@ -14,10 +14,10 @@
       "tag": "c:eggs"
     },
     {
-      "item": "minecraft:beef"
+      "tag": "c:foods/raw_beef"
     },
     {
-      "item": "minecraft:beef"
+      "tag": "c:foods/raw_beef"
     }
   ],
   "result": {

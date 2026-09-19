@@ -5,13 +5,13 @@
   },
   "ingredients": [
     {
-      "item": "minecraft:beef"
+      "tag": "c:foods/raw_beef"
     },
     {
-      "item": "minecraft:beef"
+      "tag": "c:foods/raw_beef"
     },
     {
-      "item": "minecraft:beef"
+      "tag": "c:foods/raw_beef"
     },
     {
       "item": "kaleidoscope_cookery:green_chili"

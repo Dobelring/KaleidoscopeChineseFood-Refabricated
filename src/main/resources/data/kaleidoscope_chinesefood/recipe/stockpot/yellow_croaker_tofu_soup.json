@@ -15,10 +15,10 @@
       "item": "kaleidoscope_chinesefood:yellow_croaker"
     },
     {
-      "item": "kaleidoscope_cookery:lettuce"
+      "tag": "c:crops/lettuce"
     },
     {
-      "item": "kaleidoscope_cookery:lettuce"
+      "tag": "c:crops/lettuce"
     },
     {
       "item": "kaleidoscope_cookery:flour"

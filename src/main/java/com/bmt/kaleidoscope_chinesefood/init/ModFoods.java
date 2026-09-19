@@ -158,9 +158,15 @@ public class ModFoods {
       .effect(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.SATIATED_SHIELD, 3600), 1.0F)
       .alwaysEdible()
       .build();
-   public static final FoodProperties FOUR_JOY_MEATBALLS = new Builder()
+   public static final FoodProperties FOUR_JOY_MEATBALLS_ITEM = new Builder()
       .nutrition(13)
-      .saturationModifier(0.61F)
+      .saturationModifier(0.64F)
+      .effect(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.SATIATED_SHIELD, 3600), 1.0F)
+      .alwaysEdible()
+      .build();
+   public static final FoodProperties FOUR_JOY_MEATBALLS_BLOCK = new Builder()
+      .nutrition(3)
+      .saturationModifier(0.64F)
       .effect(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.SATIATED_SHIELD, 3600), 1.0F)
       .alwaysEdible()
       .build();
@@ -200,8 +206,14 @@ public class ModFoods {
       .effect(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.WARMTH, 9600), 1.0F)
       .alwaysEdible()
       .build();
-   public static final FoodProperties STEAMED_RICE_ROLLS = new Builder()
+   public static final FoodProperties STEAMED_RICE_ROLLS_ITEM = new Builder()
       .nutrition(14)
+      .saturationModifier(0.64F)
+      .effect(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.VIGOR, 1800), 1.0F)
+      .alwaysEdible()
+      .build();
+   public static final FoodProperties STEAMED_RICE_ROLLS_BLOCK = new Builder()
+      .nutrition(7)
       .saturationModifier(0.64F)
       .effect(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.VIGOR, 1800), 1.0F)
       .alwaysEdible()
@@ -259,6 +271,7 @@ public class ModFoods {
    public static final FoodProperties CHINESE_SAUERKRAUT = new Builder().nutrition(2).saturationModifier(0.0F).alwaysEdible().build();
    public static final FoodProperties YELLOW_CROAKER = new Builder().nutrition(2).saturationModifier(0.4F).alwaysEdible().build();
    public static final FoodProperties MOONCAKE = new Builder().nutrition(2).saturationModifier(0.4F).alwaysEdible().build();
+   public static final FoodProperties BAMBOO_STEAMED_EGG = new Builder().nutrition(6).saturationModifier(0.61F).alwaysEdible().build();
    public static final FoodProperties CORN = new Builder().nutrition(2).saturationModifier(0.0F).alwaysEdible().build();
    public static final FoodProperties EGGPLANT = new Builder().nutrition(2).saturationModifier(0.5F).alwaysEdible().build();
 }

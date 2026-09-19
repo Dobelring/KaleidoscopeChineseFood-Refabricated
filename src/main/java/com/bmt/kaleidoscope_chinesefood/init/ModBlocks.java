@@ -13,6 +13,7 @@ import com.bmt.kaleidoscope_chinesefood.block.PickleJarBlock;
 import com.bmt.kaleidoscope_chinesefood.block.SaltBlock;
 import com.bmt.kaleidoscope_chinesefood.block.crop.EggplantCropBlock;
 import com.bmt.kaleidoscope_chinesefood.block.misc.CornBlock;
+import com.github.ysbbbbbb.kaleidoscopecookery.block.decoration.StackableFoodBlock;
 import java.util.function.Supplier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.phys.shapes.Shapes;
 
 public class ModBlocks {
     public static CornBlock CORN_RISTRA;
@@ -38,6 +40,7 @@ public class ModBlocks {
     public static HorizontalBannerBlock HORIZONTAL_BANNER;
     public static MooncakeBlock MOONCAKE_BLOCK;
     public static KongmingLanternBlock KONGMING_LANTERN;
+    public static Block BAMBOO_STEAMED_EGG;
     public static EggplantCropBlock EGGPLANT_CROP;
 
     public static void register() {
@@ -75,6 +78,19 @@ public class ModBlocks {
         );
         KONGMING_LANTERN = register(
                 "kongming_lantern", () -> new KongmingLanternBlock(Properties.of().instabreak().strength(0.1F).noOcclusion().sound(SoundType.WOOD))
+        );
+        BAMBOO_STEAMED_EGG = register(
+                "bamboo_steamed_egg",
+                () -> StackableFoodBlock.create()
+                        .maxCount(4)
+                        .item(() -> ModItems.BAMBOO_STEAMED_EGG)
+                        .shapes(
+                                Block.box(4.0, 0.0, 4.0, 12.0, 8.0, 12.0),
+                                Shapes.or(Block.box(7.0, 0.0, 1.0, 15.0, 8.0, 9.0), Block.box(1.0, 0.0, 7.0, 9.0, 8.0, 15.0)),
+                                Shapes.or(Block.box(0.0, 0.0, 6.0, 16.0, 8.0, 15.0), Block.box(4.0, 0.0, 0.0, 12.0, 8.0, 15.0)),
+                                Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0)
+                        )
+                        .build()
         );
         // lazy suppliers break the crop-block <-> seed-item registration cycle
         EGGPLANT_CROP = register("eggplant_crop", () -> new EggplantCropBlock(() -> ModItems.EGGPLANT, () -> ModItems.EGGPLANT_SEED));

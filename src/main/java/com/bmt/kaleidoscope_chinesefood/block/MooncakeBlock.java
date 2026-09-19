@@ -1,16 +1,22 @@
 package com.bmt.kaleidoscope_chinesefood.block;
 
 import com.bmt.kaleidoscope_chinesefood.init.ModItems;
+import com.google.common.collect.Lists;
+import java.util.List;
 import java.util.Objects;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -35,23 +41,47 @@ public class MooncakeBlock extends Block {
       builder.add(new Property[]{STACK_COUNT});
    }
 
-   public boolean canBeReplaced(@NotNull BlockState state, @NotNull BlockPlaceContext context) {
-      ItemStack heldItem = context.getItemInHand();
-      return heldItem.getItem() == ModItems.MOONCAKE && (Integer)state.getValue(STACK_COUNT) < 4;
+   public BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
+      return Objects.requireNonNull(super.getStateForPlacement(context));
    }
 
-   public BlockState getStateForPlacement(@NotNull BlockPlaceContext context) {
-      BlockState clickedState = context.getLevel().getBlockState(context.getClickedPos());
-      return clickedState.is(this)
-         ? (BlockState)clickedState.setValue(STACK_COUNT, (Integer)clickedState.getValue(STACK_COUNT) + 1)
-         : Objects.requireNonNull(super.getStateForPlacement(context));
+   @NotNull
+   protected ItemInteractionResult useItemOn(
+      @NotNull ItemStack stack,
+      @NotNull BlockState state,
+      @NotNull Level level,
+      @NotNull BlockPos pos,
+      @NotNull Player player,
+      @NotNull InteractionHand hand,
+      @NotNull BlockHitResult hit
+   ) {
+      if (hand != InteractionHand.MAIN_HAND) {
+         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+      } else {
+         if (stack.is(ModItems.MOONCAKE)) {
+            int count = (Integer)state.getValue(STACK_COUNT);
+            if (count < 4) {
+               if (!player.isCreative()) {
+                  stack.shrink(1);
+               }
+
+               level.setBlockAndUpdate(pos, (BlockState)state.setValue(STACK_COUNT, count + 1));
+               level.playSound(player, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 1.0F, 1.0F);
+               return ItemInteractionResult.SUCCESS;
+            }
+         }
+
+         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+      }
    }
 
    @NotNull
    protected InteractionResult useWithoutItem(
       @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hit
    ) {
-      if (player.getMainHandItem().isEmpty() && player.getOffhandItem().isEmpty()) {
+      if (!player.getOffhandItem().isEmpty()) {
+         return InteractionResult.PASS;
+      } else {
          if (!level.isClientSide) {
             int currentStack = (Integer)state.getValue(STACK_COUNT);
             ItemStack mooncake = new ItemStack(ModItems.MOONCAKE);
@@ -61,21 +91,26 @@ public class MooncakeBlock extends Block {
                level.removeBlock(pos, false);
             }
 
+            level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 0.9F, 1.0F);
             if (!player.getInventory().add(mooncake)) {
                player.drop(mooncake, false);
             }
          }
 
          return InteractionResult.SUCCESS;
-      } else {
-         return InteractionResult.PASS;
       }
    }
 
-   public void spawnAfterBreak(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull ItemStack tool, boolean dropExperience) {
-      super.spawnAfterBreak(state, level, pos, tool, dropExperience);
-      int count = (Integer)state.getValue(STACK_COUNT) + 1;
-      popResource(level, pos, new ItemStack(ModItems.MOONCAKE, count));
+   public List<ItemStack> getDrops(@NotNull BlockState state, net.minecraft.world.level.storage.loot.LootParams.Builder paramsBuilder) {
+      List<ItemStack> drops = Lists.newArrayList();
+      int realAmount = (Integer)state.getValue(STACK_COUNT) + 1;
+      drops.add(new ItemStack((ItemLike)ModItems.MOONCAKE, realAmount));
+      return drops;
+   }
+
+   @NotNull
+   public ItemStack getCloneItemStack(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state) {
+      return new ItemStack((ItemLike)ModItems.MOONCAKE);
    }
 
    @NotNull

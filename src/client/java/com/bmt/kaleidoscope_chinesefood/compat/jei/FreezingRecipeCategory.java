@@ -18,10 +18,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.ItemLike;
 
-public class FreezingRecipeCategory implements IRecipeCategory<FreezingRecipe> {
-   public static final RecipeType<FreezingRecipe> TYPE = RecipeType.create("kaleidoscope_chinesefood", "freezing", FreezingRecipe.class);
+public class FreezingRecipeCategory implements IRecipeCategory<RecipeHolder<FreezingRecipe>> {
+   public static final RecipeType<RecipeHolder<FreezingRecipe>> TYPE = RecipeType.createRecipeHolderType(
+      KaleidoscopeChineseFood.id("freezing")
+   );
    private static final ResourceLocation BACKGROUND_TEXTURE = KaleidoscopeChineseFood.id("textures/gui/jei/freezer.png");
    private final IDrawable background;
    private final IDrawable icon;
@@ -31,7 +34,7 @@ public class FreezingRecipeCategory implements IRecipeCategory<FreezingRecipe> {
       this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack((ItemLike)ModBlocks.FREEZER));
    }
 
-   public RecipeType<FreezingRecipe> getRecipeType() {
+   public RecipeType<RecipeHolder<FreezingRecipe>> getRecipeType() {
       return TYPE;
    }
 
@@ -47,12 +50,13 @@ public class FreezingRecipeCategory implements IRecipeCategory<FreezingRecipe> {
       return this.icon;
    }
 
-   public void setRecipe(IRecipeLayoutBuilder builder, FreezingRecipe recipe, IFocusGroup focuses) {
-      builder.addSlot(RecipeIngredientRole.INPUT, 12, 21).addIngredients((Ingredient)recipe.getIngredients().get(0));
+   public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<FreezingRecipe> recipe, IFocusGroup focuses) {
+      FreezingRecipe actualRecipe = recipe.value();
+      builder.addSlot(RecipeIngredientRole.INPUT, 12, 21).addIngredients((Ingredient)actualRecipe.getIngredients().get(0));
       ClientLevel level = Minecraft.getInstance().level;
       if (level != null) {
          Provider registries = level.registryAccess();
-         builder.addSlot(RecipeIngredientRole.OUTPUT, 87, 21).addItemStack(recipe.getResultItem(registries));
+         builder.addSlot(RecipeIngredientRole.OUTPUT, 87, 21).addItemStack(actualRecipe.getResultItem(registries));
       }
    }
 }

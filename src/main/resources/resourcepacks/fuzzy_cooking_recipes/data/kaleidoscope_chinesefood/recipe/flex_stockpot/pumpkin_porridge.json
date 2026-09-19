@@ -12,7 +12,7 @@
       "tag": "c:crops/rice"
     },
     {
-      "item": "minecraft:pumpkin"
+      "tag": "c:crops/pumpkin"
     }
   ],
   "result": {

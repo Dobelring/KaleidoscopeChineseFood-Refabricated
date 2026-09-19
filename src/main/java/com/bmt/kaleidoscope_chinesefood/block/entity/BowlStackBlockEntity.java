@@ -42,6 +42,9 @@ public class BowlStackBlockEntity extends BlockEntity implements Container {
                 if (newCount != currentCount) {
                     BowlStackBlockEntity.this.level
                             .setBlock(BowlStackBlockEntity.this.worldPosition, currentState.setValue(BowlStackBlock.BOWL_COUNT, newCount), 3);
+                    // 盘架是比较器信号源（bowl_count * 5），数量变化要通知邻居
+                    BowlStackBlockEntity.this.level
+                            .updateNeighbourForOutputSignal(BowlStackBlockEntity.this.worldPosition, currentState.getBlock());
                 }
             }
         }

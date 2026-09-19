@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:bamboo" },
+    { "tag": "c:eggs" },
+    { "tag": "c:eggs" }
+  ],
+  "result": {
+    "id": "kaleidoscope_chinesefood:raw_bamboo_steamed_egg",
+    "count": 1
+  }
+}

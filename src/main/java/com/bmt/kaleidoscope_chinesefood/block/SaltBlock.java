@@ -1,10 +1,13 @@
 package com.bmt.kaleidoscope_chinesefood.block;
 
 import com.bmt.kaleidoscope_chinesefood.init.ModItems;
+import com.google.common.collect.Lists;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -79,13 +82,16 @@ public class SaltBlock extends Block {
             }
          }
 
+         level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 0.9F, 1.0F);
          return InteractionResult.sidedSuccess(level.isClientSide);
       }
    }
 
-   public void spawnAfterBreak(BlockState state, ServerLevel level, BlockPos pos, ItemStack tool, boolean dropExperience) {
-      super.spawnAfterBreak(state, level, pos, tool, dropExperience);
-      popResource(level, pos, new ItemStack(ModItems.SALT, (Integer)state.getValue(STACK_COUNT) + 1));
+   public List<ItemStack> getDrops(BlockState state, net.minecraft.world.level.storage.loot.LootParams.Builder paramsBuilder) {
+      List<ItemStack> drops = Lists.newArrayList();
+      int realAmount = (Integer)state.getValue(STACK_COUNT) + 1;
+      drops.add(new ItemStack((ItemLike)ModItems.SALT, realAmount));
+      return drops;
    }
 
    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {

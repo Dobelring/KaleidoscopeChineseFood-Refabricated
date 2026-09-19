@@ -135,9 +135,9 @@
 			}
 		},
 		{
-			"from": [11, 2, 8.25],
-			"to": [14, 2, 12.25],
-			"rotation": {"angle": 22.5, "axis": "z", "origin": [7.25, 2, 9.5]},
+			"from": [10, 3.51, 6.25],
+			"to": [13, 3.51, 10.25],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [6.25, 4, 7.5]},
 			"faces": {
 				"north": {"uv": [2, 2.5, 0.5, 2.5], "rotation": 180, "texture": "#0"},
 				"east": {"uv": [2, 2.5, 0.5, 2.5], "rotation": 180, "texture": "#0"},
@@ -165,6 +165,7 @@
 		{
 			"name": "bb_main",
 			"origin": [8, 0, 8],
+			"scope": 0,
 			"color": 1,
 			"children": [0, 1, 2, 3, 4, 5]
 		},

@@ -1,0 +1,10 @@
+{
+  "type": "kaleidoscope_cookery:steamer",
+  "cook_tick": 1200,
+  "ingredient": {
+    "item": "kaleidoscope_chinesefood:raw_bamboo_steamed_egg"
+  },
+  "result": {
+    "id": "kaleidoscope_chinesefood:bamboo_steamed_egg"
+  }
+}

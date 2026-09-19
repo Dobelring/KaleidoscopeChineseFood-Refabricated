@@ -1,27 +1,31 @@
 package com.bmt.kaleidoscope_chinesefood.block;
 
 import com.bmt.kaleidoscope_chinesefood.block.entity.CoupletBlockEntity;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.bmt.kaleidoscope_chinesefood.network.TextEditOpenS2CPayload;
 import com.mojang.serialization.MapCodec;
+import java.util.ArrayList;
 import java.util.List;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Direction.Axis;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.network.Filterable;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.Item.TooltipContext;
-import net.minecraft.world.item.component.WritableBookContent;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -55,8 +59,6 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
    public static final EnumProperty<CoupletBlock.CoupletPart> PART = EnumProperty.create("part", CoupletBlock.CoupletPart.class);
    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
    public static final int MAX_COUPLET_HEIGHT = 3;
-   public static final int MIN_GAP_BETWEEN_GROUPS = 1;
-   public static final int MIN_GAP_BELOW_EXISTING = 3;
    private static final MapCodec<CoupletBlock> CODEC = simpleCodec(CoupletBlock::new);
    private static final VoxelShape[] SHAPES = new VoxelShape[4];
 
@@ -95,301 +97,215 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
       BlockPos pos = context.getClickedPos();
       Level level = context.getLevel();
       Direction clickedFace = context.getClickedFace();
-      if (!clickedFace.getAxis().isHorizontal()) {
+      BlockState clickedBlock = level.getBlockState(pos.relative(clickedFace.getOpposite()));
+      Direction facing;
+      if (clickedBlock.getBlock() instanceof CoupletBlock) {
+         facing = (Direction)clickedBlock.getValue(FACING);
+      } else {
+         if (!clickedFace.getAxis().isHorizontal()) {
+            return null;
+         }
+
+         facing = clickedFace;
+      }
+
+      BlockPos belowOwner = ownerOf(level, pos.below(), facing);
+      BlockPos aboveOwner = ownerOf(level, pos.above(), facing);
+      boolean joinBelow = belowOwner != null && groupSize(level, belowOwner, facing) < 3;
+      boolean joinAbove = aboveOwner != null && groupSize(level, aboveOwner, facing) < 3;
+      if (joinBelow && joinAbove && groupSize(level, belowOwner, facing) + 1 + groupSize(level, aboveOwner, facing) > 3) {
          return null;
       } else {
-         FluidState fluidState = level.getFluidState(pos);
-         BlockPos belowPos = pos.below();
-         BlockState belowState = level.getBlockState(belowPos);
-         BlockPos abovePos = pos.above();
-         BlockState aboveState = level.getBlockState(abovePos);
-         boolean hasBelowCouplet = this.isCoupletBlockWithFacing(belowState, clickedFace);
-         boolean hasAboveCouplet = this.isCoupletBlockWithFacing(aboveState, clickedFace);
-         if (hasBelowCouplet && hasAboveCouplet) {
-            return null;
-         } else if (this.isCoupletBlockWithPart(aboveState, clickedFace, CoupletBlock.CoupletPart.LOWER)) {
-            BlockPos aboveAbove = abovePos.above();
-            if (this.isCoupletBlockWithPart(level.getBlockState(aboveAbove), clickedFace, CoupletBlock.CoupletPart.MIDDLE)) {
+         boolean fresh = !joinBelow && !joinAbove;
+         if (fresh) {
+            BlockPos abovePos = pos.above();
+            BlockState aboveState = level.getBlockState(abovePos);
+            if (!aboveState.canBeReplaced()) {
                return null;
-            } else {
-               BlockPos belowGroupTop = this.findNearestCoupletEnd(level, pos, clickedFace, false, true);
-               return belowGroupTop != null && pos.getY() < belowGroupTop.getY() + 1 + 1
-                  ? null
-                  : this.createState((Direction)aboveState.getValue(FACING), CoupletBlock.CoupletPart.LOWER, fluidState);
             }
-         } else if (this.isCoupletBlockWithPart(belowState, clickedFace, CoupletBlock.CoupletPart.UPPER)) {
-            BlockPos belowBelow = belowPos.below();
-            if (this.isCoupletBlockWithPart(level.getBlockState(belowBelow), clickedFace, CoupletBlock.CoupletPart.MIDDLE)) {
-               return null;
-            } else {
-               BlockPos aboveGroupBottom = this.findNearestCoupletEnd(level, pos, clickedFace, true, false);
-               return aboveGroupBottom != null && pos.getY() > aboveGroupBottom.getY() - 3
-                  ? null
-                  : this.createState((Direction)belowState.getValue(FACING), CoupletBlock.CoupletPart.UPPER, fluidState);
-            }
-         } else {
-            BlockPos aboveGroupBottom = this.findNearestCoupletEnd(level, pos, clickedFace, true, false);
-            BlockPos belowGroupTop = this.findNearestCoupletEnd(level, pos, clickedFace, false, true);
-            if (aboveGroupBottom != null && belowGroupTop != null && aboveGroupBottom.getY() - belowGroupTop.getY() == 2) {
-               return null;
-            } else if (aboveGroupBottom != null && pos.getY() > aboveGroupBottom.getY() - 3) {
-               return null;
-            } else if (belowGroupTop != null && pos.getY() < belowGroupTop.getY() + 1 + 1) {
-               return null;
-            } else {
-               boolean hasUpperSpace = pos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(pos.above()).canBeReplaced(context);
-               if (hasUpperSpace) {
-                  BlockState state = this.createState(clickedFace, CoupletBlock.CoupletPart.LOWER, fluidState);
-                  if (state.canSurvive(level, pos)) {
-                     return state;
-                  }
-               }
 
+            BlockState upper = this.createState(facing, CoupletBlock.CoupletPart.UPPER, level.getFluidState(abovePos));
+            if (!upper.canSurvive(level, abovePos)) {
                return null;
             }
          }
+
+         FluidState fluidState = level.getFluidState(pos);
+         BlockState state = this.createState(facing, CoupletBlock.CoupletPart.LOWER, fluidState);
+         return state.canSurvive(level, pos) ? state : null;
       }
    }
 
    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-      if (state.getValue(PART) == CoupletBlock.CoupletPart.LOWER) {
-         BlockPos above = pos.above();
-         BlockState aboveState = level.getBlockState(above);
-         if (this.isCoupletBlockWithPart(aboveState, (Direction)state.getValue(FACING), CoupletBlock.CoupletPart.LOWER)) {
-            if (level.getBlockEntity(above) instanceof CoupletBlockEntity oldCoupletBE) {
-               CompoundTag data = oldCoupletBE.saveWithFullMetadata(level.registryAccess());
-               data.remove("x");
-               data.remove("y");
-               data.remove("z");
-               if (level.getBlockEntity(pos) instanceof CoupletBlockEntity newCoupletBE) {
-                  newCoupletBE.loadCustomOnly(data, level.registryAccess());
-                  newCoupletBE.setChanged();
-               }
-            }
-
-            level.setBlock(above, (BlockState)aboveState.setValue(PART, CoupletBlock.CoupletPart.MIDDLE), 3);
-         } else {
-            level.setBlock(
-               above,
-               (BlockState)((BlockState)state.setValue(PART, CoupletBlock.CoupletPart.UPPER))
-                  .setValue(WATERLOGGED, level.getFluidState(above).getType() == Fluids.WATER),
-               3
-            );
+      super.setPlacedBy(level, pos, state, placer, stack);
+      Direction facing = (Direction)state.getValue(FACING);
+      BlockPos belowOwner = ownerOf(level, pos.below(), facing);
+      BlockPos aboveOwner = ownerOf(level, pos.above(), facing);
+      boolean joinBelow = belowOwner != null && groupSize(level, belowOwner, facing) < 3;
+      boolean joinAbove = aboveOwner != null && groupSize(level, aboveOwner, facing) < 3;
+      if (joinBelow) {
+         if (level.getBlockEntity(pos) instanceof CoupletBlockEntity be) {
+            be.setOwnerPos(belowOwner);
          }
-      } else if (state.getValue(PART) == CoupletBlock.CoupletPart.UPPER) {
-         BlockPos below = pos.below();
-         BlockState belowState = level.getBlockState(below);
-         if (this.isCoupletBlockWithPart(belowState, (Direction)state.getValue(FACING), CoupletBlock.CoupletPart.UPPER)) {
-            BlockPos check = below.below();
-            if (!this.isCoupletBlockWithPart(level.getBlockState(check), (Direction)state.getValue(FACING), CoupletBlock.CoupletPart.MIDDLE)) {
-               level.setBlock(below, (BlockState)belowState.setValue(PART, CoupletBlock.CoupletPart.MIDDLE), 3);
-            }
+      } else if (joinAbove) {
+         if (level.getBlockEntity(aboveOwner) instanceof CoupletBlockEntity oldMaster) {
+            migrateText(level, aboveOwner, pos);
+            oldMaster.setText("");
+         }
+
+         reassignOwner(level, pos, aboveOwner, pos, facing);
+      } else {
+         BlockPos abovePos = pos.above();
+         BlockState upper = this.createState(facing, CoupletBlock.CoupletPart.UPPER, level.getFluidState(abovePos));
+         level.setBlock(abovePos, upper, 3);
+         if (level.getBlockEntity(abovePos) instanceof CoupletBlockEntity upperBe) {
+            upperBe.setOwnerPos(pos);
          }
       }
+
+      updateGroupParts(level, pos, facing);
    }
 
+   /**
+    * 1.21.1 原版没有 {@code Block#onDestroyedByPlayer}（那是 NeoForge 追加的钩子），
+    * 玩家破坏的唯一入口就是 playerWillDestroy。在这里就地拆掉整组并掉落；
+    * 之后原版会自行把 pos 置空（此时已是空气，不会重复处理），掉落也由本方法负责，
+    * 所以 loot table 是空 pools，playerDestroy 保持空实现避免双掉。
+    */
    @NotNull
    public BlockState playerWillDestroy(@NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Player player) {
-      if (!level.isClientSide && !player.isCreative()) {
-         this.destroyAndDrop(level, pos);
+      if (!level.isClientSide) {
+         this.performBreak(level, pos, state, !player.isCreative(), false);
       }
 
       return super.playerWillDestroy(level, pos, state, player);
    }
 
-   public BlockState updateShape(BlockState state, Direction dir, BlockState neighbor, LevelAccessor level, BlockPos pos, BlockPos nPos) {
+   public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity be, ItemStack tool) {
+   }
+
+   public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+      if (!this.canSurvive(state, level, pos)) {
+         this.performBreak(level, pos, state, true, true);
+      }
+   }
+
+   private boolean performBreak(Level level, BlockPos pos, BlockState state, boolean dropItems, boolean eventAtClicked) {
+      if (!(level.getBlockEntity(pos) instanceof CoupletBlockEntity be)) {
+         return false;
+      } else {
+         Direction facing = (Direction)state.getValue(FACING);
+         BlockPos owner = be.getOwnerPos();
+         ArrayList<BlockPos> members = new ArrayList<>();
+         BlockPos cur = owner;
+
+         for (int size = 0; size < 4 && isOwner(level, cur, owner, facing); size++) {
+            members.add(cur);
+            cur = cur.above();
+         }
+
+         int size = members.size();
+         int index = members.indexOf(pos);
+         if (index < 0) {
+            return false;
+         } else {
+            boolean destroyAll = size <= 2 || size == 3 && index == 1;
+            if (destroyAll) {
+               for (BlockPos m : members) {
+                  boolean play = m.equals(pos) ? eventAtClicked : true;
+                  this.removeBlock(level, m, play);
+               }
+
+               if (dropItems) {
+                  int drops = Math.max(1, size - 1);
+
+                  for (int k = 0; k < drops; k++) {
+                     popResource(level, pos, new ItemStack(this.asItem()));
+                  }
+               }
+            } else {
+               if (index == 0) {
+                  BlockPos newMaster = members.get(1);
+                  migrateText(level, pos, newMaster);
+                  reassignOwner(level, newMaster, owner, newMaster, facing);
+               }
+
+               this.removeBlock(level, pos, eventAtClicked);
+               if (dropItems) {
+                  popResource(level, pos, new ItemStack(this.asItem()));
+               }
+
+               updateGroupParts(level, members.get(Math.min(index == 0 ? 1 : 0, size - 1)), facing);
+            }
+
+            return true;
+         }
+      }
+   }
+
+   private void removeBlock(Level level, BlockPos m, boolean playEvent) {
+      if (playEvent) {
+         level.destroyBlock(m, false);
+      } else {
+         level.setBlock(m, Blocks.AIR.defaultBlockState(), 35);
+      }
+   }
+
+   public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
       if ((Boolean)state.getValue(WATERLOGGED)) {
          level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
       }
 
-      CoupletBlock.CoupletPart part = (CoupletBlock.CoupletPart)state.getValue(PART);
-      boolean shouldBreak = false;
-      if (dir.getAxis() == Axis.Y) {
-         if (part == CoupletBlock.CoupletPart.LOWER && dir == Direction.UP && !neighbor.is(this)) {
-            shouldBreak = true;
-         }
-
-         if (part == CoupletBlock.CoupletPart.MIDDLE && (!level.getBlockState(pos.below()).is(this) || !level.getBlockState(pos.above()).is(this))) {
-            shouldBreak = true;
-         }
-
-         if (part == CoupletBlock.CoupletPart.UPPER && dir == Direction.DOWN && !neighbor.is(this)) {
-            shouldBreak = true;
-         }
-      }
-
       Direction facing = (Direction)state.getValue(FACING);
-      if (dir == facing.getOpposite() && !this.canSurvive(state, level, pos)) {
-         shouldBreak = true;
+      if (direction == facing.getOpposite() && !this.canSurvive(state, level, pos)) {
+         level.scheduleTick(pos, this, 1);
       }
 
-      if (shouldBreak) {
-         if (!level.isClientSide()) {
-            this.destroyAndDrop((Level)level, pos);
-         }
-
-         return Blocks.AIR.defaultBlockState();
-      } else {
-         return super.updateShape(state, dir, neighbor, level, pos, nPos);
-      }
+      return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
    }
 
-   private void destroyAndDrop(Level level, BlockPos pos) {
-      BlockPos masterPos = this.getMasterBlockPos(level, pos);
-      if (masterPos != null) {
-         int height = this.getCoupletHeight(level, masterPos);
-         popResource(level, masterPos, new ItemStack(this.asItem(), height - 1));
-         this.clearCoupletGroup(level, masterPos);
-      }
-   }
+   protected ItemInteractionResult useItemOn(
+      ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
+   ) {
+      if (!level.isClientSide && level.getBlockEntity(pos) instanceof CoupletBlockEntity be) {
+         BlockPos owner = be.getOwnerPos();
+         if (level.getBlockEntity(owner) instanceof CoupletBlockEntity master) {
+            if (stack.is(Items.GLOW_INK_SAC)) {
+               master.setGlowing(true);
+               level.playSound(null, owner, SoundEvents.GLOW_INK_SAC_USE, SoundSource.BLOCKS);
+               if (!player.isCreative()) {
+                  stack.shrink(1);
+               }
 
-   @Nullable
-   private BlockPos findNearestCoupletEnd(Level level, BlockPos pos, Direction facing, boolean searchUp, boolean findTop) {
-      int startY = searchUp ? pos.getY() + 1 : pos.getY() - 1;
-      int endY = searchUp ? level.getMaxBuildHeight() : level.getMinBuildHeight();
-      int step = searchUp ? 1 : -1;
+               return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            }
 
-      for (int y = startY; searchUp ? y <= endY : y >= endY; y += step) {
-         BlockPos checkPos = new BlockPos(pos.getX(), y, pos.getZ());
-         BlockState checkState = level.getBlockState(checkPos);
-         if (this.isCoupletBlockWithFacing(checkState, facing)) {
-            return findTop ? this.getCoupletTop(level, checkPos) : this.getCoupletBottom(level, checkPos);
+            if (stack.is(Items.INK_SAC)) {
+               master.setGlowing(false);
+               level.playSound(null, owner, SoundEvents.INK_SAC_USE, SoundSource.BLOCKS);
+               if (!player.isCreative()) {
+                  stack.shrink(1);
+               }
+
+               return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            }
          }
       }
 
-      return null;
-   }
-
-   private BlockPos getCoupletBottom(Level level, BlockPos pos) {
-      BlockPos current = pos;
-
-      for (int i = 0; i < 3; i++) {
-         BlockPos below = current.below();
-         if (!level.getBlockState(below).is(this)) {
-            break;
-         }
-
-         current = below;
-      }
-
-      return current;
-   }
-
-   private BlockPos getCoupletTop(Level level, BlockPos pos) {
-      BlockPos current = pos;
-
-      for (int i = 0; i < 3; i++) {
-         BlockPos above = current.above();
-         if (!level.getBlockState(above).is(this)) {
-            break;
-         }
-
-         current = above;
-      }
-
-      return current;
-   }
-
-   @Nullable
-   private BlockPos getMasterBlockPos(Level level, BlockPos pos) {
-      BlockPos current = pos;
-
-      for (int i = 0; i < 3; i++) {
-         BlockState currentState = level.getBlockState(current);
-         if (!currentState.is(this)) {
-            break;
-         }
-
-         if (currentState.getValue(PART) == CoupletBlock.CoupletPart.LOWER) {
-            return current;
-         }
-
-         current = current.below();
-         if (current.getY() < level.getMinBuildHeight()) {
-            break;
-         }
-      }
-
-      return null;
-   }
-
-   private int getCoupletHeight(Level level, BlockPos masterPos) {
-      int height = 1;
-      BlockPos current = masterPos.above();
-
-      for (int i = 0; i < 2 && level.getBlockState(current).is(this); i++) {
-         height++;
-         current = current.above();
-      }
-
-      return height;
-   }
-
-   private void clearCoupletGroup(Level level, BlockPos masterPos) {
-      BlockPos current = masterPos.above();
-
-      for (int i = 0; i < 2 && level.getBlockState(current).is(this); i++) {
-         level.setBlock(current, Blocks.AIR.defaultBlockState(), 35);
-         current = current.above();
-      }
-
-      level.setBlock(masterPos, Blocks.AIR.defaultBlockState(), 35);
+      return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
    }
 
    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-      if (level.isClientSide) {
-         return InteractionResult.SUCCESS;
-      } else {
-         BlockPos targetPos = pos;
-
-         for (int i = 0; i < 3; i++) {
-            BlockState currentState = level.getBlockState(targetPos);
-            if (!currentState.is(this) || currentState.getValue(PART) == CoupletBlock.CoupletPart.LOWER) {
-               break;
-            }
-
-            targetPos = targetPos.below();
+      if (!level.isClientSide && level.getBlockEntity(pos) instanceof CoupletBlockEntity be && player instanceof ServerPlayer serverPlayer) {
+         BlockPos owner = be.getOwnerPos();
+         if (level.getBlockEntity(owner) instanceof CoupletBlockEntity master) {
+            ServerPlayNetworking.send(
+               serverPlayer, new TextEditOpenS2CPayload(owner, master.getText(), master.getMaxChars(), master.getSegmentCount(), true)
+            );
          }
-
-         if (level.getBlockEntity(targetPos) instanceof CoupletBlockEntity coupletEntity) {
-            ItemStack heldItem = player.getMainHandItem();
-            String targetText = this.getTextFromBook(heldItem);
-            if (targetText != null && !targetText.isBlank()) {
-               coupletEntity.setText(targetText);
-               return InteractionResult.CONSUME;
-            }
-         }
-
-         return InteractionResult.PASS;
       }
-   }
 
-   @Nullable
-   private String getTextFromBook(ItemStack stack) {
-      WritableBookContent bookContent = (WritableBookContent)stack.get(DataComponents.WRITABLE_BOOK_CONTENT);
-      if (bookContent != null && !bookContent.pages().isEmpty()) {
-         String firstPage = (String)((Filterable)bookContent.pages().get(0)).raw();
-         if (firstPage.isBlank()) {
-            return null;
-         } else {
-            try {
-               JsonElement element = JsonParser.parseString(firstPage);
-               if (element.isJsonObject()) {
-                  JsonObject obj = element.getAsJsonObject();
-                  if (obj.has("text")) {
-                     return obj.get("text").getAsString();
-                  }
-               } else if (element.isJsonPrimitive()) {
-                  return element.getAsString();
-               }
-            } catch (Exception var6) {
-            }
-
-            return firstPage;
-         }
-      } else {
-         return null;
-      }
+      return InteractionResult.SUCCESS;
    }
 
    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
@@ -404,7 +320,7 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
 
    @Nullable
    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-      return state.getValue(PART) == CoupletBlock.CoupletPart.LOWER ? new CoupletBlockEntity(pos, state) : null;
+      return new CoupletBlockEntity(pos, state);
    }
 
    public void appendHoverText(ItemStack stack, @NotNull TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
@@ -414,12 +330,71 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
       );
    }
 
-   private boolean isCoupletBlockWithFacing(BlockState state, Direction facing) {
-      return state.is(this) && state.getValue(FACING) == facing;
+   @Nullable
+   private static BlockPos ownerOf(Level level, BlockPos p, Direction facing) {
+      BlockState s = level.getBlockState(p);
+      return s.getBlock() instanceof CoupletBlock && s.getValue(FACING) == facing && level.getBlockEntity(p) instanceof CoupletBlockEntity be
+         ? be.getOwnerPos()
+         : null;
    }
 
-   private boolean isCoupletBlockWithPart(BlockState state, Direction facing, CoupletBlock.CoupletPart part) {
-      return this.isCoupletBlockWithFacing(state, facing) && state.getValue(PART) == part;
+   private static boolean isOwner(Level level, BlockPos p, BlockPos owner, Direction facing) {
+      BlockState s = level.getBlockState(p);
+      return s.getBlock() instanceof CoupletBlock
+         && s.getValue(FACING) == facing
+         && level.getBlockEntity(p) instanceof CoupletBlockEntity be
+         && be.getOwnerPos().equals(owner);
+   }
+
+   private static int groupSize(Level level, BlockPos owner, Direction facing) {
+      int count = 0;
+      BlockPos cur = owner;
+
+      for (int i = 0; i < 4 && isOwner(level, cur, owner, facing); i++) {
+         count++;
+         cur = cur.above();
+      }
+
+      return count;
+   }
+
+   private static void reassignOwner(Level level, BlockPos around, BlockPos oldOwner, BlockPos newOwner, Direction facing) {
+      for (int i = -3; i <= 3; i++) {
+         BlockPos p = around.above(i);
+         if (isOwner(level, p, oldOwner, facing) && level.getBlockEntity(p) instanceof CoupletBlockEntity be) {
+            be.setOwnerPos(newOwner);
+         }
+      }
+   }
+
+   private static void updateGroupParts(Level level, BlockPos around, Direction facing) {
+      for (int i = -3; i <= 3; i++) {
+         BlockPos p = around.above(i);
+         BlockState s = level.getBlockState(p);
+         if (s.getBlock() instanceof CoupletBlock && s.getValue(FACING) == facing && level.getBlockEntity(p) instanceof CoupletBlockEntity be) {
+            BlockPos owner = be.getOwnerPos();
+            boolean below = isOwner(level, p.below(), owner, facing);
+            boolean above = isOwner(level, p.above(), owner, facing);
+            CoupletBlock.CoupletPart part = below && above
+               ? CoupletBlock.CoupletPart.MIDDLE
+               : (below ? CoupletBlock.CoupletPart.UPPER : CoupletBlock.CoupletPart.LOWER);
+            if (s.getValue(PART) != part) {
+               level.setBlock(p, (BlockState)s.setValue(PART, part), 3);
+            }
+         }
+      }
+   }
+
+   private static void migrateText(Level level, BlockPos from, BlockPos to) {
+      if (level.getBlockEntity(from) instanceof CoupletBlockEntity fromBe && level.getBlockEntity(to) instanceof CoupletBlockEntity toBe) {
+         CompoundTag data = fromBe.saveWithFullMetadata(level.registryAccess());
+         data.remove("x");
+         data.remove("y");
+         data.remove("z");
+         toBe.loadCustomOnly(data, level.registryAccess());
+         toBe.setChanged();
+         level.sendBlockUpdated(to, toBe.getBlockState(), toBe.getBlockState(), 3);
+      }
    }
 
    private BlockState createState(Direction facing, CoupletBlock.CoupletPart part, FluidState fluidState) {

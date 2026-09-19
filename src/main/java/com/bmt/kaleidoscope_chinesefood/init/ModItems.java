@@ -1,6 +1,7 @@
 package com.bmt.kaleidoscope_chinesefood.init;
 
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
+import com.bmt.kaleidoscope_chinesefood.item.BambooSteamedEggBlockItem;
 import com.bmt.kaleidoscope_chinesefood.item.FirecrackerItem;
 import com.bmt.kaleidoscope_chinesefood.item.MooncakeItem;
 import com.bmt.kaleidoscope_chinesefood.item.MooncakeMoldItem;
@@ -8,11 +9,15 @@ import com.github.ysbbbbbb.kaleidoscopecookery.item.BowlFoodOnlyItem;
 import java.util.function.Supplier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.MobBucketItem;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluids;
 
 public class ModItems {
     public static Item RAW_STEAMED_RICE_ROLLS;
@@ -40,14 +45,12 @@ public class ModItems {
     public static Item BIG_PLATE_CHICKEN_NOODLES;
     public static Item TOMATO_EGG_NOODLES;
     public static Item PORK_CHILI_NOODLES;
-    public static Item FOUR_JOY_MEATBALLS;
     public static Item STUFFED_EGGPLANT;
     public static Item DRY_POT_POTATOES;
     public static Item DRY_POT_CHICKEN;
     public static Item DRY_POT_SPARE_RIBS;
     public static Item YANGZHOU_FRIED_RICE;
     public static Item LAMB_PILAF;
-    public static Item STEAMED_RICE_ROLLS;
     public static Item SAUERKRAUT_BEEF_NOODLES;
     public static Item SALTED_EGG;
     public static Item CENTURY_EGG;
@@ -55,7 +58,11 @@ public class ModItems {
     public static Item EGGPLANT;
     public static Item EGGPLANT_SEED;
     public static Item YELLOW_CROAKER;
+    public static Item YELLOW_CROAKER_BUCKET;
+    public static Item YELLOW_CROAKER_SPAWN_EGG;
     public static Item MOONCAKE;
+    public static Item RAW_BAMBOO_STEAMED_EGG;
+    public static Item BAMBOO_STEAMED_EGG;
     public static Item CORN_RISTRA;
     public static Item MOONCAKE_MOLD;
     public static Item FIRECRACKER;
@@ -86,14 +93,12 @@ public class ModItems {
         BIG_PLATE_CHICKEN_NOODLES = register("big_plate_chicken_noodles", () -> new BowlFoodOnlyItem(ModFoods.BIG_PLATE_CHICKEN_NOODLES));
         TOMATO_EGG_NOODLES = register("tomato_egg_noodles", () -> new BowlFoodOnlyItem(ModFoods.TOMATO_EGG_NOODLES));
         PORK_CHILI_NOODLES = register("pork_chili_noodles", () -> new BowlFoodOnlyItem(ModFoods.PORK_CHILI_NOODLES));
-        FOUR_JOY_MEATBALLS = register("four_joy_meatballs", () -> new BowlFoodOnlyItem(ModFoods.FOUR_JOY_MEATBALLS));
         STUFFED_EGGPLANT = register("stuffed_eggplant", () -> new BowlFoodOnlyItem(ModFoods.STUFFED_EGGPLANT));
         DRY_POT_POTATOES = register("dry_pot_potatoes", () -> new BowlFoodOnlyItem(ModFoods.DRY_POT_POTATOES));
         DRY_POT_CHICKEN = register("dry_pot_chicken", () -> new BowlFoodOnlyItem(ModFoods.DRY_POT_CHICKEN));
         DRY_POT_SPARE_RIBS = register("dry_pot_spare_ribs", () -> new BowlFoodOnlyItem(ModFoods.DRY_POT_SPARE_RIBS));
         YANGZHOU_FRIED_RICE = register("yangzhou_fried_rice", () -> new BowlFoodOnlyItem(ModFoods.YANGZHOU_FRIED_RICE));
         LAMB_PILAF = register("lamb_pilaf", () -> new BowlFoodOnlyItem(ModFoods.LAMB_PILAF));
-        STEAMED_RICE_ROLLS = register("steamed_rice_rolls", () -> new BowlFoodOnlyItem(ModFoods.STEAMED_RICE_ROLLS));
         SAUERKRAUT_BEEF_NOODLES = register("sauerkraut_beef_noodles", () -> new BowlFoodOnlyItem(ModFoods.SAUERKRAUT_BEEF_NOODLES));
         SALTED_EGG = register("salted_egg", () -> new Item(new Item.Properties().food(ModFoods.SALTED_EGG)));
         CENTURY_EGG = register("century_egg", () -> new Item(new Item.Properties().food(ModFoods.CENTURY_EGG)));
@@ -101,7 +106,18 @@ public class ModItems {
         EGGPLANT = register("eggplant", () -> new Item(new Item.Properties().food(ModFoods.EGGPLANT)));
         EGGPLANT_SEED = register("eggplant_seed", () -> new ItemNameBlockItem(ModBlocks.EGGPLANT_CROP, new Item.Properties()));
         YELLOW_CROAKER = register("yellow_croaker", () -> new Item(new Item.Properties().food(ModFoods.YELLOW_CROAKER)));
+        YELLOW_CROAKER_BUCKET = register(
+                "yellow_croaker_bucket",
+                () -> new MobBucketItem(ModEntities.YELLOW_CROAKER, Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().stacksTo(1))
+        );
+        YELLOW_CROAKER_SPAWN_EGG = register(
+                "yellow_croaker_spawn_egg", () -> new SpawnEggItem(ModEntities.YELLOW_CROAKER, 15181583, 9274720, new Item.Properties())
+        );
         MOONCAKE = register("mooncake", () -> new MooncakeItem(ModBlocks.MOONCAKE_BLOCK, new Item.Properties().food(ModFoods.MOONCAKE)));
+        RAW_BAMBOO_STEAMED_EGG = register("raw_bamboo_steamed_egg", () -> new Item(new Item.Properties()));
+        BAMBOO_STEAMED_EGG = register(
+                "bamboo_steamed_egg", () -> new BambooSteamedEggBlockItem(ModBlocks.BAMBOO_STEAMED_EGG, ModFoods.BAMBOO_STEAMED_EGG)
+        );
         CORN_RISTRA = register("corn_ristra", () -> new BlockItem(ModBlocks.CORN_RISTRA, new Item.Properties()));
         MOONCAKE_MOLD = register("mooncake_mold", () -> new MooncakeMoldItem(new Item.Properties().stacksTo(1)));
         FIRECRACKER = register("firecracker", () -> new FirecrackerItem(new Item.Properties()));

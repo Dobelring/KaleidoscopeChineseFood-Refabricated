@@ -5,6 +5,7 @@ import com.bmt.kaleidoscope_chinesefood.block.entity.PickleJarBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -12,30 +13,37 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class PickleJarBlock extends BaseEntityBlock {
+public class PickleJarBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
    public static final BooleanProperty OPEN = BooleanProperty.create("open");
    public static final BooleanProperty FERMENTING = BooleanProperty.create("fermenting");
    public static final BooleanProperty DONE = BooleanProperty.create("done");
+   public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
    private static final VoxelShape JAR_BODY = Block.box(3.0, 0.0, 3.0, 13.0, 10.0, 13.0);
    private static final VoxelShape JAR_TOP = Block.box(5.0, 10.0, 5.0, 11.0, 13.0, 11.0);
    private static final VoxelShape SHAPE = Shapes.or(JAR_BODY, JAR_TOP);
@@ -44,8 +52,9 @@ public class PickleJarBlock extends BaseEntityBlock {
    public PickleJarBlock(Properties properties) {
       super(properties);
       this.registerDefaultState(
-         (BlockState)((BlockState)((BlockState)((BlockState)this.stateDefinition.any()).setValue(OPEN, false)).setValue(FERMENTING, false))
-            .setValue(DONE, false)
+         (BlockState)((BlockState)((BlockState)((BlockState)((BlockState)this.stateDefinition.any()).setValue(OPEN, false)).setValue(FERMENTING, false))
+               .setValue(DONE, false))
+            .setValue(WATERLOGGED, false)
       );
    }
 
@@ -134,11 +143,49 @@ public class PickleJarBlock extends BaseEntityBlock {
    }
 
    protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-      builder.add(new Property[]{OPEN, FERMENTING, DONE});
+      builder.add(new Property[]{OPEN, FERMENTING, DONE, WATERLOGGED});
+   }
+
+   public BlockState getStateForPlacement(BlockPlaceContext context) {
+      FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
+      return (BlockState)this.defaultBlockState().setValue(WATERLOGGED, fluid.getType() == Fluids.WATER);
+   }
+
+   public FluidState getFluidState(BlockState state) {
+      return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+   }
+
+   public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+      if ((Boolean)state.getValue(WATERLOGGED)) {
+         level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+      }
+
+      return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+   }
+
+   public boolean hasAnalogOutputSignal(BlockState state) {
+      return true;
+   }
+
+   /** 比较器输出 = 罐内非空槽位数（0-4） */
+   public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+      if (level.getBlockEntity(pos) instanceof PickleJarBlockEntity be) {
+         int count = 0;
+
+         for (int i = 0; i < 4; i++) {
+            if (!be.inventory.getStackInSlot(i).isEmpty()) {
+               count++;
+            }
+         }
+
+         return count;
+      } else {
+         return 0;
+      }
    }
 
    public boolean canBeReplaced(BlockState state, Fluid fluid) {
-      return false;
+      return !(Boolean)state.getValue(WATERLOGGED) && fluid == Fluids.WATER;
    }
 
    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
