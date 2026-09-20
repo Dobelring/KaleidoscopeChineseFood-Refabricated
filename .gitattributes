@@ -10,6 +10,9 @@
 *.yml text eol=lf
 *.yaml text eol=lf
 
+# Fabric access wideners are parsed line by line, keep them LF
+*.accesswidener text eol=lf
+
 # Windows batch files use CRLF
 *.bat text eol=crlf
 

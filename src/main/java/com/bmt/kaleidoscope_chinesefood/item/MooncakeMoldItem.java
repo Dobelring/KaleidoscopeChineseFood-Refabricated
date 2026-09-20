@@ -67,6 +67,6 @@ public class MooncakeMoldItem extends Item {
    }
 
    private boolean isStuffedDoughFood(ItemStack stack) {
-      return !stack.isEmpty() && stack.getItem().builtInRegistryHolder().key().location().toString().equals("kaleidoscope_cookery:stuffed_dough_food");
+      return !stack.isEmpty() && stack.getItem() == com.github.ysbbbbbb.kaleidoscopecookery.init.ModItems.STUFFED_DOUGH_FOOD;
    }
 }

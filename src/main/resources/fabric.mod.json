@@ -13,6 +13,7 @@
   },
   "license": "CC-BY-NC-ND-4.0",
   "environment": "*",
+  "accessWidener": "kaleidoscope_chinesefood.accesswidener",
   "entrypoints": {
     "main": [
       "com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood"
@@ -31,7 +32,8 @@
     ]
   },
   "mixins": [
-    "kaleidoscope_chinesefood.mixins.json"
+    "kaleidoscope_chinesefood.mixins.json",
+    "kaleidoscope_chinesefood.tavern.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.16.9",
@@ -40,5 +42,8 @@
     "java": ">=21",
     "kaleidoscope_cookery": "*",
     "forgeconfigapiport": "*"
+  },
+  "recommends": {
+    "kaleidoscope_tavern": "*"
   }
 }

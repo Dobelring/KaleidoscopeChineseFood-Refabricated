@@ -1,9 +1,9 @@
 {
   "type": "kaleidoscope_cookery:teapot",
   "ingredient": {
-    "item": "minecraft:redstone"
+    "item": "kaleidoscope_chinesefood:dianhong_tea_bag"
   },
-  "ingredient_count": 12,
+  "ingredient_count": 1,
   "result": {
     "id": "kaleidoscope_chinesefood:hk_milk_tea"
   },

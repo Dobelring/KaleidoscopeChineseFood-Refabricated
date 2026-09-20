@@ -3,13 +3,16 @@
   "package": "com.bmt.kaleidoscope_chinesefood.mixins",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "CookeryModEffectsMixin",
     "EntityMixin",
+    "ItemMixin",
+    "PlateBlockMixin",
     "PlayerEntityMixin",
-    "LivingEntityMixin",
-    "PlayerTickMixin",
     "RecipeManagerMixin",
     "DoorBlockMixin",
     "TrapDoorBlockMixin",
+    "accessor.LootPoolAccessor",
+    "accessor.LootTableAccessor",
     "accessor.TrapDoorBlockAccessor",
     "accessor.SpawnPlacementsInvoker"
   ],

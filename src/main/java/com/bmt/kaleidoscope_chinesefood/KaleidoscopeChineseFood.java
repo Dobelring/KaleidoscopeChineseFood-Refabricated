@@ -2,11 +2,14 @@ package com.bmt.kaleidoscope_chinesefood;
 
 import com.bmt.kaleidoscope_chinesefood.block.KongmingLanternBlock;
 import com.bmt.kaleidoscope_chinesefood.config.ModConfig;
+import com.bmt.kaleidoscope_chinesefood.event.CreativeTabEventHandler;
 import com.bmt.kaleidoscope_chinesefood.event.DataMapsEvents;
-import com.bmt.kaleidoscope_chinesefood.event.FoodEventHandler;
 import com.bmt.kaleidoscope_chinesefood.event.LavaSwimDamageEvents;
+import com.bmt.kaleidoscope_chinesefood.event.ModLootTableEvents;
+import com.bmt.kaleidoscope_chinesefood.event.VillagerTradeEvents;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlocks;
+import com.bmt.kaleidoscope_chinesefood.init.ModCookeryBlocks;
 import com.bmt.kaleidoscope_chinesefood.init.ModCreativeModeTabs;
 import com.bmt.kaleidoscope_chinesefood.init.ModEffects;
 import com.bmt.kaleidoscope_chinesefood.init.ModEntities;
@@ -36,6 +39,11 @@ public class KaleidoscopeChineseFood implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        // cookery 的效果 Holder 只在它自己的初始化阶段赋值，而 chinesefood 按 mod id 排在它之前；
+        // 下面 ModFoods 建 FoodProperties 时要用到这些 Holder，所以提前把它注册掉
+        // （CookeryModEffectsMixin 保证 cookery 之后那次调用变成空操作）
+        com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.registerEffects();
+
         ModConfig.init();
         ModEffects.register();
         ModTea.init();
@@ -49,6 +57,8 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         ModEntities.register();
         ModBlocks.register();
         ModItems.register();
+        // 竹制家具注册在 cookery 命名空间下
+        ModCookeryBlocks.register();
         ModBlockEntities.register();
         ModMenuTypes.register();
         ModSounds.register();
@@ -58,9 +68,11 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         KaleidoscopeDollIntegration.register();
         ModBuiltInResourcePacks.register();
         ModNetwork.register();
-        FoodEventHandler.register();
         LavaSwimDamageEvents.register();
         DataMapsEvents.register();
+        ModLootTableEvents.register();
+        VillagerTradeEvents.register();
+        CreativeTabEventHandler.register();
 
         // 1.1.10 新增：放置菜品与 Kaleidoscope Contraption 兼容（反射软依赖，
         // create 与 kaleidoscope_contraption 均加载时才注册食物位交互行为）

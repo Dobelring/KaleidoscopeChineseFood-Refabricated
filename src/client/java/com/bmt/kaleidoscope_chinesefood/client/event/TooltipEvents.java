@@ -11,19 +11,9 @@ import net.minecraft.world.item.ItemStack;
 
 public class TooltipEvents {
     public static void register() {
+        // 皮蛋 / 酸菜 / 咸鸭蛋 已改用 cookery 的 FoodWithEffectsItem，
+        // 它们的 tooltip.<ns>.<path>.maxim 由 cookery 自己渲染，不再在这里补
         ItemTooltipCallback.EVENT.register((stack, context, tooltipType, lines) -> {
-            if (stack.is(ModItems.CENTURY_EGG)) {
-                lines.add(Component.translatable("item.kaleidoscope_chinesefood.century_egg.tooltip").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
-            }
-
-            if (stack.is(ModItems.CHINESE_SAUERKRAUT)) {
-                lines.add(Component.translatable("item.kaleidoscope_chinesefood.chinese_sauerkraut.tooltip").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
-            }
-
-            if (stack.is(ModItems.SALTED_EGG)) {
-                lines.add(Component.translatable("item.kaleidoscope_chinesefood.salted_egg.tooltip").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
-            }
-
             if (stack.is(ModItems.SALT)) {
                 lines.add(Component.translatable("item.kaleidoscope_chinesefood.salt.tooltip").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
             }

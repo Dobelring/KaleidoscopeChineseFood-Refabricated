@@ -15,17 +15,23 @@ import net.minecraft.world.item.Items;
  * 因此必须在 cookery 初始化之前执行（chinesefood 按 mod id 字母序先于 cookery）。
  */
 public class ModPlateRegistry {
-   public static ResourceLocation GOLDEN_APPLE_PLATTER;
+   public static final ResourceLocation GOLDEN_APPLE_PLATTER = id("golden_apple_platter");
+   public static final ResourceLocation ENCHANTED_GOLDEN_APPLE_PLATTER = id("enchanted_golden_apple_platter");
 
    public static void init() {
-      GOLDEN_APPLE_PLATTER = registerPlateData(
-         "golden_apple_platter", PlateData.create(4).setServingItems(() -> Items.GOLDEN_APPLE).setLootItem(Items.BOWL).platterAABB()
+      registerPlateData(
+         GOLDEN_APPLE_PLATTER, PlateData.create(4).setServingItems(() -> Items.GOLDEN_APPLE).setLootItem(Items.BOWL).platterAABB()
+      );
+      registerPlateData(
+         ENCHANTED_GOLDEN_APPLE_PLATTER, PlateData.create(4).setServingItems(() -> Items.ENCHANTED_GOLDEN_APPLE).setLootItem(Items.BOWL).platterAABB()
       );
    }
 
-   private static ResourceLocation registerPlateData(String name, PlateData data) {
-      ResourceLocation id = KaleidoscopeChineseFood.id(name);
+   private static void registerPlateData(ResourceLocation id, PlateData data) {
       PlateRegistry.PLATE_DATA_MAP.put(id, data);
-      return id;
+   }
+
+   private static ResourceLocation id(String name) {
+      return KaleidoscopeChineseFood.id(name);
    }
 }

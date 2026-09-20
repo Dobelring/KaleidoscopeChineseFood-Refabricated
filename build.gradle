@@ -66,6 +66,11 @@ dependencies {
     modCompileOnly("maven.modrinth:emi:${project.emi_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
+    // Kaleidoscope Tavern (soft integration: 水龙头给汤锅/茶壶注水注岩浆；
+    // mixin 由 TavernMixinConfigPlugin 守卫，未装 tavern 时整份配置不生效)
+    modCompileOnly("maven.modrinth:kaleidoscope-tavern-refabricated:${project.kaleidoscope_tavern_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
 }
 
 processResources {

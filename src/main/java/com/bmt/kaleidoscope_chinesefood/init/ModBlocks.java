@@ -36,7 +36,7 @@ public class ModBlocks {
     public static SaltBlock SALT_BLOCK;
     public static FirecrackerBlock FIRECRACKER;
     public static FuCharacterBlock FU_CHARACTER;
-    public static CoupletBlock COUPLET_BLOCK;
+    public static CoupletBlock COUPLET;
     public static HorizontalBannerBlock HORIZONTAL_BANNER;
     public static MooncakeBlock MOONCAKE_BLOCK;
     public static KongmingLanternBlock KONGMING_LANTERN;
@@ -53,31 +53,31 @@ public class ModBlocks {
         FREEZER_YELLOW = registerFreezer("freezer_yellow");
         PICKLE_JAR = register(
                 "pickle_jar",
-                () -> new PickleJarBlock(Properties.of().mapColor(MapColor.TERRACOTTA_RED).strength(1.5F, 2.0F).sound(SoundType.DECORATED_POT).noOcclusion())
+                () -> new PickleJarBlock(Properties.of().mapColor(MapColor.TERRACOTTA_RED).strength(1.5F, 3.0F).sound(SoundType.DECORATED_POT).noOcclusion())
         );
         BOWL_STACK = register(
-                "bowl_stack", () -> new BowlStackBlock(Properties.of().mapColor(MapColor.WOOD).strength(1.0F, 2.0F).sound(SoundType.WOOD).noOcclusion())
+                "bowl_stack", () -> new BowlStackBlock(Properties.of().mapColor(MapColor.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD).noOcclusion())
         );
         SALT_BLOCK = register(
                 "salt_block", () -> new SaltBlock(Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).strength(0.1F).noOcclusion().sound(SoundType.GLASS))
         );
         FIRECRACKER = register(
-                "firecracker", () -> new FirecrackerBlock(Properties.of().mapColor(MapColor.FIRE).strength(0.0F).sound(SoundType.CANDLE).noOcclusion())
+                "firecracker", () -> new FirecrackerBlock(Properties.of().mapColor(MapColor.FIRE).strength(0.1F).sound(SoundType.CANDLE).noOcclusion())
         );
         FU_CHARACTER = register(
                 "fu_character", () -> new FuCharacterBlock(Properties.of().mapColor(MapColor.FIRE).strength(0.0F).noOcclusion().sound(SoundType.WOOL))
         );
-        COUPLET_BLOCK = register(
-                "couplet_block", () -> new CoupletBlock(Properties.of().mapColor(MapColor.FIRE).strength(0.0F).noOcclusion().sound(SoundType.WOOL))
+        COUPLET = register(
+                "couplet", () -> new CoupletBlock(Properties.of().mapColor(MapColor.FIRE).strength(0.0F).noOcclusion().sound(SoundType.WOOL))
         );
         HORIZONTAL_BANNER = register(
                 "horizontal_banner", () -> new HorizontalBannerBlock(Properties.of().mapColor(MapColor.FIRE).strength(0.0F).noOcclusion().sound(SoundType.WOOL))
         );
         MOONCAKE_BLOCK = register(
-                "mooncake_block", () -> new MooncakeBlock(Properties.of().instabreak().strength(0.1F).noOcclusion().sound(SoundType.WOOD))
+                "mooncake_block", () -> new MooncakeBlock(Properties.of().mapColor(MapColor.WOOD).strength(0.1F).noOcclusion().sound(SoundType.WOOD))
         );
         KONGMING_LANTERN = register(
-                "kongming_lantern", () -> new KongmingLanternBlock(Properties.of().instabreak().strength(0.1F).noOcclusion().sound(SoundType.WOOD))
+                "kongming_lantern", () -> new KongmingLanternBlock(Properties.of().mapColor(MapColor.FIRE).strength(0.1F, 0.8F).noOcclusion().sound(SoundType.WOOL))
         );
         BAMBOO_STEAMED_EGG = register(
                 "bamboo_steamed_egg",

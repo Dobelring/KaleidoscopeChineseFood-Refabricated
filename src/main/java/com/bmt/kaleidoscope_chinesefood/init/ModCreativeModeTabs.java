@@ -28,6 +28,7 @@ public class ModCreativeModeTabs {
                             output.accept(ModItems.RAW_STEAMED_RICE_ROLLS);
                             output.accept(ModItems.RAW_BAMBOO_STEAMED_EGG);
                             output.accept(ModItems.RAW_MOONCAKE);
+                            output.accept(ModItems.DIANHONG_TEA_BAG);
                             output.accept(ModItems.YELLOW_CROAKER_BUCKET);
                             output.accept(ModItems.SALT_BUCKET);
                             output.accept(ModItems.SALT);
@@ -72,7 +73,7 @@ public class ModCreativeModeTabs {
                                     output.accept(Objects.requireNonNull(item));
                                 }
                             });
-                            output.accept(TeacupRegistry.getItem(ModTea.LAPSANG));
+                            output.accept(TeacupRegistry.getItem(ModTea.DIANHONG_TEA));
                             output.accept(TeacupRegistry.getItem(ModTea.HK_MILK_TEA));
                             PlateRegistry.PLATE_DATA_MAP.forEach((resourceLocation, plateData) -> {
                                 if (resourceLocation.getNamespace().equals("kaleidoscope_chinesefood")) {
@@ -92,11 +93,12 @@ public class ModCreativeModeTabs {
                             output.accept(ModBlocks.PICKLE_JAR);
                             output.accept(ModItems.FIRECRACKER);
                             output.accept(ModBlocks.FU_CHARACTER);
-                            output.accept(ModBlocks.COUPLET_BLOCK);
+                            output.accept(ModBlocks.COUPLET);
                             output.accept(ModBlocks.HORIZONTAL_BANNER);
                             output.accept(ModBlocks.KONGMING_LANTERN);
                             output.accept(ModItems.EGGPLANT_SEED);
-                            output.accept(ModItems.YELLOW_CROAKER_SPAWN_EGG);
+                            output.accept(ModCookeryBlocks.STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE);
+                            output.accept(ModCookeryBlocks.STRIPPED_BAMBOO_BENCH);
                             if (!FabricLoader.getInstance().isModLoaded("kaleidoscope_twilight")) {
                                 output.accept(KTItems.FROZEN_BUN);
                             }

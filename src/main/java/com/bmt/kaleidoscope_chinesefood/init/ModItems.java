@@ -6,6 +6,7 @@ import com.bmt.kaleidoscope_chinesefood.item.FirecrackerItem;
 import com.bmt.kaleidoscope_chinesefood.item.MooncakeItem;
 import com.bmt.kaleidoscope_chinesefood.item.MooncakeMoldItem;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.BowlFoodOnlyItem;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.FoodWithEffectsItem;
 import java.util.function.Supplier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -66,6 +67,7 @@ public class ModItems {
     public static Item CORN_RISTRA;
     public static Item MOONCAKE_MOLD;
     public static Item FIRECRACKER;
+    public static Item DIANHONG_TEA_BAG;
 
     public static void register() {
         RAW_STEAMED_RICE_ROLLS = register("raw_steamed_rice_rolls", () -> new Item(new Item.Properties()));
@@ -100,9 +102,9 @@ public class ModItems {
         YANGZHOU_FRIED_RICE = register("yangzhou_fried_rice", () -> new BowlFoodOnlyItem(ModFoods.YANGZHOU_FRIED_RICE));
         LAMB_PILAF = register("lamb_pilaf", () -> new BowlFoodOnlyItem(ModFoods.LAMB_PILAF));
         SAUERKRAUT_BEEF_NOODLES = register("sauerkraut_beef_noodles", () -> new BowlFoodOnlyItem(ModFoods.SAUERKRAUT_BEEF_NOODLES));
-        SALTED_EGG = register("salted_egg", () -> new Item(new Item.Properties().food(ModFoods.SALTED_EGG)));
-        CENTURY_EGG = register("century_egg", () -> new Item(new Item.Properties().food(ModFoods.CENTURY_EGG)));
-        CHINESE_SAUERKRAUT = register("chinese_sauerkraut", () -> new Item(new Item.Properties().food(ModFoods.CHINESE_SAUERKRAUT)));
+        SALTED_EGG = register("salted_egg", () -> new FoodWithEffectsItem(ModFoods.SALTED_EGG));
+        CENTURY_EGG = register("century_egg", () -> new FoodWithEffectsItem(ModFoods.CENTURY_EGG));
+        CHINESE_SAUERKRAUT = register("chinese_sauerkraut", () -> new FoodWithEffectsItem(ModFoods.CHINESE_SAUERKRAUT));
         EGGPLANT = register("eggplant", () -> new Item(new Item.Properties().food(ModFoods.EGGPLANT)));
         EGGPLANT_SEED = register("eggplant_seed", () -> new ItemNameBlockItem(ModBlocks.EGGPLANT_CROP, new Item.Properties()));
         YELLOW_CROAKER = register("yellow_croaker", () -> new Item(new Item.Properties().food(ModFoods.YELLOW_CROAKER)));
@@ -121,6 +123,7 @@ public class ModItems {
         CORN_RISTRA = register("corn_ristra", () -> new BlockItem(ModBlocks.CORN_RISTRA, new Item.Properties()));
         MOONCAKE_MOLD = register("mooncake_mold", () -> new MooncakeMoldItem(new Item.Properties().stacksTo(1)));
         FIRECRACKER = register("firecracker", () -> new FirecrackerItem(new Item.Properties()));
+        DIANHONG_TEA_BAG = register("dianhong_tea_bag", () -> new Item(new Item.Properties()));
 
         // plain block items that were auto-registered alongside their blocks on NeoForge
         registerBlockItem("freezer", ModBlocks.FREEZER);
@@ -132,7 +135,7 @@ public class ModItems {
         registerBlockItem("pickle_jar", ModBlocks.PICKLE_JAR);
         registerBlockItem("bowl_stack", ModBlocks.BOWL_STACK);
         registerBlockItem("fu_character", ModBlocks.FU_CHARACTER);
-        registerBlockItem("couplet_block", ModBlocks.COUPLET_BLOCK);
+        registerBlockItem("couplet", ModBlocks.COUPLET);
         registerBlockItem("horizontal_banner", ModBlocks.HORIZONTAL_BANNER);
         registerBlockItem("mooncake_block", ModBlocks.MOONCAKE_BLOCK);
         registerBlockItem("kongming_lantern", ModBlocks.KONGMING_LANTERN);

@@ -3,6 +3,7 @@ package com.bmt.kaleidoscope_chinesefood.client;
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.client.gui.FreezerScreen;
 import com.bmt.kaleidoscope_chinesefood.client.renderer.CoupletBlockEntityRender;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.EnchantedPlateBlockEntityRenderer;
 import com.bmt.kaleidoscope_chinesefood.client.renderer.HorizontalBannerBlockEntityRender;
 import com.bmt.kaleidoscope_chinesefood.client.renderer.PickleJarRender;
 import com.bmt.kaleidoscope_chinesefood.client.renderer.entity.KongmingLanternRender;
@@ -38,6 +39,7 @@ public class ClientSetup {
         EntityRendererRegistry.register(ModEntities.FIRECRACKER, ThrownItemRenderer::new);
         BlockEntityRenderers.register(ModBlockEntities.COUPLET_BLOCK_ENTITY, CoupletBlockEntityRender::new);
         BlockEntityRenderers.register(ModBlockEntities.HORIZONTAL_BANNER, HorizontalBannerBlockEntityRender::new);
+        BlockEntityRenderers.register(ModBlockEntities.ENCHANTED_PLATE, EnchantedPlateBlockEntityRenderer::new);
         EntityRendererRegistry.register(ModEntities.KONGMING_LANTERN, KongmingLanternRender::new);
         EntityRendererRegistry.register(ModEntities.YELLOW_CROAKER, YellowCroakerRenderer::new);
         registerBlockRenderLayers();
@@ -79,7 +81,8 @@ public class ClientSetup {
                 ModFoodBiteRegistry.STEAMED_RICE_ROLLS,
                 ModFoodBiteRegistry.FOUR_JOY_MEATBALLS,
                 ModPlateRegistry.GOLDEN_APPLE_PLATTER,
-                ModTea.LAPSANG,
+                ModPlateRegistry.ENCHANTED_GOLDEN_APPLE_PLATTER,
+                ModTea.DIANHONG_TEA,
                 ModTea.HK_MILK_TEA
         ));
         for (int i = 0; i <= 5; i++) {
