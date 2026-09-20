@@ -28,10 +28,21 @@ public class ModFoodBiteRegistry {
    public static Identifier YELLOW_CROAKER_SOUP;
    public static Identifier RED_RICE_ROLL;
    public static Identifier YELLOW_CROAKER_TOFU_SOUP;
+   public static Identifier STEAMED_RICE_ROLLS;
+   public static Identifier FOUR_JOY_MEATBALLS;
 
    public static void init() {
       // cookery 1.4.x：FoodBiteRegistry 单例 INSTANCE；FoodData.create 需要成对 FoodProperties + Consumable
       FoodBiteRegistry registry = FoodBiteRegistry.INSTANCE;
+      // 肠粉 / 四喜丸子：1.1.11 起由碗装物品改为可放置菜品（2 口 / 4 口）
+      STEAMED_RICE_ROLLS = registry.registerFoodData(
+         KaleidoscopeChineseFood.id("steamed_rice_rolls"),
+         FoodData.create(2, ModFoods.STEAMED_RICE_ROLLS_BLOCK, ModFoods.STEAMED_RICE_ROLLS_ITEM, ModFoods.STEAMED_RICE_ROLLS_BLOCK_C, ModFoods.STEAMED_RICE_ROLLS_ITEM_C)
+      );
+      FOUR_JOY_MEATBALLS = registry.registerFoodData(
+         KaleidoscopeChineseFood.id("four_joy_meatballs"),
+         FoodData.create(4, ModFoods.FOUR_JOY_MEATBALLS_BLOCK, ModFoods.FOUR_JOY_MEATBALLS_ITEM, ModFoods.FOUR_JOY_MEATBALLS_BLOCK_C, ModFoods.FOUR_JOY_MEATBALLS_ITEM_C)
+      );
       YELLOW_CROAKER_TOFU_SOUP = registry.registerFoodData(
          KaleidoscopeChineseFood.id("yellow_croaker_tofu_soup"),
          FoodData.create(3, ModFoods.YELLOW_CROAKER_TOFU_SOUP_BLOCK, ModFoods.YELLOW_CROAKER_TOFU_SOUP_ITEM, ModFoods.YELLOW_CROAKER_TOFU_SOUP_BLOCK_C, ModFoods.YELLOW_CROAKER_TOFU_SOUP_ITEM_C).bowlAABB()
@@ -42,7 +53,7 @@ public class ModFoodBiteRegistry {
       );
       SICHUAN_BOILED_PORK_SLICES = registry.registerFoodData(
          KaleidoscopeChineseFood.id("sichuan_boiled_pork_slices"),
-         FoodData.create(3, ModFoods.SICHUAN_BOILED_PORK_SLICES_BLOCK, ModFoods.SICHUAN_BOILED_PORK_SLICES_ITEM, ModFoods.SICHUAN_BOILED_PORK_SLICES_BLOCK_C, ModFoods.SICHUAN_BOILED_PORK_SLICES_ITEM_C).bowlAABB()
+         FoodData.create(4, ModFoods.SICHUAN_BOILED_PORK_SLICES_BLOCK, ModFoods.SICHUAN_BOILED_PORK_SLICES_ITEM, ModFoods.SICHUAN_BOILED_PORK_SLICES_BLOCK_C, ModFoods.SICHUAN_BOILED_PORK_SLICES_ITEM_C).bowlAABB()
       );
       SICHUAN_BOILED_FISH = registry.registerFoodData(
          KaleidoscopeChineseFood.id("sichuan_boiled_fish"),

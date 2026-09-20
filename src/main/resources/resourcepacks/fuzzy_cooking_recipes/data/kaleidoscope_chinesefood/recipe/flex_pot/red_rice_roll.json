@@ -2,7 +2,7 @@
   "type": "kaleidoscope_cookery:pot",
   "carrier": "minecraft:bowl",
   "ingredients": [
-    "kaleidoscope_cookery:rice",
+    "#c:crops/rice",
     "minecraft:carrot",
     "#c:raw_meats",
     "#c:eggs"

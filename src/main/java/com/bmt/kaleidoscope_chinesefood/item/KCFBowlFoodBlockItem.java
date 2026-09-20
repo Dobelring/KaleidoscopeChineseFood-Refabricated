@@ -2,7 +2,7 @@ package com.bmt.kaleidoscope_chinesefood.item;
 
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.food.FoodBiteBlock;
-import com.github.ysbbbbbb.kaleidoscopecookery.config.ClientConfig;
+import com.github.ysbbbbbb.kaleidoscopecookery.config.ConfigGetter;
 import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
@@ -121,7 +121,8 @@ public class KCFBowlFoodBlockItem extends BlockItem {
                 consumer.accept(CommonComponents.EMPTY);
             }
         }
-        if (!this.effectInstances.isEmpty() && ClientConfig.SHOW_FOOD_EFFECT_TOOLTIPS.get()) {
+        // cookery 1.5.0 起 ClientConfig.SHOW_FOOD_EFFECT_TOOLTIPS 降为包私有，跨包改走公开的 ConfigGetter.Client
+        if (!this.effectInstances.isEmpty() && ConfigGetter.Client.getShowFoodEffectTooltips()) {
             consumer.accept(CommonComponents.space());
             PotionContents.addPotionTooltip(this.effectInstances, consumer, 1.0F, tooltip.tickRate());
         }

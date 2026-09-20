@@ -6,5 +6,6 @@ import net.minecraft.core.Direction;
 public class HorizontalBannerBlockEntityRenderState extends BlockEntityRenderState {
     public String text;
     public int totalWidth = 1;
+    public boolean glowing;
     public Direction facing;
 }

@@ -1,0 +1,19 @@
+{
+  "type": "kaleidoscope_cookery:stockpot",
+  "carrier": "minecraft:flower_pot",
+  "cooking_bubble_color": 16772291,
+  "cooking_texture": "kaleidoscope_cookery:stockpot/default_cooking",
+  "finished_bubble_color": 16034443,
+  "finished_texture": "kaleidoscope_cookery:stockpot/default_finished",
+  "ingredients": [
+    "#c:crops/lettuce",
+    "#c:crops/lettuce",
+    "#c:crops/lettuce"
+  ],
+  "result": {
+    "count": 1,
+    "id": "kaleidoscope_chinesefood:yellow_croaker_soup"
+  },
+  "soup_base": "kaleidoscope_chinesefood:yellow_croaker_bucket",
+  "time": 300
+}

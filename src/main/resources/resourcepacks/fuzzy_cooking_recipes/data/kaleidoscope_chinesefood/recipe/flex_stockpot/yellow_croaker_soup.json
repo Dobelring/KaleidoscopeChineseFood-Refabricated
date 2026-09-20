@@ -7,7 +7,7 @@
   "finished_texture": "kaleidoscope_cookery:stockpot/default_finished",
   "ingredients": [
     "kaleidoscope_chinesefood:yellow_croaker",
-    "kaleidoscope_cookery:lettuce"
+    "#c:crops/lettuce"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:yellow_croaker_soup"

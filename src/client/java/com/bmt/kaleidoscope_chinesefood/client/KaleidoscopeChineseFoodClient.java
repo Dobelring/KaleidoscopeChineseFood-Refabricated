@@ -15,5 +15,7 @@ public class KaleidoscopeChineseFoodClient implements ClientModInitializer {
         ModConfigScreenHandler.register();
         ClientSetup.init();
         TooltipEvents.register();
+        // S2C：收到服务端请求后打开对联/横批文字编辑界面
+        ClientNetworkHandlers.register();
     }
 }

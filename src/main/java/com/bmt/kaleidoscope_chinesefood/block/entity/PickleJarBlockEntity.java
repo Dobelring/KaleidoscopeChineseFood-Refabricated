@@ -42,6 +42,8 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
             if (PickleJarBlockEntity.this.level instanceof ServerLevel serverLevel) {
                 BlockPos pos = PickleJarBlockEntity.this.worldPosition;
                 BlockState state = PickleJarBlockEntity.this.getBlockState();
+                // 罐内槽位数变化要推给比较器
+                PickleJarBlockEntity.this.level.updateNeighbourForOutputSignal(pos, state.getBlock());
                 PickleJarBlockEntity.this.level.sendBlockUpdated(pos, state, state, 3);
                 // 向附近玩家显式推送 BE 数据包，确保腌菜罐内容物渲染立即刷新
                 ClientboundBlockEntityDataPacket packet =

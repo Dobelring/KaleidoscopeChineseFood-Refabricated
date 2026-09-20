@@ -5,6 +5,7 @@ import com.bmt.kaleidoscope_chinesefood.client.renderer.CoupletBlockEntityRender
 import com.bmt.kaleidoscope_chinesefood.client.renderer.HorizontalBannerBlockEntityRender;
 import com.bmt.kaleidoscope_chinesefood.client.renderer.PickleJarRender;
 import com.bmt.kaleidoscope_chinesefood.client.renderer.entity.KongmingLanternRender;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.entity.YellowCroakerRenderer;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.bmt.kaleidoscope_chinesefood.init.ModEntities;
 import com.bmt.kaleidoscope_chinesefood.init.ModMenuTypes;
@@ -22,6 +23,7 @@ public class ClientSetup {
         BlockEntityRenderers.register(ModBlockEntities.COUPLET_BLOCK_ENTITY, CoupletBlockEntityRender::new);
         BlockEntityRenderers.register(ModBlockEntities.HORIZONTAL_BANNER, HorizontalBannerBlockEntityRender::new);
         EntityRenderers.register(ModEntities.KONGMING_LANTERN, KongmingLanternRender::new);
+        EntityRenderers.register(ModEntities.YELLOW_CROAKER, YellowCroakerRenderer::new);
         // 26.1 渲染层自动判定：烘焙期按贴图 alpha 计算每 quad 层（α=0 → cutout），
         // BlockRenderLayerMap 已从 Fabric API 移除，cutout 方块无需（也无法）手动注册
     }

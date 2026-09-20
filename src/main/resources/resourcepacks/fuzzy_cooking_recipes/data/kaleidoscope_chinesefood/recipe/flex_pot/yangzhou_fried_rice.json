@@ -5,7 +5,7 @@
     "minecraft:carrot",
     "#c:eggs",
     "#c:raw_ham",
-    "kaleidoscope_cookery:cooked_rice"
+    "#c:foods/cooked_rice"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:yangzhou_fried_rice"

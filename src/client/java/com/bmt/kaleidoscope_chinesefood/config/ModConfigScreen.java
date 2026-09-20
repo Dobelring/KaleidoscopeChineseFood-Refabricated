@@ -38,17 +38,17 @@ public class ModConfigScreen extends Screen {
    private Button resetBannerTripleOffsetButton;
    private ModConfigScreen.ConfigSlider bannerCharWidthSlider;
    private Button resetBannerCharWidthButton;
-   private static final double DEFAULT_COUPLET_TEXT_SCALE = 0.025;
+   private static final double DEFAULT_COUPLET_TEXT_SCALE = 0.018;
    private static final double DEFAULT_COUPLET_HORIZONTAL_OFFSET = 0.2;
-   private static final double DEFAULT_COUPLET_DOUBLE_BASE_Y = -21.5;
-   private static final double DEFAULT_COUPLET_TRIPLE_BASE_Y = -41.0;
-   private static final double DEFAULT_COUPLET_VERTICAL_SPACING = 9.6;
-   private static final double DEFAULT_BANNER_TEXT_SCALE = 0.022;
-   private static final double DEFAULT_BANNER_VERTICAL_OFFSET = 0.99;
-   private static final double DEFAULT_BANNER_SINGLE_OFFSET = -0.9;
-   private static final double DEFAULT_BANNER_DOUBLE_OFFSET = 14.0;
-   private static final double DEFAULT_BANNER_TRIPLE_OFFSET = 28.9;
-   private static final double DEFAULT_BANNER_CHAR_WIDTH = 9.5;
+   private static final double DEFAULT_COUPLET_DOUBLE_BASE_Y = -26.5;
+   private static final double DEFAULT_COUPLET_TRIPLE_BASE_Y = -54.5;
+   private static final double DEFAULT_COUPLET_VERTICAL_SPACING = 11.0;
+   private static final double DEFAULT_BANNER_TEXT_SCALE = 0.018;
+   private static final double DEFAULT_BANNER_VERTICAL_OFFSET = 4.0;
+   private static final double DEFAULT_BANNER_SINGLE_OFFSET = -0.5;
+   private static final double DEFAULT_BANNER_DOUBLE_OFFSET = 19.0;
+   private static final double DEFAULT_BANNER_TRIPLE_OFFSET = 38.9;
+   private static final double DEFAULT_BANNER_CHAR_WIDTH = 11.0;
 
    public ModConfigScreen(Screen parent) {
       super(Component.translatable("config.kaleidoscope_chinesefood.title"));

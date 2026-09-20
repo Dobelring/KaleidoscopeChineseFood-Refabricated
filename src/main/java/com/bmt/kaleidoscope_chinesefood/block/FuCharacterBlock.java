@@ -1,17 +1,14 @@
 package com.bmt.kaleidoscope_chinesefood.block;
 
+import com.bmt.kaleidoscope_chinesefood.mixins.accessor.TrapDoorBlockAccessor;
 import com.mojang.serialization.MapCodec;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -36,8 +33,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.DoorHingeSide;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.Property;
@@ -176,46 +173,83 @@ public class FuCharacterBlock extends HorizontalDirectionalBlock implements Simp
    protected InteractionResult useItemOn(
       ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
    ) {
-      this.handleInteraction(state, level, pos, player, hand);
-      return InteractionResult.SUCCESS;
+      return this.handleInteraction(state, level, pos, player, hand);
    }
 
    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
       return this.handleInteraction(state, level, pos, player, InteractionHand.MAIN_HAND);
    }
 
+   /**
+    * 手动开关贴在福字后面的门/活版门。
+    * <p>
+    * 走原版 {@code DoorBlock.setOpen} / {@code TrapDoorBlock.toggle} 而不是自己翻 OPEN 属性，
+    * 这样音效取自门自身的 {@code BlockSetType}（各类木门、铁门各不相同），双开门也只翻一格；
+    * {@code canOpenByHand()} 为 false 的门（铁门）交还给原版处理。
+    */
    private InteractionResult handleInteraction(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand) {
-      if (level.isClientSide()) {
-         return InteractionResult.SUCCESS;
-      } else {
-         Direction facing = (Direction)state.getValue(FACING);
-         BlockPos behindPos = pos.relative(facing.getOpposite());
-         BlockState behindState = level.getBlockState(behindPos);
-         if (behindState.hasProperty(BlockStateProperties.OPEN)) {
-            boolean isOpen = (Boolean)behindState.getValue(BlockStateProperties.OPEN);
-            level.setBlock(behindPos, (BlockState)behindState.setValue(BlockStateProperties.OPEN, !isOpen), 3);
-            this.playDoorSound(level, behindPos, behindState.getBlock(), isOpen);
-            player.swing(hand);
-            return InteractionResult.CONSUME;
-         } else {
+      Direction facing = state.getValue(FACING);
+      BlockPos behindPos = pos.relative(facing.getOpposite());
+      BlockState behindState = level.getBlockState(behindPos);
+      Block behindBlock = behindState.getBlock();
+      if (behindBlock instanceof DoorBlock doorBlock) {
+         if (!doorBlock.type().canOpenByHand()) {
             return InteractionResult.PASS;
          }
+
+         doorBlock.setOpen(player, level, behindState, behindPos, !behindState.getValue(DoorBlock.OPEN));
+         refreshAttached(level, behindPos, level.getBlockState(behindPos));
+         player.swing(hand);
+         return InteractionResult.SUCCESS;
+      } else if (behindBlock instanceof TrapDoorBlock) {
+         TrapDoorBlockAccessor accessor = (TrapDoorBlockAccessor)behindBlock;
+         if (!accessor.kaleidoscope_chinesefood$getType().canOpenByHand()) {
+            return InteractionResult.PASS;
+         }
+
+         accessor.kaleidoscope_chinesefood$toggle(behindState, level, behindPos, player);
+         refreshAttached(level, behindPos, level.getBlockState(behindPos));
+         player.swing(hand);
+         return InteractionResult.SUCCESS;
+      } else {
+         return InteractionResult.PASS;
       }
    }
 
-   private void playDoorSound(Level level, BlockPos pos, Block block, boolean isOpen) {
-      SoundEvent sound;
-      if (block instanceof DoorBlock) {
-         sound = isOpen ? SoundEvents.WOODEN_DOOR_CLOSE : SoundEvents.WOODEN_DOOR_OPEN;
-      } else {
-         if (!(block instanceof TrapDoorBlock)) {
-            return;
-         }
-
-         sound = isOpen ? SoundEvents.WOODEN_TRAPDOOR_CLOSE : SoundEvents.WOODEN_TRAPDOOR_OPEN;
+   /**
+    * 门 / 活版门被红石切换后刷新贴在它面上的福字。
+    * <p>
+    * 为什么需要这个：手动开关门走 {@link #handleInteraction} 里的显式刷新，而红石开关门只会让门自己
+    * {@code setBlock}（DoorBlock 用 flags=10、TrapDoorBlock 用 flags=2），都不带形状更新，
+    * 福字的贴图状态不会被原版"邻居形状更新"链推到，要等其它方块更新才补上。
+    * 所以这里挂在门/活版门响应红石的 {@code neighborChanged} 上主动刷新。
+    *
+    * @param doorState 门切换【后】的状态，用来顺带处理门另一格上的福字
+    */
+   public static void refreshAttached(Level level, BlockPos doorPos, BlockState doorState) {
+      if (level.isClientSide()) {
+         return;
       }
 
-      level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
+      refreshAt(level, doorPos);
+      if (doorState.getBlock() instanceof DoorBlock) {
+         BlockPos otherHalf = doorState.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER ? doorPos.above() : doorPos.below();
+         refreshAt(level, otherHalf);
+      }
+   }
+
+   private static void refreshAt(Level level, BlockPos attachedPos) {
+      for (Direction direction : Direction.values()) {
+         BlockPos pos = attachedPos.relative(direction);
+         BlockState state = level.getBlockState(pos);
+         if (state.getBlock() instanceof FuCharacterBlock fuCharacter) {
+            Direction facing = state.getValue(FACING);
+            BlockState newState = fuCharacter.updateFuModelState(state, level, pos, facing);
+            if (newState != state) {
+               level.setBlock(pos, newState, 3);
+            }
+         }
+      }
    }
 
    @Nullable

@@ -9,5 +9,6 @@ import net.minecraft.core.Direction;
 public class CoupletBlockEntityRenderState extends BlockEntityRenderState {
     public String text;
     public boolean isTriple;
+    public boolean glowing;
     public Direction facing;
 }

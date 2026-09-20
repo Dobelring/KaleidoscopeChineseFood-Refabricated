@@ -55,7 +55,8 @@ public class ModTea {
         TeacupData data = DATA_MAP.get(id);
         Properties properties = Properties.of()
                 .setId(ResourceKey.create(Registries.BLOCK, id));
-        TeacupBlock block = new TeacupBlock(properties, data.getMaxCount());
+        // cookery 1.5.0 起 TeacupBlock 两参构造器被三参取代（第三参为可空的 animateTick）
+        TeacupBlock block = new TeacupBlock(properties, data.getMaxCount(), data.getAnimateTick());
         Registry.register(BuiltInRegistries.BLOCK, id, block);
 
         ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, id);

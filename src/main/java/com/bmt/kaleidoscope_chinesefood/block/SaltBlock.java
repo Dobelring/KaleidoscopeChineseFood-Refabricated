@@ -1,10 +1,12 @@
 package com.bmt.kaleidoscope_chinesefood.block;
 
 import com.bmt.kaleidoscope_chinesefood.init.ModItems;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -23,6 +25,7 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -77,15 +80,23 @@ public class SaltBlock extends Block {
             if (!player.getInventory().add(salt)) {
                player.drop(salt, false);
             }
+
+            level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 0.9F, 1.0F);
          }
 
          return InteractionResult.SUCCESS;
       }
    }
 
-   public void spawnAfterBreak(BlockState state, ServerLevel level, BlockPos pos, ItemStack tool, boolean dropExperience) {
-      super.spawnAfterBreak(state, level, pos, tool, dropExperience);
-      popResource(level, pos, new ItemStack(ModItems.SALT, (Integer)state.getValue(STACK_COUNT) + 1));
+   /**
+    * 掉落按堆叠数给足。
+    * <p>
+    * 26.x 的 {@code dropResources} 先取 {@code getDrops} 再调 {@code spawnAfterBreak}，
+    * 覆盖本方法可以同时覆盖玩家破坏、爆炸、活塞等全部掉落来源。
+    */
+   @Override
+   protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+      return List.of(new ItemStack(ModItems.SALT, (Integer)state.getValue(STACK_COUNT) + 1));
    }
 
    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
