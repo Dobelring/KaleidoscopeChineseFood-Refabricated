@@ -12,6 +12,7 @@ import com.bmt.kaleidoscope_chinesefood.init.ModBlocks;
 import com.bmt.kaleidoscope_chinesefood.init.ModEntities;
 import com.bmt.kaleidoscope_chinesefood.init.ModFoodBiteRegistry;
 import com.bmt.kaleidoscope_chinesefood.init.ModMenuTypes;
+import com.bmt.kaleidoscope_chinesefood.init.ModPlateRegistry;
 import com.bmt.kaleidoscope_chinesefood.init.ModTea;
 import com.bmt.kaleidoscope_chinesefood.integration.KaleidoscopeDollIntegration;
 import com.github.ysbbbbbb.kaleidoscopedoll.render.DollEntityItemRender;
@@ -77,6 +78,7 @@ public class ClientSetup {
                 ModFoodBiteRegistry.YELLOW_CROAKER_TOFU_SOUP,
                 ModFoodBiteRegistry.STEAMED_RICE_ROLLS,
                 ModFoodBiteRegistry.FOUR_JOY_MEATBALLS,
+                ModPlateRegistry.GOLDEN_APPLE_PLATTER,
                 ModTea.LAPSANG,
                 ModTea.HK_MILK_TEA
         ));

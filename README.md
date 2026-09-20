@@ -32,7 +32,9 @@ This mod brings a variety of Chinese cuisine and folk items to "Kaleidoscope: Co
 ## Build
 Requires JDK 21.
 
-Dependency jars (Kaleidoscope Cookery, Forge Config API Port, JEI, EMI, Jade) are committed under `libs/` and referenced directly by `build.gradle`.
+Dependencies are resolved from maven coordinates declared in `gradle.properties` (no bundled jars needed):
+Kaleidoscope Cookery Refabricated and Kaleidoscope Doll from the Modrinth maven, JEI from Jared's maven,
+Forge Config API Port from the Fuzs maven, Jade / EMI from the Modrinth maven.
 
 ```
 ./gradlew build

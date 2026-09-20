@@ -13,6 +13,7 @@ import com.bmt.kaleidoscope_chinesefood.init.ModEntities;
 import com.bmt.kaleidoscope_chinesefood.init.ModFoodBiteRegistry;
 import com.bmt.kaleidoscope_chinesefood.init.ModItems;
 import com.bmt.kaleidoscope_chinesefood.init.ModMenuTypes;
+import com.bmt.kaleidoscope_chinesefood.init.ModPlateRegistry;
 import com.bmt.kaleidoscope_chinesefood.init.ModRecipes;
 import com.bmt.kaleidoscope_chinesefood.init.ModSounds;
 import com.bmt.kaleidoscope_chinesefood.init.ModTea;
@@ -39,6 +40,7 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         ModEffects.register();
         ModTea.init();
         ModFoodBiteRegistry.init();
+        ModPlateRegistry.init();
         if (!FabricLoader.getInstance().isModLoaded("kaleidoscope_twilight")) {
             KTItems.register();
         }
