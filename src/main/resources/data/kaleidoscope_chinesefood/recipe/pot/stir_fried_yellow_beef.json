@@ -2,9 +2,9 @@
   "type": "kaleidoscope_cookery:pot",
   "carrier": "minecraft:bowl",
   "ingredients": [
-    "minecraft:beef",
-    "minecraft:beef",
-    "minecraft:beef",
+    "#c:foods/raw_beef",
+    "#c:foods/raw_beef",
+    "#c:foods/raw_beef",
     "kaleidoscope_cookery:green_chili",
     "kaleidoscope_cookery:red_chili"
   ],

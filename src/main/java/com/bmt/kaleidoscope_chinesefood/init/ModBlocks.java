@@ -13,6 +13,7 @@ import com.bmt.kaleidoscope_chinesefood.block.PickleJarBlock;
 import com.bmt.kaleidoscope_chinesefood.block.SaltBlock;
 import com.bmt.kaleidoscope_chinesefood.block.crop.EggplantCropBlock;
 import com.bmt.kaleidoscope_chinesefood.block.misc.CornBlock;
+import com.github.ysbbbbbb.kaleidoscopecookery.block.decoration.StackableFoodBlock;
 import java.util.function.Function;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.shapes.Shapes;
 
 public class ModBlocks {
     public static CornBlock CORN_RISTRA;
@@ -42,6 +44,7 @@ public class ModBlocks {
     public static MooncakeBlock MOONCAKE_BLOCK;
     public static KongmingLanternBlock KONGMING_LANTERN;
     public static EggplantCropBlock EGGPLANT_CROP;
+    public static Block BAMBOO_STEAMED_EGG;
 
     public static void register() {
         // 外部化 Properties 显式指定 GRASS 音效等属性
@@ -95,6 +98,20 @@ public class ModBlocks {
                         () -> ModItems.EGGPLANT,
                         () -> ModItems.EGGPLANT_SEED
                 )
+        );
+        // 竹筒蒸蛋：可堆叠菜品（最多 4 个），方块与物品由 cookery 的 StackableFoodBlock 代管
+        BAMBOO_STEAMED_EGG = register(
+                "bamboo_steamed_egg",
+                p -> StackableFoodBlock.create(p)
+                        .maxCount(4)
+                        .item(() -> ModItems.BAMBOO_STEAMED_EGG)
+                        .shapes(
+                                Block.box(4.0, 0.0, 4.0, 12.0, 8.0, 12.0),
+                                Shapes.or(Block.box(7.0, 0.0, 1.0, 15.0, 8.0, 9.0), Block.box(1.0, 0.0, 7.0, 9.0, 8.0, 15.0)),
+                                Shapes.or(Block.box(0.0, 0.0, 6.0, 16.0, 8.0, 15.0), Block.box(4.0, 0.0, 0.0, 12.0, 8.0, 15.0)),
+                                Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0)
+                        )
+                        .build()
         );
     }
 

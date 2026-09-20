@@ -3,6 +3,14 @@
     {
       "id":"farmersdelight:ham",
       "required": false
+    },
+    {
+      "id":"kaleidoscope_nether:ham",
+      "required": false
+    },
+    {
+      "id":"kaleidoscope_nether:ham_slice",
+      "required": false
     }
   ]
 }

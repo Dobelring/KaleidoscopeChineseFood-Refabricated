@@ -2,6 +2,7 @@ package com.bmt.kaleidoscope_chinesefood.block;
 
 import com.bmt.kaleidoscope_chinesefood.block.entity.FirecrackerBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
+import com.bmt.kaleidoscope_chinesefood.init.ModItems;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,6 +18,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -62,6 +64,12 @@ public class FirecrackerBlock extends BaseEntityBlock {
 
    protected void createBlockStateDefinition(Builder<Block, BlockState> pBuilder) {
       pBuilder.add(new Property[]{FACING});
+   }
+
+   /** 中键选取拿到鞭炮本身（26.x 的 getCloneItemStack 是 4 参、protected）。 */
+   @Override
+   protected ItemStack getCloneItemStack(@NotNull LevelReader level, @NotNull BlockPos pos, @NotNull BlockState state, boolean includeData) {
+      return new ItemStack(ModItems.FIRECRACKER);
    }
 
    protected InteractionResult useItemOn(

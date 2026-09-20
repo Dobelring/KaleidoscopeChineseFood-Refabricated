@@ -4,6 +4,7 @@ import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.init.kaleidoscope_twilight.KTItems;
 import com.bmt.kaleidoscope_chinesefood.integration.KaleidoscopeDollIntegration;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.FoodBiteRegistry;
+import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.PlateRegistry;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.TeacupRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
@@ -27,7 +28,9 @@ public class ModCreativeModeTabs {
                         .title(Component.translatable("itemGroup.kaleidoscope_chinesefood_tab"))
                         .displayItems((parameters, output) -> {
                             output.accept(ModItems.RAW_STEAMED_RICE_ROLLS);
+                            output.accept(ModItems.RAW_BAMBOO_STEAMED_EGG);
                             output.accept(ModItems.RAW_MOONCAKE);
+                            output.accept(ModItems.YELLOW_CROAKER_BUCKET);
                             output.accept(ModItems.SALT_BUCKET);
                             output.accept(ModItems.SALT);
                             output.accept(ModItems.SALTED_EGG);
@@ -36,6 +39,7 @@ public class ModCreativeModeTabs {
                             output.accept(ModItems.EGGPLANT);
                             output.accept(ModItems.YELLOW_CROAKER);
                             output.accept(ModItems.MOONCAKE);
+                            output.accept(ModItems.BAMBOO_STEAMED_EGG);
                             output.accept(ModItems.SICHUAN_WONTON);
                             output.accept(ModItems.WONTON_NOODLES);
                             output.accept(ModItems.YANGROU_PAOMO);
@@ -58,14 +62,13 @@ public class ModCreativeModeTabs {
                             output.accept(ModItems.BIG_PLATE_CHICKEN_NOODLES);
                             output.accept(ModItems.TOMATO_EGG_NOODLES);
                             output.accept(ModItems.PORK_CHILI_NOODLES);
-                            output.accept(ModItems.FOUR_JOY_MEATBALLS);
                             output.accept(ModItems.STUFFED_EGGPLANT);
                             output.accept(ModItems.DRY_POT_POTATOES);
                             output.accept(ModItems.DRY_POT_CHICKEN);
                             output.accept(ModItems.DRY_POT_SPARE_RIBS);
                             output.accept(ModItems.YANGZHOU_FRIED_RICE);
                             output.accept(ModItems.LAMB_PILAF);
-                            output.accept(ModItems.STEAMED_RICE_ROLLS);
+                            // 肠粉/四喜丸子已改为可放置菜品，由下方 FOOD_DATA_MAP 循环统一加入
                             FoodBiteRegistry.FOOD_DATA_MAP.forEach((resourceLocation, foodData) -> {
                                 if (resourceLocation.getNamespace().equals("kaleidoscope_chinesefood")) {
                                     Item item = BuiltInRegistries.ITEM.getValue(resourceLocation);
@@ -77,6 +80,14 @@ public class ModCreativeModeTabs {
                             });
                             acceptTeaIfRegistered(output, ModTea.LAPSANG);
                             acceptTeaIfRegistered(output, ModTea.HK_MILK_TEA);
+                            PlateRegistry.PLATE_DATA_MAP.forEach((resourceLocation, plateData) -> {
+                                if (resourceLocation.getNamespace().equals(KaleidoscopeChineseFood.MODID)) {
+                                    Item plateItem = BuiltInRegistries.ITEM.getValue(resourceLocation);
+                                    if (plateItem != null && plateItem != Items.AIR) {
+                                        output.accept(plateItem);
+                                    }
+                                }
+                            });
                             output.accept(ModBlocks.BOWL_STACK);
                             output.accept(ModItems.MOONCAKE_MOLD);
                             output.accept(ModItems.CORN_RISTRA);
@@ -93,6 +104,7 @@ public class ModCreativeModeTabs {
                             output.accept(ModBlocks.HORIZONTAL_BANNER);
                             output.accept(ModBlocks.KONGMING_LANTERN);
                             output.accept(ModItems.EGGPLANT_SEED);
+                            output.accept(ModItems.YELLOW_CROAKER_SPAWN_EGG);
                             // 贡献者玩偶（1.21.11 无 doll 模组，代注册进本模组物品栏）
                             KaleidoscopeDollIntegration.DOLL_BLOCKS.forEach(block -> output.accept(block));
                             if (!FabricLoader.getInstance().isModLoaded("kaleidoscope_twilight")) {

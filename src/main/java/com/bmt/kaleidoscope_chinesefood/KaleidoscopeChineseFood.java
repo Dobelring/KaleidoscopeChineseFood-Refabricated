@@ -13,15 +13,21 @@ import com.bmt.kaleidoscope_chinesefood.init.ModEntities;
 import com.bmt.kaleidoscope_chinesefood.init.ModFoodBiteRegistry;
 import com.bmt.kaleidoscope_chinesefood.init.ModItems;
 import com.bmt.kaleidoscope_chinesefood.init.ModMenuTypes;
+import com.bmt.kaleidoscope_chinesefood.init.ModPlateRegistry;
 import com.bmt.kaleidoscope_chinesefood.init.ModRecipes;
 import com.bmt.kaleidoscope_chinesefood.init.ModSounds;
 import com.bmt.kaleidoscope_chinesefood.init.ModTea;
 import com.bmt.kaleidoscope_chinesefood.init.kaleidoscope_twilight.KTItems;
 import com.bmt.kaleidoscope_chinesefood.integration.KaleidoscopeDollIntegration;
+import com.bmt.kaleidoscope_chinesefood.network.ModNetwork;
+import com.github.ysbbbbbb.kaleidoscopecookery.crafting.soupbase.SoupBaseManager;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.recipe.v1.sync.RecipeSynchronization;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.Biomes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +42,7 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         ModConfig.init();
         ModEffects.register();
         ModTea.init(); // 茶杯效果是懒加载 supplier，注册期不读取 cookery 的 Holder，可留在 main 阶段
+        // 拼盘注册放在 runFoodPhase：必须晚于 cookery 的初始化，否则会被 cookery 用它自己的命名空间代注册
 
         // 依赖 cookery 的注册（ModFoods / ModItems / ModFoodBiteRegistry / KTItems / DataMapsEvents）
         // 统一推迟到 runFoodPhase（client/server 入口点阶段执行）
@@ -47,11 +54,25 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         ModSounds.register();
         ModRecipes.register();
         ModCreativeModeTabs.register();
+        // 对联/横批编辑界面的自定义网络包
+        ModNetwork.register();
 
         KaleidoscopeDollIntegration.register();
         ModBuiltInResourcePacks.register();
         FoodEventHandler.register();
         LavaSwimDamageEvents.register();
+
+        // 黄花鱼海洋生成（官方用 neoforge biome_modifier json，Fabric 走 BiomeModifications）
+        BiomeModifications.addSpawn(
+                context -> context.getBiomeKey().equals(Biomes.OCEAN)
+                        || context.getBiomeKey().equals(Biomes.COLD_OCEAN)
+                        || context.getBiomeKey().equals(Biomes.LUKEWARM_OCEAN),
+                MobCategory.WATER_AMBIENT,
+                ModEntities.YELLOW_CROAKER,
+                10,
+                3,
+                6
+        );
 
         // 发射器行为注册移至 runFoodPhase（ModItems 注册之后，BlockItem 已就绪）
 
@@ -81,6 +102,10 @@ public class KaleidoscopeChineseFood implements ModInitializer {
             }
             ModFoodBiteRegistry.init();
             ModItems.register();
+            // 拼盘：自己注册方块/物品，并把数据登记进 cookery 的 PLATE_DATA_MAP（必须晚于 cookery 初始化）
+            ModPlateRegistry.init();
+            // 黄花鱼桶作为高汤锅汤底（对应官方 CommonRegistry 里的 registerMobSoupBase）
+            SoupBaseManager.registerMobSoupBase(KaleidoscopeChineseFood.id("yellow_croaker_bucket"), ModItems.YELLOW_CROAKER_BUCKET);
             // TeacupItem 构造器急切解析效果 supplier，此处 cookery 效果已注册完毕
             ModTea.registerTeacupBlocksAndItems();
             // BlockItem 已注册，此时 asItem() 能解析到真实物品

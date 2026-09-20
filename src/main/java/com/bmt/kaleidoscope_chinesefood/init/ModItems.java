@@ -1,6 +1,7 @@
 package com.bmt.kaleidoscope_chinesefood.init;
 
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
+import com.bmt.kaleidoscope_chinesefood.item.BambooSteamedEggBlockItem;
 import com.bmt.kaleidoscope_chinesefood.item.FirecrackerItem;
 import com.bmt.kaleidoscope_chinesefood.item.MooncakeItem;
 import com.bmt.kaleidoscope_chinesefood.item.MooncakeMoldItem;
@@ -10,14 +11,20 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.MobBucketItem;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluids;
 
 public class ModItems {
     public static Item RAW_STEAMED_RICE_ROLLS;
     public static Item RAW_MOONCAKE;
+    public static Item RAW_BAMBOO_STEAMED_EGG;
+    public static Item BAMBOO_STEAMED_EGG;
     public static Item SALT_BUCKET;
     public static Item SALT;
     public static Item SICHUAN_WONTON;
@@ -41,14 +48,12 @@ public class ModItems {
     public static Item BIG_PLATE_CHICKEN_NOODLES;
     public static Item TOMATO_EGG_NOODLES;
     public static Item PORK_CHILI_NOODLES;
-    public static Item FOUR_JOY_MEATBALLS;
     public static Item STUFFED_EGGPLANT;
     public static Item DRY_POT_POTATOES;
     public static Item DRY_POT_CHICKEN;
     public static Item DRY_POT_SPARE_RIBS;
     public static Item YANGZHOU_FRIED_RICE;
     public static Item LAMB_PILAF;
-    public static Item STEAMED_RICE_ROLLS;
     public static Item SAUERKRAUT_BEEF_NOODLES;
     public static Item SALTED_EGG;
     public static Item CENTURY_EGG;
@@ -56,6 +61,8 @@ public class ModItems {
     public static Item EGGPLANT;
     public static Item EGGPLANT_SEED;
     public static Item YELLOW_CROAKER;
+    public static Item YELLOW_CROAKER_BUCKET;
+    public static Item YELLOW_CROAKER_SPAWN_EGG;
     public static Item MOONCAKE;
     public static Item CORN_RISTRA;
     public static Item MOONCAKE_MOLD;
@@ -87,14 +94,12 @@ public class ModItems {
         BIG_PLATE_CHICKEN_NOODLES = register("big_plate_chicken_noodles", p -> new BowlFoodOnlyItem(p, ModFoods.BIG_PLATE_CHICKEN_NOODLES, ModFoods.BIG_PLATE_CHICKEN_NOODLES_C));
         TOMATO_EGG_NOODLES = register("tomato_egg_noodles", p -> new BowlFoodOnlyItem(p, ModFoods.TOMATO_EGG_NOODLES, ModFoods.TOMATO_EGG_NOODLES_C));
         PORK_CHILI_NOODLES = register("pork_chili_noodles", p -> new BowlFoodOnlyItem(p, ModFoods.PORK_CHILI_NOODLES, ModFoods.PORK_CHILI_NOODLES_C));
-        FOUR_JOY_MEATBALLS = register("four_joy_meatballs", p -> new BowlFoodOnlyItem(p, ModFoods.FOUR_JOY_MEATBALLS, ModFoods.FOUR_JOY_MEATBALLS_C));
         STUFFED_EGGPLANT = register("stuffed_eggplant", p -> new BowlFoodOnlyItem(p, ModFoods.STUFFED_EGGPLANT, ModFoods.STUFFED_EGGPLANT_C));
         DRY_POT_POTATOES = register("dry_pot_potatoes", p -> new BowlFoodOnlyItem(p, ModFoods.DRY_POT_POTATOES, ModFoods.DRY_POT_POTATOES_C));
         DRY_POT_CHICKEN = register("dry_pot_chicken", p -> new BowlFoodOnlyItem(p, ModFoods.DRY_POT_CHICKEN, ModFoods.DRY_POT_CHICKEN_C));
         DRY_POT_SPARE_RIBS = register("dry_pot_spare_ribs", p -> new BowlFoodOnlyItem(p, ModFoods.DRY_POT_SPARE_RIBS, ModFoods.DRY_POT_SPARE_RIBS_C));
         YANGZHOU_FRIED_RICE = register("yangzhou_fried_rice", p -> new BowlFoodOnlyItem(p, ModFoods.YANGZHOU_FRIED_RICE, ModFoods.YANGZHOU_FRIED_RICE_C));
         LAMB_PILAF = register("lamb_pilaf", p -> new BowlFoodOnlyItem(p, ModFoods.LAMB_PILAF, ModFoods.LAMB_PILAF_C));
-        STEAMED_RICE_ROLLS = register("steamed_rice_rolls", p -> new BowlFoodOnlyItem(p, ModFoods.STEAMED_RICE_ROLLS, ModFoods.STEAMED_RICE_ROLLS_C));
         SAUERKRAUT_BEEF_NOODLES = register("sauerkraut_beef_noodles", p -> new BowlFoodOnlyItem(p, ModFoods.SAUERKRAUT_BEEF_NOODLES, ModFoods.SAUERKRAUT_BEEF_NOODLES_C));
         SALTED_EGG = register("salted_egg", p -> new Item(p.food(ModFoods.SALTED_EGG, ModFoods.SALTED_EGG_C)));
         CENTURY_EGG = register("century_egg", p -> new Item(p.food(ModFoods.CENTURY_EGG, ModFoods.CENTURY_EGG_C)));
@@ -102,10 +107,26 @@ public class ModItems {
         EGGPLANT = register("eggplant", p -> new Item(p.food(ModFoods.EGGPLANT, ModFoods.EGGPLANT_C)));
         EGGPLANT_SEED = register("eggplant_seed", p -> new BlockItem(ModBlocks.EGGPLANT_CROP, p.useItemDescriptionPrefix()));
         YELLOW_CROAKER = register("yellow_croaker", p -> new Item(p.food(ModFoods.YELLOW_CROAKER, ModFoods.YELLOW_CROAKER_C)));
+        YELLOW_CROAKER_BUCKET = register(
+                "yellow_croaker_bucket",
+                p -> new MobBucketItem(ModEntities.YELLOW_CROAKER, Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, p.stacksTo(1))
+        );
+        YELLOW_CROAKER_SPAWN_EGG = register(
+                "yellow_croaker_spawn_egg",
+                p -> new SpawnEggItem(p.spawnEgg(ModEntities.YELLOW_CROAKER))
+        );
         MOONCAKE = register("mooncake", p -> new MooncakeItem(ModBlocks.MOONCAKE_BLOCK, p.food(ModFoods.MOONCAKE, ModFoods.MOONCAKE_C)));
         CORN_RISTRA = register("corn_ristra", p -> new BlockItem(ModBlocks.CORN_RISTRA, p.useBlockDescriptionPrefix()));
         MOONCAKE_MOLD = register("mooncake_mold", p -> new MooncakeMoldItem(p.stacksTo(1)));
         FIRECRACKER = register("firecracker", p -> new FirecrackerItem(p));
+        RAW_BAMBOO_STEAMED_EGG = register("raw_bamboo_steamed_egg", p -> new Item(p));
+        BAMBOO_STEAMED_EGG = register(
+                "bamboo_steamed_egg",
+                p -> new BambooSteamedEggBlockItem(
+                        ModBlocks.BAMBOO_STEAMED_EGG,
+                        p.useBlockDescriptionPrefix().food(ModFoods.BAMBOO_STEAMED_EGG, ModFoods.BAMBOO_STEAMED_EGG_C)
+                )
+        );
 
         // 注册方块物品（BlockItem 需在对应 Block 注册后单独注册）
         registerBlockItem("freezer", ModBlocks.FREEZER);

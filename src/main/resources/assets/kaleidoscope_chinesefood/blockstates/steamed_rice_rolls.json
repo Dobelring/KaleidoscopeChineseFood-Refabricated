@@ -1,0 +1,49 @@
+{
+  "variants": {
+    "bites=0,facing=east": {
+      "model": "kaleidoscope_chinesefood:block/food/steamed_rice_rolls/0",
+      "y": 90
+    },
+    "bites=0,facing=north": {
+      "model": "kaleidoscope_chinesefood:block/food/steamed_rice_rolls/0"
+    },
+    "bites=0,facing=south": {
+      "model": "kaleidoscope_chinesefood:block/food/steamed_rice_rolls/0",
+      "y": 180
+    },
+    "bites=0,facing=west": {
+      "model": "kaleidoscope_chinesefood:block/food/steamed_rice_rolls/0",
+      "y": 270
+    },
+    "bites=1,facing=east": {
+      "model": "kaleidoscope_chinesefood:block/food/steamed_rice_rolls/1",
+      "y": 90
+    },
+    "bites=1,facing=north": {
+      "model": "kaleidoscope_chinesefood:block/food/steamed_rice_rolls/1"
+    },
+    "bites=1,facing=south": {
+      "model": "kaleidoscope_chinesefood:block/food/steamed_rice_rolls/1",
+      "y": 180
+    },
+    "bites=1,facing=west": {
+      "model": "kaleidoscope_chinesefood:block/food/steamed_rice_rolls/1",
+      "y": 270
+    },
+    "bites=2,facing=east": {
+      "model": "kaleidoscope_chinesefood:block/food/steamed_rice_rolls/2",
+      "y": 90
+    },
+    "bites=2,facing=north": {
+      "model": "kaleidoscope_chinesefood:block/food/steamed_rice_rolls/2"
+    },
+    "bites=2,facing=south": {
+      "model": "kaleidoscope_chinesefood:block/food/steamed_rice_rolls/2",
+      "y": 180
+    },
+    "bites=2,facing=west": {
+      "model": "kaleidoscope_chinesefood:block/food/steamed_rice_rolls/2",
+      "y": 270
+    }
+  }
+}

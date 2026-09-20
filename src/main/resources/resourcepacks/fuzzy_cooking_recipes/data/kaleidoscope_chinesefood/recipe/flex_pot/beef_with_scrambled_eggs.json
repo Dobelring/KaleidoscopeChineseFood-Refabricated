@@ -2,7 +2,7 @@
   "type": "kaleidoscope_cookery:pot",
   "carrier": "minecraft:bowl",
   "ingredients": [
-    "minecraft:beef",
+    "#c:foods/raw_beef",
     "#c:eggs"
   ],
   "result": {

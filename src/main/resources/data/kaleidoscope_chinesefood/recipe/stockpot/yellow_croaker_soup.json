@@ -8,9 +8,9 @@
   "ingredients": [
     "kaleidoscope_chinesefood:yellow_croaker",
     "kaleidoscope_chinesefood:yellow_croaker",
-    "kaleidoscope_cookery:lettuce",
-    "kaleidoscope_cookery:lettuce",
-    "kaleidoscope_cookery:lettuce"
+    "#c:crops/lettuce",
+    "#c:crops/lettuce",
+    "#c:crops/lettuce"
   ],
   "result": {
     "count": 1,

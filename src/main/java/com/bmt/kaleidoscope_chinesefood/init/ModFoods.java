@@ -213,12 +213,20 @@ public class ModFoods {
    public static final Consumable PORK_CHILI_NOODLES_C = Consumables.defaultFood()
       .onConsume(new ApplyStatusEffectsConsumeEffect(List.of(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.SATIATED_SHIELD, 3600)), 1.0F))
       .build();
-   public static final FoodProperties FOUR_JOY_MEATBALLS = new Builder()
+   public static final FoodProperties FOUR_JOY_MEATBALLS_ITEM = new Builder()
       .nutrition(13)
-      .saturationModifier(0.61F)
+      .saturationModifier(0.64F)
       .alwaysEdible()
       .build();
-   public static final Consumable FOUR_JOY_MEATBALLS_C = Consumables.defaultFood()
+   public static final Consumable FOUR_JOY_MEATBALLS_ITEM_C = Consumables.defaultFood()
+      .onConsume(new ApplyStatusEffectsConsumeEffect(List.of(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.SATIATED_SHIELD, 3600)), 1.0F))
+      .build();
+   public static final FoodProperties FOUR_JOY_MEATBALLS_BLOCK = new Builder()
+      .nutrition(3)
+      .saturationModifier(0.64F)
+      .alwaysEdible()
+      .build();
+   public static final Consumable FOUR_JOY_MEATBALLS_BLOCK_C = Consumables.defaultFood()
       .onConsume(new ApplyStatusEffectsConsumeEffect(List.of(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.SATIATED_SHIELD, 3600)), 1.0F))
       .build();
    public static final FoodProperties STUFFED_EGGPLANT = new Builder()
@@ -269,12 +277,20 @@ public class ModFoods {
    public static final Consumable LAMB_PILAF_C = Consumables.defaultFood()
       .onConsume(new ApplyStatusEffectsConsumeEffect(List.of(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.WARMTH, 9600)), 1.0F))
       .build();
-   public static final FoodProperties STEAMED_RICE_ROLLS = new Builder()
+   public static final FoodProperties STEAMED_RICE_ROLLS_ITEM = new Builder()
       .nutrition(14)
       .saturationModifier(0.64F)
       .alwaysEdible()
       .build();
-   public static final Consumable STEAMED_RICE_ROLLS_C = Consumables.defaultFood()
+   public static final Consumable STEAMED_RICE_ROLLS_ITEM_C = Consumables.defaultFood()
+      .onConsume(new ApplyStatusEffectsConsumeEffect(List.of(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.VIGOR, 1800)), 1.0F))
+      .build();
+   public static final FoodProperties STEAMED_RICE_ROLLS_BLOCK = new Builder()
+      .nutrition(7)
+      .saturationModifier(0.64F)
+      .alwaysEdible()
+      .build();
+   public static final Consumable STEAMED_RICE_ROLLS_BLOCK_C = Consumables.defaultFood()
       .onConsume(new ApplyStatusEffectsConsumeEffect(List.of(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.VIGOR, 1800)), 1.0F))
       .build();
    public static final FoodProperties RED_RICE_ROLL_ITEM = new Builder()
@@ -351,6 +367,8 @@ public class ModFoods {
    public static final Consumable YELLOW_CROAKER_C = Consumables.defaultFood().build();
    public static final FoodProperties MOONCAKE = new Builder().nutrition(2).saturationModifier(0.4F).alwaysEdible().build();
    public static final Consumable MOONCAKE_C = Consumables.defaultFood().build();
+   public static final FoodProperties BAMBOO_STEAMED_EGG = new Builder().nutrition(6).saturationModifier(0.61F).alwaysEdible().build();
+   public static final Consumable BAMBOO_STEAMED_EGG_C = Consumables.defaultFood().build();
    public static final FoodProperties CORN = new Builder().nutrition(2).saturationModifier(0.0F).alwaysEdible().build();
    public static final Consumable CORN_C = Consumables.defaultFood().build();
    public static final FoodProperties EGGPLANT = new Builder().nutrition(2).saturationModifier(0.5F).alwaysEdible().build();
