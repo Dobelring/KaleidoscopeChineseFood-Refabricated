@@ -1,16 +1,17 @@
 {
-  "type":"minecraft:crafting_shaped",
-  "pattern":[
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
     "III",
     "ICI",
     "ICI"
   ],
-  "key":{
-    "I":"minecraft:iron_ingot",
-    "C":"#c:chests"
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "C": "#c:chests"
   },
-  "result":{
-    "id":"kaleidoscope_chinesefood:freezer",
-    "count":1
-  }
+  "result": {
+    "id": "kaleidoscope_chinesefood:freezer",
+    "count": 1
+  },
+  "category": "misc"
 }

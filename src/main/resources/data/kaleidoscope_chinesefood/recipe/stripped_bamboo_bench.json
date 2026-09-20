@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "T  ",
+    "SSS",
+    "F F"
+  ],
+  "key": {
+    "F": "minecraft:bamboo_planks",
+    "T": "minecraft:bamboo_fence",
+    "S": "minecraft:bamboo_slab"
+  },
+  "result": {
+    "id": "kaleidoscope_cookery:stripped_bamboo_bench"
+  }
+}

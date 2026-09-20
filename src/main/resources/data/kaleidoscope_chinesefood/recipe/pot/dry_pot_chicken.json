@@ -5,8 +5,8 @@
     "#c:foods/raw_chicken",
     "#c:foods/raw_chicken",
     "#c:foods/raw_chicken",
-    "minecraft:potato",
-    "#c:crops/chilipepper"
+    "kaleidoscope_cookery:green_chili",
+    "kaleidoscope_cookery:red_chili"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:dry_pot_chicken"

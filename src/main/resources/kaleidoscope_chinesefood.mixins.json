@@ -5,15 +5,18 @@
   "mixins": [
     "EntityMixin",
     "PlayerEntityMixin",
-    "LivingEntityMixin",
-    "PlayerTickMixin",
     "DoorBlockMixin",
     "TrapDoorBlockMixin",
+    "ItemMixin",
+    "PlateBlockMixin",
     "accessor.TrapDoorBlockAccessor",
-    "accessor.SpawnPlacementsInvoker"
+    "accessor.SpawnPlacementsInvoker",
+    "accessor.LootTableAccessor",
+    "accessor.LootPoolAccessor"
   ],
   "client": [
-    "FogRendererMixin"
+    "FogRendererMixin",
+    "accessor.BlockModelRenderStateAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -30,6 +30,7 @@ public class ModCreativeModeTabs {
                             output.accept(ModItems.RAW_STEAMED_RICE_ROLLS);
                             output.accept(ModItems.RAW_BAMBOO_STEAMED_EGG);
                             output.accept(ModItems.RAW_MOONCAKE);
+                            output.accept(ModItems.DIANHONG_TEA_BAG);
                             output.accept(ModItems.YELLOW_CROAKER_BUCKET);
                             output.accept(ModItems.SALT_BUCKET);
                             output.accept(ModItems.SALT);
@@ -78,7 +79,7 @@ public class ModCreativeModeTabs {
                                     output.accept(item);
                                 }
                             });
-                            acceptTeaIfRegistered(output, ModTea.LAPSANG);
+                            acceptTeaIfRegistered(output, ModTea.DIANHONG_TEA);
                             acceptTeaIfRegistered(output, ModTea.HK_MILK_TEA);
                             PlateRegistry.PLATE_DATA_MAP.forEach((resourceLocation, plateData) -> {
                                 if (resourceLocation.getNamespace().equals(KaleidoscopeChineseFood.MODID)) {
@@ -100,11 +101,14 @@ public class ModCreativeModeTabs {
                             output.accept(ModBlocks.PICKLE_JAR);
                             output.accept(ModItems.FIRECRACKER);
                             output.accept(ModBlocks.FU_CHARACTER);
-                            output.accept(ModBlocks.COUPLET_BLOCK);
+                            output.accept(ModBlocks.COUPLET);
                             output.accept(ModBlocks.HORIZONTAL_BANNER);
                             output.accept(ModBlocks.KONGMING_LANTERN);
                             output.accept(ModItems.EGGPLANT_SEED);
-                            output.accept(ModItems.YELLOW_CROAKER_SPAWN_EGG);
+                            // 竹家具注册在 cookery 命名空间（见 ModCookeryBlocks）
+                            output.accept(ModCookeryBlocks.STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE_ITEM);
+                            output.accept(ModCookeryBlocks.STRIPPED_BAMBOO_BENCH_ITEM);
+                            // 黄鱼刷怪蛋进原版刷怪蛋页（见 CreativeTabEvents）
                             // 贡献者玩偶（1.21.11 无 doll 模组，代注册进本模组物品栏）
                             KaleidoscopeDollIntegration.DOLL_BLOCKS.forEach(block -> output.accept(block));
                             if (!FabricLoader.getInstance().isModLoaded("kaleidoscope_twilight")) {

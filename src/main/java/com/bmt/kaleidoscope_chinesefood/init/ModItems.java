@@ -6,6 +6,7 @@ import com.bmt.kaleidoscope_chinesefood.item.FirecrackerItem;
 import com.bmt.kaleidoscope_chinesefood.item.MooncakeItem;
 import com.bmt.kaleidoscope_chinesefood.item.MooncakeMoldItem;
 import com.github.ysbbbbbb.kaleidoscopecookery.item.BowlFoodOnlyItem;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.FoodWithEffectsItem;
 import java.util.function.Function;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -67,6 +68,7 @@ public class ModItems {
     public static Item CORN_RISTRA;
     public static Item MOONCAKE_MOLD;
     public static Item FIRECRACKER;
+    public static Item DIANHONG_TEA_BAG;
 
     public static void register() {
         RAW_STEAMED_RICE_ROLLS = register("raw_steamed_rice_rolls", p -> new Item(p));
@@ -101,9 +103,10 @@ public class ModItems {
         YANGZHOU_FRIED_RICE = register("yangzhou_fried_rice", p -> new BowlFoodOnlyItem(p, ModFoods.YANGZHOU_FRIED_RICE, ModFoods.YANGZHOU_FRIED_RICE_C));
         LAMB_PILAF = register("lamb_pilaf", p -> new BowlFoodOnlyItem(p, ModFoods.LAMB_PILAF, ModFoods.LAMB_PILAF_C));
         SAUERKRAUT_BEEF_NOODLES = register("sauerkraut_beef_noodles", p -> new BowlFoodOnlyItem(p, ModFoods.SAUERKRAUT_BEEF_NOODLES, ModFoods.SAUERKRAUT_BEEF_NOODLES_C));
-        SALTED_EGG = register("salted_egg", p -> new Item(p.food(ModFoods.SALTED_EGG, ModFoods.SALTED_EGG_C)));
-        CENTURY_EGG = register("century_egg", p -> new Item(p.food(ModFoods.CENTURY_EGG, ModFoods.CENTURY_EGG_C)));
-        CHINESE_SAUERKRAUT = register("chinese_sauerkraut", p -> new Item(p.food(ModFoods.CHINESE_SAUERKRAUT, ModFoods.CHINESE_SAUERKRAUT_C)));
+        // 咸鸭蛋/皮蛋/酸菜走 cookery 的 FoodWithEffectsItem：带品质系统与 tooltip.<ns>.<path>.maxim 提示
+        SALTED_EGG = register("salted_egg", p -> new FoodWithEffectsItem(p, ModFoods.SALTED_EGG, ModFoods.SALTED_EGG_C));
+        CENTURY_EGG = register("century_egg", p -> new FoodWithEffectsItem(p, ModFoods.CENTURY_EGG, ModFoods.CENTURY_EGG_C));
+        CHINESE_SAUERKRAUT = register("chinese_sauerkraut", p -> new FoodWithEffectsItem(p, ModFoods.CHINESE_SAUERKRAUT, ModFoods.CHINESE_SAUERKRAUT_C));
         EGGPLANT = register("eggplant", p -> new Item(p.food(ModFoods.EGGPLANT, ModFoods.EGGPLANT_C)));
         EGGPLANT_SEED = register("eggplant_seed", p -> new BlockItem(ModBlocks.EGGPLANT_CROP, p.useItemDescriptionPrefix()));
         YELLOW_CROAKER = register("yellow_croaker", p -> new Item(p.food(ModFoods.YELLOW_CROAKER, ModFoods.YELLOW_CROAKER_C)));
@@ -120,6 +123,7 @@ public class ModItems {
         MOONCAKE_MOLD = register("mooncake_mold", p -> new MooncakeMoldItem(p.stacksTo(1)));
         FIRECRACKER = register("firecracker", p -> new FirecrackerItem(p));
         RAW_BAMBOO_STEAMED_EGG = register("raw_bamboo_steamed_egg", p -> new Item(p));
+        DIANHONG_TEA_BAG = register("dianhong_tea_bag", p -> new Item(p));
         BAMBOO_STEAMED_EGG = register(
                 "bamboo_steamed_egg",
                 p -> new BambooSteamedEggBlockItem(
@@ -138,7 +142,7 @@ public class ModItems {
         registerBlockItem("pickle_jar", ModBlocks.PICKLE_JAR);
         registerBlockItem("bowl_stack", ModBlocks.BOWL_STACK);
         registerBlockItem("fu_character", ModBlocks.FU_CHARACTER);
-        registerBlockItem("couplet_block", ModBlocks.COUPLET_BLOCK);
+        registerBlockItem("couplet", ModBlocks.COUPLET);
         registerBlockItem("horizontal_banner", ModBlocks.HORIZONTAL_BANNER);
         // MOONCAKE_BLOCK 不注册独立 BlockItem：原版仅 mooncake 一个物品（MooncakeItem 指向该方块），
         // 多注册会让 pick-block 拿到不可食用的方块物品
