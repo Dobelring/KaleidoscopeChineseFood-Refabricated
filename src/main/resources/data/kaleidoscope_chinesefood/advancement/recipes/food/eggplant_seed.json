@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:eggplant_seed"
+        "recipes": "kaleidoscope_chinesefood:eggplant_seed"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

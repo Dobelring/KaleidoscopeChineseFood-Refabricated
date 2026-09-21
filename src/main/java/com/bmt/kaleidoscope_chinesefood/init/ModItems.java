@@ -20,6 +20,7 @@ import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 public class ModItems {
     public static Item RAW_STEAMED_RICE_ROLLS;
@@ -107,8 +108,10 @@ public class ModItems {
         SALTED_EGG = register("salted_egg", p -> new FoodWithEffectsItem(p, ModFoods.SALTED_EGG, ModFoods.SALTED_EGG_C));
         CENTURY_EGG = register("century_egg", p -> new FoodWithEffectsItem(p, ModFoods.CENTURY_EGG, ModFoods.CENTURY_EGG_C));
         CHINESE_SAUERKRAUT = register("chinese_sauerkraut", p -> new FoodWithEffectsItem(p, ModFoods.CHINESE_SAUERKRAUT, ModFoods.CHINESE_SAUERKRAUT_C));
-        EGGPLANT = register("eggplant", p -> new Item(p.food(ModFoods.EGGPLANT, ModFoods.EGGPLANT_C)));
-        EGGPLANT_SEED = register("eggplant_seed", p -> new BlockItem(ModBlocks.EGGPLANT_CROP, p.useItemDescriptionPrefix()));
+        EGGPLANT = register("eggplant", p -> new Item(p.food(ModFoods.EGGPLANT, ModFoods.EGGPLANT_C)
+                .compostable(ContextIntProviders.COMPOSTABLE_MEDIUM)));
+        EGGPLANT_SEED = register("eggplant_seed", p -> new BlockItem(ModBlocks.EGGPLANT_CROP,
+                p.useItemDescriptionPrefix().compostable(ContextIntProviders.COMPOSTABLE_LOW)));
         YELLOW_CROAKER = register("yellow_croaker", p -> new Item(p.food(ModFoods.YELLOW_CROAKER, ModFoods.YELLOW_CROAKER_C)));
         YELLOW_CROAKER_BUCKET = register(
                 "yellow_croaker_bucket",

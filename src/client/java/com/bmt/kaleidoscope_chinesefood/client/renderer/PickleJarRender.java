@@ -76,8 +76,8 @@ public class PickleJarRender implements BlockEntityRenderer<PickleJarBlockEntity
          if (!piece.item().isEmpty()) {
             poseStack.pushPose();
             poseStack.translate(piece.x(), piece.y(), piece.z());
-            poseStack.mulPose(Axis.YP.rotationDegrees(piece.yRot()));
-            poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
+            poseStack.rotateDegrees(Axis.YP, piece.yRot());
+            poseStack.rotateDegrees(Axis.XP, 90.0F);
             poseStack.scale(piece.scale(), piece.scale(), piece.scale());
             piece.item().submit(poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();

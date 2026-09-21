@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:stripped_bamboo_bench"
+        "recipes": "kaleidoscope_chinesefood:stripped_bamboo_bench"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

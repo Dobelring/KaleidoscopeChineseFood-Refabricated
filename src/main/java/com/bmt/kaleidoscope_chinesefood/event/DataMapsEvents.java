@@ -2,7 +2,6 @@ package com.bmt.kaleidoscope_chinesefood.event;
 
 import com.bmt.kaleidoscope_chinesefood.init.ModItems;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
-import net.fabricmc.fabric.api.registry.CompostableRegistry;
 import net.minecraft.advancements.predicates.ItemPredicate;
 import net.minecraft.advancements.predicates.entity.EntityEquipmentPredicate;
 import net.minecraft.advancements.predicates.entity.EntityPredicate;
@@ -20,7 +19,7 @@ import net.minecraft.world.level.storage.loot.predicates.InvertedLootItemConditi
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 /**
  * Fabric replacements for the NeoForge data maps / global loot modifiers:
@@ -35,15 +34,13 @@ public class DataMapsEvents {
     private static final Identifier TALL_GRASS = Identifier.withDefaultNamespace("blocks/tall_grass");
 
     public static void register() {
-        CompostableRegistry.INSTANCE.add(ModItems.EGGPLANT, 0.65F);
-        CompostableRegistry.INSTANCE.add(ModItems.EGGPLANT_SEED, 0.3F);
 
         LootTableEvents.MODIFY.register((key, tableBuilder, source, conditions) -> {
             if (source.isBuiltin()) {
                 Identifier loc = key.identifier();
                 if (SHORT_GRASS.equals(loc) || TALL_GRASS.equals(loc)) {
                     tableBuilder.withPool(LootPool.lootPool()
-                            .setRolls(ConstantValue.exactly(1.0F))
+                            .setRolls(ContextIntProviders.exactly(1))
                             // 15% 概率
                             .when(LootItemRandomChanceCondition.randomChance(0.15F))
                             // 剪刀剪下的草不掉种子（原版 inverted match_tool shears）

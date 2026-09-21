@@ -57,7 +57,7 @@ public final class KaleidoscopeDollIntegration {
                             .mapColor(MapColor.COLOR_LIGHT_GRAY)
                             .strength(0.0F, 10.0F)
                             .sound(SoundType.WOOL)
-                            .pushReaction(PushReaction.DESTROY)
+                            .pushReaction(PushReaction.POPPED)
                             .noOcclusion()));
             DOLL_BLOCKS.add(block);
             Item item = new DollItem(block, entry.getValue(),

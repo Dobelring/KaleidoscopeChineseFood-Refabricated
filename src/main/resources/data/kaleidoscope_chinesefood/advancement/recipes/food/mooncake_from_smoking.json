@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:smoking/mooncake"
+        "recipes": "kaleidoscope_chinesefood:smoking/mooncake"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

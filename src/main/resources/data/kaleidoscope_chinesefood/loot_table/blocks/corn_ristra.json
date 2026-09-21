@@ -2,43 +2,39 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
+      "bonus_rolls": 0,
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
       "entries": [
         {
           "type": "minecraft:alternatives",
           "children": [
             {
               "type": "minecraft:item",
-              "conditions": [
-                {
-                  "block": "kaleidoscope_chinesefood:corn_ristra",
-                  "condition": "minecraft:block_state_property",
-                  "properties": {
-                    "sheared": "true"
-                  }
+              "condition": {
+                "blocks": "kaleidoscope_chinesefood:corn_ristra",
+                "type": "minecraft:match_block",
+                "state": {
+                  "sheared": "true"
                 }
-              ],
-              "functions": [
+              },
+              "modifier": [
                 {
                   "add": false,
-                  "count": 3.0,
-                  "function": "minecraft:set_count"
+                  "count": 3,
+                  "type": "minecraft:set_count"
                 }
               ],
               "name": "kaleidoscope_cookery:red_chili"
             },
             {
               "type": "minecraft:item",
-              "functions": [
+              "modifier": [
                 {
                   "add": false,
-                  "count": 1.0,
-                  "function": "minecraft:set_count"
+                  "count": 1,
+                  "type": "minecraft:set_count"
                 }
               ],
               "name": "kaleidoscope_chinesefood:corn_ristra"
@@ -46,7 +42,7 @@
           ]
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "kaleidoscope_chinesefood:blocks/corn_ristra"

@@ -2,7 +2,6 @@ package com.bmt.kaleidoscope_chinesefood.block;
 
 import com.bmt.kaleidoscope_chinesefood.block.entity.FreezerBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -45,7 +44,6 @@ public class FreezerBlock extends BaseEntityBlock {
    public static final BooleanProperty UPPER_OPEN = BooleanProperty.create("upper_open");
    public static final BooleanProperty LOWER_OPEN = BooleanProperty.create("lower_open");
    private static final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0);
-   public static final MapCodec<FreezerBlock> CODEC = simpleCodec(FreezerBlock::new);
 
    public FreezerBlock(Properties properties) {
       super(properties);
@@ -56,12 +54,7 @@ public class FreezerBlock extends BaseEntityBlock {
       );
    }
 
-   @NotNull
-   protected MapCodec<? extends BaseEntityBlock> codec() {
-      return CODEC;
-   }
-
-   protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+   @NotNull   protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
       builder.add(new Property[]{FACING, TOP, UPPER_OPEN, LOWER_OPEN});
    }
 

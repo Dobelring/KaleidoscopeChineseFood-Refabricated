@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:raw_steamed_rice_rolls"
+        "recipes": "kaleidoscope_chinesefood:raw_steamed_rice_rolls"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

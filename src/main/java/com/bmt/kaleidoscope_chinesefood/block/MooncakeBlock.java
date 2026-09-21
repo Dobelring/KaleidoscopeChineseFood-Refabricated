@@ -25,6 +25,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import net.minecraft.util.Prediction;
 
 public class MooncakeBlock extends Block {
    public static final IntegerProperty STACK_COUNT = IntegerProperty.create("stack_count", 0, 4);
@@ -97,7 +98,7 @@ public class MooncakeBlock extends Block {
 
             level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 0.9F, 1.0F);
             if (!player.getInventory().add(mooncake)) {
-               player.drop(mooncake, false);
+               player.drop(mooncake, false, Prediction.PREDICTED);
             }
          }
 

@@ -74,7 +74,7 @@ public class CoupletBlockEntityRender implements BlockEntityRenderer<CoupletBloc
 
       poseStack.pushPose();
       poseStack.translate(0.5, 0.5, 0.5);
-      poseStack.mulPose(Axis.YP.rotationDegrees(-state.facing.toYRot()));
+      poseStack.rotateDegrees(Axis.YP, -state.facing.toYRot());
       poseStack.translate(0.0, 0.0, -0.48);
       float scale = ClientConfig.COUPLET_TEXT_SCALE;
       poseStack.scale(scale, -scale, scale);

@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:golden_apple_platter"
+        "recipes": "kaleidoscope_chinesefood:golden_apple_platter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

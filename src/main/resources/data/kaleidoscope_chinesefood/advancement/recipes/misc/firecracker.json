@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:firecracker"
+        "recipes": "kaleidoscope_chinesefood:firecracker"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

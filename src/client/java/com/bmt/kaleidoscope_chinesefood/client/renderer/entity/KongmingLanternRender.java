@@ -38,7 +38,7 @@ public class KongmingLanternRender extends EntityRenderer<KongmingLanternEntity,
    public void submit(KongmingLanternRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
       poseStack.pushPose();
       poseStack.translate(-0.5, 0.0, -0.5);
-      poseStack.mulPose(Axis.YP.rotationDegrees(state.yRot));
+      poseStack.rotateDegrees(Axis.YP, state.yRot);
       // 常亮：光源值取满；由 BlockModelRenderState 按模型层自选 sheet 提交
       if (!state.model.isEmpty()) {
          state.model.submit(poseStack, submitNodeCollector, 15728880, OverlayTexture.NO_OVERLAY, 0);

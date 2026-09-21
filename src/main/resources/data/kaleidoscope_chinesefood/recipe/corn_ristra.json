@@ -12,5 +12,14 @@
     "id": "kaleidoscope_chinesefood:corn_ristra",
     "count": 1
   },
-  "category": "misc"
+  "category": "misc",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:tags_populated",
+      "registry": "minecraft:item",
+      "values": [
+        "c:crops/corn"
+      ]
+    }
+  ]
 }

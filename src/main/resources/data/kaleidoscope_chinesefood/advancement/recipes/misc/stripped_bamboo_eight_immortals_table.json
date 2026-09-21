@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:stripped_bamboo_eight_immortals_table"
+        "recipes": "kaleidoscope_chinesefood:stripped_bamboo_eight_immortals_table"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

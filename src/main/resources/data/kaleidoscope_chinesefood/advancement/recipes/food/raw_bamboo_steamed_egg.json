@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:raw_bamboo_steamed_egg"
+        "recipes": "kaleidoscope_chinesefood:raw_bamboo_steamed_egg"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

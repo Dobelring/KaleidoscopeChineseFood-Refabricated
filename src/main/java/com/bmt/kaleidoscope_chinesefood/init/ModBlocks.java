@@ -52,7 +52,7 @@ public class ModBlocks {
                 "corn_ristra",
                 p -> new CornBlock(
                         p.mapColor(MapColor.COLOR_BROWN).noCollision().instabreak().sound(SoundType.GRASS)
-                                .pushReaction(PushReaction.DESTROY)
+                                .pushReaction(PushReaction.POPPED)
                 )
         );
         FREEZER = registerFreezer("freezer");
@@ -94,7 +94,7 @@ public class ModBlocks {
                 "eggplant_crop",
                 p -> new EggplantCropBlock(
                         p.mapColor(MapColor.PLANT).noCollision().randomTicks().instabreak()
-                                .sound(SoundType.CROP).pushReaction(PushReaction.DESTROY),
+                                .sound(SoundType.CROP).pushReaction(PushReaction.POPPED),
                         () -> ModItems.EGGPLANT,
                         () -> ModItems.EGGPLANT_SEED
                 )

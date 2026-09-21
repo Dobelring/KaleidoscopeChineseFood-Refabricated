@@ -2,7 +2,6 @@ package com.bmt.kaleidoscope_chinesefood.block;
 
 import com.bmt.kaleidoscope_chinesefood.block.entity.HorizontalBannerBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.network.TextEditOpenS2CPayload;
-import com.mojang.serialization.MapCodec;
 import java.util.ArrayList;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
@@ -60,7 +59,6 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
    public static final EnumProperty<HorizontalBannerBlock.BannerPart> PART = EnumProperty.create("part", HorizontalBannerBlock.BannerPart.class);
    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
    public static final int MAX_BANNER_WIDTH = 3;
-   private static final MapCodec<HorizontalBannerBlock> CODEC = simpleCodec(HorizontalBannerBlock::new);
    private static final VoxelShape[] SHAPES = new VoxelShape[4];
 
    public HorizontalBannerBlock(Properties properties) {
@@ -71,11 +69,6 @@ public class HorizontalBannerBlock extends BaseEntityBlock implements SimpleWate
             .setValue(WATERLOGGED, false)
       );
    }
-
-   protected MapCodec<? extends BaseEntityBlock> codec() {
-      return CODEC;
-   }
-
    @NotNull
    public RenderShape getRenderShape(@NotNull BlockState state) {
       return RenderShape.MODEL;

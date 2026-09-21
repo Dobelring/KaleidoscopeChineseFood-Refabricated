@@ -1,6 +1,5 @@
 package com.bmt.kaleidoscope_chinesefood.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -54,12 +53,6 @@ public class DollBlock extends HorizontalDirectionalBlock implements SimpleWater
                 .setValue(FACING, Direction.SOUTH)
                 .setValue(WATERLOGGED, false));
     }
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return simpleCodec(DollBlock::new);
-    }
-
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, WATERLOGGED);

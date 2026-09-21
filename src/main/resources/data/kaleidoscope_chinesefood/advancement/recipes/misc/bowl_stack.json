@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:bowl_stack"
+        "recipes": "kaleidoscope_chinesefood:bowl_stack"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:couplet"
+        "recipes": "kaleidoscope_chinesefood:couplet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

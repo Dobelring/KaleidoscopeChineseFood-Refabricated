@@ -31,6 +31,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import net.minecraft.util.Prediction;
 
 public class SaltBlock extends Block {
    public static final IntegerProperty STACK_COUNT = IntegerProperty.create("stack_count", 0, 3);
@@ -78,7 +79,7 @@ public class SaltBlock extends Block {
             }
 
             if (!player.getInventory().add(salt)) {
-               player.drop(salt, false);
+               player.drop(salt, false, Prediction.PREDICTED);
             }
 
             level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 0.9F, 1.0F);

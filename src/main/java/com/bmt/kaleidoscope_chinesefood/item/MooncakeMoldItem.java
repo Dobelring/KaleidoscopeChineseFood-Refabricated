@@ -14,6 +14,7 @@ import net.minecraft.world.item.Item.Properties;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import net.minecraft.util.Prediction;
 
 public class MooncakeMoldItem extends Item {
    private static final int CRAFTING_TIME = 20;
@@ -45,7 +46,7 @@ public class MooncakeMoldItem extends Item {
             doughStack.shrink(1);
             ItemStack rawMooncake = new ItemStack(ModItems.RAW_MOONCAKE);
             if (!player.getInventory().add(rawMooncake)) {
-               player.drop(rawMooncake, false);
+               player.drop(rawMooncake, false, Prediction.PREDICTED);
             }
 
             level.playSound(null, player.blockPosition(), SoundEvents.WOOD_PLACE, SoundSource.PLAYERS, 1.0F, 1.2F);

@@ -39,10 +39,10 @@ public class YellowCroakerRenderer extends MobRenderer<YellowCroaker, LivingEnti
     protected void setupRotations(LivingEntityRenderState state, PoseStack poseStack, float bodyRot, float entityScale) {
         super.setupRotations(state, poseStack, bodyRot, entityScale);
         float bodyZRot = 4.3F * Mth.sin(0.6F * state.ageInTicks);
-        poseStack.mulPose(Axis.YP.rotationDegrees(bodyZRot));
+        poseStack.rotateDegrees(Axis.YP, bodyZRot);
         if (!state.isInWater) {
             poseStack.translate(0.1F, 0.1F, -0.1F);
-            poseStack.mulPose(Axis.ZP.rotationDegrees(90.0F));
+            poseStack.rotateDegrees(Axis.ZP, 90.0F);
         }
     }
 }

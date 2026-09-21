@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:freezer"
+        "recipes": "kaleidoscope_chinesefood:freezer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

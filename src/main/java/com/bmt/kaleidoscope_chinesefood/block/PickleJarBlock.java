@@ -3,7 +3,6 @@ package com.bmt.kaleidoscope_chinesefood.block;
 import com.bmt.kaleidoscope_chinesefood.api.blockentity.IPickleJar;
 import com.bmt.kaleidoscope_chinesefood.block.entity.PickleJarBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -50,7 +49,6 @@ public class PickleJarBlock extends BaseEntityBlock implements SimpleWaterlogged
    private static final VoxelShape JAR_BODY = Block.box(3.0, 0.0, 3.0, 13.0, 10.0, 13.0);
    private static final VoxelShape JAR_TOP = Block.box(5.0, 10.0, 5.0, 11.0, 13.0, 11.0);
    private static final VoxelShape SHAPE = Shapes.or(JAR_BODY, JAR_TOP);
-   private static final MapCodec<PickleJarBlock> CODEC = simpleCodec(PickleJarBlock::new);
 
    public PickleJarBlock(Properties properties) {
       super(properties);
@@ -60,11 +58,6 @@ public class PickleJarBlock extends BaseEntityBlock implements SimpleWaterlogged
             .setValue(WATERLOGGED, false)
       );
    }
-
-   protected MapCodec<? extends BaseEntityBlock> codec() {
-      return CODEC;
-   }
-
    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
       if (level.isClientSide()) {
          return InteractionResult.SUCCESS;

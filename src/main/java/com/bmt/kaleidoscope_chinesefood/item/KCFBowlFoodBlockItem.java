@@ -40,6 +40,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.util.Prediction;
 
 /**
  * 碗装食物方块物品，行为对齐 cookery 的 BowlFoodBlockItem，但 Item id 使用本模组命名空间。
@@ -83,7 +84,7 @@ public class KCFBowlFoodBlockItem extends BlockItem {
                     return;
                 }
                 if (entity instanceof Player player) {
-                    player.getInventory().placeItemBackInInventory(drop);
+                    player.getInventory().placeItemBackInInventory(drop, Prediction.PREDICTED);
                 } else {
                     ItemEntity itemEntity = new ItemEntity(level, entity.getX(), entity.getY(), entity.getZ(), drop);
                     level.addFreshEntity(itemEntity);

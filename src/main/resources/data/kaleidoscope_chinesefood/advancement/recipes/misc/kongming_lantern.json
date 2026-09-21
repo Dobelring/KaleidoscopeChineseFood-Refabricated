@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:kongming_lantern"
+        "recipes": "kaleidoscope_chinesefood:kongming_lantern"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

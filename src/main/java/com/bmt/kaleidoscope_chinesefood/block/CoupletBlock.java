@@ -3,7 +3,6 @@ package com.bmt.kaleidoscope_chinesefood.block;
 import com.bmt.kaleidoscope_chinesefood.block.entity.CoupletBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.block.entity.IWallTextBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.network.TextEditOpenS2CPayload;
-import com.mojang.serialization.MapCodec;
 import java.util.ArrayList;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
@@ -62,7 +61,6 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
    public static final EnumProperty<CoupletBlock.CoupletPart> PART = EnumProperty.create("part", CoupletBlock.CoupletPart.class);
    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
    public static final int MAX_COUPLET_HEIGHT = 3;
-   private static final MapCodec<CoupletBlock> CODEC = simpleCodec(CoupletBlock::new);
    private static final VoxelShape[] SHAPES = new VoxelShape[4];
 
    public CoupletBlock(Properties properties) {
@@ -73,11 +71,6 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
             .setValue(WATERLOGGED, false)
       );
    }
-
-   protected MapCodec<? extends BaseEntityBlock> codec() {
-      return CODEC;
-   }
-
    @NotNull
    public RenderShape getRenderShape(@NotNull BlockState state) {
       return RenderShape.MODEL;

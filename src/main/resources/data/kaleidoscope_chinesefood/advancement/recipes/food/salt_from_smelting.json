@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:smelting/salt"
+        "recipes": "kaleidoscope_chinesefood:smelting/salt"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

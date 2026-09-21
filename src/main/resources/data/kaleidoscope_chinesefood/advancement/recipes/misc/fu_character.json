@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:fu_character"
+        "recipes": "kaleidoscope_chinesefood:fu_character"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

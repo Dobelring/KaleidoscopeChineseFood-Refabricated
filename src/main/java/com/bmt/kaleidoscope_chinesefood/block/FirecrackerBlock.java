@@ -3,7 +3,6 @@ package com.bmt.kaleidoscope_chinesefood.block;
 import com.bmt.kaleidoscope_chinesefood.block.entity.FirecrackerBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.bmt.kaleidoscope_chinesefood.init.ModItems;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Plane;
@@ -42,17 +41,11 @@ import org.jetbrains.annotations.Nullable;
 public class FirecrackerBlock extends BaseEntityBlock {
    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
    protected static final VoxelShape SHAPE = Block.box(6.0, 0.0, 6.0, 10.0, 8.0, 10.0);
-   public static final MapCodec<FirecrackerBlock> CODEC = simpleCodec(FirecrackerBlock::new);
 
    public FirecrackerBlock(Properties pProperties) {
       super(pProperties);
       this.registerDefaultState((BlockState)((BlockState)this.stateDefinition.any()).setValue(FACING, Direction.NORTH));
    }
-
-   protected MapCodec<? extends BaseEntityBlock> codec() {
-      return CODEC;
-   }
-
    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
       return SHAPE;
    }

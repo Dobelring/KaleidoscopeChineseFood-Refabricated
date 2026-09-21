@@ -34,7 +34,10 @@ dependencies {
 
 	// 26.1 起 Minecraft 无混淆，loom 自动识别 mod jar，modImplementation 等价于普通依赖
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	implementation "maven.modrinth:kaleidoscope-cookery-refabricated:${project.kaleidoscope_cookery_version}-fabric+mc${project.minecraft_version}"
+	// cookery 26.3 尚未发布到 modrinth maven，改用本地构建产物。
+	// 生成方式：在 KaleidoscopeCookery-Refabricated-26.3-fabric 里 ./gradlew build，
+	// 把 build/libs/kaleidoscope_cookery-<版本>.jar 拷到本工程的 libs/ 下。
+	implementation files("libs/kaleidoscope_cookery-${project.kaleidoscope_cookery_version}.jar")
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 	implementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forge_config_api_version}"
 

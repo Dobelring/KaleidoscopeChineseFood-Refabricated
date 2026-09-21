@@ -98,7 +98,7 @@ public class ModFoodBiteRegistry {
          .instabreak()
          .mapColor(MapColor.WOOD)
          .sound(SoundType.WOOD)
-         .pushReaction(PushReaction.DESTROY)
+         .pushReaction(PushReaction.POPPED)
          .noOcclusion()
          .setId(ResourceKey.create(Registries.BLOCK, id));
 

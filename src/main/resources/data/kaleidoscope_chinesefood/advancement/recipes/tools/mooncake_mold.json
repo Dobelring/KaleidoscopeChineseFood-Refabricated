@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:mooncake_mold"
+        "recipes": "kaleidoscope_chinesefood:mooncake_mold"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

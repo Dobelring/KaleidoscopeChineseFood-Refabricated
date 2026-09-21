@@ -1,7 +1,6 @@
 package com.bmt.kaleidoscope_chinesefood.block;
 
 import com.bmt.kaleidoscope_chinesefood.mixins.accessor.TrapDoorBlockAccessor;
-import com.mojang.serialization.MapCodec;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -45,9 +44,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.item.component.SwingAnimation;
 
 public class FuCharacterBlock extends HorizontalDirectionalBlock implements SimpleWaterloggedBlock {
-   public static final MapCodec<FuCharacterBlock> CODEC = simpleCodec(FuCharacterBlock::new);
    public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
    public static final EnumProperty<FuCharacterBlock.FuState> FU_STATE = EnumProperty.create("fu_state", FuCharacterBlock.FuState.class);
@@ -79,11 +78,6 @@ public class FuCharacterBlock extends HorizontalDirectionalBlock implements Simp
             .setValue(FU_STATE, FuCharacterBlock.FuState.NORMAL)
       );
    }
-
-   protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-      return CODEC;
-   }
-
    protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
       builder.add(new Property[]{FACING, WATERLOGGED, FU_STATE});
    }
@@ -199,7 +193,7 @@ public class FuCharacterBlock extends HorizontalDirectionalBlock implements Simp
 
          doorBlock.setOpen(player, level, behindState, behindPos, !behindState.getValue(DoorBlock.OPEN));
          refreshAttached(level, behindPos, level.getBlockState(behindPos));
-         player.swing(hand);
+         player.swing(hand, SwingAnimation.DEFAULT, false);
          return InteractionResult.SUCCESS;
       } else if (behindBlock instanceof TrapDoorBlock) {
          TrapDoorBlockAccessor accessor = (TrapDoorBlockAccessor)behindBlock;
@@ -209,7 +203,7 @@ public class FuCharacterBlock extends HorizontalDirectionalBlock implements Simp
 
          accessor.kaleidoscope_chinesefood$toggle(behindState, level, behindPos, player);
          refreshAttached(level, behindPos, level.getBlockState(behindPos));
-         player.swing(hand);
+         player.swing(hand, SwingAnimation.DEFAULT, false);
          return InteractionResult.SUCCESS;
       } else {
          return InteractionResult.PASS;

@@ -2,7 +2,6 @@ package com.bmt.kaleidoscope_chinesefood.block;
 
 import com.bmt.kaleidoscope_chinesefood.block.entity.BowlStackBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
-import com.mojang.serialization.MapCodec;
 import java.util.List;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
@@ -46,6 +45,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 
 public class BowlStackBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
    public static final IntegerProperty BOWL_COUNT = IntegerProperty.create("bowl_count", 0, 3);
@@ -57,7 +58,6 @@ public class BowlStackBlock extends BaseEntityBlock implements SimpleWaterlogged
    private static final SoundEvent PLACE_BOWL_SOUND = SoundEvents.ITEM_FRAME_ADD_ITEM;
    private static final SoundEvent TAKE_BOWL_SOUND = SoundEvents.ITEM_FRAME_REMOVE_ITEM;
    private static final SoundEvent SWITCH_SOUND = SoundEvents.ITEM_FRAME_ROTATE_ITEM;
-   private static final MapCodec<BowlStackBlock> CODEC = simpleCodec(BowlStackBlock::new);
 
    public BowlStackBlock(Properties properties) {
       super(properties);
@@ -67,11 +67,6 @@ public class BowlStackBlock extends BaseEntityBlock implements SimpleWaterlogged
             .setValue(WATERLOGGED, false)
       );
    }
-
-   protected MapCodec<? extends BaseEntityBlock> codec() {
-      return CODEC;
-   }
-
    @Nullable
    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
       return new BowlStackBlockEntity(pos, state);
@@ -161,8 +156,8 @@ public class BowlStackBlock extends BaseEntityBlock implements SimpleWaterlogged
       return drops;
    }
 
-   public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
-      if (player.isCreative() && !level.isClientSide()) {
+   public void playerDestroy(ServerLevel level, ServerPlayer player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
+      if (player.isCreative()) {
          int bowlCount = (Integer)state.getValue(BOWL_COUNT);
          if (bowlCount > 0) {
             Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Items.BOWL, bowlCount));

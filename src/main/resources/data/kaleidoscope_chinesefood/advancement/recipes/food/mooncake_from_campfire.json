@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:campfire/mooncake"
+        "recipes": "kaleidoscope_chinesefood:campfire/mooncake"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

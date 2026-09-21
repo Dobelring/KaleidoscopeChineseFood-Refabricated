@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:horizontal_banner"
+        "recipes": "kaleidoscope_chinesefood:horizontal_banner"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

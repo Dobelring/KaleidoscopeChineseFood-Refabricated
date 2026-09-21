@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:pickle_jar"
+        "recipes": "kaleidoscope_chinesefood:pickle_jar"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

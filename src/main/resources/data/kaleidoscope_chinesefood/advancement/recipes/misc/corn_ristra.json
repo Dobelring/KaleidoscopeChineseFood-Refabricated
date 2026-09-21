@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "kaleidoscope_chinesefood:corn_ristra"
+        "recipes": "kaleidoscope_chinesefood:corn_ristra"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -29,5 +29,14 @@
       "kaleidoscope_chinesefood:corn_ristra"
     ]
   },
-  "sends_telemetry_event": false
+  "sends_telemetry_event": false,
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:tags_populated",
+      "registry": "minecraft:item",
+      "values": [
+        "c:crops/corn"
+      ]
+    }
+  ]
 }
