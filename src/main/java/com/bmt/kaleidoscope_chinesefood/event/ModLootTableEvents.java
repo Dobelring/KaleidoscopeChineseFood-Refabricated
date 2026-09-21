@@ -30,7 +30,7 @@ public class ModLootTableEvents {
     public static void register() {
         LootTableEvents.REPLACE.register((key, original, source, registries) -> {
             if (VILLAGE_HIDE_CHEST.equals(key)) {
-                addEntries(
+                return addEntries(
                         original,
                         weighted(ModItems.WONTON_NOODLES, 10),
                         weighted(ModItems.SEAWEED_EGG_DROP_SOUP, 10),
@@ -45,7 +45,7 @@ public class ModLootTableEvents {
                         weighted(ModItems.YANGROU_PAOMO, 10)
                 );
             } else if (CHEF_GIFT.equals(key)) {
-                addEntries(
+                return addEntries(
                         original,
                         weighted(ModItems.TWICE_COOKED_PORK_RICE, 1),
                         weighted(ModItems.STIR_FRIED_YELLOW_BEEF_RICE, 1),
@@ -53,9 +53,12 @@ public class ModLootTableEvents {
                         weighted(ModItems.STIR_FRIED_THREE_FRESH_VEGETABLES_RICE, 1)
                 );
             } else if (FISHING_FISH.equals(key)) {
-                addEntries(original, weighted(ModItems.YELLOW_CROAKER, 25));
+                return addEntries(original, weighted(ModItems.YELLOW_CROAKER, 25));
             }
-            return original;
+            // 没改的表必须返回 null。REPLACE 一旦返回非 null，Fabric 就把该表的 source 记成
+            // REPLACED（LootTableSource.REPLACED.isBuiltin() == false），此后所有以
+            // source.isBuiltin() 为前提的 MODIFY 全部静默跳过——草地掉茄子种子就是这么失效的。
+            return null;
         });
     }
 
@@ -67,14 +70,15 @@ public class ModLootTableEvents {
         return LootItem.lootTableItem(item).setWeight(weight).build();
     }
 
-    private static void addEntries(LootTable table, LootPoolEntryContainer... additions) {
+    private static LootTable addEntries(LootTable table, LootPoolEntryContainer... additions) {
         List<LootPool> pools = ((LootTableAccessor) table).getPools();
         if (pools.isEmpty()) {
-            return;
+            return table;
         }
         LootPoolAccessor pool = (LootPoolAccessor) pools.get(0);
         List<LootPoolEntryContainer> entries = new ArrayList<>(pool.getEntries());
         entries.addAll(List.of(additions));
         pool.setEntries(entries);
+        return table;
     }
 }
