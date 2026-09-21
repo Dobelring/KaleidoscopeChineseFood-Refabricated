@@ -1,10 +1,6 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
-    "kaleidoscope_chinesefood:twice_cooked_pork",
-    "kaleidoscope_cookery:rice"
-  ],
+  "type": "kaleidoscope_cookery:rice_bowl",
+  "ingredient": "kaleidoscope_chinesefood:twice_cooked_pork",
   "result": {
     "id": "kaleidoscope_chinesefood:twice_cooked_pork_rice"
   }

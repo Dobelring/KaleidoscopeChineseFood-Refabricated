@@ -8,7 +8,6 @@
   "block.kaleidoscope_chinesefood.bowl_stack.desc": "可自动从下方容器提取碗到盘架上",
   "block.kaleidoscope_chinesefood.corn_ristra": "玉米串串",
   "block.kaleidoscope_chinesefood.couplet.desc": "可竖向拼接至多三格，点击编辑文字",
-  "block.kaleidoscope_chinesefood.couplet_block.desc": "用书与笔右键填写文字",
   "block.kaleidoscope_chinesefood.doll_0": "玩偶",
   "block.kaleidoscope_chinesefood.doll_1": "玩偶",
   "block.kaleidoscope_chinesefood.doll_2": "玩偶",
@@ -188,7 +187,7 @@
   "tooltip.kaleidoscope_doll.doll.contributor_4": "作者：辰",
   "tooltip.kaleidoscope_doll.doll.contributor_5": "作者：小兔子要听话哦",
   "block.kaleidoscope_chinesefood.couplet": "对联",
-  "block.kaleidoscope_chinesefood.dianhong_tea": "正山小种",
+  "block.kaleidoscope_chinesefood.dianhong_tea": "云南滇红",
   "tooltip.kaleidoscope_chinesefood.dianhong_tea.maxim": "汤色红艳，蜜香悠长，浓醇回甘",
   "effect.kaleidoscope_chinesefood.lava_swim.description": "允许玩家在岩浆中游泳，免疫火焰并获得夜视",
   "block.kaleidoscope_chinesefood.enchanted_golden_apple_platter": "附魔金苹果拼盘",
@@ -196,6 +195,5 @@
   "item.kaleidoscope_chinesefood.dianhong_tea_bag": "云南滇红茶包",
   "tooltip.kaleidoscope_chinesefood.salted_egg.maxim": "蛋白咸香入味，蛋黄油润沙软",
   "tooltip.kaleidoscope_chinesefood.century_egg.maxim": "口感Q弹紧实，风味独特醇厚",
-  "tooltip.kaleidoscope_chinesefood.chinese_sauerkraut.maxim": "脆嫩爽口，酸香开胃",
-  "block.kaleidoscope_chinesefood.freezer_light_gray": "冰箱"
+  "tooltip.kaleidoscope_chinesefood.chinese_sauerkraut.maxim": "脆嫩爽口，酸香开胃"
 }
