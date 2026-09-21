@@ -2,6 +2,7 @@ package com.bmt.kaleidoscope_chinesefood;
 
 import com.bmt.kaleidoscope_chinesefood.block.KongmingLanternBlock;
 import com.bmt.kaleidoscope_chinesefood.config.ModConfig;
+import com.bmt.kaleidoscope_chinesefood.event.CreativeTabEventHandler;
 import com.bmt.kaleidoscope_chinesefood.event.DataMapsEvents;
 import com.bmt.kaleidoscope_chinesefood.event.FoodEventHandler;
 import com.bmt.kaleidoscope_chinesefood.event.LavaSwimDamageEvents;
@@ -52,6 +53,7 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         ModBuiltInResourcePacks.register();
         FoodEventHandler.register();
         LavaSwimDamageEvents.register();
+        CreativeTabEventHandler.register();
 
         // 发射器行为注册移至 runFoodPhase（ModItems 注册之后，BlockItem 已就绪）
 
