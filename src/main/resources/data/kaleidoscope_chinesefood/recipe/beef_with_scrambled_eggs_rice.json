@@ -1,10 +1,6 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "category": "misc",
-  "ingredients": [
-    "kaleidoscope_chinesefood:beef_with_scrambled_eggs",
-    "kaleidoscope_cookery:rice"
-  ],
+  "type": "kaleidoscope_cookery:rice_bowl",
+  "ingredient": "kaleidoscope_chinesefood:beef_with_scrambled_eggs",
   "result": {
     "id": "kaleidoscope_chinesefood:beef_with_scrambled_eggs_rice"
   }

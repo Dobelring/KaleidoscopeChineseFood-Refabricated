@@ -7,7 +7,6 @@
   "block.kaleidoscope_chinesefood.bowl_stack": "Bowl Rack",
   "block.kaleidoscope_chinesefood.bowl_stack.desc": "Automatically fetch bowls from containers below",
   "block.kaleidoscope_chinesefood.corn_ristra": "Corn String",
-  "block.kaleidoscope_chinesefood.couplet_block.desc": "Click with a written book & quill to fill with text",
   "block.kaleidoscope_chinesefood.doll_0": "Doll",
   "block.kaleidoscope_chinesefood.doll_1": "Doll",
   "block.kaleidoscope_chinesefood.doll_2": "Doll",
@@ -186,7 +185,7 @@
   "tooltip.kaleidoscope_doll.doll.contributor_4": "Author: Chen",
   "tooltip.kaleidoscope_doll.doll.contributor_5": "Author: LittleRabbitBeGood",
   "block.kaleidoscope_chinesefood.couplet": "Couplet",
-  "block.kaleidoscope_chinesefood.dianhong_tea": "Lapsang Souchong",
+  "block.kaleidoscope_chinesefood.dianhong_tea": "Yunnan Dianhong Tea",
   "tooltip.kaleidoscope_chinesefood.dianhong_tea.maxim": "Bright red liquor, long honeyed aroma, rich and sweet",
   "effect.kaleidoscope_chinesefood.lava_swim.description": "Swim in lava, fire immunity and night vision",
   "block.kaleidoscope_chinesefood.enchanted_golden_apple_platter": "Enchanted Golden Apple Platter",
@@ -195,6 +194,5 @@
   "tooltip.kaleidoscope_chinesefood.salted_egg.maxim": "Salty egg white, oily and creamy yolk",
   "tooltip.kaleidoscope_chinesefood.century_egg.maxim": "Springy texture with rich unique flavor",
   "tooltip.kaleidoscope_chinesefood.chinese_sauerkraut.maxim": "Not to be confused with sauerkraut",
-  "block.kaleidoscope_chinesefood.couplet.desc": "Can be vertically spliced up to three blocks, click to edit text",
-  "block.kaleidoscope_chinesefood.freezer_light_gray": "Light Gray Refrigerator"
+  "block.kaleidoscope_chinesefood.couplet.desc": "Can be vertically spliced up to three blocks, click to edit text"
 }
