@@ -16,7 +16,7 @@
   ],
   "client": [
     "FogRendererMixin",
-    "accessor.BlockModelRenderStateAccessor"
+    "accessor.RenderTypeInvoker"
   ],
   "injectors": {
     "defaultRequire": 1
