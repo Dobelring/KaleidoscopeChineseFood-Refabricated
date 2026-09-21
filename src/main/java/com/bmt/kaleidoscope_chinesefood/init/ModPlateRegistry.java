@@ -31,36 +31,44 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * {@code PlateRegistry.getItem/getCount} 与它自己的创造栏对拼盘的查询。
  */
 public class ModPlateRegistry {
-    public static Identifier GOLDEN_APPLE_PLATTER;
+    public static final Identifier GOLDEN_APPLE_PLATTER = KaleidoscopeChineseFood.id("golden_apple_platter");
+    public static final Identifier ENCHANTED_GOLDEN_APPLE_PLATTER = KaleidoscopeChineseFood.id("enchanted_golden_apple_platter");
+
     public static Block GOLDEN_APPLE_PLATTER_BLOCK;
     public static Item GOLDEN_APPLE_PLATTER_ITEM;
 
     /** 必须在所有 main 入口点之后调用（见 {@link KaleidoscopeChineseFood#runFoodPhase()}） */
     public static void init() {
-        PlateData data = PlateData.create(4)
-                .setServingItems(() -> Items.GOLDEN_APPLE)
-                .setLootItem(Items.BOWL)
-                .platterAABB();
-        Identifier id = KaleidoscopeChineseFood.id("golden_apple_platter");
+        GOLDEN_APPLE_PLATTER_BLOCK = registerPlate(
+                GOLDEN_APPLE_PLATTER,
+                PlateData.create(4).setServingItems(() -> Items.GOLDEN_APPLE).setLootItem(Items.BOWL).platterAABB()
+        );
+        GOLDEN_APPLE_PLATTER_ITEM = BuiltInRegistries.ITEM.getValue(GOLDEN_APPLE_PLATTER);
 
+        registerPlate(
+                ENCHANTED_GOLDEN_APPLE_PLATTER,
+                PlateData.create(4).setServingItems(() -> Items.ENCHANTED_GOLDEN_APPLE).setLootItem(Items.BOWL).platterAABB()
+        );
+    }
+
+    private static Block registerPlate(Identifier id, PlateData data) {
         ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK, id);
         PlateBlock block = new PlateBlock(data.getMaxCount(), data.getServingItems(), Properties.of().setId(blockKey));
         VoxelShape aabb = data.getAABB();
         if (aabb != null) {
             block.setAABB(aabb);
         }
-
-        GOLDEN_APPLE_PLATTER_BLOCK = Registry.register(BuiltInRegistries.BLOCK, id, block);
+        Registry.register(BuiltInRegistries.BLOCK, id, block);
 
         ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, id);
         WithTooltipsBlockItem item = new WithTooltipsBlockItem(
                 block, new Item.Properties().setId(itemKey).useBlockDescriptionPrefix(), id.getPath()
         );
         item.registerBlocks(Item.BY_BLOCK, item);
-        GOLDEN_APPLE_PLATTER_ITEM = Registry.register(BuiltInRegistries.ITEM, itemKey, item);
+        Registry.register(BuiltInRegistries.ITEM, itemKey, item);
 
-        GOLDEN_APPLE_PLATTER = id;
         // cookery 自己的创造栏会遍历这个 map；此时它早已初始化完，不会再拿它代注册
         new PlateRegistry().registerPlateData(id, data);
+        return block;
     }
 }

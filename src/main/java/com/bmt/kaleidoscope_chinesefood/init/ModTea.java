@@ -30,21 +30,21 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
  */
 public class ModTea {
     private static final Map<Identifier, TeacupData> DATA_MAP = new LinkedHashMap<>();
-    public static Identifier LAPSANG;
+    public static Identifier DIANHONG_TEA;
     public static Identifier HK_MILK_TEA;
 
     public static void init() {
-        LAPSANG = id("lapsang");
-        DATA_MAP.put(LAPSANG,
+        DIANHONG_TEA = id("dianhong_tea");
+        DATA_MAP.put(DIANHONG_TEA,
                 TeacupData.create(4).addEffect(() -> new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.TUNDRA_STRIDER, 9600), 1.0F));
         HK_MILK_TEA = id("hk_milk_tea");
         DATA_MAP.put(HK_MILK_TEA,
-                TeacupData.create(4).addEffect(() -> new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.SULFUR, 9600), 1.0F));
+                TeacupData.create(4).addEffect(() -> new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.HINDER, 9600), 1.0F));
     }
 
     /** 在 food phase 调用：此时 cookery 的效果 Holder 已就绪 */
     public static void registerTeacupBlocksAndItems() {
-        registerTeacup(LAPSANG);
+        registerTeacup(DIANHONG_TEA);
         registerTeacup(HK_MILK_TEA);
     }
 

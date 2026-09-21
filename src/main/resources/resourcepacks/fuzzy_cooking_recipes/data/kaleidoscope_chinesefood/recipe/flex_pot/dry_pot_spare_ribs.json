@@ -4,8 +4,8 @@
   "ingredients": [
     "#c:foods/raw_pork",
     "minecraft:bone",
-    "minecraft:potato",
-    "#c:crops/chilipepper"
+    "kaleidoscope_cookery:green_chili",
+    "kaleidoscope_cookery:red_chili"
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:dry_pot_spare_ribs"

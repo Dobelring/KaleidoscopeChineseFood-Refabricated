@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "com.bmt.kaleidoscope_chinesefood.mixins.tavern",
+  "compatibilityLevel": "JAVA_25",
+  "plugin": "com.bmt.kaleidoscope_chinesefood.mixins.tavern.TavernMixinConfigPlugin",
+  "mixins": [
+    "TapBehaviorManagerMixin",
+    "StockpotBlockEntityAccessor",
+    "TeapotBlockEntityAccessor"
+  ],
+  "client": [],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

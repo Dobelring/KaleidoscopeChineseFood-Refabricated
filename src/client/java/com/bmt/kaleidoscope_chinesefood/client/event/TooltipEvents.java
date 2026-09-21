@@ -52,7 +52,7 @@ public class TooltipEvents {
                 if (blockItem.getBlock() instanceof FuCharacterBlock) {
                     desc = Component.translatable("block.kaleidoscope_chinesefood.fu_character.desc");
                 } else if (blockItem.getBlock() instanceof CoupletBlock) {
-                    desc = Component.translatable("block.kaleidoscope_chinesefood.couplet_block.desc");
+                    desc = Component.translatable("block.kaleidoscope_chinesefood.couplet.desc");
                 } else if (blockItem.getBlock() instanceof HorizontalBannerBlock) {
                     desc = Component.translatable("block.kaleidoscope_chinesefood.horizontal_banner.desc");
                 } else if (blockItem.getBlock() instanceof KongmingLanternBlock) {

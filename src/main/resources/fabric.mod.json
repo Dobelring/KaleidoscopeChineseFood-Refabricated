@@ -37,7 +37,8 @@
     ]
   },
   "mixins": [
-    "kaleidoscope_chinesefood.mixins.json"
+    "kaleidoscope_chinesefood.mixins.json",
+    "kaleidoscope_chinesefood.tavern.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.18",
@@ -46,5 +47,8 @@
     "java": ">=25",
     "kaleidoscope_cookery": "*",
     "forgeconfigapiport": "*"
+  },
+  "recommends": {
+    "kaleidoscope_tavern": "*"
   }
 }

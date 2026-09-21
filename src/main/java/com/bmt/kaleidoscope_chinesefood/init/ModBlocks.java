@@ -39,7 +39,7 @@ public class ModBlocks {
     public static SaltBlock SALT_BLOCK;
     public static FirecrackerBlock FIRECRACKER;
     public static FuCharacterBlock FU_CHARACTER;
-    public static CoupletBlock COUPLET_BLOCK;
+    public static CoupletBlock COUPLET;
     public static HorizontalBannerBlock HORIZONTAL_BANNER;
     public static MooncakeBlock MOONCAKE_BLOCK;
     public static KongmingLanternBlock KONGMING_LANTERN;
@@ -63,31 +63,31 @@ public class ModBlocks {
         FREEZER_YELLOW = registerFreezer("freezer_yellow");
         PICKLE_JAR = register(
                 "pickle_jar",
-                p -> new PickleJarBlock(p.mapColor(MapColor.TERRACOTTA_RED).strength(1.5F, 2.0F).sound(SoundType.DECORATED_POT).noOcclusion())
+                p -> new PickleJarBlock(p.mapColor(MapColor.TERRACOTTA_RED).strength(1.5F, 3.0F).sound(SoundType.DECORATED_POT).noOcclusion())
         );
         BOWL_STACK = register(
-                "bowl_stack", p -> new BowlStackBlock(p.mapColor(MapColor.WOOD).strength(1.0F, 2.0F).sound(SoundType.WOOD).noOcclusion())
+                "bowl_stack", p -> new BowlStackBlock(p.mapColor(MapColor.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD).noOcclusion())
         );
         SALT_BLOCK = register(
                 "salt_block", p -> new SaltBlock(p.mapColor(MapColor.TERRACOTTA_WHITE).strength(0.1F).noOcclusion().sound(SoundType.GLASS))
         );
         FIRECRACKER = register(
-                "firecracker", p -> new FirecrackerBlock(p.mapColor(MapColor.FIRE).strength(0.0F).sound(SoundType.CANDLE).noOcclusion())
+                "firecracker", p -> new FirecrackerBlock(p.mapColor(MapColor.FIRE).strength(0.1F).sound(SoundType.CANDLE).noOcclusion())
         );
         FU_CHARACTER = register(
                 "fu_character", p -> new FuCharacterBlock(p.mapColor(MapColor.FIRE).strength(0.0F).noOcclusion().sound(SoundType.WOOL))
         );
-        COUPLET_BLOCK = register(
-                "couplet_block", p -> new CoupletBlock(p.mapColor(MapColor.FIRE).strength(0.0F).noOcclusion().sound(SoundType.WOOL))
+        COUPLET = register(
+                "couplet", p -> new CoupletBlock(p.mapColor(MapColor.FIRE).strength(0.0F).noOcclusion().sound(SoundType.WOOL))
         );
         HORIZONTAL_BANNER = register(
                 "horizontal_banner", p -> new HorizontalBannerBlock(p.mapColor(MapColor.FIRE).strength(0.0F).noOcclusion().sound(SoundType.WOOL))
         );
         MOONCAKE_BLOCK = register(
-                "mooncake_block", p -> new MooncakeBlock(p.instabreak().strength(0.1F).noOcclusion().sound(SoundType.WOOD))
+                "mooncake_block", p -> new MooncakeBlock(p.mapColor(MapColor.WOOD).strength(0.1F).noOcclusion().sound(SoundType.WOOD))
         );
         KONGMING_LANTERN = register(
-                "kongming_lantern", p -> new KongmingLanternBlock(p.instabreak().strength(0.1F).noOcclusion().sound(SoundType.WOOD))
+                "kongming_lantern", p -> new KongmingLanternBlock(p.mapColor(MapColor.FIRE).strength(0.1F, 0.8F).noOcclusion().sound(SoundType.WOOL))
         );
         // 作物属性对齐 cookery：noCollision 保证作物非实心、可被耕地承接
         EGGPLANT_CROP = register(
