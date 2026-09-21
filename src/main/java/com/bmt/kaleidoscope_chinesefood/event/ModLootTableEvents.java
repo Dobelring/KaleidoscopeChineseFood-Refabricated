@@ -62,7 +62,10 @@ public final class ModLootTableEvents {
             if (id.equals(FISHING_FISH)) {
                 return addEntries(original, weighted(ModItems.YELLOW_CROAKER, 25));
             }
-            return original;
+            // 没改的表必须返回 null。REPLACE 一旦返回非 null，Fabric 就把该表的 source 记成
+            // REPLACED（LootTableSource.REPLACED.isBuiltin() == false），此后所有以
+            // source.isBuiltin() 为前提的 MODIFY 全部静默跳过——草地掉茄子种子就是这么失效的。
+            return null;
         });
     }
 
