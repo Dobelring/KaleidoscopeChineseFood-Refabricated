@@ -15,5 +15,16 @@
       "rolls": 1
     }
   ],
-  "random_sequence": "kaleidoscope_chinesefood:blocks/doll_1"
+  "random_sequence": "kaleidoscope_chinesefood:blocks/doll_1",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:not",
+      "value": {
+        "condition": "fabric:any_mods_loaded",
+        "values": [
+          "kaleidoscope_world_liquor"
+        ]
+      }
+    }
+  ]
 }
