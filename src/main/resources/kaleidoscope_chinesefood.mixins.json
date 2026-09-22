@@ -1,0 +1,25 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.bmt.kaleidoscope_chinesefood.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "CookeryInitMixin",
+    "CreativeModeTabsMixin",
+    "EntityMixin",
+    "ItemMixin",
+    "PlateBlockMixin",
+    "PlayerEntityMixin",
+    "RecipeManagerMixin",
+    "accessor.LootPoolAccessor",
+    "accessor.LootTableAccessor",
+    "accessor.TrapDoorBlockAccessor"
+  ],
+  "client": [
+    "accessor.RenderBuffersAccessor"
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

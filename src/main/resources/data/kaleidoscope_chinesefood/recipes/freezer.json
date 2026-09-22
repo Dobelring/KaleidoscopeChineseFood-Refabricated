@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "III",
+    "ICI",
+    "ICI"
+  ],
+  "key": {
+    "I": {"item": "minecraft:iron_ingot"},
+    "C": {"tag": "forge:chests"}
+  },
+  "result": {
+    "item": "kaleidoscope_chinesefood:freezer",
+    "count": 1
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "open=false": {
+      "model": "kaleidoscope_chinesefood:block/pickle_jar/jar_close"
+    },
+    "open=true": {
+      "model": "kaleidoscope_chinesefood:block/pickle_jar/jar_open"
+    }
+  }
+}

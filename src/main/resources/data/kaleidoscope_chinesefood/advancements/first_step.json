@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": { "item": "kaleidoscope_chinesefood:pickle_jar" },
+    "title": { "translate": "advancement.kaleidoscope_chinesefood.first_step.title" },
+    "description": { "translate": "advancement.kaleidoscope_chinesefood.first_step.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "kaleidoscope_cookery:root",
+  "criteria": {
+    "has_pickle_jar": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{ "items": ["kaleidoscope_chinesefood:pickle_jar"] }]
+      }
+    }
+  },
+  "requirements": [["has_pickle_jar"]]
+}

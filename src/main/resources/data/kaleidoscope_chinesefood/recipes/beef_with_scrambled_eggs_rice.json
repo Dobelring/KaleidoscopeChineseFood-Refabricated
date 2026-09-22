@@ -1,0 +1,9 @@
+{
+  "type": "kaleidoscope_cookery:rice_bowl",
+  "ingredient": {
+    "item": "kaleidoscope_chinesefood:beef_with_scrambled_eggs"
+  },
+  "result": {
+    "item": "kaleidoscope_chinesefood:beef_with_scrambled_eggs_rice"
+  }
+}

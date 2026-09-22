@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "stack_count=0,facing=north": { "model": "kaleidoscope_chinesefood:block/salt/salt_0", "y": 0 },
+    "stack_count=0,facing=east": { "model": "kaleidoscope_chinesefood:block/salt/salt_0", "y": 90 },
+    "stack_count=0,facing=south": { "model": "kaleidoscope_chinesefood:block/salt/salt_0", "y": 180 },
+    "stack_count=0,facing=west": { "model": "kaleidoscope_chinesefood:block/salt/salt_0", "y": 270 },
+    "stack_count=1,facing=north": { "model": "kaleidoscope_chinesefood:block/salt/salt_1", "y": 0 },
+    "stack_count=1,facing=east": { "model": "kaleidoscope_chinesefood:block/salt/salt_1", "y": 90 },
+    "stack_count=1,facing=south": { "model": "kaleidoscope_chinesefood:block/salt/salt_1", "y": 180 },
+    "stack_count=1,facing=west": { "model": "kaleidoscope_chinesefood:block/salt/salt_1", "y": 270 },
+    "stack_count=2,facing=north": { "model": "kaleidoscope_chinesefood:block/salt/salt_2", "y": 0 },
+    "stack_count=2,facing=east": { "model": "kaleidoscope_chinesefood:block/salt/salt_2", "y": 90 },
+    "stack_count=2,facing=south": { "model": "kaleidoscope_chinesefood:block/salt/salt_2", "y": 180 },
+    "stack_count=2,facing=west": { "model": "kaleidoscope_chinesefood:block/salt/salt_2", "y": 270 },
+    "stack_count=3,facing=north": { "model": "kaleidoscope_chinesefood:block/salt/salt_3", "y": 0 },
+    "stack_count=3,facing=east": { "model": "kaleidoscope_chinesefood:block/salt/salt_3", "y": 90 },
+    "stack_count=3,facing=south": { "model": "kaleidoscope_chinesefood:block/salt/salt_3", "y": 180 },
+    "stack_count=3,facing=west": { "model": "kaleidoscope_chinesefood:block/salt/salt_3", "y": 270 }
+  }
+}

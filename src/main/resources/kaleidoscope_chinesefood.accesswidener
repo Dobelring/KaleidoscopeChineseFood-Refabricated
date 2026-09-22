@@ -1,0 +1,9 @@
+accessWidener	v2	named
+
+# CustomRenderType 需要引用这三个 protected 内部类（Forge 侧是补丁放宽的，Fabric 用 AW）
+accessible	class	net/minecraft/client/renderer/RenderStateShard$TextureStateShard
+accessible	class	net/minecraft/client/renderer/RenderStateShard$LayeringStateShard
+accessible	class	net/minecraft/client/renderer/RenderType$CompositeState
+
+# 附魔拼盘需要自建带 polygon offset 的 glint 渲染类型，RenderType#create 在原版 1.20.1 是包内可见
+accessible	method	net/minecraft/client/renderer/RenderType	create	(Ljava/lang/String;Lcom/mojang/blaze3d/vertex/VertexFormat;Lcom/mojang/blaze3d/vertex/VertexFormat$Mode;IZZLnet/minecraft/client/renderer/RenderType$CompositeState;)Lnet/minecraft/client/renderer/RenderType$CompositeRenderType;

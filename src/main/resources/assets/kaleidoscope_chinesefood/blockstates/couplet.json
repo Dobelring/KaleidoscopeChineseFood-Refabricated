@@ -1,0 +1,100 @@
+{
+  "variants": {
+    "facing=north,part=lower,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_lower",
+      "y": 0
+    },
+    "facing=north,part=lower,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_lower",
+      "y": 0
+    },
+    "facing=north,part=middle,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_middle",
+      "y": 0
+    },
+    "facing=north,part=middle,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_middle",
+      "y": 0
+    },
+    "facing=north,part=upper,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_upper",
+      "y": 0
+    },
+    "facing=north,part=upper,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_upper",
+      "y": 0
+    },
+    "facing=east,part=lower,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_lower",
+      "y": 90
+    },
+    "facing=east,part=lower,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_lower",
+      "y": 90
+    },
+    "facing=east,part=middle,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_middle",
+      "y": 90
+    },
+    "facing=east,part=middle,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_middle",
+      "y": 90
+    },
+    "facing=east,part=upper,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_upper",
+      "y": 90
+    },
+    "facing=east,part=upper,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_upper",
+      "y": 90
+    },
+    "facing=south,part=lower,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_lower",
+      "y": 180
+    },
+    "facing=south,part=lower,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_lower",
+      "y": 180
+    },
+    "facing=south,part=middle,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_middle",
+      "y": 180
+    },
+    "facing=south,part=middle,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_middle",
+      "y": 180
+    },
+    "facing=south,part=upper,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_upper",
+      "y": 180
+    },
+    "facing=south,part=upper,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_upper",
+      "y": 180
+    },
+    "facing=west,part=lower,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_lower",
+      "y": 270
+    },
+    "facing=west,part=lower,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_lower",
+      "y": 270
+    },
+    "facing=west,part=middle,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_middle",
+      "y": 270
+    },
+    "facing=west,part=middle,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_middle",
+      "y": 270
+    },
+    "facing=west,part=upper,waterlogged=false": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_upper",
+      "y": 270
+    },
+    "facing=west,part=upper,waterlogged=true": {
+      "model": "kaleidoscope_chinesefood:block/couplet/couplet_block_upper",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "kaleidoscope_cookery:teapot",
+  "ingredient": {
+     "item": "kaleidoscope_chinesefood:dianhong_tea_bag"
+  },
+  "ingredient_count": 1,
+  "result": {
+    "item": "kaleidoscope_chinesefood:dianhong_tea"
+  },
+  "tea_fluid": "minecraft:water",
+  "time": 240
+}

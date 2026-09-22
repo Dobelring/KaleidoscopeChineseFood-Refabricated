@@ -1,0 +1,124 @@
+{
+  "variants": {
+    "facing=east,locked=false,position=0": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single"
+    },
+    "facing=east,locked=false,position=1": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/left"
+    },
+    "facing=east,locked=false,position=2": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/middle"
+    },
+    "facing=east,locked=false,position=3": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/right"
+    },
+    "facing=south,locked=false,position=0": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single",
+      "y": 90
+    },
+    "facing=south,locked=false,position=1": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/right",
+      "y": 90
+    },
+    "facing=south,locked=false,position=2": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/middle",
+      "y": 90
+    },
+    "facing=south,locked=false,position=3": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/left",
+      "y": 90
+    },
+    "facing=west,locked=false,position=0": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single",
+      "y": 180
+    },
+    "facing=west,locked=false,position=1": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/right",
+      "y": 180
+    },
+    "facing=west,locked=false,position=2": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/middle",
+      "y": 180
+    },
+    "facing=west,locked=false,position=3": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/left",
+      "y": 180
+    },
+    "facing=north,locked=false,position=0": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single",
+      "y": 270
+    },
+    "facing=north,locked=false,position=1": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/left",
+      "y": 270
+    },
+    "facing=north,locked=false,position=2": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/middle",
+      "y": 270
+    },
+    "facing=north,locked=false,position=3": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/right",
+      "y": 270
+    },
+    "facing=east,locked=true,position=0": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single"
+    },
+    "facing=east,locked=true,position=1": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single"
+    },
+    "facing=east,locked=true,position=2": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single"
+    },
+    "facing=east,locked=true,position=3": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single"
+    },
+    "facing=south,locked=true,position=0": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single",
+      "y": 90
+    },
+    "facing=south,locked=true,position=1": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single",
+      "y": 90
+    },
+    "facing=south,locked=true,position=2": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single",
+      "y": 90
+    },
+    "facing=south,locked=true,position=3": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single",
+      "y": 90
+    },
+    "facing=west,locked=true,position=0": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single",
+      "y": 180
+    },
+    "facing=west,locked=true,position=1": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single",
+      "y": 180
+    },
+    "facing=west,locked=true,position=2": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single",
+      "y": 180
+    },
+    "facing=west,locked=true,position=3": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single",
+      "y": 180
+    },
+    "facing=north,locked=true,position=0": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single",
+      "y": 270
+    },
+    "facing=north,locked=true,position=1": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single",
+      "y": 270
+    },
+    "facing=north,locked=true,position=2": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single",
+      "y": 270
+    },
+    "facing=north,locked=true,position=3": {
+      "model": "kaleidoscope_cookery:block/stripped_bamboo_bench/single",
+      "y": 270
+    }
+  }
+}

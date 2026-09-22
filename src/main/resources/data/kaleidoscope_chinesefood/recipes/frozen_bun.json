@@ -1,0 +1,25 @@
+{
+        "fabric:load_conditions": [
+          {
+            "condition": "fabric:not",
+            "value": {
+              "condition": "fabric:any_mod_loaded",
+              "values": ["kaleidoscope_twilight"]
+            }
+          }
+        ],
+        "type": "minecraft:crafting_shaped",
+        "category": "food",
+        "pattern": [
+          " D ",
+          "DED",
+          " D "
+        ],
+        "key": {
+          "E": {"item": "kaleidoscope_cookery:mantou"},
+          "D": {"item": "minecraft:ice"}
+        },
+        "result": {
+          "item": "kaleidoscope_twilight:frozen_bun"
+        }
+      }

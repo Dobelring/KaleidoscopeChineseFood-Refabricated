@@ -1,0 +1,163 @@
+plugins {
+	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
+	id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+	archivesName = project.archives_base_name
+}
+
+loom {
+	accessWidenerPath = file("src/main/resources/kaleidoscope_chinesefood.accesswidener")
+}
+
+repositories {
+	flatDir {
+		dirs 'libs'
+	}
+	maven {
+		name = 'Fabric'
+		url = 'https://maven.fabricmc.net/'
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Modrinth"
+				url = "https://api.modrinth.com/maven"
+			}
+		}
+		filter {
+			includeGroup "maven.modrinth"
+		}
+	}
+	maven {
+		name = "Jared's maven"
+		url = 'https://maven.blamejared.com/'
+	}
+	maven {
+		name = 'ModMaven'
+		url = 'https://modmaven.dev'
+	}
+	maven {
+		name = "Fuzs Mod Resources"
+		url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+	}
+	maven {
+		name = "Create"
+		url = "https://maven.createmod.net/"
+	}
+	maven {
+		name = "TerraformersMC"
+		url = "https://maven.terraformersmc.com/"
+	}
+	maven {
+		name = "Ladysnake Libs"
+		url = 'https://maven.ladysnake.org/releases'
+	}
+	maven {
+		url = "https://mvn.devos.one/releases/" // Porting Lib
+	}
+	maven {
+		// Porting Lib 依赖的 Reach Entity Attributes
+		url "https://maven.jamieswhiteshirt.com/libs-release"
+		content {
+			includeGroup "com.jamieswhiteshirt"
+		}
+	}
+	mavenCentral()
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings loom.officialMojangMappings()
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	// Forge Config API Port: provides net.minecraftforge.common.ForgeConfigSpec on Fabric 1.20.1
+	modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forgeconfigapiport_version}"
+
+	// Kaleidoscope Cookery (hard dependency: BowlFoodOnlyItem, ModEffects, recipe types)
+	modImplementation "maven.modrinth:kaleidoscope-cookery-refabricated:${project.kaleidoscope_cookery_version}"
+	// Kaleidoscope Doll (soft integration: contributor dolls)
+	modImplementation "maven.modrinth:kaleidoscope-doll:${project.kaleidoscope_doll_version}"
+
+	// Optional compat integrations (compileOnly - guarded at runtime by isModLoaded)
+	modCompileOnly("mezz.jei:jei-${project.minecraft_version}-fabric:${project.jei_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
+	modCompileOnly("maven.modrinth:jade:${project.jade_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
+	modCompileOnly("maven.modrinth:emi:${project.emi_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
+	// Kaleidoscope Tavern (soft integration: 水龙头给汤锅/茶壶注水注岩浆。
+	// mixin 配置由 TavernMixinConfigPlugin 守卫，未装 tavern 时整份配置不生效)
+	modCompileOnly("maven.modrinth:kaleidoscope-tavern-refabricated:${project.kaleidoscope_tavern_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
+	// cookery 1.5.1 的 VitalityEvent 引用 Porting Lib 的 entity 模块，但 cookery 只内嵌了
+	// base/loot/transfer；该模块平时由 Create 的嵌套 jar 提供。dev 运行环境需要补上，
+	// 否则 cookery 自身会在 onInitialize 抛 NoClassDefFoundError。
+	// dev 环境专用：loom 不会把依赖模组（cookery）内嵌的 jar-in-jar 展开到类路径，
+	// 而 cookery 的 VitalityEvent / ModLootModifier 直接引用这些 Porting Lib 模块。
+	// 真实实例里这些模块由 cookery 的内嵌 jar 或 Create 提供，dev 下必须显式补。
+	modRuntimeOnly("io.github.fabricators_of_create.Porting-Lib:entity:${project.porting_lib_version}")
+	modRuntimeOnly("io.github.fabricators_of_create.Porting-Lib:base:${project.porting_lib_version}")
+	modRuntimeOnly("io.github.fabricators_of_create.Porting-Lib:loot:${project.porting_lib_version}")
+	modRuntimeOnly("io.github.fabricators_of_create.Porting-Lib:transfer:${project.porting_lib_version}")
+
+	// Create (soft integration: Ponder 场景 + contraption 行为)
+	// 注意：createmod.net 的 com.simibubi.create:create-fabric 坐标在 1.20.1 上 404，
+	// 走 Modrinth maven（版本号即 Modrinth 的 version_number）
+	modCompileOnly("maven.modrinth:create-fabric:${project.create_fabric_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
+	// Ponder 是 create-fabric 的嵌套 jar，编译期看不到，必须单独引；
+	// 该 artifact 同时提供 net.createmod.ponder.* 与 net.createmod.catnip.*
+	modCompileOnly("net.createmod.ponder:Ponder-Fabric-1.20.1:${project.ponder_version}") {
+		// 只要它的类做编译；传递依赖（Porting Lib 等）走 raw.githubusercontent.com 不可达
+		transitive = false
+	}
+}
+
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.encoding = "UTF-8"
+	it.options.release = 17
+}
+
+java {
+	withSourcesJar()
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
+}
+
+jar {
+	inputs.property "archivesName", project.base.archivesName
+
+	from("LICENSE") {
+		rename { "${it}_${inputs.properties.archivesName}" }
+	}
+}
+
+publishing {
+	publications {
+		create("mavenJava", MavenPublication) {
+			artifactId = project.archives_base_name
+			from components.java
+		}
+	}
+	repositories {
+	}
+}

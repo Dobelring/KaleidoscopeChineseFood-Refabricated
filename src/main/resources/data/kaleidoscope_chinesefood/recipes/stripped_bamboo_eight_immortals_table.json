@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "FPF",
+    "PPP",
+    "FPF"
+  ],
+  "key": {
+    "F": {"item": "minecraft:bamboo_fence"},
+    "P": {"item": "minecraft:bamboo_planks"}
+  },
+  "result": {
+    "item": "kaleidoscope_cookery:stripped_bamboo_eight_immortals_table"
+  }
+}

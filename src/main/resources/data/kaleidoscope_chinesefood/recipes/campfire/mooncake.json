@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "cookingtime": 600,
+  "experience": 0.35,
+  "ingredient": { 
+    "item": "kaleidoscope_chinesefood:raw_mooncake"
+  },
+  "result": "kaleidoscope_chinesefood:mooncake",
+  "count": 1
+}

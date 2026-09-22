@@ -1,0 +1,43 @@
+{
+  "variants": {
+    "bowl_count=0,facing=north,is_wooden=false": { "model": "kaleidoscope_chinesefood:block/bowl_stack/ceramic_0", "y": 0 },
+    "bowl_count=0,facing=east,is_wooden=false":  { "model": "kaleidoscope_chinesefood:block/bowl_stack/ceramic_0", "y": 90 },
+    "bowl_count=0,facing=south,is_wooden=false": { "model": "kaleidoscope_chinesefood:block/bowl_stack/ceramic_0", "y": 180 },
+    "bowl_count=0,facing=west,is_wooden=false":  { "model": "kaleidoscope_chinesefood:block/bowl_stack/ceramic_0", "y": 270 },
+
+    "bowl_count=1,facing=north,is_wooden=false": { "model": "kaleidoscope_chinesefood:block/bowl_stack/ceramic_1", "y": 0 },
+    "bowl_count=1,facing=east,is_wooden=false":  { "model": "kaleidoscope_chinesefood:block/bowl_stack/ceramic_1", "y": 90 },
+    "bowl_count=1,facing=south,is_wooden=false": { "model": "kaleidoscope_chinesefood:block/bowl_stack/ceramic_1", "y": 180 },
+    "bowl_count=1,facing=west,is_wooden=false":  { "model": "kaleidoscope_chinesefood:block/bowl_stack/ceramic_1", "y": 270 },
+
+    "bowl_count=2,facing=north,is_wooden=false": { "model": "kaleidoscope_chinesefood:block/bowl_stack/ceramic_2", "y": 0 },
+    "bowl_count=2,facing=east,is_wooden=false":  { "model": "kaleidoscope_chinesefood:block/bowl_stack/ceramic_2", "y": 90 },
+    "bowl_count=2,facing=south,is_wooden=false": { "model": "kaleidoscope_chinesefood:block/bowl_stack/ceramic_2", "y": 180 },
+    "bowl_count=2,facing=west,is_wooden=false":  { "model": "kaleidoscope_chinesefood:block/bowl_stack/ceramic_2", "y": 270 },
+
+    "bowl_count=3,facing=north,is_wooden=false": { "model": "kaleidoscope_chinesefood:block/bowl_stack/ceramic_3", "y": 0 },
+    "bowl_count=3,facing=east,is_wooden=false":  { "model": "kaleidoscope_chinesefood:block/bowl_stack/ceramic_3", "y": 90 },
+    "bowl_count=3,facing=south,is_wooden=false": { "model": "kaleidoscope_chinesefood:block/bowl_stack/ceramic_3", "y": 180 },
+    "bowl_count=3,facing=west,is_wooden=false":  { "model": "kaleidoscope_chinesefood:block/bowl_stack/ceramic_3", "y": 270 },
+
+    "bowl_count=0,facing=north,is_wooden=true": { "model": "kaleidoscope_chinesefood:block/bowl_stack/wood_0", "y": 0 },
+    "bowl_count=0,facing=east,is_wooden=true":  { "model": "kaleidoscope_chinesefood:block/bowl_stack/wood_0", "y": 90 },
+    "bowl_count=0,facing=south,is_wooden=true": { "model": "kaleidoscope_chinesefood:block/bowl_stack/wood_0", "y": 180 },
+    "bowl_count=0,facing=west,is_wooden=true":  { "model": "kaleidoscope_chinesefood:block/bowl_stack/wood_0", "y": 270 },
+
+    "bowl_count=1,facing=north,is_wooden=true": { "model": "kaleidoscope_chinesefood:block/bowl_stack/wood_1", "y": 0 },
+    "bowl_count=1,facing=east,is_wooden=true":  { "model": "kaleidoscope_chinesefood:block/bowl_stack/wood_1", "y": 90 },
+    "bowl_count=1,facing=south,is_wooden=true": { "model": "kaleidoscope_chinesefood:block/bowl_stack/wood_1", "y": 180 },
+    "bowl_count=1,facing=west,is_wooden=true":  { "model": "kaleidoscope_chinesefood:block/bowl_stack/wood_1", "y": 270 },
+
+    "bowl_count=2,facing=north,is_wooden=true": { "model": "kaleidoscope_chinesefood:block/bowl_stack/wood_2", "y": 0 },
+    "bowl_count=2,facing=east,is_wooden=true":  { "model": "kaleidoscope_chinesefood:block/bowl_stack/wood_2", "y": 90 },
+    "bowl_count=2,facing=south,is_wooden=true": { "model": "kaleidoscope_chinesefood:block/bowl_stack/wood_2", "y": 180 },
+    "bowl_count=2,facing=west,is_wooden=true":  { "model": "kaleidoscope_chinesefood:block/bowl_stack/wood_2", "y": 270 },
+
+    "bowl_count=3,facing=north,is_wooden=true": { "model": "kaleidoscope_chinesefood:block/bowl_stack/wood_3", "y": 0 },
+    "bowl_count=3,facing=east,is_wooden=true":  { "model": "kaleidoscope_chinesefood:block/bowl_stack/wood_3", "y": 90 },
+    "bowl_count=3,facing=south,is_wooden=true": { "model": "kaleidoscope_chinesefood:block/bowl_stack/wood_3", "y": 180 },
+    "bowl_count=3,facing=west,is_wooden=true":  { "model": "kaleidoscope_chinesefood:block/bowl_stack/wood_3", "y": 270 }
+  }
+}

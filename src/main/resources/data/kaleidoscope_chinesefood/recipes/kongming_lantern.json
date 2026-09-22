@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " # ",
+    "#@#",
+    " # "
+  ],
+  "key": {
+    "#": {"item": "minecraft:paper"},
+    "@": {"item": "minecraft:torch"}
+  },
+  "result": {
+    "item": "kaleidoscope_chinesefood:kongming_lantern",
+    "count": 2
+  }
+}

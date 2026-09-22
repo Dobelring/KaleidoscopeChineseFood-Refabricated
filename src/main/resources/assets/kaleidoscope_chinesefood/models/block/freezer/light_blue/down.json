@@ -1,0 +1,6 @@
+﻿{
+  "parent": "kaleidoscope_chinesefood:block/freezer/base/down",
+  "textures": {
+    "texture": "kaleidoscope_chinesefood:block/fridge_light_blue"
+  }
+}

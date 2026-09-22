@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "id": "kaleidoscope_chinesefood",
+  "version": "${version}",
+  "name": "Kaleidoscope ChineseFood",
+  "description": "森罗物语：国味 - Chinese food for the Kaleidoscope series (Fabric port for 1.20.1).",
+  "authors": [
+    "Dobelring"
+  ],
+  "contributors": [
+    "BmtUltra",
+    "Chenjdy",
+    "Bfxm"
+  ],
+  "contact": {
+    "homepage": "https://github.com/Dobelring/KaleidoscopeChineseFood-Refabricated",
+    "sources": "https://github.com/Dobelring/KaleidoscopeChineseFood-Refabricated"
+  },
+  "license": "CC-BY-NC-ND-4.0",
+  "icon": "assets/kaleidoscope_chinesefood/cover.png",
+  "environment": "*",
+  "accessWidener": "kaleidoscope_chinesefood.accesswidener",
+  "entrypoints": {
+    "main": [
+      "com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood"
+    ],
+    "client": [
+      "com.bmt.kaleidoscope_chinesefood.client.KaleidoscopeChineseFoodClient"
+    ],
+    "jei_mod_plugin": [
+      "com.bmt.kaleidoscope_chinesefood.compat.jei.ModPlugin"
+    ],
+    "jade": [
+      "com.bmt.kaleidoscope_chinesefood.compat.jade.ModPlugin"
+    ]
+  },
+  "mixins": [
+    "kaleidoscope_chinesefood.mixins.json",
+    "kaleidoscope_chinesefood.tavern.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "fabric-api": ">=0.92.0",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "kaleidoscope_cookery": "*",
+    "forgeconfigapiport": "*"
+  },
+  "recommends": {
+    "kaleidoscope_tavern": "*",
+    "kaleidoscope_doll": "*",
+    "create": "*"
+  }
+}
