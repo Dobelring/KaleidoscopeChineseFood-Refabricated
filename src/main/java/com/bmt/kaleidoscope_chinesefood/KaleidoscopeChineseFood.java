@@ -123,6 +123,11 @@ public class KaleidoscopeChineseFood implements ModInitializer {
                 KTItems.register();
             }
             DataMapsEvents.register();
+            // Create 联动：冰箱上下半块互附 + 整体易碎（官方 compat/create/CreateMovementChecks）
+            if (FabricLoader.getInstance().isModLoaded("create")) {
+                com.bmt.kaleidoscope_chinesefood.compat.create.CreateMovementChecks.register();
+            }
+
             // 1.1.10 新增：放置菜品与 Kaleidoscope Contraption 兼容（反射软依赖，
             // create 与 kaleidoscope_contraption 均加载时才注册食物位交互行为）
             if (FabricLoader.getInstance().isModLoaded("create")
