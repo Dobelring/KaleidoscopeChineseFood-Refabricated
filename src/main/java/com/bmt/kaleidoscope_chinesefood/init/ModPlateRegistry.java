@@ -4,7 +4,7 @@ import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.decoration.PlateBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.PlateRegistry;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.PlateRegistry.PlateData;
-import com.github.ysbbbbbb.kaleidoscopecookery.item.WithTooltipsBlockItem;
+import com.github.ysbbbbbb.kaleidoscopecookery.item.template.WithTooltipsBlockItem;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
