@@ -45,6 +45,10 @@ dependencies {
 		exclude(group: "net.fabricmc.fabric-api")
 		exclude(group: "eu.pb4")
 	}
+	// Create Fly（第三方 Create Fabric 移植）软联动：冰箱搬运判定 + 泡菜坛 Ponder 讲解场景。
+	// 入口点按 isModLoaded("create") 守卫，未装 Create 时相关类不会被加载。
+	compileOnly "maven.modrinth:create-fly:${project.create_version}"
+
 	// Kaleidoscope Tavern 软联动（水龙头向厨房汤锅/茶壶注水注岩浆）；
 	// mixin 由 TavernMixinConfigPlugin 守卫，未装 tavern 时整份配置不生效
 	compileOnly("maven.modrinth:kaleidoscope-tavern-refabricated:${project.kaleidoscope_tavern_version}") {

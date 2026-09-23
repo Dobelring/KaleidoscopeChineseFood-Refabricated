@@ -49,6 +49,7 @@
     "forgeconfigapiport": "*"
   },
   "recommends": {
-    "kaleidoscope_tavern": "*"
+    "kaleidoscope_tavern": "*",
+    "create": "*"
   }
 }
