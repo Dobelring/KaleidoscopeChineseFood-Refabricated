@@ -145,6 +145,7 @@
   "subtitles.block.freezer.close": "Refrigerator closes",
 
   "message.kaleidoscope_chinesefood.start_fermenting": "§fNow fermenting!",
+  "message.kaleidoscope_chinesefood.mid_autumn_gift": "Happy Mid-Autumn Festival! Wish you a happy reunion~",
   "message.kaleidoscope_chinesefood.fermenting_remaining": "§fTime Remaining: %d Seconds",
 
   "advancement.kaleidoscope_chinesefood.sugar_and_salt_confused.title": "Confuse Salt with Sugar",
@@ -152,6 +153,8 @@
   "advancement.kaleidoscope_chinesefood.first_step.title": "It's Pickling Time!",
   "advancement.kaleidoscope_chinesefood.first_step.description": "Sneak‑right‑click to open and close lid",
   "advancement.kaleidoscope_chinesefood.new_year.title": "Out with the Old, In with the New",
+  "advancement.kaleidoscope_chinesefood.mid_autumn.description": "Log in during the Mid-Autumn Festival and claim a mooncake",
+  "advancement.kaleidoscope_chinesefood.mid_autumn.title": "Happy Mid-Autumn Festival",
   "advancement.kaleidoscope_chinesefood.new_year.description": "Obtain any New Year decoration",
 
   "effect.kaleidoscope_chinesefood.lava_swim": "Lava Diver",

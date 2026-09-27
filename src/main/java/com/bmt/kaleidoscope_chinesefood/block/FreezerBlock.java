@@ -2,8 +2,6 @@ package com.bmt.kaleidoscope_chinesefood.block;
 
 import com.bmt.kaleidoscope_chinesefood.block.entity.FreezerBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
-import java.util.ArrayList;
-import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -132,6 +130,12 @@ public class FreezerBlock extends BaseEntityBlock {
 
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
         if (!state.is(newState.getBlock())) {
+            BlockPos otherPos = state.getValue(TOP) ? pos.below() : pos.above();
+            if (level.getBlockState(otherPos).getBlock() instanceof FreezerBlock) {
+                // 带掉落销毁另一半：top=false 条件保证拆上/下半与爆炸都只掉 1 个（用户口径：拆任意半都掉）
+                level.destroyBlock(otherPos, true);
+            }
+
             if (level.getBlockEntity(pos) instanceof FreezerBlockEntity freezerBE) {
                 freezerBE.drops();
             }
@@ -173,12 +177,4 @@ public class FreezerBlock extends BaseEntityBlock {
         }
     }
 
-    public List<ItemStack> getDrops(BlockState state, net.minecraft.world.level.storage.loot.LootParams.Builder builder) {
-        List<ItemStack> drops = new ArrayList<>();
-        if (!(Boolean)state.getValue(TOP)) {
-            drops.add(new ItemStack(this));
-        }
-
-        return drops;
-    }
 }
