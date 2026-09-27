@@ -6,7 +6,16 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "kaleidoscope_chinesefood:freezer_orange"
+          "name": "kaleidoscope_chinesefood:freezer_orange",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "kaleidoscope_chinesefood:freezer_orange",
+              "properties": {
+                "top": "false"
+              }
+            }
+          ]
         }
       ]
     }
