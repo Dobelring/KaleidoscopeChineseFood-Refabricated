@@ -5,6 +5,7 @@ import com.bmt.kaleidoscope_chinesefood.config.ModConfig;
 import com.bmt.kaleidoscope_chinesefood.event.CreativeTabEventHandler;
 import com.bmt.kaleidoscope_chinesefood.event.DataMapsEvents;
 import com.bmt.kaleidoscope_chinesefood.event.LavaSwimDamageEvents;
+import com.bmt.kaleidoscope_chinesefood.event.MidAutumnEventHandler;
 import com.bmt.kaleidoscope_chinesefood.event.ModLootTableEvents;
 import com.bmt.kaleidoscope_chinesefood.event.VillagerTradeEvents;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
@@ -73,6 +74,7 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         ModLootTableEvents.register();
         VillagerTradeEvents.register();
         CreativeTabEventHandler.register();
+        MidAutumnEventHandler.register();
 
         // 1.1.10 新增：放置菜品与 Kaleidoscope Contraption 兼容（反射软依赖，
         // create 与 kaleidoscope_contraption 均加载时才注册食物位交互行为）

@@ -1,5 +1,6 @@
 package com.bmt.kaleidoscope_chinesefood.compat.kaleidoscope_contraption;
 
+import com.bmt.kaleidoscope_chinesefood.init.ModBlocks;
 import com.bmt.kaleidoscope_chinesefood.init.ModFoodBiteRegistry;
 import com.github.ysbbbbbb.kaleidoscopecookery.init.registry.FoodBiteRegistry;
 import java.lang.reflect.Constructor;
@@ -32,6 +33,17 @@ public class KaleidoscopeContraptionCompat {
         } catch (Throwable t) {
             // 反射失败时静默跳过
         }
+
+        // 竹筒蒸蛋是 StackableFoodBlock，不在 FoodBiteRegistry，官方 1.1.13 单独注册；
+        // StackableFoodBlockMovingInteraction 是较新 kaleidoscope_contraption 才有的类
+        try {
+            Class<?> stackableInteractionClass = Class.forName(
+                    "com.sshakusora.kaleidoscope_contraption.content.behaviour.interaction.StackableFoodBlockMovingInteraction");
+            Object stackableInteraction = stackableInteractionClass.getConstructor().newInstance();
+            registerBlock(ModBlocks.BAMBOO_STEAMED_EGG, stackableInteraction);
+        } catch (Throwable t) {
+            // 反射失败时静默跳过
+        }
     }
 
     private static void register(ResourceLocation id, Object interaction) {
@@ -43,6 +55,17 @@ public class KaleidoscopeContraptionCompat {
             if (block == null) {
                 return;
             }
+            registerBlock(block, interaction);
+        } catch (Throwable t) {
+            // 静默跳过
+        }
+    }
+
+    private static void registerBlock(Block block, Object interaction) {
+        if (block == null) {
+            return;
+        }
+        try {
             // MovingInteractionBehaviour.REGISTRY.register(block, interaction)
             Class<?> behaviourClass = Class.forName("com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour");
             Field registryField = behaviourClass.getField("REGISTRY");

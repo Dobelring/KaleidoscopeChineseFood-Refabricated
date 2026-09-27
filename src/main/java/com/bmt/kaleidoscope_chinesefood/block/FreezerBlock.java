@@ -105,7 +105,9 @@ public class FreezerBlock extends BaseEntityBlock {
       if (!state.is(newState.getBlock())) {
          BlockPos otherPos = state.getValue(TOP) ? pos.below() : pos.above();
          if (level.getBlockState(otherPos).getBlock() instanceof FreezerBlock) {
-            level.destroyBlock(otherPos, false);
+            // 带掉落销毁另一半：被销毁半块按战利品表评估，top=false 条件保证只掉 1 个
+            // （拆上半由下半掉、拆下半由上半的条件判空不重复；爆炸两半各自评估同样合计 1 个）
+            level.destroyBlock(otherPos, true);
          }
 
          if (level.getBlockEntity(pos) instanceof FreezerBlockEntity freezerBE) {

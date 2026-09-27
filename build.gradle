@@ -55,8 +55,10 @@ dependencies {
     modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${project.forgeconfigapiport_version}"
     // Kaleidoscope Cookery (dependency: BowlFoodOnlyItem, ModEffects)
     modImplementation "maven.modrinth:kaleidoscope-cookery-refabricated:${project.kaleidoscope_cookery_version}"
-    // Kaleidoscope Doll (soft integration: contributor dolls via DollBlock/DollItem/DollEntityItem; runtime uses user's own doll jar)
-    modImplementation "maven.modrinth:kaleidoscope-doll:${project.kaleidoscope_doll_version}"
+    // Kaleidoscope Doll (soft integration: contributor dolls via DollBlock/DollItem/DollEntityItem)
+    // modrinth maven 的 1.0.9 主文件是 1.20.1 包，dev 运行时被 loader 拒载（MC 版本不符）；
+    // 改用本地 1.21.1 fabric jar（与用户 PCL mods 里的一致）
+    modImplementation files("libs/kaleidoscopedoll-1.21.1-fabric-1.0.9.jar")
 
     // Optional compat integrations (compileOnly - not bundled)
     modCompileOnly("mezz.jei:jei-${project.minecraft_version}-fabric:${project.jei_version}")
