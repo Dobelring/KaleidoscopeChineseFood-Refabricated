@@ -42,4 +42,3 @@ replay_*.log
 # local porting staging area
 
 compat-staging/
-libs/
