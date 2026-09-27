@@ -66,6 +66,7 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         ModLootTableEvents.register();
         // 刷怪蛋进原版页 + 摘掉厨房食物页里的国味条目
         CreativeTabEvents.register();
+        com.bmt.kaleidoscope_chinesefood.event.MidAutumnEventHandler.register();
 
         // 黄花鱼海洋生成（官方用 neoforge biome_modifier json，Fabric 走 BiomeModifications）
         BiomeModifications.addSpawn(

@@ -6,7 +6,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "kaleidoscope_chinesefood:freezer_green"
+          "name": "kaleidoscope_chinesefood:freezer_green",
+          "condition": {
+            "type": "minecraft:match_block",
+            "blocks": "kaleidoscope_chinesefood:freezer_green",
+            "state": {
+              "top": "false"
+            }
+          }
         }
       ]
     }

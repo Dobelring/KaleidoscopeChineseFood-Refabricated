@@ -1,0 +1,29 @@
+{
+  "parent": "kaleidoscope_cookery:root",
+  "criteria": {
+    "mid_autumn_login": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "title": {
+      "translate": "advancement.kaleidoscope_chinesefood.mid_autumn.title"
+    },
+    "description": {
+      "translate": "advancement.kaleidoscope_chinesefood.mid_autumn.description"
+    },
+    "icon": {
+      "id": "kaleidoscope_chinesefood:mooncake",
+      "count": 1
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "requirements": [
+    [
+      "mid_autumn_login"
+    ]
+  ]
+}
