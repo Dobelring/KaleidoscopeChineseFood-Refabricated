@@ -100,7 +100,8 @@ public class FreezerBlock extends BaseEntityBlock {
       super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
       BlockPos otherPos = state.getValue(TOP) ? pos.below() : pos.above();
       if (level.getBlockState(otherPos).getBlock() instanceof FreezerBlock) {
-         level.destroyBlock(otherPos, false);
+         // 带掉落销毁另一半：top=false 条件保证拆上/下半与爆炸都只掉 1 个（用户口径：拆任意半都掉）
+            level.destroyBlock(otherPos, true);
       }
    }
 
