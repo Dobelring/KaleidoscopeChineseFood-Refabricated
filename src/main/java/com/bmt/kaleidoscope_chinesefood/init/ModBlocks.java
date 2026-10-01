@@ -10,6 +10,7 @@ import com.bmt.kaleidoscope_chinesefood.block.HorizontalBannerBlock;
 import com.bmt.kaleidoscope_chinesefood.block.KongmingLanternBlock;
 import com.bmt.kaleidoscope_chinesefood.block.MooncakeBlock;
 import com.bmt.kaleidoscope_chinesefood.block.PickleJarBlock;
+import com.bmt.kaleidoscope_chinesefood.block.StrawBedBlock;
 import com.bmt.kaleidoscope_chinesefood.block.SaltBlock;
 import com.bmt.kaleidoscope_chinesefood.block.crop.EggplantCropBlock;
 import com.bmt.kaleidoscope_chinesefood.block.misc.CornBlock;
@@ -43,6 +44,7 @@ public class ModBlocks {
     public static HorizontalBannerBlock HORIZONTAL_BANNER;
     public static MooncakeBlock MOONCAKE_BLOCK;
     public static KongmingLanternBlock KONGMING_LANTERN;
+    public static StrawBedBlock STRAW_BED;
     public static EggplantCropBlock EGGPLANT_CROP;
     public static Block BAMBOO_STEAMED_EGG;
 
@@ -88,6 +90,10 @@ public class ModBlocks {
         );
         KONGMING_LANTERN = register(
                 "kongming_lantern", p -> new KongmingLanternBlock(p.mapColor(MapColor.FIRE).strength(0.1F, 0.8F).noOcclusion().sound(SoundType.WOOL))
+        );
+        STRAW_BED = register(
+                "straw_bed",
+                p -> new StrawBedBlock(p.mapColor(MapColor.COLOR_YELLOW).strength(0.2F).sound(SoundType.GRASS).noOcclusion().ignitedByLava())
         );
         // 作物属性对齐 cookery：noCollision 保证作物非实心、可被耕地承接
         EGGPLANT_CROP = register(

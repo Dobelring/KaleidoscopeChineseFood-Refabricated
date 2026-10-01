@@ -30,6 +30,7 @@ public class ModFoodBiteRegistry {
    public static Identifier YELLOW_CROAKER_TOFU_SOUP;
    public static Identifier STEAMED_RICE_ROLLS;
    public static Identifier FOUR_JOY_MEATBALLS;
+   public static Identifier STUFFED_EGGPLANT;
 
    public static void init() {
       // cookery 1.4.x：FoodBiteRegistry 单例 INSTANCE；FoodData.create 需要成对 FoodProperties + Consumable
@@ -42,6 +43,10 @@ public class ModFoodBiteRegistry {
       FOUR_JOY_MEATBALLS = registry.registerFoodData(
          KaleidoscopeChineseFood.id("four_joy_meatballs"),
          FoodData.create(4, ModFoods.FOUR_JOY_MEATBALLS_BLOCK, ModFoods.FOUR_JOY_MEATBALLS_ITEM, ModFoods.FOUR_JOY_MEATBALLS_BLOCK_C, ModFoods.FOUR_JOY_MEATBALLS_ITEM_C)
+      );
+      STUFFED_EGGPLANT = registry.registerFoodData(
+         KaleidoscopeChineseFood.id("stuffed_eggplant"),
+         FoodData.create(5, ModFoods.STUFFED_EGGPLANT_BLOCK, ModFoods.STUFFED_EGGPLANT_ITEM, ModFoods.STUFFED_EGGPLANT_BLOCK_C, ModFoods.STUFFED_EGGPLANT_ITEM_C)
       );
       YELLOW_CROAKER_TOFU_SOUP = registry.registerFoodData(
          KaleidoscopeChineseFood.id("yellow_croaker_tofu_soup"),

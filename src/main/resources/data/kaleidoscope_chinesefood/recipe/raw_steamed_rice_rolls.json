@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    "#c:flour",
+    "#c:crops/rice",
     "#c:eggs",
     "#c:raw_meats",
     "#c:crops/lettuce",

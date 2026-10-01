@@ -9,6 +9,7 @@
     "TrapDoorBlockMixin",
     "ItemMixin",
     "PlateBlockMixin",
+    "PlayerSetSpawnMixin",
     "accessor.TrapDoorBlockAccessor",
     "accessor.SpawnPlacementsInvoker",
     "accessor.LootTableAccessor",
