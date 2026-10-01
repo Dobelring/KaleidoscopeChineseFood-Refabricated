@@ -127,6 +127,11 @@ public class KaleidoscopeChineseFood implements ModInitializer {
             // Create 联动：冰箱上下半块互附 + 整体易碎（官方 compat/create/CreateMovementChecks）
             if (FabricLoader.getInstance().isModLoaded("create")) {
                 com.bmt.kaleidoscope_chinesefood.compat.create.CreateMovementChecks.register();
+                // 竹躺椅装置座位（官方 1.1.14 三行注册依赖 kaleidoscope_contraption，该模组无 Fabric 构建）：
+                // 其缺席时改走 create-fly 原生 Seat API，与下方 contraption 守卫里的反射路径互斥
+                if (!FabricLoader.getInstance().isModLoaded("kaleidoscope_contraption")) {
+                    com.bmt.kaleidoscope_chinesefood.compat.create.BenchSeatChecks.register();
+                }
             }
 
             // 1.1.10 新增：放置菜品与 Kaleidoscope Contraption 兼容（反射软依赖，

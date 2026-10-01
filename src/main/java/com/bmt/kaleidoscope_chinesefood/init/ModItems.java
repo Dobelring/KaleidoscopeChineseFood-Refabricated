@@ -50,7 +50,6 @@ public class ModItems {
     public static Item BIG_PLATE_CHICKEN_NOODLES;
     public static Item TOMATO_EGG_NOODLES;
     public static Item PORK_CHILI_NOODLES;
-    public static Item STUFFED_EGGPLANT;
     public static Item DRY_POT_POTATOES;
     public static Item DRY_POT_CHICKEN;
     public static Item DRY_POT_SPARE_RIBS;
@@ -97,7 +96,6 @@ public class ModItems {
         BIG_PLATE_CHICKEN_NOODLES = register("big_plate_chicken_noodles", p -> new BowlFoodOnlyItem(p, ModFoods.BIG_PLATE_CHICKEN_NOODLES, ModFoods.BIG_PLATE_CHICKEN_NOODLES_C));
         TOMATO_EGG_NOODLES = register("tomato_egg_noodles", p -> new BowlFoodOnlyItem(p, ModFoods.TOMATO_EGG_NOODLES, ModFoods.TOMATO_EGG_NOODLES_C));
         PORK_CHILI_NOODLES = register("pork_chili_noodles", p -> new BowlFoodOnlyItem(p, ModFoods.PORK_CHILI_NOODLES, ModFoods.PORK_CHILI_NOODLES_C));
-        STUFFED_EGGPLANT = register("stuffed_eggplant", p -> new BowlFoodOnlyItem(p, ModFoods.STUFFED_EGGPLANT, ModFoods.STUFFED_EGGPLANT_C));
         DRY_POT_POTATOES = register("dry_pot_potatoes", p -> new BowlFoodOnlyItem(p, ModFoods.DRY_POT_POTATOES, ModFoods.DRY_POT_POTATOES_C));
         DRY_POT_CHICKEN = register("dry_pot_chicken", p -> new BowlFoodOnlyItem(p, ModFoods.DRY_POT_CHICKEN, ModFoods.DRY_POT_CHICKEN_C));
         DRY_POT_SPARE_RIBS = register("dry_pot_spare_ribs", p -> new BowlFoodOnlyItem(p, ModFoods.DRY_POT_SPARE_RIBS, ModFoods.DRY_POT_SPARE_RIBS_C));
