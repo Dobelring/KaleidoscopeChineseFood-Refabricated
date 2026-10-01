@@ -43,6 +43,7 @@ public class DataMapsEvents {
     public static void register() {
         CompostingChanceRegistry.INSTANCE.add(ModItems.EGGPLANT, 0.65F);
         CompostingChanceRegistry.INSTANCE.add(ModItems.EGGPLANT_SEED, 0.3F);
+        CompostingChanceRegistry.INSTANCE.add(ModItems.STRAW_BED, 0.65F);
 
         LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
             if (source.isBuiltin()) {

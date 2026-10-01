@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    { "tag": "c:flour" },
+    { "tag": "c:crops/rice" },
     { "tag": "c:eggs" },
     { "tag": "c:raw_meats" },
     { "tag": "c:crops/lettuce" },

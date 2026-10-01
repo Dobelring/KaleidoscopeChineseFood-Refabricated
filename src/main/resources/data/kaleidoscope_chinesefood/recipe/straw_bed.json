@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "HHH"
+  ],
+  "key": {
+    "H": { "item": "kaleidoscope_cookery:straw_block" }
+  },
+  "result": {
+    "id": "kaleidoscope_chinesefood:straw_bed",
+    "count": 4
+  }
+}

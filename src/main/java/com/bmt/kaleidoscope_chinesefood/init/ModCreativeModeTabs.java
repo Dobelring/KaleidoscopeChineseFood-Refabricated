@@ -61,7 +61,6 @@ public class ModCreativeModeTabs {
                             output.accept(ModItems.BIG_PLATE_CHICKEN_NOODLES);
                             output.accept(ModItems.TOMATO_EGG_NOODLES);
                             output.accept(ModItems.PORK_CHILI_NOODLES);
-                            output.accept(ModItems.STUFFED_EGGPLANT);
                             output.accept(ModItems.DRY_POT_POTATOES);
                             output.accept(ModItems.DRY_POT_CHICKEN);
                             output.accept(ModItems.DRY_POT_SPARE_RIBS);
@@ -91,6 +90,7 @@ public class ModCreativeModeTabs {
                             output.accept(ModBlocks.FREEZER_LIGHT_BLUE);
                             output.accept(ModBlocks.FREEZER_YELLOW);
                             output.accept(ModBlocks.PICKLE_JAR);
+                            output.accept(ModItems.STRAW_BED);
                             output.accept(ModItems.FIRECRACKER);
                             output.accept(ModBlocks.FU_CHARACTER);
                             output.accept(ModBlocks.COUPLET);

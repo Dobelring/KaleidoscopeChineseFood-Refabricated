@@ -170,8 +170,14 @@ public class ModFoods {
       .effect(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.VIGOR, 1800), 1.0F)
       .alwaysEdible()
       .build();
-   public static final FoodProperties STUFFED_EGGPLANT = new Builder()
+   public static final FoodProperties STUFFED_EGGPLANT_ITEM = new Builder()
       .nutrition(13)
+      .saturationModifier(0.61F)
+      .effect(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.VIGOR, 1800), 1.0F)
+      .alwaysEdible()
+      .build();
+   public static final FoodProperties STUFFED_EGGPLANT_BLOCK = new Builder()
+      .nutrition(3)
       .saturationModifier(0.61F)
       .effect(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.VIGOR, 1800), 1.0F)
       .alwaysEdible()

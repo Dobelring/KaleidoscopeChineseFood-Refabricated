@@ -68,7 +68,8 @@ public class ClientSetup {
                 ModBlocks.FIRECRACKER,
                 ModBlocks.FU_CHARACTER,
                 ModBlocks.KONGMING_LANTERN,
-                ModBlocks.BAMBOO_STEAMED_EGG
+                ModBlocks.BAMBOO_STEAMED_EGG,
+                ModBlocks.STRAW_BED
         );
 
         // 菜肴 / 盘子 / 茶杯 / 人偶方块由数据注册表驱动生成，按 id 从注册表反查后注册
@@ -80,6 +81,7 @@ public class ClientSetup {
                 ModFoodBiteRegistry.YELLOW_CROAKER_TOFU_SOUP,
                 ModFoodBiteRegistry.STEAMED_RICE_ROLLS,
                 ModFoodBiteRegistry.FOUR_JOY_MEATBALLS,
+                ModFoodBiteRegistry.STUFFED_EGGPLANT,
                 ModPlateRegistry.GOLDEN_APPLE_PLATTER,
                 ModPlateRegistry.ENCHANTED_GOLDEN_APPLE_PLATTER,
                 ModTea.DIANHONG_TEA,

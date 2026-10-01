@@ -11,6 +11,7 @@ import com.bmt.kaleidoscope_chinesefood.block.KongmingLanternBlock;
 import com.bmt.kaleidoscope_chinesefood.block.MooncakeBlock;
 import com.bmt.kaleidoscope_chinesefood.block.PickleJarBlock;
 import com.bmt.kaleidoscope_chinesefood.block.SaltBlock;
+import com.bmt.kaleidoscope_chinesefood.block.StrawBedBlock;
 import com.bmt.kaleidoscope_chinesefood.block.crop.EggplantCropBlock;
 import com.bmt.kaleidoscope_chinesefood.block.misc.CornBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.decoration.StackableFoodBlock;
@@ -42,6 +43,7 @@ public class ModBlocks {
     public static KongmingLanternBlock KONGMING_LANTERN;
     public static Block BAMBOO_STEAMED_EGG;
     public static EggplantCropBlock EGGPLANT_CROP;
+    public static StrawBedBlock STRAW_BED;
 
     public static void register() {
         CORN_RISTRA = register("corn_ristra", CornBlock::new);
@@ -94,6 +96,9 @@ public class ModBlocks {
         );
         // lazy suppliers break the crop-block <-> seed-item registration cycle
         EGGPLANT_CROP = register("eggplant_crop", () -> new EggplantCropBlock(() -> ModItems.EGGPLANT, () -> ModItems.EGGPLANT_SEED));
+        STRAW_BED = register(
+                "straw_bed", () -> new StrawBedBlock(Properties.of().mapColor(MapColor.COLOR_YELLOW).strength(0.2F).sound(SoundType.GRASS).noOcclusion().ignitedByLava())
+        );
     }
 
     private static FreezerBlock registerFreezer(String name) {

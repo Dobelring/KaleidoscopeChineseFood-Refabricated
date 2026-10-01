@@ -14,6 +14,7 @@ public class ModFoodBiteRegistry {
    public static ResourceLocation YELLOW_CROAKER_TOFU_SOUP;
    public static ResourceLocation STEAMED_RICE_ROLLS;
    public static ResourceLocation FOUR_JOY_MEATBALLS;
+   public static ResourceLocation STUFFED_EGGPLANT;
 
    public static void init() {
       STEAMED_RICE_ROLLS = FoodBiteRegistry.INSTANCE.registerFoodData(
@@ -23,6 +24,10 @@ public class ModFoodBiteRegistry {
       FOUR_JOY_MEATBALLS = FoodBiteRegistry.INSTANCE.registerFoodData(
          KaleidoscopeChineseFood.id("four_joy_meatballs"),
          FoodData.create(4, ModFoods.FOUR_JOY_MEATBALLS_BLOCK, ModFoods.FOUR_JOY_MEATBALLS_ITEM)
+      );
+      STUFFED_EGGPLANT = FoodBiteRegistry.INSTANCE.registerFoodData(
+         KaleidoscopeChineseFood.id("stuffed_eggplant"),
+         FoodData.create(5, ModFoods.STUFFED_EGGPLANT_BLOCK, ModFoods.STUFFED_EGGPLANT_ITEM)
       );
       YELLOW_CROAKER_TOFU_SOUP = FoodBiteRegistry.INSTANCE.registerFoodData(
          KaleidoscopeChineseFood.id("yellow_croaker_tofu_soup"),

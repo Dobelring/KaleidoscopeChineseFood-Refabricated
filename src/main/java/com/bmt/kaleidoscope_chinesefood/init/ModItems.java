@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.item.BedItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
@@ -46,7 +47,6 @@ public class ModItems {
     public static Item BIG_PLATE_CHICKEN_NOODLES;
     public static Item TOMATO_EGG_NOODLES;
     public static Item PORK_CHILI_NOODLES;
-    public static Item STUFFED_EGGPLANT;
     public static Item DRY_POT_POTATOES;
     public static Item DRY_POT_CHICKEN;
     public static Item DRY_POT_SPARE_RIBS;
@@ -68,6 +68,7 @@ public class ModItems {
     public static Item MOONCAKE_MOLD;
     public static Item FIRECRACKER;
     public static Item DIANHONG_TEA_BAG;
+    public static Item STRAW_BED;
 
     public static void register() {
         RAW_STEAMED_RICE_ROLLS = register("raw_steamed_rice_rolls", () -> new Item(new Item.Properties()));
@@ -95,7 +96,6 @@ public class ModItems {
         BIG_PLATE_CHICKEN_NOODLES = register("big_plate_chicken_noodles", () -> new BowlFoodOnlyItem(ModFoods.BIG_PLATE_CHICKEN_NOODLES));
         TOMATO_EGG_NOODLES = register("tomato_egg_noodles", () -> new BowlFoodOnlyItem(ModFoods.TOMATO_EGG_NOODLES));
         PORK_CHILI_NOODLES = register("pork_chili_noodles", () -> new BowlFoodOnlyItem(ModFoods.PORK_CHILI_NOODLES));
-        STUFFED_EGGPLANT = register("stuffed_eggplant", () -> new BowlFoodOnlyItem(ModFoods.STUFFED_EGGPLANT));
         DRY_POT_POTATOES = register("dry_pot_potatoes", () -> new BowlFoodOnlyItem(ModFoods.DRY_POT_POTATOES));
         DRY_POT_CHICKEN = register("dry_pot_chicken", () -> new BowlFoodOnlyItem(ModFoods.DRY_POT_CHICKEN));
         DRY_POT_SPARE_RIBS = register("dry_pot_spare_ribs", () -> new BowlFoodOnlyItem(ModFoods.DRY_POT_SPARE_RIBS));
@@ -124,6 +124,7 @@ public class ModItems {
         MOONCAKE_MOLD = register("mooncake_mold", () -> new MooncakeMoldItem(new Item.Properties().stacksTo(1)));
         FIRECRACKER = register("firecracker", () -> new FirecrackerItem(new Item.Properties()));
         DIANHONG_TEA_BAG = register("dianhong_tea_bag", () -> new Item(new Item.Properties()));
+        STRAW_BED = register("straw_bed", () -> new BedItem(ModBlocks.STRAW_BED, new Item.Properties().stacksTo(16)));
 
         // plain block items that were auto-registered alongside their blocks on NeoForge
         registerBlockItem("freezer", ModBlocks.FREEZER);
