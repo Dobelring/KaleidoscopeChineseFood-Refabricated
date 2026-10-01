@@ -90,6 +90,7 @@ public class KaleidoscopeChineseFoodClient implements ClientModInitializer {
     }
     /** 模型声明为 cutout 的方块（含 cookery 依据本模组数据表代注册的菜/茶方块）。 */
     private static final String[] CUTOUT_BLOCKS = {
+        "bamboo_steamed_egg",
         "bowl_stack",
         "corn_ristra",
         "dianhong_tea",
@@ -107,6 +108,8 @@ public class KaleidoscopeChineseFoodClient implements ClientModInitializer {
         "salt",
         "sichuan_boiled_fish",
         "sichuan_boiled_pork_slices",
+        "straw_bed",
+        "stuffed_eggplant",
         "yellow_croaker_soup",
         "yellow_croaker_tofu_soup",
     };

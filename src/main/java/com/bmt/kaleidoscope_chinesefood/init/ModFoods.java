@@ -268,8 +268,14 @@ public class ModFoods {
     public static final FoodProperties BAMBOO_STEAMED_EGG = new Builder().nutrition(6).saturationMod(0.61F).alwaysEat().build();
     public static final FoodProperties CORN = new Builder().nutrition(2).saturationMod(0.4F).alwaysEat().build();
     public static final FoodProperties EGGPLANT = new Builder().nutrition(2).saturationMod(0.5F).alwaysEat().build();
-    public static final FoodProperties STUFFED_EGGPLANT = new Builder()
+    public static final FoodProperties STUFFED_EGGPLANT_ITEM = new Builder()
         .nutrition(13)
+        .saturationMod(0.61F)
+        .effect(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.VIGOR.get(), 1800), 1.0F)
+        .alwaysEat()
+        .build();
+    public static final FoodProperties STUFFED_EGGPLANT_BLOCK = new Builder()
+        .nutrition(3)
         .saturationMod(0.61F)
         .effect(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.VIGOR.get(), 1800), 1.0F)
         .alwaysEat()

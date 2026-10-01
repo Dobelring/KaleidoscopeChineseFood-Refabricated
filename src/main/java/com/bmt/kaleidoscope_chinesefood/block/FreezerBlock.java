@@ -63,16 +63,16 @@ public class FreezerBlock extends BaseEntityBlock {
         BlockPos pos = context.getClickedPos();
         Level level = context.getLevel();
         BlockPos abovePos = pos.above();
-        return !level.getBlockState(abovePos).canBeReplaced(context)
-            ? null
-            : (BlockState)((BlockState)this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite())).setValue(TOP, false);
+        return pos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(abovePos).canBeReplaced(context)
+            ? (BlockState)((BlockState)this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite())).setValue(TOP, false)
+            : null;
     }
 
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
         BlockPos abovePos = pos.above();
         BlockState aboveState = (BlockState)state.setValue(TOP, true);
-        level.setBlock(abovePos, aboveState, 3);
+        level.setBlockAndUpdate(abovePos, aboveState);
     }
 
     @NotNull
@@ -132,8 +132,9 @@ public class FreezerBlock extends BaseEntityBlock {
         if (!state.is(newState.getBlock())) {
             BlockPos otherPos = state.getValue(TOP) ? pos.below() : pos.above();
             if (level.getBlockState(otherPos).getBlock() instanceof FreezerBlock) {
-                // 带掉落销毁另一半：top=false 条件保证拆上/下半与爆炸都只掉 1 个（用户口径：拆任意半都掉）
-                level.destroyBlock(otherPos, true);
+                // 静默拆掉另一半：伴侣永远不评估 loot，只有玩家/爆炸实际拆的那半按无条件 loot 掉 1
+                // → 生存拆任意半恒 1、爆炸任意顺序恒 1；创造不走掉落路径恒 0（官方 1.20.1 1.1.14 同款口径）
+                level.destroyBlock(otherPos, false);
             }
 
             if (level.getBlockEntity(pos) instanceof FreezerBlockEntity freezerBE) {

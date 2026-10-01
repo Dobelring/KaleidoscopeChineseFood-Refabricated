@@ -10,6 +10,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.item.BedItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.Items;
@@ -45,7 +46,6 @@ public class ModItems {
     public static final Item BIG_PLATE_CHICKEN_NOODLES = new BowlFoodOnlyItem(ModFoods.BIG_PLATE_CHICKEN_NOODLES);
     public static final Item TOMATO_EGG_NOODLES = new BowlFoodOnlyItem(ModFoods.TOMATO_EGG_NOODLES);
     public static final Item PORK_CHILI_NOODLES = new BowlFoodOnlyItem(ModFoods.PORK_CHILI_NOODLES);
-    public static final Item STUFFED_EGGPLANT = new BowlFoodOnlyItem(ModFoods.STUFFED_EGGPLANT);
     public static final Item YANGZHOU_FRIED_RICE = new BowlFoodOnlyItem(ModFoods.YANGZHOU_FRIED_RICE);
     public static final Item LAMB_PILAF = new BowlFoodOnlyItem(ModFoods.LAMB_PILAF);
     public static final Item DRY_POT_POTATOES = new BowlFoodOnlyItem(ModFoods.DRY_POT_POTATOES);
@@ -70,6 +70,7 @@ public class ModItems {
     public static final Item FIRECRACKER = new FirecrackerItem(ModBlocks.FIRECRACKER, new Properties());
     public static final Item MOONCAKE_MOLD = new MooncakeMoldItem(new Properties().stacksTo(1));
     public static final Item BAMBOO_STEAMED_EGG = new BambooSteamedEggBlockItem(ModBlocks.BAMBOO_STEAMED_EGG, ModFoods.BAMBOO_STEAMED_EGG);
+    public static final Item STRAW_BED = new BedItem(ModBlocks.STRAW_BED, new Properties().stacksTo(16));
 
     public ModItems() {
     }
@@ -101,7 +102,6 @@ public class ModItems {
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation("kaleidoscope_chinesefood", "big_plate_chicken_noodles"), BIG_PLATE_CHICKEN_NOODLES);
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation("kaleidoscope_chinesefood", "tomato_egg_noodles"), TOMATO_EGG_NOODLES);
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation("kaleidoscope_chinesefood", "pork_chili_noodles"), PORK_CHILI_NOODLES);
-        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation("kaleidoscope_chinesefood", "stuffed_eggplant"), STUFFED_EGGPLANT);
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation("kaleidoscope_chinesefood", "yangzhou_fried_rice"), YANGZHOU_FRIED_RICE);
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation("kaleidoscope_chinesefood", "lamb_pilaf"), LAMB_PILAF);
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation("kaleidoscope_chinesefood", "dry_pot_potatoes"), DRY_POT_POTATOES);
@@ -120,5 +120,6 @@ public class ModItems {
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation("kaleidoscope_chinesefood", "firecracker"), FIRECRACKER);
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation("kaleidoscope_chinesefood", "mooncake_mold"), MOONCAKE_MOLD);
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation("kaleidoscope_chinesefood", "bamboo_steamed_egg"), BAMBOO_STEAMED_EGG);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation("kaleidoscope_chinesefood", "straw_bed"), STRAW_BED);
     }
 }

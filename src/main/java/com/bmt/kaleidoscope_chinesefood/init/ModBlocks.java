@@ -10,6 +10,7 @@ import com.bmt.kaleidoscope_chinesefood.block.KongmingLanternBlock;
 import com.bmt.kaleidoscope_chinesefood.block.MooncakeBlock;
 import com.bmt.kaleidoscope_chinesefood.block.PickleJarBlock;
 import com.bmt.kaleidoscope_chinesefood.block.SaltBlock;
+import com.bmt.kaleidoscope_chinesefood.block.StrawBedBlock;
 import com.bmt.kaleidoscope_chinesefood.block.crop.EggplantCropBlock;
 import com.bmt.kaleidoscope_chinesefood.block.misc.CornBlock;
 import com.github.ysbbbbbb.kaleidoscopecookery.block.decoration.StackableFoodBlock;
@@ -79,6 +80,9 @@ public class ModBlocks {
         )
         .build();
     public static final Block EGGPLANT_CROP = new EggplantCropBlock(() -> ModItems.EGGPLANT, () -> ModItems.EGGPLANT_SEED);
+    public static final Block STRAW_BED = new StrawBedBlock(
+        Properties.of().mapColor(MapColor.COLOR_YELLOW).strength(0.2F).sound(SoundType.GRASS).noOcclusion().ignitedByLava()
+    );
 
     public ModBlocks() {
     }
@@ -110,6 +114,7 @@ public class ModBlocks {
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation("kaleidoscope_chinesefood", "kongming_lantern"), KONGMING_LANTERN);
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation("kaleidoscope_chinesefood", "bamboo_steamed_egg"), BAMBOO_STEAMED_EGG);
         Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation("kaleidoscope_chinesefood", "eggplant_crop"), EGGPLANT_CROP);
+        Registry.register(BuiltInRegistries.BLOCK, new ResourceLocation("kaleidoscope_chinesefood", "straw_bed"), STRAW_BED);
 
         // 方块物品（原 Forge 的 registerBlock/registerFreezerItem 会顺带把方块物品注册进 ModItems.ITEMS，
         // Fabric 侧统一在这里显式注册；mooncake / firecracker / bamboo_steamed_egg / eggplant_crop

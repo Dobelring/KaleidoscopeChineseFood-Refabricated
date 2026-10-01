@@ -14,5 +14,6 @@ public class ModCompostables {
         Object2FloatMap<ItemLike> compostMap = ComposterBlock.COMPOSTABLES;
         compostMap.put(ModItems.EGGPLANT, 0.65F);
         compostMap.put(ModItems.EGGPLANT_SEED, 0.3F);
+        compostMap.put(ModItems.STRAW_BED, 0.65F);
     }
 }

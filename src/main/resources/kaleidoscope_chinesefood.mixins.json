@@ -10,6 +10,7 @@
     "ItemMixin",
     "PlateBlockMixin",
     "PlayerEntityMixin",
+    "PlayerSetSpawnMixin",
     "RecipeManagerMixin",
     "accessor.LootPoolAccessor",
     "accessor.LootTableAccessor",

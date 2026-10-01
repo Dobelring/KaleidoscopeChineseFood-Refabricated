@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "food",
   "ingredients": [
-    { 
-      "tag": "forge:flour"
+    {
+      "tag": "c:crops/rice"
     },
     { 
       "tag": "forge:eggs"
