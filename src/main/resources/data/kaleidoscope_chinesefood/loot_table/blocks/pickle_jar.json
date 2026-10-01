@@ -8,7 +8,13 @@
           "type": "minecraft:item",
           "name": "kaleidoscope_chinesefood:pickle_jar"
         }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
       ]
     }
-  ]
+  ],
+  "random_sequence": "kaleidoscope_chinesefood:blocks/pickle_jar"
 }

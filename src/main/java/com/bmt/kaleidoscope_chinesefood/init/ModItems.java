@@ -2,6 +2,7 @@ package com.bmt.kaleidoscope_chinesefood.init;
 
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.item.BambooSteamedEggBlockItem;
+import com.bmt.kaleidoscope_chinesefood.item.StrawBedItem;
 import com.bmt.kaleidoscope_chinesefood.item.FirecrackerItem;
 import com.bmt.kaleidoscope_chinesefood.item.MooncakeItem;
 import com.bmt.kaleidoscope_chinesefood.item.MooncakeMoldItem;
@@ -49,7 +50,6 @@ public class ModItems {
     public static Item BIG_PLATE_CHICKEN_NOODLES;
     public static Item TOMATO_EGG_NOODLES;
     public static Item PORK_CHILI_NOODLES;
-    public static Item STUFFED_EGGPLANT;
     public static Item DRY_POT_POTATOES;
     public static Item DRY_POT_CHICKEN;
     public static Item DRY_POT_SPARE_RIBS;
@@ -68,6 +68,7 @@ public class ModItems {
     public static Item CORN_RISTRA;
     public static Item MOONCAKE_MOLD;
     public static Item FIRECRACKER;
+    public static Item STRAW_BED;
     public static Item DIANHONG_TEA_BAG;
 
     public static void register() {
@@ -96,7 +97,6 @@ public class ModItems {
         BIG_PLATE_CHICKEN_NOODLES = register("big_plate_chicken_noodles", p -> new BowlFoodOnlyItem(p, ModFoods.BIG_PLATE_CHICKEN_NOODLES, ModFoods.BIG_PLATE_CHICKEN_NOODLES_C));
         TOMATO_EGG_NOODLES = register("tomato_egg_noodles", p -> new BowlFoodOnlyItem(p, ModFoods.TOMATO_EGG_NOODLES, ModFoods.TOMATO_EGG_NOODLES_C));
         PORK_CHILI_NOODLES = register("pork_chili_noodles", p -> new BowlFoodOnlyItem(p, ModFoods.PORK_CHILI_NOODLES, ModFoods.PORK_CHILI_NOODLES_C));
-        STUFFED_EGGPLANT = register("stuffed_eggplant", p -> new BowlFoodOnlyItem(p, ModFoods.STUFFED_EGGPLANT, ModFoods.STUFFED_EGGPLANT_C));
         DRY_POT_POTATOES = register("dry_pot_potatoes", p -> new BowlFoodOnlyItem(p, ModFoods.DRY_POT_POTATOES, ModFoods.DRY_POT_POTATOES_C));
         DRY_POT_CHICKEN = register("dry_pot_chicken", p -> new BowlFoodOnlyItem(p, ModFoods.DRY_POT_CHICKEN, ModFoods.DRY_POT_CHICKEN_C));
         DRY_POT_SPARE_RIBS = register("dry_pot_spare_ribs", p -> new BowlFoodOnlyItem(p, ModFoods.DRY_POT_SPARE_RIBS, ModFoods.DRY_POT_SPARE_RIBS_C));
@@ -122,6 +122,7 @@ public class ModItems {
         CORN_RISTRA = register("corn_ristra", p -> new BlockItem(ModBlocks.CORN_RISTRA, p.useBlockDescriptionPrefix()));
         MOONCAKE_MOLD = register("mooncake_mold", p -> new MooncakeMoldItem(p.stacksTo(1)));
         FIRECRACKER = register("firecracker", p -> new FirecrackerItem(p));
+        STRAW_BED = register("straw_bed", p -> new StrawBedItem(ModBlocks.STRAW_BED, p.stacksTo(16).useBlockDescriptionPrefix()));
         RAW_BAMBOO_STEAMED_EGG = register("raw_bamboo_steamed_egg", p -> new Item(p));
         DIANHONG_TEA_BAG = register("dianhong_tea_bag", p -> new Item(p));
         BAMBOO_STEAMED_EGG = register(

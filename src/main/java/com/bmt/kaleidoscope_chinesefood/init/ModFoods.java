@@ -229,12 +229,20 @@ public class ModFoods {
    public static final Consumable FOUR_JOY_MEATBALLS_BLOCK_C = Consumables.defaultFood()
       .onConsume(new ApplyStatusEffectsConsumeEffect(List.of(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.VIGOR, 1800)), 1.0F))
       .build();
-   public static final FoodProperties STUFFED_EGGPLANT = new Builder()
+   public static final FoodProperties STUFFED_EGGPLANT_ITEM = new Builder()
       .nutrition(13)
       .saturationModifier(0.61F)
       .alwaysEdible()
       .build();
-   public static final Consumable STUFFED_EGGPLANT_C = Consumables.defaultFood()
+   public static final Consumable STUFFED_EGGPLANT_ITEM_C = Consumables.defaultFood()
+      .onConsume(new ApplyStatusEffectsConsumeEffect(List.of(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.VIGOR, 1800)), 1.0F))
+      .build();
+   public static final FoodProperties STUFFED_EGGPLANT_BLOCK = new Builder()
+      .nutrition(3)
+      .saturationModifier(0.61F)
+      .alwaysEdible()
+      .build();
+   public static final Consumable STUFFED_EGGPLANT_BLOCK_C = Consumables.defaultFood()
       .onConsume(new ApplyStatusEffectsConsumeEffect(List.of(new MobEffectInstance(com.github.ysbbbbbb.kaleidoscopecookery.init.ModEffects.VIGOR, 1800)), 1.0F))
       .build();
    public static final FoodProperties DRY_POT_POTATOES = new Builder()

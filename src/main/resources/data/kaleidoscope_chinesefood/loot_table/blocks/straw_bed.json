@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "kaleidoscope_chinesefood:straw_bed"
+        }
+      ],
+      "rolls": 1.0,
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "kaleidoscope_chinesefood:straw_bed",
+          "properties": {
+            "part": "head"
+          }
+        }
+      ]
+    }
+  ]
+}

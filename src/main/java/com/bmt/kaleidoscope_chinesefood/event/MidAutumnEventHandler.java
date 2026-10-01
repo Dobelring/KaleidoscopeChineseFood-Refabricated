@@ -35,7 +35,7 @@ import net.minecraft.world.level.saveddata.SavedDataType;
  */
 public class MidAutumnEventHandler {
     private static final Map<Integer, LocalDate> MID_AUTUMN_DATES = Map.of(
-            2026, LocalDate.of(2026, 9, 24),
+            2026, LocalDate.of(2026, 9, 25),
             2027, LocalDate.of(2027, 9, 15),
             2028, LocalDate.of(2028, 10, 3),
             2029, LocalDate.of(2029, 9, 22),

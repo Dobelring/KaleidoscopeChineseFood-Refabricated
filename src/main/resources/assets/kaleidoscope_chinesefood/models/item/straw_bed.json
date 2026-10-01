@@ -1,0 +1,279 @@
+{
+	"format_version": "26.3",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"5": "kaleidoscope_chinesefood:block/straw_bed",
+		"particle": "block/straw_bed_particle"
+	},
+	"elements": [
+		{
+			"name": "base",
+			"from": [0, 0, 3],
+			"to": [16, 4, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 3]},
+			"faces": {
+				"north": {"uv": [2, 5.25, 6, 6.25], "texture": "#5", "cullface": "north"},
+				"east": {"uv": [0, 6.25, 2, 5.25], "texture": "#5", "cullface": "east"},
+				"south": {"uv": [8, 5.25, 12, 6.25], "texture": "#5"},
+				"west": {"uv": [6, 5.25, 8, 6.25], "texture": "#5", "cullface": "west"},
+				"up": {"uv": [6, 5.25, 2, 3.25], "texture": "#5"},
+				"down": {"uv": [10, 3.25, 6, 5.25], "texture": "#5", "cullface": "down"}
+			}
+		},
+		{
+			"name": "frills_05",
+			"from": [-3, 0.115, -13],
+			"to": [0, 0.115, 3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, -13]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"east": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"south": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"west": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"up": {"uv": [13.5, 10.25, 14.25, 6.25], "rotation": 180, "texture": "#5", "cullface": "west"},
+				"down": {"uv": [14.25, 6.25, 15, 10.25], "rotation": 180, "texture": "#5", "cullface": "west"}
+			}
+		},
+		{
+			"name": "frills_04",
+			"from": [16, 0.105, -13],
+			"to": [19, 0.105, 3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, -13]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"east": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"south": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"west": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"up": {"uv": [12, 6.25, 12.75, 10.25], "rotation": 180, "texture": "#5", "cullface": "east"},
+				"down": {"uv": [12.75, 10.25, 13.5, 6.25], "rotation": 180, "texture": "#5", "cullface": "east"}
+			}
+		},
+		{
+			"name": "frills_03",
+			"from": [0, 0.125, -16],
+			"to": [16, 0.125, -13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, -13]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"east": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"south": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"west": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"up": {"uv": [0, 11.25, 4, 12], "rotation": 180, "texture": "#5", "cullface": "north"},
+				"down": {"uv": [0, 12.75, 4, 12], "rotation": 180, "texture": "#5", "cullface": "north"}
+			}
+		},
+		{
+			"name": "base",
+			"from": [0, 0, -13],
+			"to": [16, 4, 3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, -13]},
+			"faces": {
+				"north": {"uv": [4, 10.25, 8, 11.25], "texture": "#5", "cullface": "north"},
+				"east": {"uv": [0, 10.25, 4, 11.25], "texture": "#5", "cullface": "east"},
+				"south": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"west": {"uv": [8, 10.25, 12, 11.25], "texture": "#5", "cullface": "west"},
+				"up": {"uv": [8, 10.25, 4, 6.25], "texture": "#5"},
+				"down": {"uv": [12, 6.25, 8, 10.25], "texture": "#5", "cullface": "down"}
+			}
+		},
+		{
+			"name": "pillow_frills_01",
+			"from": [-2, 0.065, 11],
+			"to": [0, 0.065, 19],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 3]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"east": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"south": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"west": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"up": {"uv": [1.5, 8.25, 1, 6.25], "texture": "#5", "cullface": "west"},
+				"down": {"uv": [2, 6.25, 1.5, 8.25], "texture": "#5", "cullface": "west"}
+			}
+		},
+		{
+			"name": "pillow_frills_02",
+			"from": [-2, 4.96, 11],
+			"to": [0, 4.96, 19],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 3]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"east": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"south": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"west": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"up": {"uv": [10.5, 2, 10, 0], "texture": "#5", "cullface": "west"},
+				"down": {"uv": [11, 0, 10.5, 2], "texture": "#5", "cullface": "west"}
+			}
+		},
+		{
+			"name": "pillow_frills_03",
+			"from": [-2, 0.065, 11.025],
+			"to": [0, 4.95, 11.025],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 3]},
+			"faces": {
+				"north": {"uv": [1, 8.25, 1.5, 9.48125], "texture": "#5", "cullface": "west"},
+				"east": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"south": {"uv": [2, 8.25, 1.5, 9.48125], "texture": "#5", "cullface": "west"},
+				"west": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"up": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"down": {"uv": [0, 0, 0, 0], "texture": "#5"}
+			}
+		},
+		{
+			"name": "pillow_frills_04",
+			"from": [-2, 0.065, 18.985],
+			"to": [0, 4.95, 18.985],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 3]},
+			"faces": {
+				"north": {"uv": [10, 3.25, 10.5, 4.48125], "texture": "#5", "cullface": "west"},
+				"east": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"south": {"uv": [10.5, 3.25, 11, 4.48125], "texture": "#5", "cullface": "west"},
+				"west": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"up": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"down": {"uv": [0, 0, 0, 0], "texture": "#5"}
+			}
+		},
+		{
+			"name": "pillow_frills_05",
+			"from": [16, 0.05, 11],
+			"to": [18, 0.05, 19],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 3]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"east": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"south": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"west": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"up": {"uv": [0.5, 8.25, 0, 6.25], "texture": "#5", "cullface": "east"},
+				"down": {"uv": [0.5, 6.25, 1, 8.25], "texture": "#5", "cullface": "east"}
+			}
+		},
+		{
+			"name": "pillow_frills_06",
+			"from": [16, 4.975, 11],
+			"to": [18, 4.975, 19],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 3]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"east": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"south": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"west": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"up": {"uv": [0.5, 2, 0, 0], "texture": "#5", "cullface": "east"},
+				"down": {"uv": [0.5, 0, 1, 2], "texture": "#5", "cullface": "east"}
+			}
+		},
+		{
+			"name": "pillow_frills_07",
+			"from": [16, 0.05, 11],
+			"to": [18, 4.975, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 3]},
+			"faces": {
+				"north": {"uv": [0, 8.25, 0.5, 9.48125], "texture": "#5", "cullface": "east"},
+				"east": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"south": {"uv": [1, 8.25, 0.5, 9.48125], "texture": "#5", "cullface": "east"},
+				"west": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"up": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"down": {"uv": [0, 0, 0, 0], "texture": "#5"}
+			}
+		},
+		{
+			"name": "pillow_frills_08",
+			"from": [16, 0.05, 18.975],
+			"to": [18, 4.975, 18.975],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 3]},
+			"faces": {
+				"north": {"uv": [0, 3.25, 0.5, 4.48125], "texture": "#5", "cullface": "east"},
+				"east": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"south": {"uv": [1, 3.25, 0.5, 4.48125], "texture": "#5", "cullface": "east"},
+				"west": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"up": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"down": {"uv": [0, 0, 0, 0], "texture": "#5"}
+			}
+		},
+		{
+			"name": "pillow",
+			"from": [0, 0, 11],
+			"to": [16, 5, 19],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 3]},
+			"faces": {
+				"north": {"uv": [2, 2, 6, 3.25], "texture": "#5"},
+				"east": {"uv": [0, 2, 2, 3.25], "texture": "#5", "cullface": "east"},
+				"south": {"uv": [8, 2, 12, 3.25], "texture": "#5", "cullface": "south"},
+				"west": {"uv": [6, 2, 8, 3.25], "texture": "#5", "cullface": "west"},
+				"up": {"uv": [6, 2, 2, 0], "texture": "#5"},
+				"down": {"uv": [10, 0, 6, 2], "texture": "#5", "cullface": "down"}
+			}
+		},
+		{
+			"name": "frills_02",
+			"from": [16, 0.05, 3],
+			"to": [19, 0.05, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 3]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"east": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"south": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"west": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"up": {"uv": [12.75, 6.25, 12, 4.25], "texture": "#5", "cullface": "east"},
+				"down": {"uv": [13.5, 4.25, 12.75, 6.25], "texture": "#5", "cullface": "east"}
+			}
+		},
+		{
+			"name": "frills_03",
+			"from": [-3, 0.065, 3],
+			"to": [0, 0.065, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 0, 3]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"east": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"south": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"west": {"uv": [0, 0, 0, 0], "texture": "#5"},
+				"up": {"uv": [14.25, 6.25, 13.5, 4.25], "texture": "#5", "cullface": "west"},
+				"down": {"uv": [15, 4.25, 14.25, 6.25], "texture": "#5", "cullface": "west"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [38, -160, 0],
+			"translation": [-1.5, 2.75, -1.25],
+			"scale": [0.23, 0.23, 0.23]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [38, -160, 0],
+			"translation": [-1.5, 2.75, -1.25],
+			"scale": [0.23, 0.23, 0.23]
+		},
+		"firstperson_righthand": {
+			"rotation": [20, 160, 0],
+			"translation": [1.75, 2.5, 0.75],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"firstperson_lefthand": {
+			"rotation": [20, 180, 0],
+			"translation": [0.75, 2.5, 1.75],
+			"scale": [0.375, 0.375, 0.375]
+		},
+		"ground": {
+			"rotation": [0, -180, 0],
+			"translation": [0, 1, 2],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"gui": {
+			"rotation": [30, 157, 0],
+			"translation": [0.75, 3.5, 0],
+			"scale": [0.5325, 0.5325, 0.5325]
+		},
+		"head": {
+			"translation": [0, 10, -8]
+		},
+		"fixed": {
+			"rotation": [-90, 0, 0],
+			"translation": [0, 2.75, -3],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"on_shelf": {
+			"rotation": [90, 0, 0],
+			"translation": [0, 14.5, 2.5],
+			"scale": [0.9375, 0.9375, 0.9375]
+		}
+	}
+}
