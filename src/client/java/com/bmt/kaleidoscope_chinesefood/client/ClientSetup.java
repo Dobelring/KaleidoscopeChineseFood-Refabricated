@@ -16,12 +16,10 @@ import com.bmt.kaleidoscope_chinesefood.init.ModMenuTypes;
 import com.bmt.kaleidoscope_chinesefood.init.ModPlateRegistry;
 import com.bmt.kaleidoscope_chinesefood.init.ModTea;
 import com.bmt.kaleidoscope_chinesefood.integration.KaleidoscopeDollIntegration;
-import com.github.ysbbbbbb.kaleidoscopedoll.render.DollEntityItemRender;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -47,14 +45,12 @@ public class ClientSetup {
     }
 
     // 玩偶联动客户端侧：联动实体玩偶物品模型是 builtin/entity，需要注册动态渲染器
+    // （DollEntityItemRender 引用隔离在 DollClientIntegration，玩偶缺席时该类永不加载）
     private static void registerDollIntegrationClient() {
         if (!KaleidoscopeDollIntegration.isIntegrated()) {
             return;
         }
-        DollEntityItemRender renderer = new DollEntityItemRender();
-        for (var item : KaleidoscopeDollIntegration.getEntityDollItems()) {
-            BuiltinItemRendererRegistry.INSTANCE.register(item, renderer);
-        }
+        DollClientIntegration.register(KaleidoscopeDollIntegration.getEntityDollItems());
     }
 
     // 需要 cutout 渲染的方块通过 BlockRenderLayerMap 注册到 CUTOUT 层，避免透明像素渲染成不透明底色
