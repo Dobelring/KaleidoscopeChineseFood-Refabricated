@@ -9,6 +9,7 @@ import com.bmt.kaleidoscope_chinesefood.event.MidAutumnEventHandler;
 import com.bmt.kaleidoscope_chinesefood.event.ModLootTableEvents;
 import com.bmt.kaleidoscope_chinesefood.event.StrawBedSleepEvents;
 import com.bmt.kaleidoscope_chinesefood.event.VillagerTradeEvents;
+import com.bmt.kaleidoscope_chinesefood.init.CookerySelfRegistration;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlocks;
 import com.bmt.kaleidoscope_chinesefood.init.ModCookeryBlocks;
@@ -52,6 +53,9 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         ModTea.init();
         ModFoodBiteRegistry.init();
         ModPlateRegistry.init();
+        // 开发环境 loader 会随机打乱 mod 初始化顺序：cookery 若已先行完成三张表的遍历，
+        // 上面的条目不会再被代注册，需在此按 cookery 同款行为补注册（正常顺序下此调用为空操作）
+        CookerySelfRegistration.registerBlocksIfCookeryAlreadyInitialized();
         if (!FabricLoader.getInstance().isModLoaded("kaleidoscope_twilight")) {
             KTItems.register();
         }
