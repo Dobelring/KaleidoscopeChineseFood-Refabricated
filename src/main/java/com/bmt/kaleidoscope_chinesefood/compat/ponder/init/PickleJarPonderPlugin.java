@@ -1,5 +1,7 @@
 package com.bmt.kaleidoscope_chinesefood.compat.ponder.init;
 
+import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
+import com.github.ysbbbbbb.kaleidoscopecookery.compat.create.ponder.init.KitchenBlockPonderTag;
 import net.createmod.ponder.api.registration.PonderPlugin;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
 import net.createmod.ponder.api.registration.PonderTagRegistrationHelper;
@@ -27,6 +29,7 @@ public class PickleJarPonderPlugin implements PonderPlugin {
 
     @Override
     public void registerTags(PonderTagRegistrationHelper<ResourceLocation> helper) {
+        helper.addToTag(KitchenBlockPonderTag.KITCHEN_BLOCKS).add(KaleidoscopeChineseFood.id("pickle_jar"));
     }
 
     public static void init() {
