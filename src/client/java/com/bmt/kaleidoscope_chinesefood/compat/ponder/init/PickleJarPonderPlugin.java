@@ -2,7 +2,9 @@ package com.bmt.kaleidoscope_chinesefood.compat.ponder.init;
 
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.compat.ponder.scenes.PickleJarScenes;
+import com.github.ysbbbbbb.kaleidoscopecookery.compat.create.ponder.init.KitchenBlockPonderTag;
 import com.zurrtum.create.client.ponder.api.registration.PonderPlugin;import com.zurrtum.create.client.ponder.api.registration.PonderSceneRegistrationHelper;
+import com.zurrtum.create.client.ponder.api.registration.PonderTagRegistrationHelper;
 import com.zurrtum.create.client.ponder.foundation.PonderIndex;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -28,6 +30,11 @@ public final class PickleJarPonderPlugin implements PonderPlugin {
     public void registerScenes(PonderSceneRegistrationHelper<Identifier> helper) {
         PickleJarPonderScenes.register(helper);
         KaleidoscopeChineseFood.LOGGER.info("Registered the Pickle Jar ponder scene (kaleidoscope_chinesefood:pickle_jar)");
+    }
+
+    @Override
+    public void registerTags(PonderTagRegistrationHelper<Identifier> helper) {
+        helper.addToTag(KitchenBlockPonderTag.KITCHEN_BLOCKS).add(KaleidoscopeChineseFood.id("pickle_jar"));
     }
 
     public static void init() {
