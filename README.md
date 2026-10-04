@@ -12,7 +12,7 @@
 ## Overview
 ![Minecraft](https://img.shields.io/badge/Minecraft-Java%20Edition-brightgreen)
 ![Fabric](https://img.shields.io/badge/1.21.1%20%7C%201.21.11%20%7C%2026.1.2%20%7C%2026.2-orange)
-![License](https://img.shields.io/badge/License-CC_BY--NC--ND_4.0-lightgrey)
+![License](https://img.shields.io/badge/License-MIT_+_CC_BY--NC--ND_4.0-lightgrey)
 
 This mod brings a variety of Chinese cuisine and folk items to "Kaleidoscope: Cookery".
 
@@ -41,6 +41,6 @@ Dependency jars (Kaleidoscope Cookery, Forge Config API Port, JEI, EMI, Jade) ar
 The artifact is produced in `build/libs/`.
 
 ## License
-This project is a **Fabric port** of the original Kaleidoscope Chinese Food (森罗物语：国味), which is licensed under **CC BY-NC-ND 4.0**. As a derivative work, the whole port is distributed under the same license — see [LICENSE](LICENSE).
+This project is a **Fabric port** of the original Kaleidoscope Chinese Food (森罗物语：国味), which is licensed under **MIT + CC BY-NC-ND 4.0**. Code is licensed under **MIT**, assets under **CC BY-NC-ND 4.0** — see [LICENSE-CODE](LICENSE-CODE) and [LICENSE-ASSETS](LICENSE-ASSETS).
 
 Original mod by 辰笺渡月 (chenjdy / ChenjdyUltra), 白馒头 (BmtUltra), 白帆小喵L (bf_meow), witzig梦行粥. Fabric port by [Dobelring](https://github.com/Dobelring).
