@@ -29,6 +29,7 @@ public class PickleJarRender implements BlockEntityRenderer<PickleJarBlockEntity
    private static final float BASE_SCALE = 0.28F;
    private static final float SCALE_VARIATION = 0.05F;
    private static final float HEIGHT_OFFSET = 0.03F;
+   private static final Random RANDOM = new Random();
    private final ItemModelResolver itemModelResolver;
 
    public PickleJarRender(Context context) {
@@ -49,7 +50,8 @@ public class PickleJarRender implements BlockEntityRenderer<PickleJarBlockEntity
       for (int slot = 0; slot < 4; slot++) {
          ItemStack stack = blockEntity.inventory.getStackInSlot(slot);
          if (!stack.isEmpty()) {
-            Random random = new Random(blockEntity.getBlockPos().hashCode() + slot * 200L);
+            Random random = RANDOM;
+            random.setSeed(blockEntity.getBlockPos().hashCode() + slot * 200L);
             int renderCount = Math.min(Math.max(10 + stack.getCount() / 8, 4), 10);
             float baseY = LAYER_BASE_Y[slot];
 
@@ -83,9 +85,5 @@ public class PickleJarRender implements BlockEntityRenderer<PickleJarBlockEntity
             poseStack.popPose();
          }
       }
-   }
-
-   public boolean shouldRenderOffScreen() {
-      return true;
    }
 }
