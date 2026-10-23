@@ -26,7 +26,7 @@ public abstract class BaseProcessingRecipe implements Recipe<FreezerInput> {
    protected final Ingredient input;
    protected final ItemStackTemplate output;
    protected final int baseTime;
-   public static final int TIME_MULTIPLIER = 5;
+   public static final int TIME_MULTIPLIER = 10;
    public static final int DEFAULT_BASE_TIME = 100;
 
    public BaseProcessingRecipe(Ingredient input, ItemStackTemplate output, int baseTime) {
@@ -36,7 +36,7 @@ public abstract class BaseProcessingRecipe implements Recipe<FreezerInput> {
    }
 
    public int calculateProcessingTime(int count) {
-      return this.baseTime + Math.max(0, (count - 1) * 5);
+      return this.baseTime + Math.max(0, (count - 1) * 10);
    }
 
    public boolean matches(@NotNull FreezerInput input, @NotNull Level level) {

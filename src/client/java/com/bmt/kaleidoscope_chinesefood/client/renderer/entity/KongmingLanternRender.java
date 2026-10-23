@@ -30,15 +30,15 @@ public class KongmingLanternRender extends EntityRenderer<KongmingLanternEntity,
 
    public void extractRenderState(KongmingLanternEntity entity, KongmingLanternRenderState state, float partialTick) {
       super.extractRenderState(entity, state, partialTick);
-      state.yRot = entity.getYRot() + (entity.getYRot() - entity.yRotO) * partialTick;
+      state.yRot = entity.getVisualYaw(partialTick);
       // 26.1 BER 新范式：extract 期解析方块模型进 BlockModelRenderState
       this.blockModelResolver.update(state.model, ModBlocks.KONGMING_LANTERN.defaultBlockState(), DISPLAY_CONTEXT);
    }
 
    public void submit(KongmingLanternRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
       poseStack.pushPose();
-      poseStack.translate(-0.5, 0.0, -0.5);
       poseStack.mulPose(Axis.YP.rotationDegrees(state.yRot));
+      poseStack.translate(-0.5, 0.0, -0.5);
       // 常亮：光源值取满；由 BlockModelRenderState 按模型层自选 sheet 提交
       if (!state.model.isEmpty()) {
          state.model.submit(poseStack, submitNodeCollector, 15728880, OverlayTexture.NO_OVERLAY, 0);
