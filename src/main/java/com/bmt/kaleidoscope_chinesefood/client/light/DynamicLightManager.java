@@ -133,12 +133,17 @@ public final class DynamicLightManager {
    }
 
    public static int getLightLevel(BlockPos pos) {
+      return getLightLevel(pos.getX(), pos.getY(), pos.getZ());
+   }
+
+   /** Sodium 的地形光照管线按方块坐标逐格采样，走此重载避免每格新建 BlockPos。 */
+   public static int getLightLevel(int x, int y, int z) {
       if (SOURCES.isEmpty()) {
          return 0;
       } else {
-         double px = pos.getX() + 0.5;
-         double py = pos.getY() + 0.5;
-         double pz = pos.getZ() + 0.5;
+         double px = x + 0.5;
+         double py = y + 0.5;
+         double pz = z + 0.5;
          int result = 0;
 
          for (DynamicLightManager.LightSource source : SOURCES) {
