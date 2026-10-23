@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RenderShape;
@@ -114,6 +115,17 @@ public class BowlStackBlock extends BaseEntityBlock implements SimpleWaterlogged
       }
 
       return super.updateShape(state, level, tickAccess, pos, direction, neighborPos, neighborState, random);
+   }
+
+   // 26.x 的 neighborChanged 不再给出变化邻居的坐标（换成了 Orientation），无法只盯正下方，
+   // 退而求其次：任意邻居变化都唤醒休眠（代价只是重置冷却，下个 10 tick 边界才复查）
+   public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, @Nullable Orientation orientation, boolean isMoving) {
+      super.neighborChanged(state, level, pos, neighborBlock, orientation, isMoving);
+      if (!level.isClientSide()) {
+         if (level.getBlockEntity(pos) instanceof BowlStackBlockEntity bowlStackBE) {
+            bowlStackBE.onBelowChanged();
+         }
+      }
    }
 
    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {

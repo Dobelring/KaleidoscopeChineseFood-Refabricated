@@ -7,6 +7,7 @@
     "PlayerEntityMixin",
     "DoorBlockMixin",
     "TrapDoorBlockMixin",
+    "InstantSmeltingEffectMixin",
     "ItemMixin",
     "PlateBlockMixin",
     "PlayerSetSpawnMixin",
@@ -16,6 +17,8 @@
     "accessor.LootPoolAccessor"
   ],
   "client": [
+    "EntityRendererLightMixin",
+    "BlockModelLighterLightMixin",
     "FogRendererMixin",
     "accessor.RenderTypeInvoker"
   ],
