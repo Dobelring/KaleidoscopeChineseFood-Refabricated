@@ -20,6 +20,7 @@ public class BowlStackBlockEntity extends BlockEntity implements Container {
     public static final int MAX_BOWL_COUNT = 3;
     private static final int AUTO_PULL_INTERVAL = 10;
     private int pullCooldown = 0;
+    private boolean shouldCheckBelow = true;
     private final SimpleItemHandler itemHandler = new SimpleItemHandler(1) {
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
@@ -56,12 +57,35 @@ public class BowlStackBlockEntity extends BlockEntity implements Container {
 
     public static void tick(Level level, BlockPos pos, BlockState state, BowlStackBlockEntity be) {
         if (!level.isClientSide) {
-            if (be.pullCooldown > 0) {
-                be.pullCooldown--;
-            } else {
-                be.tryPullBowlFromBelow();
-                be.pullCooldown = AUTO_PULL_INTERVAL;
+            if (be.shouldCheckBelow) {
+                if (be.pullCooldown > 0) {
+                    be.pullCooldown--;
+                } else {
+                    be.pullCooldown = AUTO_PULL_INTERVAL;
+                    if (!be.hasContainerBelow()) {
+                        be.shouldCheckBelow = false;
+                    } else {
+                        be.tryPullBowlFromBelow();
+                    }
+                }
             }
+        }
+    }
+
+    public void onBelowChanged() {
+        this.shouldCheckBelow = true;
+        this.pullCooldown = 0;
+    }
+
+    private boolean hasContainerBelow() {
+        BlockPos belowPos = this.worldPosition.below();
+        BlockEntity belowBE = this.level.getBlockEntity(belowPos);
+        if (belowBE == null) {
+            return false;
+        } else if (belowBE instanceof HopperBlockEntity) {
+            return false;
+        } else {
+            return belowBE instanceof Container;
         }
     }
 

@@ -5,6 +5,7 @@
   "mixins": [
     "CookeryModEffectsMixin",
     "EntityMixin",
+    "InstantSmeltingEffectMixin",
     "ItemMixin",
     "PlateBlockMixin",
     "PlayerEntityMixin",
@@ -18,6 +19,8 @@
     "accessor.SpawnPlacementsInvoker"
   ],
   "client": [
+    "EntityRendererLightMixin",
+    "LevelRendererLightMixin",
     "FogRendererMixin"
   ],
   "injectors": {
