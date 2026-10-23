@@ -17,7 +17,7 @@
   ],
   "client": [
     "EntityRendererLightMixin",
-    "BlockModelLighterLightMixin",
+    "LightCoordsUtilLightMixin",
     "FogRendererMixin",
     "accessor.RenderTypeInvoker"
   ],
