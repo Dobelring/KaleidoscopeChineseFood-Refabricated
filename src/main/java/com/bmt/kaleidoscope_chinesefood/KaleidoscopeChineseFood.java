@@ -6,6 +6,7 @@ import com.bmt.kaleidoscope_chinesefood.compat.create.CreateMovementChecks;
 import com.bmt.kaleidoscope_chinesefood.compat.kaleidoscope_contraption.KaleidoscopeContraptionCompat;
 import com.bmt.kaleidoscope_chinesefood.config.ModConfig;
 import com.bmt.kaleidoscope_chinesefood.event.CreativeTabEventHandler;
+import com.bmt.kaleidoscope_chinesefood.event.InstantSmeltingEventHandler;
 import com.bmt.kaleidoscope_chinesefood.event.MidAutumnEventHandler;
 import com.bmt.kaleidoscope_chinesefood.event.LavaSwimDamageEvents;
 import com.bmt.kaleidoscope_chinesefood.event.LootTableEvents;
@@ -84,6 +85,7 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         VillagerTradeEvents.register();
         MidAutumnEventHandler.register();
         KaleidoscopeDollIntegration.register();
+        InstantSmeltingEventHandler.register();
 
         SoupBaseManager.registerMobSoupBase(id("yellow_croaker_bucket"), ModItems.YELLOW_CROAKER_BUCKET);
 

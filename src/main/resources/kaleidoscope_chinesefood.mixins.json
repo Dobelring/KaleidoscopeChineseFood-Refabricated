@@ -7,6 +7,8 @@
     "CookeryInitMixin",
     "CreativeModeTabsMixin",
     "EntityMixin",
+    "InstantSmeltingDropsMixin",
+    "InstantSmeltingEffectMixin",
     "ItemMixin",
     "PlateBlockMixin",
     "PlayerEntityMixin",
@@ -17,6 +19,8 @@
     "accessor.TrapDoorBlockAccessor"
   ],
   "client": [
+    "EntityRendererLightMixin",
+    "LevelRendererLightMixin",
     "accessor.RenderBuffersAccessor"
   ],
   "server": [],

@@ -101,6 +101,16 @@ public class BowlStackBlock extends Block implements EntityBlock, SimpleWaterlog
         return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
+    @Override
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+        super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
+        if (!level.isClientSide && neighborPos.equals(pos.below())) {
+            if (level.getBlockEntity(pos) instanceof BowlStackBlockEntity bowlStackBE) {
+                bowlStackBE.onBelowChanged();
+            }
+        }
+    }
+
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         Direction facing = (Direction)state.getValue(FACING);
         return facing != Direction.NORTH && facing != Direction.SOUTH ? SHAPE_EAST_WEST : SHAPE_NORTH_SOUTH;
@@ -197,7 +207,7 @@ public class BowlStackBlock extends Block implements EntityBlock, SimpleWaterlog
     }
 
     public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-        return (Integer)state.getValue(BOWL_COUNT) * 5;
+        return Math.min((Integer)state.getValue(BOWL_COUNT) * 5, 15);
     }
 
     @NotNull

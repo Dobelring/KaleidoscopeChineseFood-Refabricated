@@ -23,9 +23,9 @@ public class KongmingLanternRender extends EntityRenderer<KongmingLanternEntity>
 
     public void render(KongmingLanternEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
-        poseStack.translate(-0.5, 0.0, -0.5);
-        float rotation = entity.getYRot() + (entity.getYRot() - entity.yRotO) * partialTicks;
+        float rotation = entity.getVisualYaw(partialTicks);
         poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
+        poseStack.translate(-0.5, 0.0, -0.5);
         BlockState state = ModBlocks.KONGMING_LANTERN.defaultBlockState();
         this.blockRenderer.renderSingleBlock(state, poseStack, buffer, 15728880, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();

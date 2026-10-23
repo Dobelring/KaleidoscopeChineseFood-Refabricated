@@ -2,6 +2,7 @@ package com.bmt.kaleidoscope_chinesefood.menu;
 
 import com.bmt.kaleidoscope_chinesefood.block.entity.FreezerBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.init.ModMenuTypes;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -11,7 +12,9 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class FreezerMenu extends AbstractContainerMenu {
     private final Container container;
@@ -38,8 +41,21 @@ public class FreezerMenu extends AbstractContainerMenu {
         }
     }
 
-    public FreezerMenu(int id, Inventory playerInv, FriendlyByteBuf extraData) {
-        this(id, playerInv, new SimpleContainer(extraData.readInt()));
+    public FreezerMenu(int id, Inventory playerInv, @Nullable FriendlyByteBuf extraData) {
+        this(id, playerInv, resolveContainer(extraData));
+    }
+
+    private static Container resolveContainer(@Nullable FriendlyByteBuf extraData) {
+        if (extraData != null && extraData.isReadable()) {
+            return new SimpleContainer(extraData.readInt());
+        } else {
+            Minecraft mc = Minecraft.getInstance();
+            return mc.hitResult instanceof BlockHitResult hit
+                    && mc.level != null
+                    && mc.level.getBlockEntity(hit.getBlockPos()) instanceof FreezerBlockEntity be
+                ? be
+                : new SimpleContainer(54);
+        }
     }
 
     private void addSlots(Inventory playerInv) {

@@ -1,5 +1,6 @@
 package com.bmt.kaleidoscope_chinesefood.block.entity;
 
+import com.bmt.kaleidoscope_chinesefood.client.light.DynamicLightRequests;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import java.util.Random;
 import net.minecraft.core.BlockPos;
@@ -43,6 +44,7 @@ public class FirecrackerBlockEntity extends BlockEntity {
             }
 
             if (level.isClientSide) {
+                DynamicLightRequests.request(pos, 10);
                 double x = pos.getX() + 0.5;
                 double y = pos.getY() + 0.6;
                 double z = pos.getZ() + 0.5;
@@ -54,12 +56,27 @@ public class FirecrackerBlockEntity extends BlockEntity {
                 level.addParticle(ParticleTypes.SMOKE, x + (RANDOM.nextDouble() - 0.5) * 0.03, y + 0.08, z + (RANDOM.nextDouble() - 0.5) * 0.03, 0.0, 0.03, 0.0);
             }
 
-            if (be.fuse == 0 && !level.isClientSide && level instanceof ServerLevel serverLevel) {
-                serverLevel.playSound(null, pos, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
-                spawnFireworks(serverLevel, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-                level.removeBlock(pos, false);
+            if (be.fuse == 0) {
+                if (level.isClientSide) {
+                    DynamicLightRequests.remove(pos);
+                }
+
+                if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
+                    serverLevel.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    spawnFireworks(serverLevel, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+                    level.removeBlock(pos, false);
+                }
             }
         }
+    }
+
+    @Override
+    public void setRemoved() {
+        if (this.level != null && this.level.isClientSide && this.fuse > 0) {
+            DynamicLightRequests.remove(this.worldPosition);
+        }
+
+        super.setRemoved();
     }
 
     public void ignite() {

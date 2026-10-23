@@ -3,6 +3,7 @@ package com.bmt.kaleidoscope_chinesefood.client;
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.client.event.TooltipEvents;
 import com.bmt.kaleidoscope_chinesefood.client.gui.FreezerScreen;
+import com.bmt.kaleidoscope_chinesefood.client.light.DynamicLightEvents;
 import com.bmt.kaleidoscope_chinesefood.client.renderer.CoupletRender;
 import com.bmt.kaleidoscope_chinesefood.client.renderer.CustomRenderType;
 import com.bmt.kaleidoscope_chinesefood.client.renderer.EnchantedPlateBlockEntityRenderer;
@@ -65,6 +66,9 @@ public class KaleidoscopeChineseFoodClient implements ClientModInitializer {
 
         // tooltip（原 Forge ItemTooltipEvent）
         TooltipEvents.register();
+
+        // 动态光引擎（原 DynamicLightEvents 的 ClientTickEvent.Post 订阅）
+        DynamicLightEvents.register();
 
         // 网络客户端接收器（原 ClientPacketHandler）
         ClientPacketHandler.registerClient();
