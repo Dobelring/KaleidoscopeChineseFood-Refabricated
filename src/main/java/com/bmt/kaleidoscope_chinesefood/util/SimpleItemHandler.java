@@ -167,11 +167,13 @@ public class SimpleItemHandler implements Container {
         net.minecraft.world.level.storage.ValueOutput.ValueOutputList items = output.childrenList("Items");
         for (int i = 0; i < this.size; i++) {
             ItemStack stack = this.stacks.get(i);
+            // 空槽不落条目：只有 Slot 的条目在读取侧会让 ItemStack 解码报错刷屏
+            if (stack.isEmpty()) {
+                continue;
+            }
             net.minecraft.world.level.storage.ValueOutput entry = items.addChild();
             entry.putByte("Slot", (byte) i);
-            if (!stack.isEmpty()) {
-                entry.store(ItemStack.MAP_CODEC, stack);
-            }
+            entry.store(ItemStack.MAP_CODEC, stack);
         }
     }
 
@@ -180,6 +182,10 @@ public class SimpleItemHandler implements Container {
             this.stacks.set(i, ItemStack.EMPTY);
         }
         for (net.minecraft.world.level.storage.ValueInput entry : input.childrenListOrEmpty("Items")) {
+            // 兼容旧存档里"只有 Slot 的空槽条目"，跳过以免 ItemStack 解码报错刷屏
+            if (entry.getStringOr("id", "").isEmpty()) {
+                continue;
+            }
             int slot = entry.getByteOr("Slot", (byte) 0) & 255;
             if (slot < this.size) {
                 this.stacks.set(slot, entry.read(ItemStack.MAP_CODEC).orElse(ItemStack.EMPTY));
