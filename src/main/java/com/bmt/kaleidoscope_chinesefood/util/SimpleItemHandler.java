@@ -168,11 +168,15 @@ public class SimpleItemHandler implements Container {
         tag.putInt("Size", this.size);
         net.minecraft.nbt.ListTag items = new net.minecraft.nbt.ListTag();
         for (int i = 0; i < this.size; i++) {
+            ItemStack stack = this.stacks.get(i);
+            // 空槽不落条目：只有 Slot 的条目在读取侧会让 ItemStack.parse 打 error 日志
+            if (stack.isEmpty()) {
+                continue;
+            }
             CompoundTag entry = new CompoundTag();
             entry.putByte("Slot", (byte) i);
-            ItemStack stack = this.stacks.get(i);
             // save() 返回编码后的新标签（prefix 合并结果），以返回值写入
-            items.add(stack.isEmpty() ? entry : stack.save(registries, entry));
+            items.add(stack.save(registries, entry));
         }
         tag.put("Items", items);
         return tag;
@@ -185,6 +189,10 @@ public class SimpleItemHandler implements Container {
         net.minecraft.nbt.ListTag items = tag.getList("Items", net.minecraft.nbt.Tag.TAG_COMPOUND);
         for (int i = 0; i < items.size(); i++) {
             CompoundTag entry = items.getCompound(i);
+            // 兼容旧存档里"只有 Slot 的空槽条目"，ItemStack.parse 对其会打 error 日志
+            if (!entry.contains("id")) {
+                continue;
+            }
             int slot = entry.getByte("Slot") & 255;
             if (slot < this.size) {
                 this.stacks.set(slot, ItemStack.parse(registries, entry).orElse(ItemStack.EMPTY));
