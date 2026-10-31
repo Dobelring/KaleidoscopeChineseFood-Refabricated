@@ -7,10 +7,15 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 
 /**
- * 岩浆游泳效果免伤。
- * 原 Forge 的 {@code LivingHurtEvent}（FORGE 总线）在 Fabric 上无对应事件，
- * 改用 {@code ServerLivingEntityEvents.ALLOW_DAMAGE}：返回 false 等价于原
- * {@code event.setCanceled(true)}（都在伤害生效前拦截，且都只在服务端触发）。
+ * 岩浆游泳效果免伤（官方 1.1.16 语义）：
+ * <ul>
+ * <li>岩浆伤害始终免疫；</li>
+ * <li>「着火」伤害仅在身处岩浆时免疫（上岸后身上的火会照常烧）；</li>
+ * <li>不再免疫「在火中」伤害（旧版连站在火上也不烧，官方 1.1.16 收紧了）。</li>
+ * </ul>
+ * <p>
+ * 原 Forge 的 {@code LivingIncomingDamageEvent} 在 Fabric 上改用
+ * {@code ServerLivingEntityEvents.ALLOW_DAMAGE}：返回 false 等价于取消。
  */
 public class LavaSwimDamageEvents {
     public LavaSwimDamageEvents() {
@@ -20,15 +25,16 @@ public class LavaSwimDamageEvents {
         ServerLivingEntityEvents.ALLOW_DAMAGE.register(LavaSwimDamageEvents::onLivingHurt);
     }
 
-    /** 原 onLivingHurt(LivingHurtEvent)。 */
+    /** 原 onLivingIncomingDamage(LivingIncomingDamageEvent)。 */
     public static boolean onLivingHurt(LivingEntity entity, DamageSource source, float amount) {
-        if (entity.hasEffect(ModEffects.LAVA_SWIM)
-            && (
-                source.is(DamageTypes.LAVA)
-                    || source.is(DamageTypes.IN_FIRE)
-                    || source.is(DamageTypes.ON_FIRE)
-            )) {
-            return false;
+        if (entity.hasEffect(ModEffects.LAVA_SWIM)) {
+            if (source.is(DamageTypes.LAVA)) {
+                return false;
+            }
+
+            if (source.is(DamageTypes.ON_FIRE) && entity.isInLava()) {
+                return false;
+            }
         }
 
         return true;

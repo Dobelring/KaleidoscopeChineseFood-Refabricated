@@ -7,10 +7,12 @@ import com.bmt.kaleidoscope_chinesefood.init.ModRecipeTypes;
 import com.bmt.kaleidoscope_chinesefood.recipe.ModRecipes;
 import java.util.List;
 import mezz.jei.api.IModPlugin;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -42,6 +44,12 @@ public class ModPlugin implements IModPlugin {
         registration.addRecipes(FreezingRecipeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipeTypes.FREEZING));
         registration.addRecipes(RefrigeratingRecipeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipeTypes.REFRIGERATING));
         registration.addRecipes(MooncakeMoldRecipeCategory.TYPE, List.of(new MooncakeMoldRecipe()));
+        // 官方 1.1.16：黄花鱼 JEI 信息页（猫交互说明）
+        registration.addIngredientInfo(
+            List.of(new ItemStack(ModItems.YELLOW_CROAKER)),
+            VanillaTypes.ITEM_STACK,
+            Component.translatable("jei.kaleidoscope_chinesefood.yellow_croaker.info")
+        );
     }
 
     @Override

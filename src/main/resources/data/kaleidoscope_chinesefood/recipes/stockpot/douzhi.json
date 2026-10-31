@@ -9,13 +9,13 @@
   "finished_texture": "kaleidoscope_cookery:stockpot/default_finished",
   "ingredients": [
     {
-      "tag": "forge:seeds"
+      "tag": "kaleidoscope_chinesefood:douzhi"
     },
     {
-      "tag": "forge:seeds"
+      "tag": "kaleidoscope_chinesefood:douzhi"
     },
     {
-      "tag": "forge:seeds"
+      "tag": "kaleidoscope_chinesefood:douzhi"
     }
   ],
   "result": {

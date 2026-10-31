@@ -4,21 +4,26 @@
   "package": "com.bmt.kaleidoscope_chinesefood.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AbstractFurnaceBlockEntityMixin",
+    "CakeBlockMixin",
+    "CatMixin",
     "CookeryInitMixin",
     "CreativeModeTabsMixin",
     "EntityMixin",
     "InstantSmeltingDropsMixin",
     "InstantSmeltingEffectMixin",
     "ItemMixin",
+    "LivingEntityMixin",
     "PlateBlockMixin",
-    "PlayerEntityMixin",
     "PlayerSetSpawnMixin",
     "RecipeManagerMixin",
     "accessor.LootPoolAccessor",
     "accessor.LootTableAccessor",
+    "accessor.MobAccessor",
     "accessor.TrapDoorBlockAccessor"
   ],
   "client": [
+    "CameraMixin",
     "EntityRendererLightMixin",
     "LevelRendererLightMixin",
     "accessor.RenderBuffersAccessor"

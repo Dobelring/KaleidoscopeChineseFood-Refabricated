@@ -193,5 +193,8 @@
   "tooltip.kaleidoscope_doll.doll.contributor_2": "Author: Chazaozi",
   "tooltip.kaleidoscope_doll.doll.contributor_3": "Author: 1335",
   "tooltip.kaleidoscope_doll.doll.contributor_4": "Author: Chen",
-  "tooltip.kaleidoscope_doll.doll.contributor_5": "Author: LittleRabbitBeGood"
+  "tooltip.kaleidoscope_doll.doll.contributor_5": "Author: LittleRabbitBeGood",
+  "advancement.kaleidoscope_chinesefood.lava_swim.title": "Trying to Swim in Lava",
+  "advancement.kaleidoscope_chinesefood.lava_swim.description": "Swim in lava while under the Lava Swim effect",
+  "jei.kaleidoscope_chinesefood.yellow_croaker.info": "Fresh and delicious yellow croaker, much loved by cats"
 }

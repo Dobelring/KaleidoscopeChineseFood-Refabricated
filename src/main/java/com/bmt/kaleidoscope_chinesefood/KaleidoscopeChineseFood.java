@@ -9,6 +9,8 @@ import com.bmt.kaleidoscope_chinesefood.event.CreativeTabEventHandler;
 import com.bmt.kaleidoscope_chinesefood.event.InstantSmeltingEventHandler;
 import com.bmt.kaleidoscope_chinesefood.event.MidAutumnEventHandler;
 import com.bmt.kaleidoscope_chinesefood.event.LavaSwimDamageEvents;
+import com.bmt.kaleidoscope_chinesefood.event.ModTriggerEvents;
+import com.bmt.kaleidoscope_chinesefood.event.YellowCroakerEvents;
 import com.bmt.kaleidoscope_chinesefood.event.LootTableEvents;
 import com.bmt.kaleidoscope_chinesefood.event.StrawBedSleepEvents;
 import com.bmt.kaleidoscope_chinesefood.event.VillagerTradeEvents;
@@ -25,6 +27,7 @@ import com.bmt.kaleidoscope_chinesefood.init.ModRecipeSerializers;
 import com.bmt.kaleidoscope_chinesefood.init.ModStats;
 import com.bmt.kaleidoscope_chinesefood.init.ModRecipeTypes;
 import com.bmt.kaleidoscope_chinesefood.init.ModSounds;
+import com.bmt.kaleidoscope_chinesefood.init.ModTriggers;
 import com.bmt.kaleidoscope_chinesefood.init.kaleidoscope_twilight.KTItems;
 import com.bmt.kaleidoscope_chinesefood.integration.KaleidoscopeDollIntegration;
 import com.bmt.kaleidoscope_chinesefood.network.ModNetwork;
@@ -69,6 +72,7 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         ModEffects.registerEffects();
         ModEntities.registerEntities();
         ModStats.register();
+        ModTriggers.register();
         ModCompostables.init();
         if (!FabricLoader.getInstance().isModLoaded("kaleidoscope_twilight")) {
             KTItems.registerKTItems();
@@ -80,6 +84,8 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         ModNetwork.init();
         CreativeTabEventHandler.register();
         LavaSwimDamageEvents.register();
+        ModTriggerEvents.register();
+        YellowCroakerEvents.register();
         LootTableEvents.register();
         StrawBedSleepEvents.register();
         VillagerTradeEvents.register();

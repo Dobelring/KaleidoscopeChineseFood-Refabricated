@@ -1,0 +1,18 @@
+{
+  "display": {
+    "icon": { "item": "minecraft:lava_bucket" },
+    "title": { "translate": "advancement.kaleidoscope_chinesefood.lava_swim.title" },
+    "description": { "translate": "advancement.kaleidoscope_chinesefood.lava_swim.description" },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "parent": "minecraft:nether/root",
+  "criteria": {
+    "lava_swim": {
+      "trigger": "kaleidoscope_chinesefood:lava_swim"
+    }
+  },
+  "requirements": [["lava_swim"]]
+}

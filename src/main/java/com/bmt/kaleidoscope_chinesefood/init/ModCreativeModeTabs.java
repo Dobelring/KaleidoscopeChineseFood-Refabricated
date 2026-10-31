@@ -25,13 +25,13 @@ public class ModCreativeModeTabs {
         .icon(() -> new ItemStack(ModItems.SICHUAN_WONTON))
         .title(Component.translatable("itemGroup.kaleidoscope_chinesefood_tab"))
         .displayItems((pParameters, pOutput) -> {
-            pOutput.accept(ModItems.RAW_STEAMED_RICE_ROLLS);
-            pOutput.accept(ModItems.RAW_BAMBOO_STEAMED_EGG);
-            pOutput.accept(ModItems.RAW_MOONCAKE);
-            pOutput.accept(ModItems.DIANHONG_TEA_BAG);
             pOutput.accept(ModItems.YELLOW_CROAKER_BUCKET);
             pOutput.accept(ModItems.SALT_BUCKET);
+            pOutput.accept(ModItems.DIANHONG_TEA_BAG);
             pOutput.accept(ModBlocks.SALT_BLOCK);
+            pOutput.accept(ModItems.RAW_STEAMED_RICE_ROLLS);
+            pOutput.accept(ModItems.RAW_MOONCAKE);
+            pOutput.accept(ModItems.RAW_BAMBOO_STEAMED_EGG);
             pOutput.accept(ModItems.SALTED_EGG);
             pOutput.accept(ModItems.CENTURY_EGG);
             pOutput.accept(ModItems.CHINESE_SAUERKRAUT);
@@ -81,22 +81,22 @@ public class ModCreativeModeTabs {
                 }
             });
             pOutput.accept(ModBlocks.BOWL_STACK);
-            pOutput.accept(ModItems.MOONCAKE_MOLD);
-            pOutput.accept(ModBlocks.CORN_RISTRA);
+            pOutput.accept(ModBlocks.PICKLE_JAR);
             pOutput.accept(ModBlocks.FREEZER);
             pOutput.accept(ModBlocks.FREEZER_GREEN);
             pOutput.accept(ModBlocks.FREEZER_ORANGE);
             pOutput.accept(ModBlocks.FREEZER_PINK);
             pOutput.accept(ModBlocks.FREEZER_LIGHT_BLUE);
             pOutput.accept(ModBlocks.FREEZER_YELLOW);
-            pOutput.accept(ModBlocks.PICKLE_JAR);
-            pOutput.accept(ModItems.STRAW_BED);
+            pOutput.accept(ModBlocks.CORN_RISTRA);
+            pOutput.accept(ModItems.EGGPLANT_SEED);
+            pOutput.accept(ModItems.MOONCAKE_MOLD);
             pOutput.accept(ModItems.FIRECRACKER);
             pOutput.accept(ModBlocks.FU_CHARACTER);
             pOutput.accept(ModBlocks.COUPLET);
             pOutput.accept(ModBlocks.HORIZONTAL_BANNER);
             pOutput.accept(ModBlocks.KONGMING_LANTERN);
-            pOutput.accept(ModItems.EGGPLANT_SEED);
+            pOutput.accept(ModItems.STRAW_BED);
             pOutput.accept(ModCookeryBlocks.STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE);
             pOutput.accept(ModCookeryBlocks.STRIPPED_BAMBOO_BENCH);
             if (!FabricLoader.getInstance().isModLoaded("kaleidoscope_twilight")) {

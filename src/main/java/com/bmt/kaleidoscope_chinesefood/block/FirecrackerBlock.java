@@ -58,16 +58,24 @@ public class FirecrackerBlock extends BaseEntityBlock {
 
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
-        if (itemstack.is(Items.FLINT_AND_STEEL)) {
-            pLevel.playSound(pPlayer, pPos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+        // 官方 1.1.16：火焰弹也可点燃（消耗 1 个，创造免耗，音效用火弹），打火石照旧扣耐久
+        if (!itemstack.is(Items.FLINT_AND_STEEL) && !itemstack.is(Items.FIRE_CHARGE)) {
+            return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+        } else {
+            pLevel.playSound(
+                pPlayer, pPos, itemstack.is(Items.FIRE_CHARGE) ? SoundEvents.FIRECHARGE_USE : SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 1.0F
+            );
             if (!pLevel.isClientSide && pLevel.getBlockEntity(pPos) instanceof FirecrackerBlockEntity firecrackerBE) {
                 firecrackerBE.ignite();
             }
 
-            itemstack.hurtAndBreak(1, pPlayer, p -> p.broadcastBreakEvent(pHand));
+            if (itemstack.is(Items.FIRE_CHARGE)) {
+                itemstack.shrink(1);
+            } else {
+                itemstack.hurtAndBreak(1, pPlayer, p -> p.broadcastBreakEvent(pHand));
+            }
+
             return InteractionResult.sidedSuccess(pLevel.isClientSide);
-        } else {
-            return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
         }
     }
 

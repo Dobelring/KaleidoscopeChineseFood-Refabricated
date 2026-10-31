@@ -64,7 +64,7 @@ public class ModItems {
         ModEntities.YELLOW_CROAKER, Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, new Properties().stacksTo(1)
     );
     public static final SpawnEggItem YELLOW_CROAKER_SPAWN_EGG = new SpawnEggItem(
-        ModEntities.YELLOW_CROAKER, 15181583, 9274720, new Properties()
+        ModEntities.YELLOW_CROAKER, 15651692, 11511423, new Properties()
     );
     public static final Item MOONCAKE = new MooncakeItem(ModBlocks.MOONCAKE_BLOCK, new Properties().food(ModFoods.MOONCAKE).stacksTo(64));
     public static final Item FIRECRACKER = new FirecrackerItem(ModBlocks.FIRECRACKER, new Properties());
