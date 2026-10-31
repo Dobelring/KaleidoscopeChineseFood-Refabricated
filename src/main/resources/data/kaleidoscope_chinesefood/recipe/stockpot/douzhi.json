@@ -6,9 +6,9 @@
   "finished_bubble_color": 16034443,
   "finished_texture": "kaleidoscope_cookery:stockpot/default_finished",
   "ingredients": [
-    "#c:seeds",
-    "#c:seeds",
-    "#c:seeds"
+    "#kaleidoscope_chinesefood:douzhi",
+    "#kaleidoscope_chinesefood:douzhi",
+    "#kaleidoscope_chinesefood:douzhi"
   ],
   "result": {
     "count": 1,
