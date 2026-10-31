@@ -17,6 +17,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.FlintAndSteelItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.Item.TooltipContext;
@@ -92,19 +93,27 @@ public class KongmingLanternBlock extends Block {
    ) {
       if (level.isClientSide()) {
          return InteractionResult.SUCCESS;
-      } else if (stack.getItem() instanceof FlintAndSteelItem) {
+      } else if (!(stack.getItem() instanceof FlintAndSteelItem) && !stack.is(Items.FIRE_CHARGE)) {
+         return InteractionResult.PASS;
+      } else {
+         // 官方 1.1.16：火焰弹也可点燃（消耗 1 个，创造免耗；打火石照旧扣耐久）
          KongmingLanternEntity lantern = (KongmingLanternEntity)(ModEntities.KONGMING_LANTERN).create(level, EntitySpawnReason.TRIGGERED);
          if (lantern != null) {
             lantern.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
             level.addFreshEntity(lantern);
             level.removeBlock(pos, false);
-            stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+            if (stack.is(Items.FIRE_CHARGE)) {
+               if (!player.getAbilities().instabuild) {
+                  stack.shrink(1);
+               }
+            } else {
+               stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+            }
+
             level.levelEvent(null, 1009, pos, 0);
          }
 
          return InteractionResult.CONSUME;
-      } else {
-         return InteractionResult.PASS;
       }
    }
 

@@ -68,20 +68,25 @@ public class FirecrackerBlock extends BaseEntityBlock {
    protected InteractionResult useItemOn(
       ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit
    ) {
-      if (stack.is(Items.FLINT_AND_STEEL)) {
-         level.playSound(player, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+      // 官方 1.1.16：火焰弹也可点燃（消耗 1 个，创造免耗，音效用火弹），打火石照旧扣耐久
+      if (!stack.is(Items.FLINT_AND_STEEL) && !stack.is(Items.FIRE_CHARGE)) {
+         return super.useItemOn(stack, state, level, pos, player, hand, hit);
+      } else {
+         level.playSound(player, pos, stack.is(Items.FIRE_CHARGE) ? SoundEvents.FIRECHARGE_USE : SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
          if (!level.isClientSide() && level.getBlockEntity(pos) instanceof FirecrackerBlockEntity firecrackerBE) {
             firecrackerBE.ignite();
          }
 
-         if (!player.getAbilities().instabuild) {
+         if (stack.is(Items.FIRE_CHARGE)) {
+            if (!player.getAbilities().instabuild) {
+               stack.shrink(1);
+            }
+         } else if (!player.getAbilities().instabuild) {
             EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
             stack.hurtAndBreak(1, player, slot);
          }
 
          return InteractionResult.SUCCESS;
-      } else {
-         return super.useItemOn(stack, state, level, pos, player, hand, hit);
       }
    }
 

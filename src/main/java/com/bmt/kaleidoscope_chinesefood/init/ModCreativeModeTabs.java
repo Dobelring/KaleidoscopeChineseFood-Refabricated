@@ -27,13 +27,13 @@ public class ModCreativeModeTabs {
                         .icon(() -> new ItemStack(ModItems.SICHUAN_WONTON))
                         .title(Component.translatable("itemGroup.kaleidoscope_chinesefood_tab"))
                         .displayItems((parameters, output) -> {
-                            output.accept(ModItems.RAW_STEAMED_RICE_ROLLS);
-                            output.accept(ModItems.RAW_BAMBOO_STEAMED_EGG);
-                            output.accept(ModItems.RAW_MOONCAKE);
-                            output.accept(ModItems.DIANHONG_TEA_BAG);
                             output.accept(ModItems.YELLOW_CROAKER_BUCKET);
                             output.accept(ModItems.SALT_BUCKET);
+                            output.accept(ModItems.DIANHONG_TEA_BAG);
                             output.accept(ModItems.SALT);
+                            output.accept(ModItems.RAW_STEAMED_RICE_ROLLS);
+                            output.accept(ModItems.RAW_MOONCAKE);
+                            output.accept(ModItems.RAW_BAMBOO_STEAMED_EGG);
                             output.accept(ModItems.SALTED_EGG);
                             output.accept(ModItems.CENTURY_EGG);
                             output.accept(ModItems.CHINESE_SAUERKRAUT);
@@ -89,21 +89,21 @@ public class ModCreativeModeTabs {
                                 }
                             });
                             output.accept(ModBlocks.BOWL_STACK);
-                            output.accept(ModItems.MOONCAKE_MOLD);
-                            output.accept(ModItems.CORN_RISTRA);
+                            output.accept(ModBlocks.PICKLE_JAR);
                             output.accept(ModBlocks.FREEZER);
                             output.accept(ModBlocks.FREEZER_GREEN);
                             output.accept(ModBlocks.FREEZER_ORANGE);
                             output.accept(ModBlocks.FREEZER_PINK);
                             output.accept(ModBlocks.FREEZER_LIGHT_BLUE);
                             output.accept(ModBlocks.FREEZER_YELLOW);
-                            output.accept(ModBlocks.PICKLE_JAR);
+                            output.accept(ModItems.CORN_RISTRA);
+                            output.accept(ModItems.EGGPLANT_SEED);
+                            output.accept(ModItems.MOONCAKE_MOLD);
                             output.accept(ModItems.FIRECRACKER);
                             output.accept(ModBlocks.FU_CHARACTER);
                             output.accept(ModBlocks.COUPLET);
                             output.accept(ModBlocks.HORIZONTAL_BANNER);
                             output.accept(ModBlocks.KONGMING_LANTERN);
-                            output.accept(ModItems.EGGPLANT_SEED);
                             // 竹家具注册在 cookery 命名空间（见 ModCookeryBlocks）
                             output.accept(ModCookeryBlocks.STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE_ITEM);
                             output.accept(ModCookeryBlocks.STRIPPED_BAMBOO_BENCH_ITEM);

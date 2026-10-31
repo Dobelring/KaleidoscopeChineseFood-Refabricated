@@ -3,22 +3,27 @@
   "package": "com.bmt.kaleidoscope_chinesefood.mixins",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
-    "EntityMixin",
-    "PlayerEntityMixin",
+    "CakeBlockMixin",
+    "CatInvoker",
+    "CatMixin",
     "DoorBlockMixin",
-    "TrapDoorBlockMixin",
+    "EntityMixin",
+    "FurnaceFuelMixin$BurnDurationMixin",
+    "FurnaceFuelMixin$MenuFuelMixin",
     "InstantSmeltingEffectMixin",
     "ItemMixin",
+    "LivingEntityMixin",
     "PlateBlockMixin",
-    "accessor.TrapDoorBlockAccessor",
-    "accessor.SpawnPlacementsInvoker",
+    "TrapDoorBlockMixin",
+    "accessor.LootPoolAccessor",
     "accessor.LootTableAccessor",
-    "accessor.LootPoolAccessor"
+    "accessor.SpawnPlacementsInvoker",
+    "accessor.TrapDoorBlockAccessor"
   ],
   "client": [
+    "CameraMixin",
     "EntityRendererLightMixin",
     "LightCoordsUtilLightMixin",
-    "FogRendererMixin",
     "accessor.RenderTypeInvoker"
   ],
   "injectors": {
