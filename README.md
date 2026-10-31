@@ -5,13 +5,12 @@
 > A Minecraft Fabric mod that adds a rich Chinese / Sichuan cuisine expansion to Kaleidoscope Cookery.
 
 ## Compendium
-- This is the **Fabric port** of [**Kaleidoscope Chinese Food**](https://modrinth.com/mod/kaleidoscopechinesefood) (森罗物语：国味), corresponding to NeoForge `1.1.11`.
+- This is the **Fabric port** of [**Kaleidoscope Chinese Food**](https://modrinth.com/mod/kaleidoscopechinesefood) (森罗物语：国味).
 - Requires [**Kaleidoscope Cookery Refabricated**](https://modrinth.com/mod/kaleidoscope-cookery-refabricated) (森罗物语：厨房 重制) and [**Forge Config API Port**](https://modrinth.com/mod/forge-config-api-port).
-- No backport planned.
 
 ## Overview
 ![Minecraft](https://img.shields.io/badge/Minecraft-Java%20Edition-brightgreen)
-![Fabric](https://img.shields.io/badge/1.21.1%20%7C%201.21.11%20%7C%2026.1.2%20%7C%2026.2-orange)
+![Fabric](https://img.shields.io/badge/1.20.1%20%7C%201.21.1%20%7C%201.21.11%20%7C%2026.1.2%20%7C%2026.2%20%7C%2026.3-orange)
 ![License](https://img.shields.io/badge/License-MIT_+_CC_BY--NC--ND_4.0-lightgrey)
 
 This mod brings a variety of Chinese cuisine and folk items to "Kaleidoscope: Cookery".
@@ -30,7 +29,7 @@ This mod brings a variety of Chinese cuisine and folk items to "Kaleidoscope: Co
 - **Jade**: shows the pickle jar's progress.
 
 ## Build
-Requires JDK 21.
+Requires JDK 25.
 
 Dependency jars (Kaleidoscope Cookery, Forge Config API Port, JEI, EMI, Jade) are committed under `libs/` and referenced directly by `build.gradle`.
 
