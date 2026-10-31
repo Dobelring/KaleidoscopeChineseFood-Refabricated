@@ -26,6 +26,7 @@
     "CameraMixin",
     "EntityRendererLightMixin",
     "LevelRendererLightMixin",
+    "LocalPlayerMixin",
     "accessor.RenderBuffersAccessor"
   ],
   "server": [],
