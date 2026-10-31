@@ -32,7 +32,7 @@ This mod brings a variety of Chinese cuisine and folk items to "Kaleidoscope: Co
 - **Kaleidoscope Doll (森罗物语：玩偶)**: contributor doll items (gated — loads only with the Doll mod present and 森罗厨 / 森罗彼岸 absent).
 
 ## Build
-Targets **Minecraft 1.20.1 (Fabric)** — branch `1.20.1-fabric`. Gradle runs on **JDK 25** (fabric-loom 1.18 要求)，字节码目标 **Java 17**。
+Targets **Minecraft 1.20.1 (Fabric)** — branch `1.20.1-fabric`. Gradle runs on **JDK 21**，字节码目标 **Java 17**。
 
 Dependencies are resolved from maven coordinates declared in `gradle.properties` (no bundled jars needed):
 Kaleidoscope Cookery Refabricated, Kaleidoscope Doll, Jade, EMI and Create from the Modrinth maven, JEI from Jared's maven,
