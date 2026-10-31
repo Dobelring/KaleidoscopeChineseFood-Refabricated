@@ -4,6 +4,7 @@ import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.crafting.BaseProcessingRecipe;
 import com.bmt.kaleidoscope_chinesefood.crafting.FreezingRecipe;
 import com.bmt.kaleidoscope_chinesefood.crafting.PickleJarRecipe;
+import com.bmt.kaleidoscope_chinesefood.crafting.RefrigeratingBrewLevelRecipe;
 import com.bmt.kaleidoscope_chinesefood.crafting.RefrigeratingRecipe;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
@@ -22,6 +23,7 @@ public class ModRecipes {
     public static RecipeType<RefrigeratingRecipe> REFRIGERATING_TYPE;
     public static RecipeSerializer<RefrigeratingRecipe> REFRIGERATING_SERIALIZER;
     public static RecipeType<FreezingRecipe> FREEZING_TYPE;
+    public static RecipeSerializer<RefrigeratingBrewLevelRecipe> REFRIGERATING_BREW_LEVEL_SERIALIZER;
     public static RecipeSerializer<FreezingRecipe> FREEZING_SERIALIZER;
     public static RecipeBookCategory PICKLE_JAR_CATEGORY;
     public static RecipeBookCategory REFRIGERATING_CATEGORY;
@@ -35,6 +37,9 @@ public class ModRecipes {
         REFRIGERATING_SERIALIZER = registerSerializer("refrigerating",
                 new RecipeSerializer<>(BaseProcessingRecipe.buildCodec(RefrigeratingRecipe::new),
                         BaseProcessingRecipe.buildStreamCodec(RefrigeratingRecipe::new)));
+        REFRIGERATING_BREW_LEVEL_SERIALIZER = registerSerializer("refrigerating_brew_level",
+                new RecipeSerializer<>(RefrigeratingBrewLevelRecipe.makeCodec(),
+                        RefrigeratingBrewLevelRecipe.makeStreamCodec()));
         FREEZING_TYPE = registerType("freezing");
         FREEZING_SERIALIZER = registerSerializer("freezing",
                 new RecipeSerializer<>(BaseProcessingRecipe.buildCodec(FreezingRecipe::new),

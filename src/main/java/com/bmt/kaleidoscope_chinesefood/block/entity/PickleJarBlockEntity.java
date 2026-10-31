@@ -77,10 +77,12 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
             } else if (stack.isEmpty()) {
                 return stack;
             } else {
+                // 官方 1.1.16：每槽上限从固定 4 改为 min(4, 物品最大堆叠)
+                int slotLimit = maxInSlot(stack);
                 ItemStack targetSlot = this.getStackInSlot(slot);
                 if (!targetSlot.isEmpty()) {
-                    if (targetSlot.getItem() == stack.getItem() && targetSlot.getCount() < 4) {
-                        int canAdd = 4 - targetSlot.getCount();
+                    if (targetSlot.getItem() == stack.getItem() && targetSlot.getCount() < slotLimit) {
+                        int canAdd = slotLimit - targetSlot.getCount();
                         int addCount = Math.min(stack.getCount(), canAdd);
                         ItemStack remaining = stack.copy();
                         if (addCount > 0) {
@@ -101,8 +103,8 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
 
                     for (int i = 0; i < 4; i++) {
                         ItemStack existing = this.getStackInSlot(i);
-                        if (!existing.isEmpty() && existing.getItem() == remaining.getItem() && existing.getCount() < 4) {
-                            int canAdd = 4 - existing.getCount();
+                        if (!existing.isEmpty() && existing.getItem() == remaining.getItem() && existing.getCount() < slotLimit) {
+                            int canAdd = slotLimit - existing.getCount();
                             int addCount = Math.min(remaining.getCount(), canAdd);
                             if (addCount > 0) {
                                 if (!simulate) {
@@ -119,7 +121,7 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
                     }
 
                     if (!remaining.isEmpty()) {
-                        int insertCount = Math.min(remaining.getCount(), 4);
+                        int insertCount = Math.min(remaining.getCount(), slotLimit);
                         if (!simulate) {
                             this.setStackInSlot(slot, remaining.copyWithCount(insertCount));
                         }
@@ -293,17 +295,23 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
         this.setChanged();
     }
 
+    /** 官方 1.1.16：单槽容量 = min(4, 物品最大堆叠)。 */
+    private static int maxInSlot(ItemStack stack) {
+        return Math.min(4, stack.getMaxStackSize());
+    }
+
     @Override
     public void insertItem(ItemStack stack, Player player) {
         if (!stack.isEmpty()) {
             ItemStack remaining = stack.copy();
             int totalInserted = 0;
+            int slotLimit = maxInSlot(stack);
 
-            for (int i = 0; i < 4 && totalInserted < 4; i++) {
+            for (int i = 0; i < 4 && totalInserted < slotLimit; i++) {
                 ItemStack existing = this.inventory.getStackInSlot(i);
-                if (!existing.isEmpty() && existing.getItem() == stack.getItem() && existing.getCount() < 4) {
-                    int canAdd = 4 - existing.getCount();
-                    int addCount = Math.min(Math.min(stack.getCount(), 4 - totalInserted), canAdd);
+                if (!existing.isEmpty() && existing.getItem() == stack.getItem() && existing.getCount() < slotLimit) {
+                    int canAdd = slotLimit - existing.getCount();
+                    int addCount = Math.min(Math.min(stack.getCount(), slotLimit - totalInserted), canAdd);
                     if (addCount > 0) {
                         existing.grow(addCount);
                         this.inventory.setStackInSlot(i, existing);
@@ -319,7 +327,7 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar, Con
             } else {
                 for (int ix = 0; ix < 4; ix++) {
                     if (this.inventory.getStackInSlot(ix).isEmpty()) {
-                        int insertCount = Math.min(stack.getCount(), 4);
+                        int insertCount = Math.min(stack.getCount(), slotLimit);
                         this.inventory.setStackInSlot(ix, stack.copyWithCount(insertCount));
                         if (!player.isCreative()) {
                             stack.shrink(insertCount);

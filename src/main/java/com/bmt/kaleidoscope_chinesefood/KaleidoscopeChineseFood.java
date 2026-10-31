@@ -5,6 +5,8 @@ import com.bmt.kaleidoscope_chinesefood.config.ModConfig;
 import com.bmt.kaleidoscope_chinesefood.event.CreativeTabEvents;
 import com.bmt.kaleidoscope_chinesefood.event.DataMapsEvents;
 import com.bmt.kaleidoscope_chinesefood.event.LavaSwimDamageEvents;
+import com.bmt.kaleidoscope_chinesefood.event.ModTriggerEvents;
+import com.bmt.kaleidoscope_chinesefood.event.YellowCroakerEvents;
 import com.bmt.kaleidoscope_chinesefood.event.ModLootTableEvents;
 import com.bmt.kaleidoscope_chinesefood.event.StrawBedSleepEvents;
 import com.bmt.kaleidoscope_chinesefood.init.ModStats;
@@ -20,6 +22,7 @@ import com.bmt.kaleidoscope_chinesefood.init.ModMenuTypes;
 import com.bmt.kaleidoscope_chinesefood.init.ModPlateRegistry;
 import com.bmt.kaleidoscope_chinesefood.init.ModRecipes;
 import com.bmt.kaleidoscope_chinesefood.init.ModSounds;
+import com.bmt.kaleidoscope_chinesefood.init.ModTriggers;
 import com.bmt.kaleidoscope_chinesefood.init.ModTea;
 import com.bmt.kaleidoscope_chinesefood.init.kaleidoscope_twilight.KTItems;
 import com.bmt.kaleidoscope_chinesefood.integration.KaleidoscopeDollIntegration;
@@ -64,6 +67,8 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         KaleidoscopeDollIntegration.register();
         ModBuiltInResourcePacks.register();
         LavaSwimDamageEvents.register();
+        ModTriggerEvents.register();
+        YellowCroakerEvents.register();
         // 往厨房的村庄隐藏箱/主厨礼物/钓鱼表里追加国味条目
         ModLootTableEvents.register();
         // 刷怪蛋进原版页 + 摘掉厨房食物页里的国味条目
@@ -127,6 +132,7 @@ public class KaleidoscopeChineseFood implements ModInitializer {
             }
             DataMapsEvents.register();
             ModStats.register();
+        ModTriggers.register();
             StrawBedSleepEvents.register();
             // Create 联动：冰箱上下半块互附 + 整体易碎（官方 compat/create/CreateMovementChecks）
             if (FabricLoader.getInstance().isModLoaded("create")) {

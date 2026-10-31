@@ -1,0 +1,19 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "kaleidoscope_world_liquor"
+      ]
+    }
+  ],
+  "type": "kaleidoscope_chinesefood:refrigerating_brew_level",
+  "input": "smc:ice_tea",
+  "output": {
+    "id": "kaleidoscope_world_liquor:cool_tea"
+  },
+  "propagate_nbt": [
+    "BrewLevel"
+  ],
+  "base_time": 1200
+}
