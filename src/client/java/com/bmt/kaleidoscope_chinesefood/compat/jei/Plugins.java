@@ -9,6 +9,7 @@ import com.bmt.kaleidoscope_chinesefood.init.ModItems;
 import com.bmt.kaleidoscope_chinesefood.init.ModRecipes;
 import java.util.List;
 import mezz.jei.api.IModPlugin;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -16,6 +17,7 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -54,6 +56,13 @@ public class Plugins implements IModPlugin {
 
       // 月饼模具是纯代码交互（非配方系统），提供静态虚拟展示条目，不依赖世界加载
       registration.addRecipes(MooncakeMoldRecipeCategory.TYPE, List.of(MooncakeMoldRecipeCategory.createDisplay()));
+
+      // 官方 1.1.16：黄花鱼 JEI 信息页（猫交互说明）
+      registration.addIngredientInfo(
+         List.of(new ItemStack(ModItems.YELLOW_CROAKER)),
+         VanillaTypes.ITEM_STACK,
+         Component.translatable("jei.kaleidoscope_chinesefood.yellow_croaker.info")
+      );
    }
 
    public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {

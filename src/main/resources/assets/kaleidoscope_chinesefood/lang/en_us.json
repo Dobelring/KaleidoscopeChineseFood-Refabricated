@@ -263,5 +263,8 @@
   "tooltip.kaleidoscope_chinesefood.century_egg.maxim": "Springy texture with rich unique flavor",
   "tooltip.kaleidoscope_chinesefood.chinese_sauerkraut.maxim": "Crisp, refreshing and appetizing with sour aroma",
   "tooltip.kaleidoscope_chinesefood.salted_egg.maxim": "Salty egg white, oily and creamy yolk",
-  "tooltip.kaleidoscope_cookery.enchanted_golden_apple_platter": "A plate of shimmering, iridescent apples"
+  "tooltip.kaleidoscope_cookery.enchanted_golden_apple_platter": "A plate of shimmering, iridescent apples",
+  "advancement.kaleidoscope_chinesefood.lava_swim.title": "Trying to Swim in Lava",
+  "advancement.kaleidoscope_chinesefood.lava_swim.description": "Swim in lava while under the Lava Swim effect",
+  "jei.kaleidoscope_chinesefood.yellow_croaker.info": "Fresh and delicious yellow croaker, much loved by cats"
 }

@@ -9,7 +9,7 @@
   "finished_texture": "kaleidoscope_cookery:stockpot/default_finished",
   "ingredients": [
     {
-      "tag": "c:seeds"
+      "tag": "kaleidoscope_chinesefood:douzhi"
     }
   ],
   "result": {

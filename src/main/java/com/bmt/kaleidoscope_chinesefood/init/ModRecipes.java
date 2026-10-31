@@ -3,6 +3,7 @@ package com.bmt.kaleidoscope_chinesefood.init;
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.crafting.FreezingRecipe;
 import com.bmt.kaleidoscope_chinesefood.crafting.PickleJarRecipe;
+import com.bmt.kaleidoscope_chinesefood.crafting.RefrigeratingBrewLevelRecipe;
 import com.bmt.kaleidoscope_chinesefood.crafting.RefrigeratingRecipe;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -17,6 +18,7 @@ public class ModRecipes {
     public static RecipeType<RefrigeratingRecipe> REFRIGERATING_TYPE;
     public static RecipeSerializer<RefrigeratingRecipe> REFRIGERATING_SERIALIZER;
     public static RecipeType<FreezingRecipe> FREEZING_TYPE;
+    public static RecipeSerializer<RefrigeratingBrewLevelRecipe> REFRIGERATING_BREW_LEVEL_SERIALIZER;
     public static RecipeSerializer<FreezingRecipe> FREEZING_SERIALIZER;
 
     public static void register() {
@@ -24,6 +26,7 @@ public class ModRecipes {
         PICKLE_JAR_SERIALIZER = registerSerializer("pickle_jar", new PickleJarRecipe.Serializer());
         REFRIGERATING_TYPE = registerType("refrigerating");
         REFRIGERATING_SERIALIZER = registerSerializer("refrigerating", new RefrigeratingRecipe.Serializer());
+        REFRIGERATING_BREW_LEVEL_SERIALIZER = registerSerializer("refrigerating_brew_level", new RefrigeratingBrewLevelRecipe.Serializer());
         FREEZING_TYPE = registerType("freezing");
         FREEZING_SERIALIZER = registerSerializer("freezing", new FreezingRecipe.Serializer());
     }
