@@ -25,7 +25,8 @@
   "client": [
     "CameraMixin",
     "EntityRendererLightMixin",
-    "LevelRendererLightMixin"
+    "LevelRendererLightMixin",
+    "LocalPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
