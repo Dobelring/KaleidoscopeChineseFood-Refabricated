@@ -7,11 +7,13 @@
     "CatInvoker",
     "CatMixin",
     "DoorBlockMixin",
+    "EntityFireMixin",
     "EntityMixin",
     "FurnaceFuelMixin$BurnDurationMixin",
     "FurnaceFuelMixin$MenuFuelMixin",
     "InstantSmeltingEffectMixin",
     "ItemMixin",
+    "LavaFluidMixin",
     "LivingEntityMixin",
     "PlateBlockMixin",
     "TrapDoorBlockMixin",
@@ -24,6 +26,7 @@
     "CameraMixin",
     "EntityRendererLightMixin",
     "LightCoordsUtilLightMixin",
+    "LocalPlayerMixin",
     "accessor.RenderTypeInvoker"
   ],
   "injectors": {

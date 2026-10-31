@@ -123,7 +123,12 @@ public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
       }
    }
 
-   /** 26.1 无逐顶点颜色，每条边拆「主体实色 + 尖端淡出」两段 fill（视觉与官方 tipFade 等价）。 */
+   /**
+    * 26.1 无逐顶点颜色：水平边（上下）按像素列 fill 逼近官方的顶点渐变——
+    * 旧实现把「尖端段」画成单一 alpha（低进度时 tipFade≈0 整段不可见），
+    * 实测表现为上边迟迟不显现；改为逐像素线性插值后与官方渐变一致。
+    * 垂直边（左右）直接用 fillGradient（自带上下两色）。
+    */
    private void renderSlotBorder(GuiGraphicsExtractor guiGraphics, int x, int y, float progress) {
       if (progress >= 0.98F) {
          progress = 1.0F;
@@ -136,17 +141,29 @@ public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
       int base = withAlpha(rgb, alpha);
       int tipH = withAlpha(rgb, alpha * tipFade(15.0F - extH));
       int tipV = withAlpha(rgb, alpha * tipFade(14.0F - extV));
-      // 下边
-      guiGraphics.fill(x, y + 15, (int)Math.floor(x + 1.0F + extH), y + 16, base);
-      guiGraphics.fill((int)Math.floor(x + 1.0F + extH), y + 15, x + 16, y + 16, tipH);
-      // 左边（自下而上生长，fillGradient 自上而下 → 主体下段实色+上段尖端淡出）
+      // 下边：左(base)→右(尖端) 水平渐变
+      fillGradientX(guiGraphics, x, x + 1.0F + extH, y + 15, y + 16, base, tipH);
+      // 右边：上(base)→下(尖端) 垂直渐变
+      guiGraphics.fillGradient(x + 15, y + 1, x + 16, (int)Math.floor(y + 1.0F + extV), base, tipV);
+      // 上边：左(尖端)→右(base) 水平渐变
+      fillGradientX(guiGraphics, x + 15.0F - extH, x + 16.0F, y, y + 1, tipH, base);
+      // 左边：上(尖端)→下(base) 垂直渐变
       guiGraphics.fillGradient(x, y + 15 - (int)Math.ceil(extV), x + 1, y + 15, tipV, base);
-      // 右边
-      guiGraphics.fill(x + 15, y + 1, x + 16, (int)Math.floor(y + 1.0F + extV), base);
-      guiGraphics.fill(x + 15, (int)Math.floor(y + 1.0F + extV), x + 16, y + 16, tipV);
-      // 上边
-      guiGraphics.fill((int)Math.floor(x + 15.0F - extH), y, x + 15, y + 1, tipH);
-      guiGraphics.fill(x + 15, y, x + 16, y + 1, base);
+   }
+
+   /** 水平渐变：按像素列在 colorA→colorB 间线性插值 alpha（rgb 取 colorA）。 */
+   private static void fillGradientX(GuiGraphicsExtractor guiGraphics, float x1, float x2, int y1, int y2, int colorA, int colorB) {
+      int px1 = Mth.floor(x1);
+      int px2 = Math.max(px1 + 1, Mth.ceil(x2));
+      int aA = colorA >>> 24 & 0xFF;
+      int aB = colorB >>> 24 & 0xFF;
+      float span = px2 - px1;
+
+      for (int px = px1; px < px2; px++) {
+         float t = ((px - x1) + 0.5F) / span;
+         int a = Mth.clamp(Math.round(aA + (aB - aA) * t), 0, 255);
+         guiGraphics.fill(px, y1, px + 1, y2, a << 24 | colorA & 16777215);
+      }
    }
 
    private static float tipFade(float remaining) {
