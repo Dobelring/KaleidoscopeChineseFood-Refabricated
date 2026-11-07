@@ -10,6 +10,7 @@
     "EntityFireMixin",
     "EntityMixin",
     "FuelValuesMixin",
+    "InstantSmeltingDropsMixin",
     "InstantSmeltingEffectMixin",
     "ItemMixin",
     "LavaFluidMixin",
@@ -28,6 +29,9 @@
     "EntityRendererLightMixin",
     "LevelRendererLightMixin",
     "LocalPlayerMixin",
+    "accessor.BakedSheetGlyphAccessor",
+    "accessor.FontManagerAccessor",
+    "accessor.MinecraftFontManagerAccessor",
     "accessor.RenderTypeInvoker"
   ],
   "injectors": {

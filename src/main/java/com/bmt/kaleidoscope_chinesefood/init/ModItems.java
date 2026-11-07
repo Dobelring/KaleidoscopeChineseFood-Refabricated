@@ -144,7 +144,7 @@ public class ModItems {
         registerBlockItem("bowl_stack", ModBlocks.BOWL_STACK);
         registerBlockItem("fu_character", ModBlocks.FU_CHARACTER);
         registerBlockItem("couplet", ModBlocks.COUPLET);
-        registerBlockItem("horizontal_banner", ModBlocks.HORIZONTAL_BANNER);
+        registerBlockItem("horizontal_scroll", ModBlocks.HORIZONTAL_BANNER);
         // MOONCAKE_BLOCK 不注册独立 BlockItem：原版仅 mooncake 一个物品（MooncakeItem 指向该方块），
         // 多注册会让 pick-block 拿到不可食用的方块物品
         registerBlockItem("kongming_lantern", ModBlocks.KONGMING_LANTERN);

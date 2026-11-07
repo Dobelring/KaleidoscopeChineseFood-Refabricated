@@ -1,6 +1,7 @@
 package com.bmt.kaleidoscope_chinesefood.client.gui;
 
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.GlyphMetrics;
 import com.bmt.kaleidoscope_chinesefood.network.TextEditUpdateC2SPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -200,49 +201,57 @@ public class TextEditScreen extends Screen {
 
     private void renderVerticalText(GuiGraphicsExtractor graphics, int panelX, int panelY, int panelW, int panelH) {
         String text = this.inputBox.getValue();
-        int spacing = 13;
-        FormattedCharSequence[] seqs = new FormattedCharSequence[text.length()];
-
-        for (int i = 0; i < text.length(); i++) {
-            seqs[i] = Component.literal(String.valueOf(text.charAt(i))).withStyle(GUI_FONT_STYLE).getVisualOrderText();
+        if (text.isEmpty()) {
+            return;
         }
-
-        int total = seqs.length * spacing;
-        int startY = panelY + (panelH - total) / 2 + 4;
-        int cx = panelX + panelW / 2 + 1;
+        // 1.2.0：按字形墨迹包围盒逐字居中，缩放 1.2 -> 1.4
+        float s = 1.4F;
+        float cellHeight = 10.0F * s;
+        float total = (float) text.length() * cellHeight;
+        float startY = (float) panelY + ((float) panelH - total) / 2.0F;
+        float cx = (float) panelX + (float) panelW / 2.0F;
         Matrix3x2fStack pose = graphics.pose();
 
-        for (int i = 0; i < seqs.length; i++) {
-            int w = this.font.width(seqs[i]);
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            FormattedCharSequence seq = Component.literal(String.valueOf(c)).withStyle(GUI_FONT_STYLE).getVisualOrderText();
+            GlyphMetrics.InkBox ink = GlyphMetrics.measure(KaleidoscopeChineseFood.id("couplet_font"), c);
+            float cellCenterY = startY + (float) i * cellHeight + cellHeight / 2.0F;
+            float drawX = -(ink.left() + ink.right()) / 2.0F;
+            float drawY = -(ink.up() - 3.0F) - ink.height() / 2.0F;
             pose.pushMatrix();
-            pose.translate(cx, startY + i * spacing);
-            graphics.text(this.font, seqs[i], -w / 2, 0, TEXT_COLOR, false);
+            pose.translate(cx, cellCenterY);
+            pose.scale(s, s);
+            graphics.text(this.font, seq, (int) drawX, (int) drawY, TEXT_COLOR, false);
             pose.popMatrix();
         }
     }
 
     private void renderHorizontalText(GuiGraphicsExtractor graphics, int panelX, int panelY, int panelW, int panelH) {
         String text = this.inputBox.getValue();
-        FormattedCharSequence[] seqs = new FormattedCharSequence[text.length()];
-        int totalW = 0;
+        if (text.isEmpty()) {
+            return;
+        }
+        // 1.2.0：按字形墨迹包围盒逐字居中，缩放 1.2 -> 1.4
+        float s = 1.4F;
+        float cellWidth = 9.5F * s;
+        float totalW = (float) text.length() * cellWidth;
+        float startX = (float) panelX + ((float) panelW - totalW) / 2.0F;
+        float cy = (float) panelY + (float) panelH / 2.0F;
+        Matrix3x2fStack pose = graphics.pose();
 
         for (int i = 0; i < text.length(); i++) {
-            seqs[i] = Component.literal(String.valueOf(text.charAt(i))).withStyle(GUI_FONT_STYLE).getVisualOrderText();
-            totalW += this.font.width(seqs[i]);
-        }
-
-        int startX = panelX + panelW / 2 - totalW / 2 + 1;
-        int y = panelY + panelH / 2 - 9 / 2 + 1;
-        Matrix3x2fStack pose = graphics.pose();
-        int runX = startX;
-
-        for (FormattedCharSequence seq : seqs) {
-            int w = this.font.width(seq);
+            char c = text.charAt(i);
+            FormattedCharSequence seq = Component.literal(String.valueOf(c)).withStyle(GUI_FONT_STYLE).getVisualOrderText();
+            GlyphMetrics.InkBox ink = GlyphMetrics.measure(KaleidoscopeChineseFood.id("couplet_font"), c);
+            float cellCenterX = startX + (float) i * cellWidth + cellWidth / 2.0F;
+            float drawX = -(ink.left() + ink.right()) / 2.0F;
+            float drawY = -(ink.up() - 3.0F) - ink.height() / 2.0F;
             pose.pushMatrix();
-            pose.translate(runX, y);
-            graphics.text(this.font, seq, 0, 0, TEXT_COLOR, false);
+            pose.translate(cellCenterX, cy);
+            pose.scale(s, s);
+            graphics.text(this.font, seq, (int) drawX, (int) drawY, TEXT_COLOR, false);
             pose.popMatrix();
-            runX += w;
         }
     }
 

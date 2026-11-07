@@ -26,14 +26,17 @@ import net.minecraft.world.inventory.Slot;
 public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
    // 两层统一使用原版箱子贴图：上层裁剪拼贴出冷藏层布局（4 排 36 格），下层直接整图（6 排 54 格）
    private static final Identifier TEXTURE = Identifier.withDefaultNamespace("textures/gui/container/generic_54.png");
-   private static final Identifier SNOWFLAKES_TEXTURE = KaleidoscopeChineseFood.id("textures/gui/snowflakes.png");
+   // 1.2.0：雪花贴图换原版粒子帧（generic_7/6/5），不再用自制 snowflakes.png
+   private static final Identifier[] SNOWFLAKE_TEXTURES = java.util.stream.IntStream.range(0, 3)
+      .mapToObj(i -> Identifier.withDefaultNamespace("textures/particle/generic_" + (7 - i) + ".png"))
+      .toArray(Identifier[]::new);
    private static final int CHILLED_PALE = 14086911;
    private static final int CHILLED_DEEP = 5884144;
    private static final int FROZEN_PALE = 12767231;
    private static final int FROZEN_DEEP = 2839264;
    private static final int SNOWFLAKE_PALE = 13490906;
    private static final int SNOWFLAKE_WHITE = 15596282;
-   private static final int SNOWFLAKE_FRAMES = 8;
+   private static final int SNOWFLAKE_FRAMES = 3;
    private static final int SNOWFLAKE_LIFETIME = 80;
    private static final float SNOWFLAKE_GRAVITY = 0.1F;
    private static final float SNOWFLAKE_MAX_FALL = 3.0F;
@@ -277,15 +280,15 @@ public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
                guiGraphics.pose().rotate(snowflake.angle * (float) (Math.PI / 180.0));
                guiGraphics.blit(
                   RenderPipelines.GUI_TEXTURED,
-                  SNOWFLAKES_TEXTURE,
+                  SNOWFLAKE_TEXTURES[frame],
                   -4,
                   -4,
                   0.0F,
-                  frame * 8.0F,
+                  0.0F,
                   8,
                   8,
                   8,
-                  64,
+                  8,
                   color
                );
                guiGraphics.pose().popMatrix();

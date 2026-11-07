@@ -33,6 +33,10 @@ public class MooncakeItem extends BlockItem {
       BlockPos clickedPos = context.getClickedPos();
       BlockState clickedState = level.getBlockState(clickedPos);
       if (clickedState.getBlock() instanceof MooncakeBlock) {
+         // 1.2.0: non-top-face clicks pass through
+         if (!MooncakeBlock.isClickOnCake(context.getClickedPos(), context.getClickLocation())) {
+            return InteractionResult.PASS;
+         }
          int currentStack = (Integer)clickedState.getValue(MooncakeBlock.STACK_COUNT);
          if (currentStack >= 4) {
             return InteractionResult.FAIL;
