@@ -1,9 +1,8 @@
 package com.bmt.kaleidoscope_chinesefood.block.entity;
 
 import com.bmt.kaleidoscope_chinesefood.block.FreezerBlock;
+import com.bmt.kaleidoscope_chinesefood.crafting.BaseProcessingRecipe;
 import com.bmt.kaleidoscope_chinesefood.crafting.FreezerInput;
-import com.bmt.kaleidoscope_chinesefood.crafting.FreezingRecipe;
-import com.bmt.kaleidoscope_chinesefood.crafting.RefrigeratingRecipe;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.bmt.kaleidoscope_chinesefood.init.ModRecipes;
 import com.bmt.kaleidoscope_chinesefood.init.ModSounds;
@@ -27,7 +26,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
@@ -43,6 +42,10 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
    private final Set<FreezerMenu> openMenus = Collections.newSetFromMap(new ConcurrentHashMap<>());
    private int syncCounter = 0;
    private int tickCount = 0;
+   // 1.2.0:每槽缓存 RecipeManager.CachedCheck,避免每 tick 重建查询
+   private final SimpleContainer recipeContainer = new SimpleContainer(1);
+   private final FreezerInput recipeInput = new FreezerInput(this.recipeContainer);
+   private RecipeManager.CachedCheck<FreezerInput, ? extends BaseProcessingRecipe>[] slotChecks;
 
    public FreezerBlockEntity(BlockPos pos, BlockState state) {
       super(ModBlockEntities.FREEZER, pos, state);
@@ -61,6 +64,7 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
       this.items = NonNullList.withSize(size, ItemStack.EMPTY);
       this.progress = new int[size];
       this.totalTime = new int[size];
+      this.slotChecks = new RecipeManager.CachedCheck[size];
    }
 
    private void ensureInitialized() {
@@ -191,43 +195,21 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
    }
 
    private FreezerBlockEntity.ProcessingResult processSlot(ItemStack stack, int slot, boolean isTop) {
-      SimpleContainer inv = new SimpleContainer(new ItemStack[]{stack});
-      FreezerInput input = new FreezerInput(inv);
+      this.recipeContainer.setItem(0, stack);
       boolean hasRecipe = false;
       int recipeTime = 100;
-      if (isTop) {
-         Optional<RecipeHolder<RefrigeratingRecipe>> recipe = this.level
-            .getRecipeManager()
-            .getRecipeFor(ModRecipes.REFRIGERATING_TYPE, input, this.level);
-         if (recipe.isPresent()) {
-            RefrigeratingRecipe r = (RefrigeratingRecipe)recipe.get().value();
-            hasRecipe = true;
-            recipeTime = r.calculateProcessingTime(stack.getCount());
-            if (this.progress[slot] >= recipeTime) {
-               ItemStack result = r.assemble(input, this.level.registryAccess());
-               result.setCount(stack.getCount());
-               this.getItems().set(slot, result);
-               this.progress[slot] = 0;
-               this.totalTime[slot] = 0;
-               return new FreezerBlockEntity.ProcessingResult(true);
-            }
-         }
-      } else {
-         Optional<RecipeHolder<FreezingRecipe>> recipe = this.level
-            .getRecipeManager()
-            .getRecipeFor(ModRecipes.FREEZING_TYPE, input, this.level);
-         if (recipe.isPresent()) {
-            FreezingRecipe r = (FreezingRecipe)recipe.get().value();
-            hasRecipe = true;
-            recipeTime = r.calculateProcessingTime(stack.getCount());
-            if (this.progress[slot] >= recipeTime) {
-               ItemStack result = r.assemble(input, this.level.registryAccess());
-               result.setCount(stack.getCount());
-               this.getItems().set(slot, result);
-               this.progress[slot] = 0;
-               this.totalTime[slot] = 0;
-               return new FreezerBlockEntity.ProcessingResult(true);
-            }
+      Optional<? extends RecipeHolder<? extends BaseProcessingRecipe>> recipe = this.getCheck(slot, isTop).getRecipeFor(this.recipeInput, this.level);
+      if (recipe.isPresent()) {
+         BaseProcessingRecipe r = (BaseProcessingRecipe)recipe.get().value();
+         hasRecipe = true;
+         recipeTime = r.calculateProcessingTime(stack.getCount());
+         if (this.progress[slot] >= recipeTime) {
+            ItemStack result = r.assemble(this.recipeInput, this.level.registryAccess());
+            result.setCount(stack.getCount());
+            this.getItems().set(slot, result);
+            this.progress[slot] = 0;
+            this.totalTime[slot] = 0;
+            return new FreezerBlockEntity.ProcessingResult(true);
          }
       }
 
@@ -242,6 +224,26 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
          this.totalTime[slot] = 0;
          return new FreezerBlockEntity.ProcessingResult(true);
       }
+   }
+
+   @SuppressWarnings("unchecked")
+   private RecipeManager.CachedCheck<FreezerInput, ? extends BaseProcessingRecipe> getCheck(int slot, boolean isTop) {
+      if (this.slotChecks == null || slot < 0 || slot >= this.slotChecks.length) {
+         return this.createCheck(isTop);
+      }
+
+      RecipeManager.CachedCheck<FreezerInput, ? extends BaseProcessingRecipe> check = this.slotChecks[slot];
+      if (check == null) {
+         this.slotChecks[slot] = check = this.createCheck(isTop);
+      }
+
+      return check;
+   }
+
+   private RecipeManager.CachedCheck<FreezerInput, ? extends BaseProcessingRecipe> createCheck(boolean isTop) {
+      return isTop
+         ? RecipeManager.createCheck(ModRecipes.REFRIGERATING_TYPE)
+         : RecipeManager.createCheck(ModRecipes.FREEZING_TYPE);
    }
 
    public void removeOpenMenu(FreezerMenu menu) {

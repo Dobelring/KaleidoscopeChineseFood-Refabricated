@@ -1,0 +1,95 @@
+package com.bmt.kaleidoscope_chinesefood.client.renderer.block;
+
+import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.GlyphMetrics;
+import com.bmt.kaleidoscope_chinesefood.block.HorizontalScrollBlock;
+import com.bmt.kaleidoscope_chinesefood.block.entity.HorizontalScrollBlockEntity;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.Font.DisplayMode;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.level.block.state.BlockState;
+
+/**
+ * 1.2.0:按字形墨迹包围盒在格内水平居中,替代旧 ClientConfig 滑条排版。
+ */
+public class HorizontalScrollBlockEntityRender implements BlockEntityRenderer<HorizontalScrollBlockEntity> {
+   private static final ResourceLocation COUPLET_FONT = KaleidoscopeChineseFood.id("couplet_font");
+   private static final int GLOW_COLOR = 15789004;
+   private static final int GLOW_LIGHT = 15728880;
+   private final Font font;
+
+   public HorizontalScrollBlockEntityRender(Context context) {
+      this.font = context.getFont();
+   }
+
+   public void render(
+      HorizontalScrollBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay
+   ) {
+      BlockState state = blockEntity.getBlockState();
+      if (blockEntity.getOwnerPos().equals(blockEntity.getBlockPos())) {
+         String text = blockEntity.getTruncatedLine(0);
+         if (text != null && !text.isBlank()) {
+            int totalWidth = blockEntity.getSegmentCount();
+            boolean glowing = blockEntity.isGlowing();
+            Direction facing = (Direction)state.getValue(HorizontalScrollBlock.FACING);
+            poseStack.pushPose();
+            poseStack.translate(0.5, 0.5, 0.5);
+            poseStack.mulPose(Axis.YP.rotationDegrees(-facing.toYRot()));
+            poseStack.translate(0.0, 0.0, -0.48);
+            float scale = 0.021F;
+            poseStack.scale(scale, -scale, scale);
+            float charWidth = 9.5F;
+            float totalContentWidth = text.length() * 9.5F;
+            float unitCenterOffset = (totalWidth - 1) * 8.0F;
+            float textCenterOffset = -totalContentWidth / 2.0F;
+            float extraOffset;
+            if (totalWidth == 1) {
+               extraOffset = -0.5F;
+            } else if (totalWidth == 2) {
+               extraOffset = 15.0F;
+            } else {
+               extraOffset = 31.0F;
+            }
+
+            float baseX = unitCenterOffset + textCenterOffset + extraOffset;
+            float currentY = 1.5F;
+            Style coupletStyle = Style.EMPTY.withFont(COUPLET_FONT);
+            int color = glowing ? GLOW_COLOR : 0;
+            int light = glowing ? GLOW_LIGHT : packedLight;
+
+            for (int i = 0; i < text.length(); i++) {
+               char c = text.charAt(i);
+               FormattedCharSequence seq = Component.literal(String.valueOf(c)).withStyle(coupletStyle).getVisualOrderText();
+               // 1.2.0:按字形墨迹包围盒在格内水平居中
+               GlyphMetrics.InkBox ink = GlyphMetrics.measure(this.font, COUPLET_FONT, c);
+               float cellStart = baseX + i * 9.5F;
+               float x = cellStart + (9.5F - ink.width()) / 2.0F - ink.left();
+               if (glowing) {
+                  this.font.drawInBatch8xOutline(seq, x, currentY, color, 0, poseStack.last().pose(), bufferSource, light);
+               } else {
+                  this.font.drawInBatch(seq, x, currentY, color, false, poseStack.last().pose(), bufferSource, DisplayMode.POLYGON_OFFSET, 0, light);
+               }
+            }
+
+            poseStack.popPose();
+         }
+      }
+   }
+
+   public boolean shouldRenderOffScreen(HorizontalScrollBlockEntity blockEntity) {
+      return true;
+   }
+
+   public int getViewDistance() {
+      return 96;
+   }
+}

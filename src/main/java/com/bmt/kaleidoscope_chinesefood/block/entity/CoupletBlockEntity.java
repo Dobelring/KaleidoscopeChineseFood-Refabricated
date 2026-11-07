@@ -21,7 +21,7 @@ public class CoupletBlockEntity extends BlockEntity implements IWallTextBlockEnt
    private boolean isGlowing = false;
 
    public CoupletBlockEntity(BlockPos pos, BlockState state) {
-      super(ModBlockEntities.COUPLET_BLOCK_ENTITY, pos, state);
+      super(ModBlockEntities.COUPLET, pos, state);
    }
 
    protected void saveAdditional(@NotNull CompoundTag tag, @NotNull Provider registries) {
@@ -185,7 +185,7 @@ public class CoupletBlockEntity extends BlockEntity implements IWallTextBlockEnt
       } else {
          return switch (this.countGroupSize()) {
             case 2 -> 7;
-            case 3 -> 13;
+            case 3 -> 11;
             default -> 7;
          };
       }

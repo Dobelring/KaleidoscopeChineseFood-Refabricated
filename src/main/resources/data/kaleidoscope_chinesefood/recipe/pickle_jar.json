@@ -1,14 +1,13 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "pattern": [
     "# #",
     "# #",
     "###"
   ],
   "key": {
-    "#": {
-      "item": "minecraft:brick"
-    }
+    "#": {"item": "minecraft:brick"}
   },
   "result": {
     "id": "kaleidoscope_chinesefood:pickle_jar",

@@ -42,8 +42,17 @@ public class RefrigeratingRecipeCategory implements IRecipeCategory<RecipeHolder
       return Component.translatable("jei.kaleidoscope_chinesefood.refrigerating");
    }
 
-   public IDrawable getBackground() {
-      return this.background;
+   // JEI 19.x:背景改为 draw + getWidth/getHeight(对齐官方 1.2.0)
+   public void draw(RecipeHolder<RefrigeratingRecipe> recipe, mezz.jei.api.gui.ingredient.IRecipeSlotsView recipeSlotsView, net.minecraft.client.gui.GuiGraphics guiGraphics, double mouseX, double mouseY) {
+      this.background.draw(guiGraphics);
+   }
+
+   public int getWidth() {
+      return 116;
+   }
+
+   public int getHeight() {
+      return 54;
    }
 
    public IDrawable getIcon() {

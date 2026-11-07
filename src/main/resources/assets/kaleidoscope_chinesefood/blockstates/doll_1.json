@@ -1,32 +1,17 @@
 {
   "variants": {
-    "facing=north,waterlogged=false": {
+    "facing=north": {
       "model": "kaleidoscope_chinesefood:block/doll_1"
     },
-    "facing=north,waterlogged=true": {
-      "model": "kaleidoscope_chinesefood:block/doll_1"
-    },
-    "facing=east,waterlogged=false": {
+    "facing=east": {
       "model": "kaleidoscope_chinesefood:block/doll_1",
       "y": 90
     },
-    "facing=east,waterlogged=true": {
-      "model": "kaleidoscope_chinesefood:block/doll_1",
-      "y": 90
-    },
-    "facing=south,waterlogged=false": {
+    "facing=south": {
       "model": "kaleidoscope_chinesefood:block/doll_1",
       "y": 180
     },
-    "facing=south,waterlogged=true": {
-      "model": "kaleidoscope_chinesefood:block/doll_1",
-      "y": 180
-    },
-    "facing=west,waterlogged=false": {
-      "model": "kaleidoscope_chinesefood:block/doll_1",
-      "y": 270
-    },
-    "facing=west,waterlogged=true": {
+    "facing=west": {
       "model": "kaleidoscope_chinesefood:block/doll_1",
       "y": 270
     }

@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "kaleidoscope_chinesefood:firecracker"
+            "items": ["kaleidoscope_chinesefood:firecracker"]
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": "kaleidoscope_chinesefood:fu_character"
+            "items": ["kaleidoscope_chinesefood:fu_character"]
           }
         ]
       },
@@ -25,7 +25,7 @@
       "conditions": {
         "items": [
           {
-            "items": "kaleidoscope_chinesefood:horizontal_banner"
+            "items": ["kaleidoscope_chinesefood:horizontal_scroll"]
           }
         ]
       },
@@ -35,7 +35,7 @@
       "conditions": {
         "items": [
           {
-            "items": "kaleidoscope_chinesefood:couplet"
+            "items": ["kaleidoscope_chinesefood:couplet"]
           }
         ]
       },

@@ -1,6 +1,7 @@
 package com.bmt.kaleidoscope_chinesefood.client.gui;
 
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.GlyphMetrics;
 import com.bmt.kaleidoscope_chinesefood.network.TextEditUpdateC2SPayload;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -25,6 +26,7 @@ public class TextEditScreen extends Screen {
    private static final ResourceLocation BANNER_SINGLE_TEXTURE = KaleidoscopeChineseFood.id("textures/gui/banner_edit_single.png");
    private static final int SEGMENT = 64;
    private static final int TEXT_COLOR = 0;
+   private static final int COUNT_COLOR = 0xFFFFFF;
    private static final Style GUI_FONT_STYLE = Style.EMPTY.withFont(KaleidoscopeChineseFood.id("couplet_font"));
    private final BlockPos blockPos;
    private final int maxChars;
@@ -167,58 +169,67 @@ public class TextEditScreen extends Screen {
          countY = panelY + panelH - 9;
       }
 
-      graphics.drawString(this.font, count, countX, countY, TEXT_COLOR, false);
+      graphics.drawString(this.font, count, countX, countY, COUNT_COLOR, false);
    }
 
+   /** 1.2.0:编辑器预览按字形墨迹包围盒逐字居中(字号 1.15、行距 12×s)。 */
    private void renderVerticalText(GuiGraphics graphics, int panelX, int panelY, int panelW, int panelH) {
       String text = this.inputBox.getValue();
-      float s = 1.0F;
-      int spacing = (int)(13.0F * s);
-      FormattedCharSequence[] seqs = new FormattedCharSequence[text.length()];
-
-      for (int i = 0; i < text.length(); i++) {
-         seqs[i] = Component.literal(String.valueOf(text.charAt(i))).withStyle(GUI_FONT_STYLE).getVisualOrderText();
+      if (text.isEmpty()) {
+         return;
       }
 
-      int total = seqs.length * spacing;
-      int startY = panelY + (panelH - total) / 2 + 4;
-      int cx = panelX + panelW / 2 + 1;
+      float s = 1.15F;
+      float cellHeight = 12.0F * s;
+      float total = (float)text.length() * cellHeight;
+      float startY = (float)panelY + ((float)panelH - total) / 2.0F - 3.5F;
+      float cx = (float)panelX + (float)panelW / 2.0F;
       PoseStack pose = graphics.pose();
 
-      for (int i = 0; i < seqs.length; i++) {
-         int w = this.font.width(seqs[i]);
+      for (int i = 0; i < text.length(); i++) {
+         char c = text.charAt(i);
+         FormattedCharSequence seq = Component.literal(String.valueOf(c)).withStyle(GUI_FONT_STYLE).getVisualOrderText();
+         GlyphMetrics.InkBox ink = GlyphMetrics.measure(this.font, KaleidoscopeChineseFood.id("couplet_font"), c);
+         float cellCenterY = startY + (float)i * cellHeight + cellHeight / 2.0F;
+         float drawX = -(ink.left() + ink.right()) / 2.0F;
+         float drawY = -(ink.up() - 3.0F) - ink.height() / 2.0F;
          pose.pushPose();
-         pose.translate(cx, startY + i * spacing, 0.0F);
+         pose.translate(cx, cellCenterY, 0.0F);
          pose.scale(s, s, 1.0F);
-         graphics.drawString(this.font, seqs[i], -w / 2, 0, TEXT_COLOR, false);
+         // 1.21.1 Fabric GuiGraphics.drawString 仅 int 版,浮点位移经 pose.translate 保留
+         pose.translate(drawX, drawY, 0.0F);
+         graphics.drawString(this.font, seq, 0, 0, TEXT_COLOR, false);
          pose.popPose();
       }
    }
 
+   /** 1.2.0:编辑器预览按字形墨迹包围盒在格内水平居中(格宽 11.5×s)。 */
    private void renderHorizontalText(GuiGraphics graphics, int panelX, int panelY, int panelW, int panelH) {
       String text = this.inputBox.getValue();
-      float s = 1.0F;
-      FormattedCharSequence[] seqs = new FormattedCharSequence[text.length()];
-      int totalW = 0;
-
-      for (int i = 0; i < text.length(); i++) {
-         seqs[i] = Component.literal(String.valueOf(text.charAt(i))).withStyle(GUI_FONT_STYLE).getVisualOrderText();
-         totalW += this.font.width(seqs[i]);
+      if (text.isEmpty()) {
+         return;
       }
 
-      int startX = panelX + panelW / 2 - (int)(totalW * s) / 2 + 1;
-      int y = panelY + panelH / 2 - (int)(9.0F * s) / 2 + 1;
+      float s = 1.15F;
+      float cellWidth = 11.5F * s;
+      float totalW = (float)text.length() * cellWidth;
+      float startX = (float)panelX + ((float)panelW - totalW) / 2.0F;
+      float cy = (float)panelY + (float)panelH / 2.0F - 3.5F;
       PoseStack pose = graphics.pose();
-      int runX = startX;
 
-      for (int i = 0; i < seqs.length; i++) {
-         int w = this.font.width(seqs[i]);
+      for (int i = 0; i < text.length(); i++) {
+         char c = text.charAt(i);
+         FormattedCharSequence seq = Component.literal(String.valueOf(c)).withStyle(GUI_FONT_STYLE).getVisualOrderText();
+         GlyphMetrics.InkBox ink = GlyphMetrics.measure(this.font, KaleidoscopeChineseFood.id("couplet_font"), c);
+         float cellCenterX = startX + (float)i * cellWidth + cellWidth / 2.0F;
+         float drawX = -(ink.left() + ink.right()) / 2.0F;
+         float drawY = -(ink.up() - 3.0F) - ink.height() / 2.0F;
          pose.pushPose();
-         pose.translate(runX, y, 0.0F);
+         pose.translate(cellCenterX, cy, 0.0F);
          pose.scale(s, s, 1.0F);
-         graphics.drawString(this.font, seqs[i], 0, 0, TEXT_COLOR, false);
+         pose.translate(drawX, drawY, 0.0F);
+         graphics.drawString(this.font, seq, 0, 0, TEXT_COLOR, false);
          pose.popPose();
-         runX += (int)(w * s);
       }
    }
 

@@ -44,6 +44,8 @@ public class DataMapsEvents {
         CompostingChanceRegistry.INSTANCE.add(ModItems.EGGPLANT, 0.65F);
         CompostingChanceRegistry.INSTANCE.add(ModItems.EGGPLANT_SEED, 0.3F);
         CompostingChanceRegistry.INSTANCE.add(ModItems.STRAW_BED, 0.65F);
+        // 1.2.0:麦秆块可堆肥 0.85(对齐官方)
+        CompostingChanceRegistry.INSTANCE.add(com.github.ysbbbbbb.kaleidoscopecookery.init.ModItems.STRAW_BLOCK, 0.85F);
 
         LootTableEvents.MODIFY.register((key, tableBuilder, source, registries) -> {
             if (source.isBuiltin()) {

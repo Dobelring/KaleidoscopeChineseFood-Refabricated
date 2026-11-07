@@ -94,7 +94,7 @@ public class ModCreativeModeTabs {
                             output.accept(ModItems.FIRECRACKER);
                             output.accept(ModBlocks.FU_CHARACTER);
                             output.accept(ModBlocks.COUPLET);
-                            output.accept(ModBlocks.HORIZONTAL_BANNER);
+                            output.accept(ModBlocks.HORIZONTAL_SCROLL);
                             output.accept(ModBlocks.KONGMING_LANTERN);
                             output.accept(ModItems.STRAW_BED);
                             output.accept(ModCookeryBlocks.STRIPPED_BAMBOO_EIGHT_IMMORTALS_TABLE);

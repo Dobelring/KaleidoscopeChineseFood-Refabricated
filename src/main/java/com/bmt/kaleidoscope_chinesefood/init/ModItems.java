@@ -113,7 +113,8 @@ public class ModItems {
                 () -> new MobBucketItem(ModEntities.YELLOW_CROAKER, Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, new Item.Properties().stacksTo(1))
         );
         YELLOW_CROAKER_SPAWN_EGG = register(
-                "yellow_croaker_spawn_egg", () -> new SpawnEggItem(ModEntities.YELLOW_CROAKER, 15181583, 9274720, new Item.Properties())
+                // 1.21.1 官方 1.2.0:刷怪蛋颜色 15181583/9274720 → 15651692/11511423
+                "yellow_croaker_spawn_egg", () -> new SpawnEggItem(ModEntities.YELLOW_CROAKER, 15651692, 11511423, new Item.Properties())
         );
         MOONCAKE = register("mooncake", () -> new MooncakeItem(ModBlocks.MOONCAKE_BLOCK, new Item.Properties().food(ModFoods.MOONCAKE)));
         RAW_BAMBOO_STEAMED_EGG = register("raw_bamboo_steamed_egg", () -> new Item(new Item.Properties()));
@@ -137,8 +138,8 @@ public class ModItems {
         registerBlockItem("bowl_stack", ModBlocks.BOWL_STACK);
         registerBlockItem("fu_character", ModBlocks.FU_CHARACTER);
         registerBlockItem("couplet", ModBlocks.COUPLET);
-        registerBlockItem("horizontal_banner", ModBlocks.HORIZONTAL_BANNER);
-        registerBlockItem("mooncake_block", ModBlocks.MOONCAKE_BLOCK);
+        registerBlockItem("horizontal_scroll", ModBlocks.HORIZONTAL_SCROLL);
+        // 注:1.2.0 官方无 "mooncake_block" 独立物品——月饼物品就是 "mooncake"(MooncakeItem);盐物品就是 "salt"(上方 SALT)
         registerBlockItem("kongming_lantern", ModBlocks.KONGMING_LANTERN);
     }
 

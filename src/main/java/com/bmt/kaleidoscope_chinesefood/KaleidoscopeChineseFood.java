@@ -89,6 +89,8 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         VillagerTradeEvents.register();
         CreativeTabEventHandler.register();
         MidAutumnEventHandler.register();
+        // 1.2.0:即时熔炼预算制 + instantSmeltingOnlyOres 配置
+        com.bmt.kaleidoscope_chinesefood.event.InstantSmeltingEventHandler.register();
 
         // 1.1.10 新增：放置菜品与 Kaleidoscope Contraption 兼容（反射软依赖，
         // create 与 kaleidoscope_contraption 均加载时才注册食物位交互行为）
@@ -98,6 +100,9 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         }
 
         KongmingLanternBlock.registerDispenserBehavior(ModBlocks.KONGMING_LANTERN.asItem());
+        // 1.2.0 新功能:鞭炮发射器行为 + 黄鱼桶发射器行为(像水桶一样倒水放鱼)
+        com.bmt.kaleidoscope_chinesefood.block.FirecrackerBlock.registerDispenserBehavior();
+        com.bmt.kaleidoscope_chinesefood.init.registry.YellowCroakerBucketRegister.register();
 
         // 黄花鱼桶作为高汤锅汤底（1.1.11 新增，对应官方 CommonRegistry 里的 registerMobSoupBase）
         SoupBaseManager.registerMobSoupBase(KaleidoscopeChineseFood.id("yellow_croaker_bucket"), ModItems.YELLOW_CROAKER_BUCKET);

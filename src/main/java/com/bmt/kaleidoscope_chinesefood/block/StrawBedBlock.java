@@ -1,6 +1,6 @@
 package com.bmt.kaleidoscope_chinesefood.block;
 
-import com.bmt.kaleidoscope_chinesefood.world.StrawBedTracker;
+import com.bmt.kaleidoscope_chinesefood.util.tracker.StrawBedTracker;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.VoxelShapeUtils;
 import com.mojang.datafixers.util.Either;
 import java.util.EnumMap;
@@ -116,7 +116,7 @@ public class StrawBedBlock extends BedBlock {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, context, tooltip, flag);
-        tooltip.add(Component.translatable("item.kaleidoscope_chinesefood.straw_bed.tooltip")
+        tooltip.add(Component.translatable("block.kaleidoscope_chinesefood.straw_bed.tooltip")
                 .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
     }
 }

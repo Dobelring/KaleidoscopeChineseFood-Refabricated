@@ -192,7 +192,7 @@ public class BowlStackBlock extends BaseEntityBlock implements SimpleWaterlogged
    public void appendHoverText(ItemStack stack, @NotNull Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
       super.appendHoverText(stack, context, tooltip, flag);
       tooltip.add(
-         Component.translatable("block.kaleidoscope_chinesefood.bowl_stack.desc")
+         Component.translatable("block.kaleidoscope_chinesefood.bowl_stack.tooltip")
             .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)
       );
    }

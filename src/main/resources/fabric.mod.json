@@ -51,5 +51,8 @@
   },
   "recommends": {
     "kaleidoscope_tavern": "*"
+  },
+  "suggests": {
+    "carryon": "*"
   }
 }

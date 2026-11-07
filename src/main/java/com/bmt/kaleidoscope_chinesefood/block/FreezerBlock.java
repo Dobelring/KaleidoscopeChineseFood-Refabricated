@@ -2,6 +2,7 @@ package com.bmt.kaleidoscope_chinesefood.block;
 
 import com.bmt.kaleidoscope_chinesefood.block.entity.FreezerBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
+import com.bmt.kaleidoscope_chinesefood.init.ModStats;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -142,6 +143,8 @@ public class FreezerBlock extends BaseEntityBlock {
 
    private void tryOpenMenu(Level level, BlockPos pos, Player player) {
       if (!level.isClientSide && player instanceof ServerPlayer serverPlayer && level.getBlockEntity(pos) instanceof FreezerBlockEntity freezerBE) {
+         // 1.2.0 新统计:open_freezer
+         ModStats.awardOpenFreezerStat(serverPlayer);
          serverPlayer.openMenu(freezerBE);
       }
    }

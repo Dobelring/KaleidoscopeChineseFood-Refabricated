@@ -1,17 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "pattern": [
     "   ",
     "S S",
     "WWW"
   ],
   "key": {
-    "W": {
-      "item": "minecraft:oak_planks"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    }
+    "W": {"item": "minecraft:oak_planks"},
+    "S": {"item": "minecraft:stick"}
   },
   "result": {
     "id": "kaleidoscope_chinesefood:bowl_stack",
