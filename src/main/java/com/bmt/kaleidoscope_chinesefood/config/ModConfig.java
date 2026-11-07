@@ -12,11 +12,14 @@ import net.minecraftforge.common.ForgeConfigSpec.Builder;
  * {@code onLoad(Loading)} / {@code onReload(Reloading)} 已删除（Fabric 无 mod 总线）。
  * 注册改由主类完成：
  * {@code ForgeConfigRegistry.INSTANCE.register("kaleidoscope_chinesefood", ModConfig.Type.COMMON, ModConfig.SPEC)}
+ * <p>
+ * 1.2.0：删除 enableCustomPacks（内置资源包改为始终注册，对齐官方）；
+ * 新增 instantSmeltingOnlyOres（瞬间熔炼仅对矿石生效，默认关）。
  */
 public class ModConfig {
     private static final Builder BUILDER = new Builder();
+    public static final BooleanValue INSTANT_SMELTING_ONLY_ORES = BUILDER.comment("效果是否仅对矿石生效").define("instantSmeltingOnlyOres", false);
     public static final ForgeConfigSpec SPEC = BUILDER.build();
-    public static final BooleanValue ENABLE_CUSTOM_PACKS = BUILDER.comment("是否启用模糊烹饪配方").define("enableCustomPacks", true);
 
     public ModConfig() {
     }

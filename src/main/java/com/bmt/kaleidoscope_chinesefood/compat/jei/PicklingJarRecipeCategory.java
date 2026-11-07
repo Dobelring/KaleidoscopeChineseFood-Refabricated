@@ -2,7 +2,7 @@ package com.bmt.kaleidoscope_chinesefood.compat.jei;
 
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlocks;
-import com.bmt.kaleidoscope_chinesefood.recipe.PickleJarRecipe;
+import com.bmt.kaleidoscope_chinesefood.crafting.PickleJarRecipe;
 import java.util.Arrays;
 import java.util.List;
 import mezz.jei.api.constants.VanillaTypes;

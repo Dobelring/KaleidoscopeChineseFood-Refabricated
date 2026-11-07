@@ -3,7 +3,7 @@ package com.bmt.kaleidoscope_chinesefood.init;
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.entity.FirecrackerEntity;
 import com.bmt.kaleidoscope_chinesefood.entity.KongmingLanternEntity;
-import com.bmt.kaleidoscope_chinesefood.entity.YellowCroaker;
+import com.bmt.kaleidoscope_chinesefood.entity.YellowCroakerEntity;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -28,7 +28,7 @@ public class ModEntities {
         .clientTrackingRange(10)
         .updateInterval(1)
         .build(KaleidoscopeChineseFood.id("kongming_lantern").toString());
-    public static final EntityType<YellowCroaker> YELLOW_CROAKER = Builder.of(YellowCroaker::new, MobCategory.WATER_AMBIENT)
+    public static final EntityType<YellowCroakerEntity> YELLOW_CROAKER = Builder.of(YellowCroakerEntity::new, MobCategory.WATER_AMBIENT)
         .sized(0.5F, 0.3F)
         .clientTrackingRange(4)
         .build(KaleidoscopeChineseFood.id("yellow_croaker").toString());

@@ -1,6 +1,7 @@
 package com.bmt.kaleidoscope_chinesefood.block;
 
 import com.bmt.kaleidoscope_chinesefood.block.entity.FirecrackerBlockEntity;
+import com.bmt.kaleidoscope_chinesefood.entity.FirecrackerEntity;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -37,6 +38,24 @@ import org.jetbrains.annotations.Nullable;
 public class FirecrackerBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Plane.HORIZONTAL);
     protected static final VoxelShape SHAPE = box(6.0, 0.0, 6.0, 10.0, 8.0, 10.0);
+
+    /** 1.2.0：发射器射出鞭炮投掷物（对齐官方 CommonRegistry 注册）。 */
+    public static void registerDispenserBehavior() {
+        net.minecraft.world.level.block.DispenserBlock.registerBehavior(
+            com.bmt.kaleidoscope_chinesefood.init.ModItems.FIRECRACKER,
+            new net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior() {
+                @Override
+                protected net.minecraft.world.entity.projectile.Projectile getProjectile(
+                    net.minecraft.world.level.Level level, net.minecraft.core.Position position, ItemStack stack
+                ) {
+                    FirecrackerEntity firecracker = net.minecraft.Util.make(
+                        new FirecrackerEntity(level, position.x(), position.y(), position.z()), e -> e.setItem(stack)
+                    );
+                    return firecracker;
+                }
+            }
+        );
+    }
 
     public FirecrackerBlock(Properties pProperties) {
         super(pProperties);

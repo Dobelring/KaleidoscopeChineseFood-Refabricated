@@ -27,7 +27,7 @@ public class PickleJarScenes {
         VectorUtil vector = util.vector();
         SelectionUtil select = util.select();
         PositionUtil grid = util.grid();
-        scene.title("pickle_jar", "ponder.kaleidoscope_chinesefood.pickle_jar.title");
+        scene.title("pickle_jar", "");
         scene.configureBasePlate(0, 0, 5);
         scene.showBasePlate();
         BlockPos jarPos = grid.at(2, 1, 2);
@@ -37,7 +37,7 @@ public class PickleJarScenes {
         scene.idle(30);
         scene.overlay()
             .showText(60)
-            .text("ponder.kaleidoscope_chinesefood.pickle_jar.step1")
+            .text("")
             .pointAt(vector.blockSurface(jarPos, Direction.WEST))
             .placeNearTarget();
         scene.overlay().showControls(vector.blockSurface(jarPos, Direction.UP), Pointing.DOWN, 35).rightClick().whileSneaking();
@@ -48,7 +48,7 @@ public class PickleJarScenes {
         scene.idle(20);
         scene.overlay()
             .showText(80)
-            .text("ponder.kaleidoscope_chinesefood.pickle_jar.step2")
+            .text("")
             .pointAt(vector.blockSurface(jarPos, Direction.WEST))
             .placeNearTarget();
         scene.overlay()
@@ -79,7 +79,7 @@ public class PickleJarScenes {
         scene.idle(20);
         scene.overlay()
             .showText(60)
-            .text("ponder.kaleidoscope_chinesefood.pickle_jar.step3")
+            .text("")
             .pointAt(vector.blockSurface(jarPos, Direction.WEST))
             .placeNearTarget();
         scene.overlay().showControls(vector.blockSurface(jarPos, Direction.UP), Pointing.DOWN, 35).rightClick().whileSneaking();
@@ -97,7 +97,7 @@ public class PickleJarScenes {
         scene.idle(55);
         scene.addKeyframe();
         scene.idle(20);
-        scene.overlay().showText(60).text("ponder.kaleidoscope_chinesefood.pickle_jar.fermenting").placeNearTarget();
+        scene.overlay().showText(60).text("").placeNearTarget();
         scene.overlay().showControls(vector.blockSurface(grid.at(2, 3, 2), Direction.UP), Pointing.DOWN, 55).withItem(new ItemStack(Items.CLOCK));
 
         for (int i = 0; i < 4; i++) {
@@ -122,7 +122,7 @@ public class PickleJarScenes {
         });
         scene.overlay()
             .showText(60)
-            .text("ponder.kaleidoscope_chinesefood.pickle_jar.step4")
+            .text("")
             .pointAt(vector.blockSurface(jarPos, Direction.WEST))
             .placeNearTarget();
         scene.overlay().showControls(vector.blockSurface(jarPos, Direction.UP), Pointing.DOWN, 35).rightClick();

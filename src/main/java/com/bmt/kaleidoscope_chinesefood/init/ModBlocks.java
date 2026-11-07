@@ -5,7 +5,7 @@ import com.bmt.kaleidoscope_chinesefood.block.CoupletBlock;
 import com.bmt.kaleidoscope_chinesefood.block.FirecrackerBlock;
 import com.bmt.kaleidoscope_chinesefood.block.FreezerBlock;
 import com.bmt.kaleidoscope_chinesefood.block.FuCharacterBlock;
-import com.bmt.kaleidoscope_chinesefood.block.HorizontalBannerBlock;
+import com.bmt.kaleidoscope_chinesefood.block.HorizontalScrollBlock;
 import com.bmt.kaleidoscope_chinesefood.block.KongmingLanternBlock;
 import com.bmt.kaleidoscope_chinesefood.block.MooncakeBlock;
 import com.bmt.kaleidoscope_chinesefood.block.PickleJarBlock;
@@ -49,7 +49,7 @@ public class ModBlocks {
     public static final Block COUPLET = new CoupletBlock(
         Properties.of().strength(0.0F).mapColor(MapColor.FIRE).noOcclusion().sound(SoundType.WOOL)
     );
-    public static final Block HORIZONTAL_BANNER = new HorizontalBannerBlock(
+    public static final Block HORIZONTAL_BANNER = new HorizontalScrollBlock(
         Properties.of().mapColor(MapColor.FIRE).strength(0.0F).noOcclusion().sound(SoundType.WOOL)
     );
     public static final Block FU_CHARACTER = new FuCharacterBlock(
@@ -88,7 +88,7 @@ public class ModBlocks {
     }
 
     private static Block newFreezer() {
-        return new FreezerBlock(Properties.of().mapColor(MapColor.METAL).strength(3.0F, 1200.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion());
+        return new FreezerBlock(Properties.of().mapColor(MapColor.METAL).strength(5.0F, 1200.0F).sound(SoundType.METAL).requiresCorrectToolForDrops().noOcclusion());
     }
 
     private static void registerBlockItem(String name, Block block) {

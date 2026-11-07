@@ -160,8 +160,8 @@ public class BowlStackBlock extends Block implements EntityBlock, SimpleWaterlog
     }
 
     public List<ItemStack> getDrops(BlockState state, net.minecraft.world.level.storage.loot.LootParams.Builder paramsBuilder) {
-        List<ItemStack> drops = new ArrayList<>();
-        drops.add(new ItemStack(this));
+        // 1.2.0：自身掉落改走 loot 表（修复无掉落 bug），碗仍按数量代码补发
+        List<ItemStack> drops = new ArrayList<>(super.getDrops(state, paramsBuilder));
         int bowlCount = (Integer)state.getValue(BOWL_COUNT);
         if (bowlCount > 0) {
             drops.add(new ItemStack(Items.BOWL, bowlCount));
@@ -184,7 +184,7 @@ public class BowlStackBlock extends Block implements EntityBlock, SimpleWaterlog
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(
-            Component.translatable("block.kaleidoscope_chinesefood.bowl_stack.desc").withStyle(new ChatFormatting[]{ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC})
+            Component.translatable("block.kaleidoscope_chinesefood.bowl_stack.tooltip").withStyle(new ChatFormatting[]{ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC})
         );
     }
 

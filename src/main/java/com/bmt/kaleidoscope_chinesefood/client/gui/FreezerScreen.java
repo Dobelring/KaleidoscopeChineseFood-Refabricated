@@ -1,7 +1,7 @@
 package com.bmt.kaleidoscope_chinesefood.client.gui;
 
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
-import com.bmt.kaleidoscope_chinesefood.menu.FreezerMenu;
+import com.bmt.kaleidoscope_chinesefood.client.menu.FreezerMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;

@@ -1,5 +1,6 @@
 package com.bmt.kaleidoscope_chinesefood.block;
 
+import com.bmt.kaleidoscope_chinesefood.api.IPickleJar;
 import com.bmt.kaleidoscope_chinesefood.block.entity.PickleJarBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -60,17 +61,17 @@ public class PickleJarBlock extends BaseEntityBlock implements SimpleWaterlogged
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            PickleJarBlockEntity be = this.getBlockEntity(level, pos);
-            if (be == null) {
+            IPickleJar jar = this.getPickleJar(level, pos);
+            if (jar == null) {
                 return InteractionResult.PASS;
             } else if ((Boolean)state.getValue(FERMENTING)) {
-                int remainingSeconds = Math.max(0, (be.getMaxProgress() - be.getProgress()) / 20);
+                int remainingSeconds = Math.max(0, (jar.getMaxProgress() - jar.getProgress()) / 20);
                 player.displayClientMessage(Component.translatable("message.kaleidoscope_chinesefood.fermenting_remaining", new Object[]{remainingSeconds}), true);
                 return InteractionResult.CONSUME;
             } else if (player.isShiftKeyDown()) {
                 boolean isOpen = (Boolean)state.getValue(OPEN);
                 if (isOpen) {
-                    boolean hasValidRecipe = be.tryStartFermenting();
+                    boolean hasValidRecipe = jar.tryStartFermenting(level);
                     level.setBlock(
                         pos, (BlockState)((BlockState)((BlockState)state.setValue(OPEN, false)).setValue(FERMENTING, hasValidRecipe)).setValue(DONE, false), 3
                     );
@@ -78,7 +79,7 @@ public class PickleJarBlock extends BaseEntityBlock implements SimpleWaterlogged
                         player.displayClientMessage(Component.translatable("message.kaleidoscope_chinesefood.start_fermenting"), true);
                     }
                 } else {
-                    be.resetProgress();
+                    jar.resetProgress();
                     level.setBlock(pos, (BlockState)((BlockState)((BlockState)state.setValue(OPEN, true)).setValue(FERMENTING, false)).setValue(DONE, false), 3);
                 }
 
@@ -86,13 +87,14 @@ public class PickleJarBlock extends BaseEntityBlock implements SimpleWaterlogged
                 return InteractionResult.CONSUME;
             } else if ((Boolean)state.getValue(OPEN)) {
                 ItemStack held = player.getItemInHand(hand);
-                if (held.isEmpty()) {
-                    be.extractItem(player);
-                } else {
-                    be.insertItem(held, player);
+                // 1.2.0：先尝试提取，失败且手持非空才插入；音效只在真正存/取成功时播放
+                boolean extracted = jar.extractItem(player, held);
+                boolean inserted = !extracted && !held.isEmpty() && jar.insertItem(held, player);
+                if (extracted) {
+                    level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 0.8F, 1.1F);
+                } else if (inserted) {
+                    level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 0.8F, 1.1F);
                 }
-
-                level.playSound(null, pos, held.isEmpty() ? SoundEvents.ITEM_FRAME_REMOVE_ITEM : SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 0.8F, 1.1F);
                 return InteractionResult.CONSUME;
             } else {
                 return InteractionResult.PASS;
@@ -116,9 +118,9 @@ public class PickleJarBlock extends BaseEntityBlock implements SimpleWaterlogged
     }
 
     @Nullable
-    private PickleJarBlockEntity getBlockEntity(Level level, BlockPos pos) {
+    private IPickleJar getPickleJar(Level level, BlockPos pos) {
         BlockEntity be = level.getBlockEntity(pos);
-        return be instanceof PickleJarBlockEntity ? (PickleJarBlockEntity)be : null;
+        return be instanceof IPickleJar jar ? jar : null;
     }
 
     @Nullable

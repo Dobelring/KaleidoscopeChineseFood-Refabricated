@@ -266,7 +266,7 @@ public class CoupletBlock extends HorizontalDirectionalBlock implements EntityBl
             ItemStack stack = player.getItemInHand(hand);
             BlockPos owner = be.getOwnerPos();
             if (level.getBlockEntity(owner) instanceof CoupletBlockEntity master) {
-                if (stack.is(Items.GLOW_INK_SAC)) {
+                if (stack.is(Items.GLOW_INK_SAC) && !master.isGlowing()) {
                     master.setGlowing(true);
                     level.playSound(null, owner, SoundEvents.GLOW_INK_SAC_USE, SoundSource.BLOCKS);
                     if (!player.isCreative()) {
@@ -276,7 +276,7 @@ public class CoupletBlock extends HorizontalDirectionalBlock implements EntityBl
                     return InteractionResult.CONSUME;
                 }
 
-                if (stack.is(Items.INK_SAC)) {
+                if (stack.is(Items.INK_SAC) && master.isGlowing()) {
                     master.setGlowing(false);
                     level.playSound(null, owner, SoundEvents.INK_SAC_USE, SoundSource.BLOCKS);
                     if (!player.isCreative()) {
@@ -312,7 +312,7 @@ public class CoupletBlock extends HorizontalDirectionalBlock implements EntityBl
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(
-            Component.translatable("block.kaleidoscope_chinesefood.couplet.desc").withStyle(new ChatFormatting[]{ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC})
+            Component.translatable("block.kaleidoscope_chinesefood.couplet.tooltip").withStyle(new ChatFormatting[]{ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC})
         );
     }
 

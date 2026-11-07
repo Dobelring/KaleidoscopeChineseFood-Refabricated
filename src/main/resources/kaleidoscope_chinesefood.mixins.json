@@ -27,6 +27,7 @@
     "EntityRendererLightMixin",
     "LevelRendererLightMixin",
     "LocalPlayerMixin",
+    "accessor.FontAccessor",
     "accessor.RenderBuffersAccessor"
   ],
   "server": [],

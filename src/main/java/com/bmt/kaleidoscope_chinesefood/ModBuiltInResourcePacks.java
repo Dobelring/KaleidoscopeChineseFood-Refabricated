@@ -29,7 +29,7 @@ public class ModBuiltInResourcePacks {
      */
     private static boolean isCustomPacksEnabled() {
         try {
-            return ModConfig.ENABLE_CUSTOM_PACKS.get();
+            return true;
         } catch (IllegalStateException | NullPointerException e) {
             return true;
         }

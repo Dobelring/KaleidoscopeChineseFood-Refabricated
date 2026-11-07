@@ -1,6 +1,6 @@
 package com.bmt.kaleidoscope_chinesefood.block;
 
-import com.bmt.kaleidoscope_chinesefood.world.StrawBedTracker;
+import com.bmt.kaleidoscope_chinesefood.util.tracker.StrawBedTracker;
 import com.github.ysbbbbbb.kaleidoscopecookery.util.VoxelShapeUtils;
 import com.mojang.datafixers.util.Either;
 import java.util.EnumMap;

@@ -3,8 +3,8 @@ package com.bmt.kaleidoscope_chinesefood.compat.jei;
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlocks;
 import com.bmt.kaleidoscope_chinesefood.init.ModItems;
-import com.bmt.kaleidoscope_chinesefood.init.ModRecipeTypes;
-import com.bmt.kaleidoscope_chinesefood.recipe.ModRecipes;
+import com.bmt.kaleidoscope_chinesefood.init.ModRecipes;
+import com.bmt.kaleidoscope_chinesefood.init.ModRecipes;
 import java.util.List;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.constants.VanillaTypes;
@@ -41,8 +41,8 @@ public class ModPlugin implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
         registration.addRecipes(PicklingJarRecipeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.PICKLE_JAR_TYPE));
-        registration.addRecipes(FreezingRecipeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipeTypes.FREEZING));
-        registration.addRecipes(RefrigeratingRecipeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipeTypes.REFRIGERATING));
+        registration.addRecipes(FreezingRecipeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.FREEZING));
+        registration.addRecipes(RefrigeratingRecipeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.REFRIGERATING));
         registration.addRecipes(MooncakeMoldRecipeCategory.TYPE, List.of(new MooncakeMoldRecipe()));
         // 官方 1.1.16：黄花鱼 JEI 信息页（猫交互说明）
         registration.addIngredientInfo(

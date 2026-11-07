@@ -1,6 +1,7 @@
 package com.bmt.kaleidoscope_chinesefood.client.gui;
 
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.GlyphMetrics;
 import com.bmt.kaleidoscope_chinesefood.block.entity.CoupletBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.block.entity.IWallTextBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.network.TextEditUpdateC2SPacket;
@@ -176,53 +177,56 @@ public class TextEditScreen extends Screen {
 
     private void renderVerticalText(GuiGraphics graphics, int panelX, int panelY, int panelW, int panelH) {
         String text = this.inputBox.getValue();
-        float s = 1.2F;
-        int spacing = (int)(11.0F * s);
-        FormattedCharSequence[] seqs = new FormattedCharSequence[text.length()];
-
-        for (int i = 0; i < text.length(); i++) {
-            seqs[i] = Component.literal(String.valueOf(text.charAt(i))).withStyle(GUI_FONT_STYLE).getVisualOrderText();
+        if (text.isEmpty()) {
+            return;
         }
-
-        int total = seqs.length * spacing;
-        int startY = panelY + (panelH - total) / 2 + 3;
-        int cx = panelX + panelW / 2;
+        // 1.2.0：按字形墨迹包围盒逐字居中，缩放 1.2 -> 1.4
+        float s = 1.4F;
+        float cellHeight = 10.0F * s;
+        float total = (float)text.length() * cellHeight;
+        float startY = (float)panelY + ((float)panelH - total) / 2.0F;
+        float cx = (float)panelX + (float)panelW / 2.0F;
         PoseStack pose = graphics.pose();
 
-        for (int i = 0; i < seqs.length; i++) {
-            int w = this.font.width(seqs[i]);
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            FormattedCharSequence seq = Component.literal(String.valueOf(c)).withStyle(GUI_FONT_STYLE).getVisualOrderText();
+            GlyphMetrics.InkBox ink = GlyphMetrics.measure(this.font, KaleidoscopeChineseFood.id("couplet_font"), c);
+            float cellCenterY = startY + (float)i * cellHeight + cellHeight / 2.0F;
+            float drawX = -(ink.left() + ink.right()) / 2.0F;
+            float drawY = -(ink.up() - 3.0F) - ink.height() / 2.0F;
             pose.pushPose();
-            pose.translate(cx, startY + i * spacing, 0.0F);
+            pose.translate(cx, cellCenterY, 0.0F);
             pose.scale(s, s, 1.0F);
-            graphics.drawString(this.font, seqs[i], -w / 2, 0, 0, false);
+            graphics.drawString(this.font, seq, (int)drawX, (int)drawY, 0, false);
             pose.popPose();
         }
     }
 
     private void renderHorizontalText(GuiGraphics graphics, int panelX, int panelY, int panelW, int panelH) {
         String text = this.inputBox.getValue();
-        float s = 1.2F;
-        FormattedCharSequence[] seqs = new FormattedCharSequence[text.length()];
-        int totalW = 0;
+        if (text.isEmpty()) {
+            return;
+        }
+        float s = 1.4F;
+        float cellWidth = 9.5F * s;
+        float totalW = (float)text.length() * cellWidth;
+        float startX = (float)panelX + ((float)panelW - totalW) / 2.0F;
+        float cy = (float)panelY + (float)panelH / 2.0F;
+        PoseStack pose = graphics.pose();
 
         for (int i = 0; i < text.length(); i++) {
-            seqs[i] = Component.literal(String.valueOf(text.charAt(i))).withStyle(GUI_FONT_STYLE).getVisualOrderText();
-            totalW += this.font.width(seqs[i]);
-        }
-
-        int startX = panelX + panelW / 2 - (int)(totalW * s) / 2;
-        int y = panelY + panelH / 2 - (int)(9.0F * s) / 2;
-        PoseStack pose = graphics.pose();
-        int runX = startX;
-
-        for (int i = 0; i < seqs.length; i++) {
-            int w = this.font.width(seqs[i]);
+            char c = text.charAt(i);
+            FormattedCharSequence seq = Component.literal(String.valueOf(c)).withStyle(GUI_FONT_STYLE).getVisualOrderText();
+            GlyphMetrics.InkBox ink = GlyphMetrics.measure(this.font, KaleidoscopeChineseFood.id("couplet_font"), c);
+            float cellCenterX = startX + (float)i * cellWidth + cellWidth / 2.0F;
+            float drawX = -(ink.left() + ink.right()) / 2.0F;
+            float drawY = -(ink.up() - 3.0F) - ink.height() / 2.0F;
             pose.pushPose();
-            pose.translate(runX, y, 0.0F);
+            pose.translate(cellCenterX, cy, 0.0F);
             pose.scale(s, s, 1.0F);
-            graphics.drawString(this.font, seqs[i], 0, 0, 0, false);
+            graphics.drawString(this.font, seq, (int)drawX, (int)drawY, 0, false);
             pose.popPose();
-            runX += (int)(w * s);
         }
     }
 

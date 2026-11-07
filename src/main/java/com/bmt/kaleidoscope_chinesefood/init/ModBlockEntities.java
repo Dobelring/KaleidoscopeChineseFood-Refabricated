@@ -5,7 +5,7 @@ import com.bmt.kaleidoscope_chinesefood.block.entity.CoupletBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.block.entity.EnchantedPlateBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.block.entity.FirecrackerBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.block.entity.FreezerBlockEntity;
-import com.bmt.kaleidoscope_chinesefood.block.entity.HorizontalBannerBlockEntity;
+import com.bmt.kaleidoscope_chinesefood.block.entity.HorizontalScrollBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.block.entity.PickleJarBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.util.forge.ItemStackHandler;
 import java.util.ArrayList;
@@ -43,8 +43,8 @@ public class ModBlockEntities {
     public static final BlockEntityType<PickleJarBlockEntity> PICKLE_JAR = Builder.of(PickleJarBlockEntity::new, new Block[]{ModBlocks.PICKLE_JAR}).build(null);
     public static final BlockEntityType<BowlStackBlockEntity> BOWL_STACK = Builder.of(BowlStackBlockEntity::new, new Block[]{ModBlocks.BOWL_STACK}).build(null);
     public static final BlockEntityType<CoupletBlockEntity> COUPLET_BLOCK_ENTITY = Builder.of(CoupletBlockEntity::new, new Block[]{ModBlocks.COUPLET}).build(null);
-    public static final BlockEntityType<HorizontalBannerBlockEntity> HORIZONTAL_BANNER = Builder.of(
-        HorizontalBannerBlockEntity::new, new Block[]{ModBlocks.HORIZONTAL_BANNER}
+    public static final BlockEntityType<HorizontalScrollBlockEntity> HORIZONTAL_BANNER = Builder.of(
+        HorizontalScrollBlockEntity::new, new Block[]{ModBlocks.HORIZONTAL_BANNER}
     ).build(null);
     public static final BlockEntityType<FirecrackerBlockEntity> FIRECRACKER = Builder.of(FirecrackerBlockEntity::new, new Block[]{ModBlocks.FIRECRACKER}).build(null);
     // 注意：本字段在类初始化时就会从方块注册表里取「金苹果盘」方块，
@@ -61,7 +61,7 @@ public class ModBlockEntities {
         Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation("kaleidoscope_chinesefood", "pickle_jar"), PICKLE_JAR);
         Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation("kaleidoscope_chinesefood", "bowl_stack"), BOWL_STACK);
         Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation("kaleidoscope_chinesefood", "couplet"), COUPLET_BLOCK_ENTITY);
-        Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation("kaleidoscope_chinesefood", "horizontal_banner"), HORIZONTAL_BANNER);
+        Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation("kaleidoscope_chinesefood", "horizontal_scroll"), HORIZONTAL_BANNER);
         Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation("kaleidoscope_chinesefood", "firecracker"), FIRECRACKER);
         Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, new ResourceLocation("kaleidoscope_chinesefood", "enchanted_plate"), ENCHANTED_PLATE);
 

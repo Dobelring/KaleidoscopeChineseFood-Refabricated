@@ -105,6 +105,7 @@ dependencies {
 	// dev 环境专用：loom 不会把依赖模组（cookery）内嵌的 jar-in-jar 展开到类路径，
 	// 而 cookery 的 VitalityEvent / ModLootModifier 直接引用这些 Porting Lib 模块。
 	// 真实实例里这些模块由 cookery 的内嵌 jar 或 Create 提供，dev 下必须显式补。
+	modCompileOnly("io.github.fabricators_of_create.Porting-Lib:entity:${project.porting_lib_version}")
 	modRuntimeOnly("io.github.fabricators_of_create.Porting-Lib:entity:${project.porting_lib_version}")
 	modRuntimeOnly("io.github.fabricators_of_create.Porting-Lib:base:${project.porting_lib_version}")
 	modRuntimeOnly("io.github.fabricators_of_create.Porting-Lib:loot:${project.porting_lib_version}")

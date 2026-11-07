@@ -18,5 +18,5 @@
     "item": "minecraft:fermented_spider_eye",
     "count": 4
   },
-  "fermentTime": 3600
+  "ferment_time": 3600
 }

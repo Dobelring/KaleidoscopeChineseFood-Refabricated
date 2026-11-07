@@ -1,5 +1,6 @@
 package com.bmt.kaleidoscope_chinesefood.block.entity;
 
+import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.block.BowlStackBlock;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.bmt.kaleidoscope_chinesefood.util.forge.IItemHandler;
@@ -10,19 +11,26 @@ import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.HopperBlockEntity;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("UnstableApiUsage")
 public class BowlStackBlockEntity extends BlockEntity {
+    public static final TagKey<Block> PULL_BLACKLIST = TagKey.create(Registries.BLOCK, KaleidoscopeChineseFood.id("bowl_stack_pull_blacklist"));
     public static final int MAX_BOWL_COUNT = 3;
     private static final int AUTO_PULL_INTERVAL = 10;
     private int pullCooldown = 0;
@@ -79,10 +87,12 @@ public class BowlStackBlockEntity extends BlockEntity {
 
     private boolean hasContainerBelow() {
         BlockPos belowPos = this.worldPosition.below();
+        // 1.2.0：漏斗硬编码排除改为可配置的方块标签
+        if (this.level.getBlockState(belowPos).is(PULL_BLACKLIST)) {
+            return false;
+        }
         BlockEntity belowBE = this.level.getBlockEntity(belowPos);
         if (belowBE == null) {
-            return false;
-        } else if (belowBE instanceof HopperBlockEntity) {
             return false;
         } else {
             return belowBE instanceof PickleJarBlockEntity || ItemStorage.SIDED.find(this.level, belowPos, Direction.UP) != null;
@@ -92,14 +102,16 @@ public class BowlStackBlockEntity extends BlockEntity {
     private void tryPullBowlFromBelow() {
         if (this.getBowlCount() < MAX_BOWL_COUNT) {
             BlockPos belowPos = this.worldPosition.below();
-            BlockEntity belowBE = this.level.getBlockEntity(belowPos);
-            if (belowBE != null && !(belowBE instanceof HopperBlockEntity)) {
-                // Fabric：无 Forge 能力系统。本模组方块实体直接读取暴露的 ItemStackHandler，
-                // 其余（原版容器与已注册 storage 的模组方块）改用 Fabric 传输 API 查找
-                if (belowBE instanceof PickleJarBlockEntity pickleJar) {
-                    this.pullBowlFromHandler(pickleJar.getItemHandler());
-                } else {
-                    this.pullBowlFromStorage(ItemStorage.SIDED.find(this.level, belowPos, Direction.UP));
+            if (!this.level.getBlockState(belowPos).is(PULL_BLACKLIST)) {
+                BlockEntity belowBE = this.level.getBlockEntity(belowPos);
+                if (belowBE != null) {
+                    // Fabric：无 Forge 能力系统。本模组方块实体直接读取暴露的 ItemStackHandler，
+                    // 其余（原版容器与已注册 storage 的模组方块）改用 Fabric 传输 API 查找
+                    if (belowBE instanceof PickleJarBlockEntity pickleJar) {
+                        this.pullBowlFromHandler(pickleJar.getItemHandler());
+                    } else {
+                        this.pullBowlFromStorage(ItemStorage.SIDED.find(this.level, belowPos, Direction.UP));
+                    }
                 }
             }
         }
