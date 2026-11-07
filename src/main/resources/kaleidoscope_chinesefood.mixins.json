@@ -11,6 +11,7 @@
     "EntityMixin",
     "FurnaceFuelMixin$BurnDurationMixin",
     "FurnaceFuelMixin$MenuFuelMixin",
+    "InstantSmeltingDropsMixin",
     "InstantSmeltingEffectMixin",
     "ItemMixin",
     "LavaFluidMixin",
@@ -27,6 +28,9 @@
     "EntityRendererLightMixin",
     "LightCoordsUtilLightMixin",
     "LocalPlayerMixin",
+    "accessor.BakedSheetGlyphAccessor",
+    "accessor.FontManagerAccessor",
+    "accessor.MinecraftFontManagerAccessor",
     "accessor.RenderTypeInvoker"
   ],
   "injectors": {

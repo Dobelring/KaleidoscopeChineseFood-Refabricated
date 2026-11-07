@@ -6,7 +6,7 @@ import com.bmt.kaleidoscope_chinesefood.block.CoupletBlock;
 import com.bmt.kaleidoscope_chinesefood.block.FirecrackerBlock;
 import com.bmt.kaleidoscope_chinesefood.block.FreezerBlock;
 import com.bmt.kaleidoscope_chinesefood.block.FuCharacterBlock;
-import com.bmt.kaleidoscope_chinesefood.block.HorizontalBannerBlock;
+import com.bmt.kaleidoscope_chinesefood.block.HorizontalScrollBlock;
 import com.bmt.kaleidoscope_chinesefood.block.KongmingLanternBlock;
 import com.bmt.kaleidoscope_chinesefood.block.MooncakeBlock;
 import com.bmt.kaleidoscope_chinesefood.block.PickleJarBlock;
@@ -40,7 +40,7 @@ public class ModBlocks {
     public static FirecrackerBlock FIRECRACKER;
     public static FuCharacterBlock FU_CHARACTER;
     public static CoupletBlock COUPLET;
-    public static HorizontalBannerBlock HORIZONTAL_BANNER;
+    public static HorizontalScrollBlock HORIZONTAL_BANNER;
     public static MooncakeBlock MOONCAKE_BLOCK;
     public static KongmingLanternBlock KONGMING_LANTERN;
     public static EggplantCropBlock EGGPLANT_CROP;
@@ -69,7 +69,7 @@ public class ModBlocks {
                 "bowl_stack", p -> new BowlStackBlock(p.mapColor(MapColor.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD).noOcclusion())
         );
         SALT_BLOCK = register(
-                "salt_block", p -> new SaltBlock(p.mapColor(MapColor.TERRACOTTA_WHITE).strength(0.1F).noOcclusion().sound(SoundType.GLASS))
+                "salt", p -> new SaltBlock(p.mapColor(MapColor.TERRACOTTA_WHITE).strength(0.1F).noOcclusion().sound(SoundType.GLASS))
         );
         FIRECRACKER = register(
                 "firecracker", p -> new FirecrackerBlock(p.mapColor(MapColor.FIRE).strength(0.1F).sound(SoundType.CANDLE).noOcclusion())
@@ -81,10 +81,10 @@ public class ModBlocks {
                 "couplet", p -> new CoupletBlock(p.mapColor(MapColor.FIRE).strength(0.0F).noOcclusion().sound(SoundType.WOOL))
         );
         HORIZONTAL_BANNER = register(
-                "horizontal_banner", p -> new HorizontalBannerBlock(p.mapColor(MapColor.FIRE).strength(0.0F).noOcclusion().sound(SoundType.WOOL))
+                "horizontal_scroll", p -> new HorizontalScrollBlock(p.mapColor(MapColor.FIRE).strength(0.0F).noOcclusion().sound(SoundType.WOOL))
         );
         MOONCAKE_BLOCK = register(
-                "mooncake_block", p -> new MooncakeBlock(p.mapColor(MapColor.WOOD).strength(0.1F).noOcclusion().sound(SoundType.WOOD))
+                "mooncake", p -> new MooncakeBlock(p.mapColor(MapColor.WOOD).strength(0.1F).noOcclusion().sound(SoundType.WOOD))
         );
         KONGMING_LANTERN = register(
                 "kongming_lantern", p -> new KongmingLanternBlock(p.mapColor(MapColor.FIRE).strength(0.1F, 0.8F).noOcclusion().sound(SoundType.WOOL))
