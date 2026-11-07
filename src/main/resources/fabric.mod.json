@@ -44,6 +44,7 @@
   },
   "mixins": [
     "kaleidoscope_chinesefood.mixins.json",
+    "kaleidoscope_chinesefood.create.mixins.json",
     "kaleidoscope_chinesefood.tavern.mixins.json"
   ],
   "depends": {

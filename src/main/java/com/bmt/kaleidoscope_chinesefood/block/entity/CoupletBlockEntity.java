@@ -182,7 +182,7 @@ public class CoupletBlockEntity extends BlockEntity implements IWallTextBlockEnt
 
       return switch (this.countGroupSize()) {
          case 2 -> 7;
-         case 3 -> 13;
+         case 3 -> 11;
          default -> DEFAULT_MAX_CHARS;
       };
    }

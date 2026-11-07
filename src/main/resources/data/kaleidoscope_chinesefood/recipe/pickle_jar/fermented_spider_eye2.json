@@ -9,5 +9,5 @@
     "id": "minecraft:fermented_spider_eye",
     "count": 3
   },
-  "fermentTime": 3600
+  "ferment_time": 3600
 }
