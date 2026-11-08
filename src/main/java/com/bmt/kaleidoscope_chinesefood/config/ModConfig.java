@@ -7,10 +7,14 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.Builder;
 
+/**
+ * 1.2.0：删除 enableCustomPacks（内置资源包改为始终注册，对齐官方）；
+ * 新增 instantSmeltingOnlyOres（瞬间熔炼仅对矿石生效，默认关）。
+ */
 public class ModConfig {
     public static final ModConfigSpec SPEC;
-    public static final BooleanValue ENABLE_CUSTOM_PACKS;
-    public static boolean enableCustomPacks = true;
+    public static final BooleanValue INSTANT_SMELTING_ONLY_ORES;
+    public static boolean instantSmeltingOnlyOres = false;
 
     public static void init() {
         ConfigRegistry.INSTANCE.register(KaleidoscopeChineseFood.MODID, net.neoforged.fml.config.ModConfig.Type.COMMON, SPEC);
@@ -20,20 +24,20 @@ public class ModConfig {
 
     private static void onLoad(net.neoforged.fml.config.ModConfig config) {
         if (config.getType() == net.neoforged.fml.config.ModConfig.Type.COMMON) {
-            enableCustomPacks = ENABLE_CUSTOM_PACKS.get();
+            instantSmeltingOnlyOres = INSTANT_SMELTING_ONLY_ORES.get();
         }
     }
 
     private static void onReload(net.neoforged.fml.config.ModConfig config) {
         if (config.getType() == net.neoforged.fml.config.ModConfig.Type.COMMON) {
-            enableCustomPacks = ENABLE_CUSTOM_PACKS.get();
+            instantSmeltingOnlyOres = INSTANT_SMELTING_ONLY_ORES.get();
         }
     }
 
     static {
         Builder BUILDER = new Builder();
         BUILDER.push("Compatibility Settings");
-        ENABLE_CUSTOM_PACKS = BUILDER.comment("是否启用模糊烹饪配方").define("enableCustomPacks", true);
+        INSTANT_SMELTING_ONLY_ORES = BUILDER.comment("instantSmeltingOnlyOres: instant smelting effect only applies to ore blocks (default false)").define("instantSmeltingOnlyOres", false);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

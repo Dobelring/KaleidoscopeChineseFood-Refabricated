@@ -49,6 +49,8 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         ModConfig.init();
         ModEffects.register();
         ModTea.init(); // 茶杯效果是懒加载 supplier，注册期不读取 cookery 的 Holder，可留在 main 阶段
+        // 1.2.0：即时熔炼预算制引擎（对齐官方 1.1.15/1.2.0 的 InstantSmeltingEventHandler）
+        com.bmt.kaleidoscope_chinesefood.event.InstantSmeltingEventHandler.register();
         // 拼盘注册放在 runFoodPhase：必须晚于 cookery 的初始化，否则会被 cookery 用它自己的命名空间代注册
 
         // 依赖 cookery 的注册（ModFoods / ModItems / ModFoodBiteRegistry / KTItems / DataMapsEvents）
@@ -115,6 +117,7 @@ public class KaleidoscopeChineseFood implements ModInitializer {
             }
             ModFoodBiteRegistry.init();
             ModItems.register();
+            com.bmt.kaleidoscope_chinesefood.init.ModStats.register();
             // 拼盘：自己注册方块/物品，并把数据登记进 cookery 的 PLATE_DATA_MAP（必须晚于 cookery 初始化）
             ModPlateRegistry.init();
             // 附魔拼盘的方块实体：必须晚于 ModPlateRegistry.init()，此时才拿得到拼盘方块
@@ -127,16 +130,20 @@ public class KaleidoscopeChineseFood implements ModInitializer {
             ModTea.registerTeacupBlocksAndItems();
             // BlockItem 已注册，此时 asItem() 能解析到真实物品
             KongmingLanternBlock.registerDispenserBehavior(ModBlocks.KONGMING_LANTERN.asItem());
+            // 1.2.0：鞭炮与黄鱼桶的发射器行为（对齐官方 CommonRegistry）
+            com.bmt.kaleidoscope_chinesefood.block.FirecrackerBlock.registerDispenserBehavior();
+            com.bmt.kaleidoscope_chinesefood.init.registry.YellowCroakerBucketRegister.register();
             if (!FabricLoader.getInstance().isModLoaded("kaleidoscope_twilight")) {
                 KTItems.register();
             }
             DataMapsEvents.register();
-            ModStats.register();
         ModTriggers.register();
             StrawBedSleepEvents.register();
             // Create 联动：冰箱上下半块互附 + 整体易碎（官方 compat/create/CreateMovementChecks）
             if (FabricLoader.getInstance().isModLoaded("create")) {
                 com.bmt.kaleidoscope_chinesefood.compat.create.CreateMovementChecks.register();
+                // 1.2.0：Create 机械上的冰箱/泡菜坛/碗架虚拟驱动与 6 个移动交互行为
+                com.bmt.kaleidoscope_chinesefood.compat.create.CreateCompat.register();
                 // 竹躺椅装置座位（官方 1.1.14 三行注册依赖 kaleidoscope_contraption，该模组无 Fabric 构建）：
                 // 其缺席时改走 create-fly 原生 Seat API，与下方 contraption 守卫里的反射路径互斥
                 if (!FabricLoader.getInstance().isModLoaded("kaleidoscope_contraption")) {

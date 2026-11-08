@@ -3,7 +3,7 @@ package com.bmt.kaleidoscope_chinesefood.init;
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.entity.FirecrackerEntity;
 import com.bmt.kaleidoscope_chinesefood.entity.KongmingLanternEntity;
-import com.bmt.kaleidoscope_chinesefood.entity.YellowCroaker;
+import com.bmt.kaleidoscope_chinesefood.entity.YellowCroakerEntity;
 import com.bmt.kaleidoscope_chinesefood.mixins.accessor.SpawnPlacementsInvoker;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
@@ -21,7 +21,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 public class ModEntities {
     public static EntityType<FirecrackerEntity> FIRECRACKER;
     public static EntityType<KongmingLanternEntity> KONGMING_LANTERN;
-    public static EntityType<YellowCroaker> YELLOW_CROAKER;
+    public static EntityType<YellowCroakerEntity> YELLOW_CROAKER;
 
     public static void register() {
         // EntityType.Builder 通过 ResourceKey 构建
@@ -46,7 +46,7 @@ public class ModEntities {
         YELLOW_CROAKER = Registry.register(
                 BuiltInRegistries.ENTITY_TYPE,
                 KaleidoscopeChineseFood.id("yellow_croaker"),
-                Builder.<YellowCroaker>of(YellowCroaker::new, MobCategory.WATER_AMBIENT)
+                Builder.<YellowCroakerEntity>of(YellowCroakerEntity::new, MobCategory.WATER_AMBIENT)
                         .sized(0.5F, 0.3F)
                         .eyeHeight(0.3F)
                         .clientTrackingRange(4)

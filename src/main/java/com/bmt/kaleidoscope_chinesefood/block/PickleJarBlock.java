@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -60,7 +61,6 @@ public class PickleJarBlock extends BaseEntityBlock implements SimpleWaterlogged
             .setValue(WATERLOGGED, false)
       );
    }
-
    protected MapCodec<? extends BaseEntityBlock> codec() {
       return CODEC;
    }
@@ -95,19 +95,61 @@ public class PickleJarBlock extends BaseEntityBlock implements SimpleWaterlogged
             level.playSound(null, pos, isOpen ? SoundEvents.BARREL_CLOSE : SoundEvents.BARREL_OPEN, SoundSource.BLOCKS, 1.0F, 1.0F);
             return InteractionResult.CONSUME;
          } else if ((Boolean)state.getValue(OPEN)) {
-            ItemStack held = player.getMainHandItem();
-            if (held.isEmpty()) {
-               jar.extractItem(player);
-            } else {
-               jar.insertItem(held, player);
+            // 1.2.0.3:空手入口——只做无容器产物的空手取出(手持物品走 useItemOn)
+            boolean extracted = jar.extractItem(player, ItemStack.EMPTY);
+            if (extracted) {
+               level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 0.8F, 1.1F);
             }
-
-            level.playSound(null, pos, held.isEmpty() ? SoundEvents.ITEM_FRAME_REMOVE_ITEM : SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 0.8F, 1.1F);
             return InteractionResult.CONSUME;
          } else {
             return InteractionResult.PASS;
          }
       }
+   }
+
+   /** 1.2.0.3:手持物品入口(26.x 拆分 useItemOn/useWithoutItem——手持右键走本方法,缺失会导致无法放入原料/容器物品)。 */
+   protected InteractionResult useItemOn(ItemStack held, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+      if (level.isClientSide()) {
+         return InteractionResult.SUCCESS;
+      }
+      IPickleJar jar = this.getPickleJar(level, pos);
+      if (jar == null) {
+         return InteractionResult.PASS;
+      }
+      if ((Boolean)state.getValue(FERMENTING)) {
+         int remainingSeconds = Math.max(0, (jar.getMaxProgress() - jar.getProgress()) / 20);
+         player.sendOverlayMessage(Component.translatable("message.kaleidoscope_chinesefood.fermenting_remaining", new Object[]{remainingSeconds}));
+         return InteractionResult.CONSUME;
+      }
+      if (player.isShiftKeyDown()) {
+         boolean isOpen = (Boolean)state.getValue(OPEN);
+         if (isOpen) {
+            boolean hasValidRecipe = jar.tryStartFermenting(level);
+            BlockState newState = (BlockState)((BlockState)((BlockState)state.setValue(OPEN, false)).setValue(FERMENTING, hasValidRecipe))
+               .setValue(DONE, false);
+            level.setBlock(pos, newState, 3);
+            if (hasValidRecipe) {
+               player.sendOverlayMessage(Component.translatable("message.kaleidoscope_chinesefood.start_fermenting"));
+            }
+         } else {
+            jar.resetProgress();
+            BlockState newState = (BlockState)((BlockState)((BlockState)state.setValue(OPEN, true)).setValue(FERMENTING, false)).setValue(DONE, false);
+            level.setBlock(pos, newState, 3);
+         }
+         level.playSound(null, pos, isOpen ? SoundEvents.BARREL_CLOSE : SoundEvents.BARREL_OPEN, SoundSource.BLOCKS, 1.0F, 1.0F);
+         return InteractionResult.CONSUME;
+      }
+      if ((Boolean)state.getValue(OPEN)) {
+         boolean extracted = jar.extractItem(player, held);
+         boolean inserted = !extracted && !held.isEmpty() && jar.insertItem(held, player);
+         if (extracted) {
+            level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 0.8F, 1.1F);
+         } else if (inserted) {
+            level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 0.8F, 1.1F);
+         }
+         return InteractionResult.CONSUME;
+      }
+      return InteractionResult.PASS;
    }
 
    @Nullable
