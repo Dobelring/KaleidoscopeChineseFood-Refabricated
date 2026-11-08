@@ -6,7 +6,7 @@ import com.bmt.kaleidoscope_chinesefood.block.entity.CoupletBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.block.entity.EnchantedPlateBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.block.entity.FirecrackerBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.block.entity.FreezerBlockEntity;
-import com.bmt.kaleidoscope_chinesefood.block.entity.HorizontalBannerBlockEntity;
+import com.bmt.kaleidoscope_chinesefood.block.entity.HorizontalScrollBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.block.entity.PickleJarBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.core.Registry;
@@ -21,7 +21,7 @@ public class ModBlockEntities {
     public static BlockEntityType<BowlStackBlockEntity> BOWL_STACK;
     public static BlockEntityType<FirecrackerBlockEntity> FIRECRACKER;
     public static BlockEntityType<CoupletBlockEntity> COUPLET_BLOCK_ENTITY;
-    public static BlockEntityType<HorizontalBannerBlockEntity> HORIZONTAL_BANNER;
+    public static BlockEntityType<HorizontalScrollBlockEntity> HORIZONTAL_BANNER;
     public static BlockEntityType<EnchantedPlateBlockEntity> ENCHANTED_PLATE;
 
     public static void register() {
@@ -30,8 +30,8 @@ public class ModBlockEntities {
         PICKLE_JAR = register("pickle_jar", FabricBlockEntityTypeBuilder.create(PickleJarBlockEntity::new, ModBlocks.PICKLE_JAR));
         BOWL_STACK = register("bowl_stack", FabricBlockEntityTypeBuilder.create(BowlStackBlockEntity::new, ModBlocks.BOWL_STACK));
         FIRECRACKER = register("firecracker", FabricBlockEntityTypeBuilder.create(FirecrackerBlockEntity::new, ModBlocks.FIRECRACKER));
-        COUPLET_BLOCK_ENTITY = register("couplet_block_entity", FabricBlockEntityTypeBuilder.create(CoupletBlockEntity::new, ModBlocks.COUPLET));
-        HORIZONTAL_BANNER = register("horizontal_banner", FabricBlockEntityTypeBuilder.create(HorizontalBannerBlockEntity::new, ModBlocks.HORIZONTAL_BANNER));
+        COUPLET_BLOCK_ENTITY = register("couplet", FabricBlockEntityTypeBuilder.create(CoupletBlockEntity::new, ModBlocks.COUPLET));
+        HORIZONTAL_BANNER = register("horizontal_scroll", FabricBlockEntityTypeBuilder.create(HorizontalScrollBlockEntity::new, ModBlocks.HORIZONTAL_BANNER));
     }
 
     /**

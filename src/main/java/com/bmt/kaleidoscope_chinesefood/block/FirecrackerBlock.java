@@ -44,6 +44,14 @@ public class FirecrackerBlock extends BaseEntityBlock {
    protected static final VoxelShape SHAPE = Block.box(6.0, 0.0, 6.0, 10.0, 8.0, 10.0);
    public static final MapCodec<FirecrackerBlock> CODEC = simpleCodec(FirecrackerBlock::new);
 
+   /** 1.2.0：发射器射出鞭炮投掷物（对齐官方 CommonRegistry 注册；26.2 走 ProjectileItem）。 */
+   public static void registerDispenserBehavior() {
+      net.minecraft.world.level.block.DispenserBlock.registerBehavior(
+         com.bmt.kaleidoscope_chinesefood.init.ModItems.FIRECRACKER,
+         new net.minecraft.core.dispenser.ProjectileDispenseBehavior(com.bmt.kaleidoscope_chinesefood.init.ModItems.FIRECRACKER)
+      );
+   }
+
    public FirecrackerBlock(Properties pProperties) {
       super(pProperties);
       this.registerDefaultState((BlockState)((BlockState)this.stateDefinition.any()).setValue(FACING, Direction.NORTH));

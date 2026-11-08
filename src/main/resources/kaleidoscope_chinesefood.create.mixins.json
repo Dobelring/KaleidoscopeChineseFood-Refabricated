@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.bmt.kaleidoscope_chinesefood.mixins",
+  "compatibilityLevel": "JAVA_25",
+  "plugin": "com.bmt.kaleidoscope_chinesefood.mixins.CreateMixinConfigPlugin",
+  "mixins": [
+    "accessor.ContraptionAccessor",
+    "accessor.TranslatingContraptionAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
