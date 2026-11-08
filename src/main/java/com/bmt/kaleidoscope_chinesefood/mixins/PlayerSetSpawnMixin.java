@@ -1,6 +1,6 @@
 package com.bmt.kaleidoscope_chinesefood.mixins;
 
-import com.bmt.kaleidoscope_chinesefood.world.StrawBedTracker;
+import com.bmt.kaleidoscope_chinesefood.util.tracker.StrawBedTracker;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;

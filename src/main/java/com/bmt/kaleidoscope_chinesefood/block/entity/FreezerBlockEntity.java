@@ -2,11 +2,11 @@ package com.bmt.kaleidoscope_chinesefood.block.entity;
 
 import com.bmt.kaleidoscope_chinesefood.block.FreezerBlock;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
-import com.bmt.kaleidoscope_chinesefood.init.ModRecipeTypes;
+import com.bmt.kaleidoscope_chinesefood.init.ModRecipes;
 import com.bmt.kaleidoscope_chinesefood.init.ModSounds;
-import com.bmt.kaleidoscope_chinesefood.menu.FreezerMenu;
-import com.bmt.kaleidoscope_chinesefood.recipe.FreezingRecipe;
-import com.bmt.kaleidoscope_chinesefood.recipe.RefrigeratingRecipe;
+import com.bmt.kaleidoscope_chinesefood.client.menu.FreezerMenu;
+import com.bmt.kaleidoscope_chinesefood.crafting.FreezingRecipe;
+import com.bmt.kaleidoscope_chinesefood.crafting.RefrigeratingRecipe;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
@@ -204,7 +204,7 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
         boolean hasRecipe = false;
         int recipeTime = 100;
         if (isTop) {
-            Optional<RefrigeratingRecipe> recipe = this.level.getRecipeManager().getRecipeFor(ModRecipeTypes.REFRIGERATING, inv, this.level);
+            Optional<RefrigeratingRecipe> recipe = this.level.getRecipeManager().getRecipeFor(ModRecipes.REFRIGERATING, inv, this.level);
             if (recipe.isPresent()) {
                 RefrigeratingRecipe r = recipe.get();
                 hasRecipe = true;
@@ -219,7 +219,7 @@ public class FreezerBlockEntity extends RandomizableContainerBlockEntity impleme
                 }
             }
         } else {
-            Optional<FreezingRecipe> recipe = this.level.getRecipeManager().getRecipeFor(ModRecipeTypes.FREEZING, inv, this.level);
+            Optional<FreezingRecipe> recipe = this.level.getRecipeManager().getRecipeFor(ModRecipes.FREEZING, inv, this.level);
             if (recipe.isPresent()) {
                 FreezingRecipe r = recipe.get();
                 hasRecipe = true;

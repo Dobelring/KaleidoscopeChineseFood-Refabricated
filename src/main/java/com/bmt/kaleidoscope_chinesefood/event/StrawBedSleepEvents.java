@@ -1,6 +1,6 @@
 package com.bmt.kaleidoscope_chinesefood.event;
 
-import com.bmt.kaleidoscope_chinesefood.world.StrawBedTracker;
+import com.bmt.kaleidoscope_chinesefood.util.tracker.StrawBedTracker;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 

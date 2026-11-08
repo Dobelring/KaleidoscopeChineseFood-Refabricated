@@ -2,7 +2,7 @@ package com.bmt.kaleidoscope_chinesefood.compat.jei;
 
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlocks;
-import com.bmt.kaleidoscope_chinesefood.recipe.RefrigeratingRecipe;
+import com.bmt.kaleidoscope_chinesefood.crafting.RefrigeratingRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;

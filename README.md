@@ -28,7 +28,7 @@ This mod brings a variety of Chinese cuisine and folk items to "Kaleidoscope: Co
 ## Compat
 - **JEI / EMI**: view pickling / refrigerating / freezing recipes, plus a virtual mooncake-mold entry (mold + stuffed dough → raw mooncake).
 - **Jade**: shows the pickle jar's progress.
-- **Create (机械动力)**: the freezer can be moved by contraptions (attached/brittle movement checks).
+- **Create (机械动力)**: freezer / pickle jar / bowl stack keep running and stay interactive on moving contraptions (virtual block entities + moving-interaction behaviours); attached/brittle movement checks for the freezer.
 - **Kaleidoscope Doll (森罗物语：玩偶)**: contributor doll items (gated — loads only with the Doll mod present and 森罗厨 / 森罗彼岸 absent).
 
 ## Build

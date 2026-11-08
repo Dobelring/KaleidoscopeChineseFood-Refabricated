@@ -15,5 +15,7 @@ public class ModCompostables {
         compostMap.put(ModItems.EGGPLANT, 0.65F);
         compostMap.put(ModItems.EGGPLANT_SEED, 0.3F);
         compostMap.put(ModItems.STRAW_BED, 0.65F);
+        // 1.2.0：麦秆块可堆肥
+        compostMap.put(com.github.ysbbbbbb.kaleidoscopecookery.init.ModItems.STRAW_BLOCK, 0.85F);
     }
 }

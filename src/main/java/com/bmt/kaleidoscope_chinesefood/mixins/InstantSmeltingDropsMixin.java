@@ -23,7 +23,7 @@ public abstract class InstantSmeltingDropsMixin {
       List<ItemStack> original, BlockState state, ServerLevel level, BlockPos pos, BlockEntity blockEntity, Entity entity, ItemStack tool
    ) {
       if (original != null && !original.isEmpty() && level != null && !level.isClientSide()) {
-         InstantSmeltingEventHandler.smeltDrops(original, level, entity);
+         InstantSmeltingEventHandler.smeltDrops(original, level, entity, state);
       }
 
       return original;

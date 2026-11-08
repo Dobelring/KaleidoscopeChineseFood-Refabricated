@@ -23,6 +23,9 @@ public class ClientPacketHandler {
     public static void registerClient() {
         ClientPlayNetworking.registerGlobalReceiver(TextEditOpenS2CPacket.TYPE,
             (packet, player, responseSender) -> openTextEditScreen(packet.getPos()));
+        // 1.2.0：Create 机械方块数据同步
+        ClientPlayNetworking.registerGlobalReceiver(com.bmt.kaleidoscope_chinesefood.compat.create.ContraptionBlockDataPayload.TYPE,
+            (packet, player, responseSender) -> com.bmt.kaleidoscope_chinesefood.compat.create.ClientContraptionBlockDataHandler.handle(packet));
     }
 
     public static void openTextEditScreen(BlockPos pos) {

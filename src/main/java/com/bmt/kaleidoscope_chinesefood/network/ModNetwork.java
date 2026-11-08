@@ -33,9 +33,14 @@ public class ModNetwork {
 
     /**
      * 原 {@code CHANNEL.send(PacketDistributor.PLAYER.with(() -> player), msg)}。
-     * 供 {@code block/CoupletBlock} 与 {@code block/HorizontalBannerBlock} 调用。
+     * 供 {@code block/CoupletBlock} 与 {@code block/HorizontalScrollBlock} 调用。
      */
     public static void sendToPlayer(TextEditOpenS2CPacket msg, ServerPlayer player) {
+        ServerPlayNetworking.send(player, msg);
+    }
+
+    /** 1.2.0：Create 机械方块数据同步（官方 registerContraptionPacket）。 */
+    public static void sendToPlayer(com.bmt.kaleidoscope_chinesefood.compat.create.ContraptionBlockDataPayload msg, ServerPlayer player) {
         ServerPlayNetworking.send(player, msg);
     }
 }

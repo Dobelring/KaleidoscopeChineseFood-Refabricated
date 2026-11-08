@@ -41,9 +41,15 @@
   },
   "mixins": [
     "kaleidoscope_chinesefood.mixins.json",
+    "kaleidoscope_chinesefood.create.mixins.json",
     "kaleidoscope_chinesefood.tavern.mixins.json",
     "kaleidoscope_chinesefood.sodium.mixins.json"
   ],
+  "suggests": {
+    "create": "*",
+    "carryon": "*",
+    "kubejs": "*"
+  },
   "depends": {
     "fabricloader": ">=0.19.5",
     "fabric-api": ">=0.92.0",

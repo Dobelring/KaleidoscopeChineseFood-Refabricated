@@ -35,6 +35,10 @@ public class MooncakeItem extends BlockItem {
         Level level = context.getLevel();
         BlockState clickedState = level.getBlockState(context.getClickedPos());
         if (clickedState.getBlock() instanceof MooncakeBlock) {
+            // 1.2.0：非顶面点击穿透
+            if (!MooncakeBlock.isClickOnCake(context.getClickedPos(), context.getClickLocation())) {
+                return InteractionResult.PASS;
+            }
             int currentStack = (Integer)clickedState.getValue(MooncakeBlock.STACK_COUNT);
             if (currentStack >= 4) {
                 return InteractionResult.FAIL;
@@ -84,11 +88,4 @@ public class MooncakeItem extends BlockItem {
         }
     }
 
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, level, tooltip, flag);
-        tooltip.add(
-            Component.translatable("item.kaleidoscope_chinesefood.mooncake.tooltip").withStyle(new ChatFormatting[]{ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC})
-        );
-    }
 }

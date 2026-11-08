@@ -1,18 +1,16 @@
 package com.bmt.kaleidoscope_chinesefood.client;
 
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
-import com.bmt.kaleidoscope_chinesefood.client.event.TooltipEvents;
 import com.bmt.kaleidoscope_chinesefood.client.gui.FreezerScreen;
 import com.bmt.kaleidoscope_chinesefood.client.light.DynamicLightEvents;
-import com.bmt.kaleidoscope_chinesefood.client.renderer.CoupletRender;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.block.CoupletBlockEntityRender;
 import com.bmt.kaleidoscope_chinesefood.client.renderer.CustomRenderType;
-import com.bmt.kaleidoscope_chinesefood.client.renderer.EnchantedPlateBlockEntityRenderer;
-import com.bmt.kaleidoscope_chinesefood.client.renderer.HorizontalBannerRender;
-import com.bmt.kaleidoscope_chinesefood.client.renderer.PickleJarRender;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.block.EnchantedPlateBlockEntityRender;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.block.HorizontalScrollBlockEntityRender;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.block.PickleJarBlockEntityRender;
 import com.bmt.kaleidoscope_chinesefood.client.renderer.entity.KongmingLanternRender;
-import com.bmt.kaleidoscope_chinesefood.client.renderer.entity.YellowCroakerRenderer;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.entity.YellowCroakerRender;
 import com.bmt.kaleidoscope_chinesefood.compat.ponder.init.ClientSetupEvent;
-import com.bmt.kaleidoscope_chinesefood.config.ModConfigScreenHandler;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.bmt.kaleidoscope_chinesefood.init.ModEntities;
 import com.bmt.kaleidoscope_chinesefood.init.ModMenuTypes;
@@ -50,14 +48,14 @@ public class KaleidoscopeChineseFoodClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         // 方块实体渲染器（原 RegisterRenderers 事件）
-        BlockEntityRenderers.register(ModBlockEntities.PICKLE_JAR, PickleJarRender::new);
-        BlockEntityRenderers.register(ModBlockEntities.COUPLET_BLOCK_ENTITY, CoupletRender::new);
-        BlockEntityRenderers.register(ModBlockEntities.HORIZONTAL_BANNER, HorizontalBannerRender::new);
-        BlockEntityRenderers.register(ModBlockEntities.ENCHANTED_PLATE, EnchantedPlateBlockEntityRenderer::new);
+        BlockEntityRenderers.register(ModBlockEntities.PICKLE_JAR, PickleJarBlockEntityRender::new);
+        BlockEntityRenderers.register(ModBlockEntities.COUPLET_BLOCK_ENTITY, CoupletBlockEntityRender::new);
+        BlockEntityRenderers.register(ModBlockEntities.HORIZONTAL_BANNER, HorizontalScrollBlockEntityRender::new);
+        BlockEntityRenderers.register(ModBlockEntities.ENCHANTED_PLATE, EnchantedPlateBlockEntityRender::new);
 
         // 实体渲染器（原 RegisterRenderers 事件）
         EntityRendererRegistry.register(ModEntities.KONGMING_LANTERN, KongmingLanternRender::new);
-        EntityRendererRegistry.register(ModEntities.YELLOW_CROAKER, YellowCroakerRenderer::new);
+        EntityRendererRegistry.register(ModEntities.YELLOW_CROAKER, YellowCroakerRender::new);
         EntityRendererRegistry.register(ModEntities.FIRECRACKER, ThrownItemRenderer::new);
 
         // 菜单屏幕（原 ModScreens.onClientSetup / MenuScreens.register）
@@ -65,7 +63,6 @@ public class KaleidoscopeChineseFoodClient implements ClientModInitializer {
         MenuScreens.register(ModMenuTypes.FREEZER_MENU, FreezerScreen::new);
 
         // tooltip（原 Forge ItemTooltipEvent）
-        TooltipEvents.register();
 
         // 动态光引擎（原 DynamicLightEvents 的 ClientTickEvent.Post 订阅）
         DynamicLightEvents.register();
@@ -74,7 +71,6 @@ public class KaleidoscopeChineseFoodClient implements ClientModInitializer {
         ClientPacketHandler.registerClient();
 
         // 配置界面（原 Forge ConfigScreenFactory 扩展点）
-        ModConfigScreenHandler.register();
 
         // Ponder 场景注册：原 Forge 是 mod 总线事件，Fabric 必须手工接线
         ClientSetupEvent.onClientSetup();

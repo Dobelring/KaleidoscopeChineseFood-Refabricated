@@ -1,6 +1,6 @@
 package com.bmt.kaleidoscope_chinesefood.init;
 
-import com.bmt.kaleidoscope_chinesefood.menu.FreezerMenu;
+import com.bmt.kaleidoscope_chinesefood.client.menu.FreezerMenu;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;

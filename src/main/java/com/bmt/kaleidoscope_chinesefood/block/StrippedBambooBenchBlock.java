@@ -39,10 +39,10 @@ public class StrippedBambooBenchBlock extends Block {
     public static final int LEFT = 1;
     public static final int MIDDLE = 2;
     public static final int RIGHT = 3;
-    private static final double[][] SINGLE_BOXES = new double[][]{{2.0, 0.0, 2.0, 14.0, 8.0, 14.0}, {2.0, 8.0, 2.0, 3.0, 19.0, 14.0}};
-    private static final double[][] LEFT_BOXES = new double[][]{{2.0, 0.0, 0.0, 14.0, 8.0, 14.0}, {2.0, 8.0, 0.0, 3.0, 19.0, 14.0}};
-    private static final double[][] MIDDLE_BOXES = new double[][]{{2.0, 0.0, 0.0, 14.0, 8.0, 16.0}, {2.0, 8.0, 0.0, 3.0, 19.0, 16.0}};
-    private static final double[][] RIGHT_BOXES = new double[][]{{2.0, 0.0, 2.0, 14.0, 8.0, 16.0}, {2.0, 8.0, 2.0, 3.0, 19.0, 16.0}};
+    private static final double[][] SINGLE_BOXES = new double[][]{{2.0, 0.0, 2.0, 14.0, 8.0, 14.0}, {2.0, 8.0, 2.0, 3.0, 18.0, 14.0}};
+    private static final double[][] LEFT_BOXES = new double[][]{{2.0, 0.0, 0.0, 14.0, 8.0, 14.0}, {2.0, 8.0, 0.0, 3.0, 18.0, 14.0}};
+    private static final double[][] MIDDLE_BOXES = new double[][]{{2.0, 0.0, 0.0, 14.0, 8.0, 16.0}, {2.0, 8.0, 0.0, 3.0, 18.0, 16.0}};
+    private static final double[][] RIGHT_BOXES = new double[][]{{2.0, 0.0, 2.0, 14.0, 8.0, 16.0}, {2.0, 8.0, 2.0, 3.0, 18.0, 16.0}};
 
     public StrippedBambooBenchBlock() {
         super(

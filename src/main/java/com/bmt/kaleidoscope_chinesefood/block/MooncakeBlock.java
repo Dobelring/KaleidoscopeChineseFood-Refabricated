@@ -4,14 +4,20 @@ import com.bmt.kaleidoscope_chinesefood.init.ModItems;
 import com.bmt.kaleidoscope_chinesefood.util.forge.ItemHandlerHelper;
 import com.google.common.collect.Lists;
 import java.util.List;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,7 +31,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class MooncakeBlock extends Block {
     public static final IntegerProperty STACK_COUNT = IntegerProperty.create("stack_count", 0, 4);
-    private static final VoxelShape MOONCAKE_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 1.0, 14.0);
+    private static final VoxelShape MOONCAKE_SHAPE = Block.box(1.0, 0.0, 1.0, 15.0, 1.0, 15.0);
 
     public MooncakeBlock(Properties properties) {
         super(properties);
@@ -37,6 +43,10 @@ public class MooncakeBlock extends Block {
     }
 
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        // 1.2.0：只响应顶面蛋糕区域的点击，其余位置穿透交互
+        if (!isClickOnCake(pos, hit.getLocation())) {
+            return InteractionResult.PASS;
+        }
         ItemStack heldItem = player.getItemInHand(hand);
         if (hand == InteractionHand.MAIN_HAND && heldItem.is(ModItems.MOONCAKE)) {
             int count = (Integer)state.getValue(STACK_COUNT);
@@ -51,7 +61,7 @@ public class MooncakeBlock extends Block {
             } else {
                 return InteractionResult.PASS;
             }
-        } else if (hand == InteractionHand.MAIN_HAND && heldItem.isEmpty() && player.getOffhandItem().isEmpty()) {
+        } else if (hand == InteractionHand.MAIN_HAND && heldItem.isEmpty()) {
             if (!level.isClientSide) {
                 int currentStack = (Integer)state.getValue(STACK_COUNT);
                 ItemStack mooncake = new ItemStack(ModItems.MOONCAKE);
@@ -88,5 +98,20 @@ public class MooncakeBlock extends Block {
 
     public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return this.getShape(state, level, pos, context);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, java.util.List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, level, tooltip, flag);
+        tooltip.add(Component.translatable("block.kaleidoscope_chinesefood.mooncake.tooltip").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+    }
+
+    /** 1.2.0：点击是否落在月饼顶面（x/z ∈ [0.124,0.876]，y ≤ 0.0635）。 */
+    public static boolean isClickOnCake(BlockPos pos, net.minecraft.world.phys.Vec3 clickLoc) {
+        double x = clickLoc.x - pos.getX();
+        double y = clickLoc.y - pos.getY();
+        double z = clickLoc.z - pos.getZ();
+        double eps = 0.001;
+        return x >= 0.124 && x <= 0.876 && y >= -eps && y <= 0.0635 && z >= 0.124 && z <= 0.876;
     }
 }

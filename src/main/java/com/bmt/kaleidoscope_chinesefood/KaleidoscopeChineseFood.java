@@ -1,5 +1,6 @@
 package com.bmt.kaleidoscope_chinesefood;
 
+import com.bmt.kaleidoscope_chinesefood.block.FirecrackerBlock;
 import com.bmt.kaleidoscope_chinesefood.block.KongmingLanternBlock;
 import com.bmt.kaleidoscope_chinesefood.compat.carryon.CarryOnCompat;
 import com.bmt.kaleidoscope_chinesefood.compat.create.CreateMovementChecks;
@@ -23,15 +24,16 @@ import com.bmt.kaleidoscope_chinesefood.init.ModEffects;
 import com.bmt.kaleidoscope_chinesefood.init.ModEntities;
 import com.bmt.kaleidoscope_chinesefood.init.ModItems;
 import com.bmt.kaleidoscope_chinesefood.init.ModMenuTypes;
-import com.bmt.kaleidoscope_chinesefood.init.ModRecipeSerializers;
+import com.bmt.kaleidoscope_chinesefood.init.ModRecipes;
 import com.bmt.kaleidoscope_chinesefood.init.ModStats;
-import com.bmt.kaleidoscope_chinesefood.init.ModRecipeTypes;
+import com.bmt.kaleidoscope_chinesefood.init.ModRecipes;
 import com.bmt.kaleidoscope_chinesefood.init.ModSounds;
+import com.bmt.kaleidoscope_chinesefood.init.registry.YellowCroakerBucketRegister;
 import com.bmt.kaleidoscope_chinesefood.init.ModTriggers;
 import com.bmt.kaleidoscope_chinesefood.init.kaleidoscope_twilight.KTItems;
 import com.bmt.kaleidoscope_chinesefood.integration.KaleidoscopeDollIntegration;
 import com.bmt.kaleidoscope_chinesefood.network.ModNetwork;
-import com.bmt.kaleidoscope_chinesefood.recipe.ModRecipes;
+import com.bmt.kaleidoscope_chinesefood.init.ModRecipes;
 import com.github.ysbbbbbb.kaleidoscopecookery.crafting.soupbase.SoupBaseManager;
 import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 import net.fabricmc.api.ModInitializer;
@@ -66,9 +68,7 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         ModMenuTypes.registerMenuTypes();
         ModCreativeModeTabs.registerCreativeModeTabs();
         ModSounds.registerSounds();
-        ModRecipes.registerRecipes();
-        ModRecipeTypes.registerRecipeTypes();
-        ModRecipeSerializers.registerRecipeSerializers();
+        ModRecipes.registerAll();
         ModEffects.registerEffects();
         ModEntities.registerEntities();
         ModStats.register();
@@ -80,6 +80,9 @@ public class KaleidoscopeChineseFood implements ModInitializer {
 
         // 原 mod 总线监听器 KongmingLanternBlock::onCommonSetup（发射器行为）
         KongmingLanternBlock.onCommonSetup();
+        // 1.2.0：鞭炮与黄鱼桶的发射器行为（对齐官方 CommonRegistry）
+        FirecrackerBlock.registerDispenserBehavior();
+        YellowCroakerBucketRegister.register();
 
         ModNetwork.init();
         CreativeTabEventHandler.register();
@@ -98,6 +101,8 @@ public class KaleidoscopeChineseFood implements ModInitializer {
         CarryOnCompat.registerBlacklist();
         if (FabricLoader.getInstance().isModLoaded("create")) {
             CreateMovementChecks.register();
+            // 1.2.0：Create 机械上的冰箱/泡菜坛/碗架虚拟驱动与移动交互
+            com.bmt.kaleidoscope_chinesefood.compat.create.CreateCompat.register();
         }
         if (FabricLoader.getInstance().isModLoaded("kaleidoscope_contraption")) {
             KaleidoscopeContraptionCompat.register();

@@ -289,7 +289,7 @@ public class FuCharacterBlock extends HorizontalDirectionalBlock implements Simp
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         tooltip.add(
-            Component.translatable("block.kaleidoscope_chinesefood.fu_character.desc")
+            Component.translatable("block.kaleidoscope_chinesefood.fu_character.tooltip")
                 .withStyle(new ChatFormatting[]{ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC})
         );
     }
