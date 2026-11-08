@@ -1,23 +1,29 @@
 package com.bmt.kaleidoscope_chinesefood.block.entity;
 
+import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.block.BowlStackBlock;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.bmt.kaleidoscope_chinesefood.util.SimpleItemHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class BowlStackBlockEntity extends BlockEntity implements Container {
     public static final int MAX_BOWL_COUNT = 3;
+    // 1.2.0:新增拉碗黑名单方块 tag(排除合成炉等),且任意容器(含漏斗)都可拉
+    public static final TagKey<Block> PULL_BLACKLIST = TagKey.create(Registries.BLOCK, KaleidoscopeChineseFood.id("bowl_stack_pull_blacklist"));
     private static final int AUTO_PULL_INTERVAL = 10;
     private int pullCooldown = 0;
     private boolean shouldCheckBelow = true;
@@ -79,21 +85,23 @@ public class BowlStackBlockEntity extends BlockEntity implements Container {
 
     private boolean hasContainerBelow() {
         BlockPos belowPos = this.worldPosition.below();
-        BlockEntity belowBE = this.level.getBlockEntity(belowPos);
-        if (belowBE == null) {
+        if (this.level.getBlockState(belowPos).is(PULL_BLACKLIST)) {
             return false;
-        } else if (belowBE instanceof HopperBlockEntity) {
-            return false;
-        } else {
-            return belowBE instanceof Container;
         }
+
+        BlockEntity belowBE = this.level.getBlockEntity(belowPos);
+        return belowBE != null && belowBE instanceof Container;
     }
 
     private void tryPullBowlFromBelow() {
         if (this.getBowlCount() < MAX_BOWL_COUNT) {
             BlockPos belowPos = this.worldPosition.below();
+            if (this.level.getBlockState(belowPos).is(PULL_BLACKLIST)) {
+                return;
+            }
+
             BlockEntity belowBE = this.level.getBlockEntity(belowPos);
-            if (!(belowBE instanceof HopperBlockEntity) && belowBE instanceof Container belowContainer) {
+            if (belowBE instanceof Container belowContainer) {
                 for (int i = 0; i < belowContainer.getContainerSize(); i++) {
                     ItemStack stackInSlot = belowContainer.getItem(i);
                     if (stackInSlot.is(Items.BOWL)) {

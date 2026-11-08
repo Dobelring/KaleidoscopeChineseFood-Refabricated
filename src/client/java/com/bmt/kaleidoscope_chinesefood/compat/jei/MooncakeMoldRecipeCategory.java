@@ -61,8 +61,13 @@ public class MooncakeMoldRecipeCategory implements IRecipeCategory<MooncakeMoldR
       return Component.translatable("jei.kaleidoscope_chinesefood.mooncake_mold");
    }
 
-   public IDrawable getBackground() {
-      return this.background;
+   // JEI 19.x:背景改为 getWidth/getHeight + 原有 draw(对齐官方 1.2.0)
+   public int getWidth() {
+      return 116;
+   }
+
+   public int getHeight() {
+      return 40;
    }
 
    public IDrawable getIcon() {

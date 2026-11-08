@@ -1,8 +1,19 @@
 {
   "variants": {
-    "facing=north": { "model": "kaleidoscope_chinesefood:block/firecracker" },
-    "facing=south": { "model": "kaleidoscope_chinesefood:block/firecracker", "y": 180 },
-    "facing=east": { "model": "kaleidoscope_chinesefood:block/firecracker", "y": 90 },
-    "facing=west": { "model": "kaleidoscope_chinesefood:block/firecracker", "y": 270 }
+    "facing=north": {
+      "model": "kaleidoscope_chinesefood:block/firecracker"
+    },
+    "facing=south": {
+      "model": "kaleidoscope_chinesefood:block/firecracker",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "kaleidoscope_chinesefood:block/firecracker",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "kaleidoscope_chinesefood:block/firecracker",
+      "y": 270
+    }
   }
 }

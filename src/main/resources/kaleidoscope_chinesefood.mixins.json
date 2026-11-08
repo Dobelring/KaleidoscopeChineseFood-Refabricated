@@ -9,6 +9,7 @@
     "CookeryModEffectsMixin",
     "DoorBlockMixin",
     "EntityMixin",
+    "InstantSmeltingDropsMixin",
     "InstantSmeltingEffectMixin",
     "ItemMixin",
     "LivingEntityMixin",
@@ -26,7 +27,8 @@
     "CameraMixin",
     "EntityRendererLightMixin",
     "LevelRendererLightMixin",
-    "LocalPlayerMixin"
+    "LocalPlayerMixin",
+    "accessor.FontAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -270,7 +270,8 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
       if (!level.isClientSide && level.getBlockEntity(pos) instanceof CoupletBlockEntity be) {
          BlockPos owner = be.getOwnerPos();
          if (level.getBlockEntity(owner) instanceof CoupletBlockEntity master) {
-            if (stack.is(Items.GLOW_INK_SAC)) {
+            // 1.2.0:墨水幂等——萤石墨仅未发光时可用,墨囊仅已发光时可用
+            if (stack.is(Items.GLOW_INK_SAC) && !master.isGlowing()) {
                master.setGlowing(true);
                level.playSound(null, owner, SoundEvents.GLOW_INK_SAC_USE, SoundSource.BLOCKS);
                if (!player.isCreative()) {
@@ -280,7 +281,7 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
                return ItemInteractionResult.sidedSuccess(level.isClientSide);
             }
 
-            if (stack.is(Items.INK_SAC)) {
+            if (stack.is(Items.INK_SAC) && master.isGlowing()) {
                master.setGlowing(false);
                level.playSound(null, owner, SoundEvents.INK_SAC_USE, SoundSource.BLOCKS);
                if (!player.isCreative()) {
@@ -288,6 +289,17 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
                }
 
                return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            }
+
+            // 1.2.0:墨水条件不满足时改为打开编辑界面而非无效
+            if (stack.is(Items.GLOW_INK_SAC) || stack.is(Items.INK_SAC)) {
+               if (player instanceof ServerPlayer serverPlayer) {
+                  ServerPlayNetworking.send(
+                     serverPlayer, new TextEditOpenS2CPayload(owner, master.getText(), master.getMaxChars(), master.getSegmentCount(), true)
+                  );
+               }
+
+               return ItemInteractionResult.SUCCESS;
             }
          }
       }
@@ -326,7 +338,7 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
    public void appendHoverText(ItemStack stack, @NotNull TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
       super.appendHoverText(stack, context, tooltip, flag);
       tooltip.add(
-         Component.translatable("block.kaleidoscope_chinesefood.couplet.desc").withStyle(new ChatFormatting[]{ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC})
+         Component.translatable("block.kaleidoscope_chinesefood.couplet.tooltip").withStyle(new ChatFormatting[]{ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC})
       );
    }
 

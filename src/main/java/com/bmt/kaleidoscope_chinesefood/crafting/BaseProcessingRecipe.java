@@ -46,7 +46,8 @@ public abstract class BaseProcessingRecipe implements Recipe<FreezerInput> {
 
    @NotNull
    public ItemStack getResultItem(@NotNull Provider registries) {
-      return this.output;
+      // 1.2.0:返回副本,防止配方输出被外部修改污染
+      return this.output.copy();
    }
 
    public ItemStack getOutput() {

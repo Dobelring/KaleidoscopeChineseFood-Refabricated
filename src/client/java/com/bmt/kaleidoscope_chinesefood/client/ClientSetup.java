@@ -2,12 +2,12 @@ package com.bmt.kaleidoscope_chinesefood.client;
 
 import com.bmt.kaleidoscope_chinesefood.KaleidoscopeChineseFood;
 import com.bmt.kaleidoscope_chinesefood.client.gui.FreezerScreen;
-import com.bmt.kaleidoscope_chinesefood.client.renderer.CoupletBlockEntityRender;
-import com.bmt.kaleidoscope_chinesefood.client.renderer.EnchantedPlateBlockEntityRenderer;
-import com.bmt.kaleidoscope_chinesefood.client.renderer.HorizontalBannerBlockEntityRender;
-import com.bmt.kaleidoscope_chinesefood.client.renderer.PickleJarRender;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.block.CoupletBlockEntityRender;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.block.EnchantedPlateBlockEntityRender;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.block.HorizontalScrollBlockEntityRender;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.block.PickleJarBlockEntityRender;
 import com.bmt.kaleidoscope_chinesefood.client.renderer.entity.KongmingLanternRender;
-import com.bmt.kaleidoscope_chinesefood.client.renderer.entity.YellowCroakerRenderer;
+import com.bmt.kaleidoscope_chinesefood.client.renderer.entity.YellowCroakerRender;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlocks;
 import com.bmt.kaleidoscope_chinesefood.init.ModEntities;
@@ -33,13 +33,13 @@ public class ClientSetup {
     public static void init() {
         MenuScreens.register(ModMenuTypes.FREEZER_TOP_MENU, FreezerScreen::new);
         MenuScreens.register(ModMenuTypes.FREEZER_BOTTOM_MENU, FreezerScreen::new);
-        BlockEntityRenderers.register(ModBlockEntities.PICKLE_JAR, PickleJarRender::new);
+        BlockEntityRenderers.register(ModBlockEntities.PICKLE_JAR, PickleJarBlockEntityRender::new);
         EntityRendererRegistry.register(ModEntities.FIRECRACKER, ThrownItemRenderer::new);
-        BlockEntityRenderers.register(ModBlockEntities.COUPLET_BLOCK_ENTITY, CoupletBlockEntityRender::new);
-        BlockEntityRenderers.register(ModBlockEntities.HORIZONTAL_BANNER, HorizontalBannerBlockEntityRender::new);
-        BlockEntityRenderers.register(ModBlockEntities.ENCHANTED_PLATE, EnchantedPlateBlockEntityRenderer::new);
+        BlockEntityRenderers.register(ModBlockEntities.COUPLET, CoupletBlockEntityRender::new);
+        BlockEntityRenderers.register(ModBlockEntities.HORIZONTAL_SCROLL, HorizontalScrollBlockEntityRender::new);
+        BlockEntityRenderers.register(ModBlockEntities.ENCHANTED_PLATE, EnchantedPlateBlockEntityRender::new);
         EntityRendererRegistry.register(ModEntities.KONGMING_LANTERN, KongmingLanternRender::new);
-        EntityRendererRegistry.register(ModEntities.YELLOW_CROAKER, YellowCroakerRenderer::new);
+        EntityRendererRegistry.register(ModEntities.YELLOW_CROAKER, YellowCroakerRender::new);
         registerBlockRenderLayers();
         registerDollIntegrationClient();
     }

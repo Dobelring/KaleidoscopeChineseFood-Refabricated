@@ -6,7 +6,7 @@ import com.bmt.kaleidoscope_chinesefood.block.CoupletBlock;
 import com.bmt.kaleidoscope_chinesefood.block.FirecrackerBlock;
 import com.bmt.kaleidoscope_chinesefood.block.FreezerBlock;
 import com.bmt.kaleidoscope_chinesefood.block.FuCharacterBlock;
-import com.bmt.kaleidoscope_chinesefood.block.HorizontalBannerBlock;
+import com.bmt.kaleidoscope_chinesefood.block.HorizontalScrollBlock;
 import com.bmt.kaleidoscope_chinesefood.block.KongmingLanternBlock;
 import com.bmt.kaleidoscope_chinesefood.block.MooncakeBlock;
 import com.bmt.kaleidoscope_chinesefood.block.PickleJarBlock;
@@ -38,7 +38,7 @@ public class ModBlocks {
     public static FirecrackerBlock FIRECRACKER;
     public static FuCharacterBlock FU_CHARACTER;
     public static CoupletBlock COUPLET;
-    public static HorizontalBannerBlock HORIZONTAL_BANNER;
+    public static HorizontalScrollBlock HORIZONTAL_SCROLL;
     public static MooncakeBlock MOONCAKE_BLOCK;
     public static KongmingLanternBlock KONGMING_LANTERN;
     public static Block BAMBOO_STEAMED_EGG;
@@ -61,7 +61,8 @@ public class ModBlocks {
                 "bowl_stack", () -> new BowlStackBlock(Properties.of().mapColor(MapColor.WOOD).strength(1.0F, 3.0F).sound(SoundType.WOOD).noOcclusion())
         );
         SALT_BLOCK = register(
-                "salt_block", () -> new SaltBlock(Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).strength(0.1F).noOcclusion().sound(SoundType.GLASS))
+                // 1.21.1 官方 1.2.0 改 id:salt_block→salt(物品 id "salt" 不变)
+                "salt", () -> new SaltBlock(Properties.of().mapColor(MapColor.TERRACOTTA_WHITE).strength(0.1F).noOcclusion().sound(SoundType.GLASS))
         );
         FIRECRACKER = register(
                 "firecracker", () -> new FirecrackerBlock(Properties.of().mapColor(MapColor.FIRE).strength(0.1F).sound(SoundType.CANDLE).noOcclusion())
@@ -72,14 +73,20 @@ public class ModBlocks {
         COUPLET = register(
                 "couplet", () -> new CoupletBlock(Properties.of().mapColor(MapColor.FIRE).strength(0.0F).noOcclusion().sound(SoundType.WOOL))
         );
-        HORIZONTAL_BANNER = register(
-                "horizontal_banner", () -> new HorizontalBannerBlock(Properties.of().mapColor(MapColor.FIRE).strength(0.0F).noOcclusion().sound(SoundType.WOOL))
+        HORIZONTAL_SCROLL = register(
+                // 1.21.1 官方 1.2.0 改 id:horizontal_banner→horizontal_scroll(物品 id 同步改名)
+                "horizontal_scroll", () -> new HorizontalScrollBlock(Properties.of().mapColor(MapColor.FIRE).strength(0.0F).noOcclusion().sound(SoundType.WOOL))
         );
         MOONCAKE_BLOCK = register(
-                "mooncake_block", () -> new MooncakeBlock(Properties.of().mapColor(MapColor.WOOD).strength(0.1F).noOcclusion().sound(SoundType.WOOD))
+                // 1.21.1 官方 1.2.0 改 id:mooncake_block→mooncake(物品 id "mooncake" 不变)
+                "mooncake", () -> new MooncakeBlock(Properties.of().mapColor(MapColor.WOOD).strength(0.1F).noOcclusion().sound(SoundType.WOOD))
         );
         KONGMING_LANTERN = register(
-                "kongming_lantern", () -> new KongmingLanternBlock(Properties.of().mapColor(MapColor.FIRE).strength(0.1F, 0.8F).noOcclusion().sound(SoundType.WOOL))
+                // 1.21.1 官方 1.2.0:孔明灯 lightLevel(14)
+                "kongming_lantern",
+                () -> new KongmingLanternBlock(
+                        Properties.of().mapColor(MapColor.FIRE).strength(0.1F, 0.8F).noOcclusion().lightLevel(state -> 14).sound(SoundType.WOOL)
+                )
         );
         BAMBOO_STEAMED_EGG = register(
                 "bamboo_steamed_egg",

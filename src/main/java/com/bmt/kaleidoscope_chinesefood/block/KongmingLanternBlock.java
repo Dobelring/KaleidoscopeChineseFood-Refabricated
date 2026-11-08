@@ -123,7 +123,7 @@ public class KongmingLanternBlock extends Block {
    public void appendHoverText(ItemStack stack, @NotNull TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
       super.appendHoverText(stack, context, tooltip, flag);
       tooltip.add(
-         Component.translatable("block.kaleidoscope_chinesefood.kongming_lantern.desc")
+         Component.translatable("block.kaleidoscope_chinesefood.kongming_lantern.tooltip")
             .withStyle(new ChatFormatting[]{ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC})
       );
    }

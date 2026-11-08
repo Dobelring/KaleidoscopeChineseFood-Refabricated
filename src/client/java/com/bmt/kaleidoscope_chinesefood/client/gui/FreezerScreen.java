@@ -35,14 +35,15 @@ import org.joml.Matrix4f;
  */
 public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
    private static final ResourceLocation TEXTURE = ResourceLocation.withDefaultNamespace("textures/gui/container/generic_54.png");
-   private static final ResourceLocation SNOWFLAKES_TEXTURE = KaleidoscopeChineseFood.id("textures/gui/snowflakes.png");
+   // 1.2.0:自制雪花贴图删除,改用原版粒子贴图 generic_5/6/7(三帧)
+   private static final ResourceLocation[] SNOWFLAKE_TEXTURES = new ResourceLocation[3];
    private static final int CHILLED_PALE = 14086911;
    private static final int CHILLED_DEEP = 5884144;
    private static final int FROZEN_PALE = 12767231;
    private static final int FROZEN_DEEP = 2839264;
    private static final int SNOWFLAKE_PALE = 13490906;
    private static final int SNOWFLAKE_WHITE = 15596282;
-   private static final int SNOWFLAKE_FRAMES = 8;
+   private static final int SNOWFLAKE_FRAMES = 3;
    private static final int SNOWFLAKE_LIFETIME = 80;
    private static final float SNOWFLAKE_GRAVITY = 0.1F;
    private static final float SNOWFLAKE_MAX_FALL = 3.0F;
@@ -267,40 +268,57 @@ public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
 
    private void renderSnowflakes(GuiGraphics guiGraphics) {
       if (!this.snowflakes.isEmpty()) {
+         // 1.2.0:按帧分组,每帧用对应原版粒子贴图单独批次绘制
+         List<List<FreezerScreen.Snowflake>> byFrame = new ArrayList<>(SNOWFLAKE_FRAMES);
+         for (int i = 0; i < SNOWFLAKE_FRAMES; i++) {
+            byFrame.add(new ArrayList<>());
+         }
+
+         for (FreezerScreen.Snowflake snowflake : this.snowflakes) {
+            byFrame.get(Math.min(snowflake.age / 10, SNOWFLAKE_FRAMES - 1)).add(snowflake);
+         }
+
          RenderSystem.disableDepthTest();
          RenderSystem.enableBlend();
-         RenderSystem.setShaderTexture(0, SNOWFLAKES_TEXTURE);
          RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
          guiGraphics.pose().pushPose();
          guiGraphics.pose().translate(0.0F, 0.0F, 300.0F);
          Matrix4f matrix = guiGraphics.pose().last().pose();
-         BufferBuilder builder = Tesselator.getInstance().begin(Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+         Tesselator tesselator = Tesselator.getInstance();
 
-         for (FreezerScreen.Snowflake snowflake : this.snowflakes) {
-            float fade = 1.0F;
-            if (snowflake.age < 5) {
-               fade = snowflake.age / 5.0F;
-            } else if (snowflake.age > SNOWFLAKE_LIFETIME - 10) {
-               fade = (SNOWFLAKE_LIFETIME - snowflake.age) / 10.0F;
+         for (int frame = 0; frame < SNOWFLAKE_FRAMES; frame++) {
+            List<FreezerScreen.Snowflake> group = byFrame.get(frame);
+            if (group.isEmpty()) {
+               continue;
             }
 
-            int alpha = Mth.clamp((int)(fade * 255.0F), 0, 255);
-            if (alpha >= 4) {
-               int color = alpha << 24 | snowflake.rgb;
-               int frame = Math.min(snowflake.age / 10, SNOWFLAKE_FRAMES - 1);
-               float v1 = frame / 8.0F;
-               float v2 = v1 + 0.125F;
-               float radians = snowflake.angle * (float) (Math.PI / 180.0);
-               float cos = Mth.cos(radians);
-               float sin = Mth.sin(radians);
-               texturedVertex(builder, matrix, snowflake.x, snowflake.y, -SNOWFLAKE_HALF_SIZE, -SNOWFLAKE_HALF_SIZE, cos, sin, 0.0F, v1, color);
-               texturedVertex(builder, matrix, snowflake.x, snowflake.y, -SNOWFLAKE_HALF_SIZE, SNOWFLAKE_HALF_SIZE, cos, sin, 0.0F, v2, color);
-               texturedVertex(builder, matrix, snowflake.x, snowflake.y, SNOWFLAKE_HALF_SIZE, SNOWFLAKE_HALF_SIZE, cos, sin, 1.0F, v2, color);
-               texturedVertex(builder, matrix, snowflake.x, snowflake.y, SNOWFLAKE_HALF_SIZE, -SNOWFLAKE_HALF_SIZE, cos, sin, 1.0F, v1, color);
+            RenderSystem.setShaderTexture(0, SNOWFLAKE_TEXTURES[frame]);
+            BufferBuilder builder = tesselator.begin(Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+
+            for (FreezerScreen.Snowflake snowflake : group) {
+               float fade = 1.0F;
+               if (snowflake.age < 5) {
+                  fade = snowflake.age / 5.0F;
+               } else if (snowflake.age > SNOWFLAKE_LIFETIME - 10) {
+                  fade = (SNOWFLAKE_LIFETIME - snowflake.age) / 10.0F;
+               }
+
+               int alpha = Mth.clamp((int)(fade * 255.0F), 0, 255);
+               if (alpha >= 4) {
+                  int color = alpha << 24 | snowflake.rgb;
+                  float radians = snowflake.angle * (float) (Math.PI / 180.0);
+                  float cos = Mth.cos(radians);
+                  float sin = Mth.sin(radians);
+                  texturedVertex(builder, matrix, snowflake.x, snowflake.y, -SNOWFLAKE_HALF_SIZE, -SNOWFLAKE_HALF_SIZE, cos, sin, 0.0F, 0.0F, color);
+                  texturedVertex(builder, matrix, snowflake.x, snowflake.y, -SNOWFLAKE_HALF_SIZE, SNOWFLAKE_HALF_SIZE, cos, sin, 0.0F, 1.0F, color);
+                  texturedVertex(builder, matrix, snowflake.x, snowflake.y, SNOWFLAKE_HALF_SIZE, SNOWFLAKE_HALF_SIZE, cos, sin, 1.0F, 1.0F, color);
+                  texturedVertex(builder, matrix, snowflake.x, snowflake.y, SNOWFLAKE_HALF_SIZE, -SNOWFLAKE_HALF_SIZE, cos, sin, 1.0F, 0.0F, color);
+               }
             }
+
+            BufferUploader.drawWithShader(builder.buildOrThrow());
          }
 
-         BufferUploader.drawWithShader(builder.buildOrThrow());
          guiGraphics.pose().popPose();
          RenderSystem.disableBlend();
          RenderSystem.enableDepthTest();
@@ -318,6 +336,13 @@ public class FreezerScreen extends AbstractContainerScreen<FreezerMenu> {
    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
       guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 4210752, false);
       guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 4210752, false);
+   }
+
+   static {
+      // 1.2.0:原版雪花粒子贴图 generic_7/6/5(generic_5 视觉最细,按官方顺序填充)
+      for (int i = 0; i < SNOWFLAKE_TEXTURES.length; i++) {
+         SNOWFLAKE_TEXTURES[i] = ResourceLocation.withDefaultNamespace("textures/particle/generic_" + (7 - i) + ".png");
+      }
    }
 
    private static final class Snowflake {

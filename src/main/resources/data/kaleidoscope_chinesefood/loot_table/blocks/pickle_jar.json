@@ -2,7 +2,6 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "conditions": [
         {
@@ -14,7 +13,8 @@
           "type": "minecraft:item",
           "name": "kaleidoscope_chinesefood:pickle_jar"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ],
   "random_sequence": "kaleidoscope_chinesefood:blocks/pickle_jar"

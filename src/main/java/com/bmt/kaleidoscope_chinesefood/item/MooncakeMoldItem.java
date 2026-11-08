@@ -1,6 +1,9 @@
 package com.bmt.kaleidoscope_chinesefood.item;
 
 import com.bmt.kaleidoscope_chinesefood.init.ModItems;
+import java.util.List;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -11,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -68,5 +72,13 @@ public class MooncakeMoldItem extends Item {
 
    private boolean isStuffedDoughFood(ItemStack stack) {
       return !stack.isEmpty() && stack.getItem() == com.github.ysbbbbbb.kaleidoscopecookery.init.ModItems.STUFFED_DOUGH_FOOD;
+   }
+
+   /** tooltip 内联(1.2.0 删除 TooltipEvents,对齐官方在物品类自绘) */
+   public void appendHoverText(@NotNull ItemStack stack, Item.TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
+      super.appendHoverText(stack, context, tooltip, flag);
+      tooltip.add(
+         Component.translatable("item.kaleidoscope_chinesefood.mooncake_mold.tooltip").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)
+      );
    }
 }

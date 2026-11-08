@@ -2,13 +2,23 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "kaleidoscope_chinesefood:freezer_light_blue"
+          "name": "kaleidoscope_chinesefood:freezer_light_blue",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "kaleidoscope_chinesefood:freezer_light_blue",
+              "properties": {
+                "top": "false"
+              }
+            }
+          ]
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

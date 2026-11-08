@@ -1,10 +1,16 @@
 {
   "type": "minecraft:crafting_shapeless",
-  "group": "kaleidoscope_chinesefood",
+  "category": "misc",
   "ingredients": [
-    { "item": "minecraft:paper" },
-    { "item": "minecraft:red_dye" },
-    { "item": "minecraft:black_dye" }
+    { 
+      "item": "minecraft:paper"
+    },
+    { 
+      "item": "minecraft:red_dye"
+    },
+    { 
+      "item": "minecraft:black_dye"
+    }
   ],
   "result": {
     "id": "kaleidoscope_chinesefood:fu_character",

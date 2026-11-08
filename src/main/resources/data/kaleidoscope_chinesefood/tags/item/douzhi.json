@@ -1,16 +1,8 @@
 {
-  "replace": true,
   "values": [
-    "minecraft:wheat_seeds",
-    "minecraft:pumpkin_seeds",
-    "minecraft:melon_seeds",
-    "minecraft:beetroot_seeds",
-    "minecraft:torchflower_seeds",
-    "minecraft:pitcher_pod",
-    "kaleidoscope_cookery:chili_seed",
-    "kaleidoscope_cookery:tomato_seed",
-    "kaleidoscope_cookery:lettuce_seed",
-    "kaleidoscope_cookery:wild_rice",
-    "kaleidoscope_cookery:tea_seed"
+    "#c:seeds"
+  ],
+  "remove": [
+    "kaleidoscope_cookery:rice"
   ]
 }

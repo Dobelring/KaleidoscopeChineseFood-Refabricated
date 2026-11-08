@@ -10,8 +10,11 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ItemLike;
@@ -92,6 +95,14 @@ public class SaltBlock extends Block {
       int realAmount = (Integer)state.getValue(STACK_COUNT) + 1;
       drops.add(new ItemStack((ItemLike)ModItems.SALT, realAmount));
       return drops;
+   }
+
+   /** tooltip 内联(1.2.0:键由 item. 改为 block.,对齐官方 SaltBlock 自绘) */
+   public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+      super.appendHoverText(stack, context, tooltip, flag);
+      tooltip.add(
+         Component.translatable("block.kaleidoscope_chinesefood.salt.tooltip").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)
+      );
    }
 
    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {

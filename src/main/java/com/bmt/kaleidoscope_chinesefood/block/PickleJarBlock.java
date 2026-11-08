@@ -1,6 +1,6 @@
 package com.bmt.kaleidoscope_chinesefood.block;
 
-import com.bmt.kaleidoscope_chinesefood.api.blockentity.IPickleJar;
+import com.bmt.kaleidoscope_chinesefood.api.IPickleJar;
 import com.bmt.kaleidoscope_chinesefood.block.entity.PickleJarBlockEntity;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlockEntities;
 import com.mojang.serialization.MapCodec;
@@ -93,13 +93,15 @@ public class PickleJarBlock extends BaseEntityBlock implements SimpleWaterlogged
             return InteractionResult.CONSUME;
          } else if ((Boolean)state.getValue(OPEN)) {
             ItemStack held = player.getMainHandItem();
-            if (held.isEmpty()) {
-               jar.extractItem(player);
-            } else {
-               jar.insertItem(held, player);
+            // 1.2.0:先尝试提取,失败且手持非空才插入;音效只在真正存/取成功时播放
+            boolean extracted = jar.extractItem(player, held);
+            boolean inserted = !extracted && !held.isEmpty() && jar.insertItem(held, player);
+            if (extracted) {
+               level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 0.8F, 1.1F);
+            } else if (inserted) {
+               level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 0.8F, 1.1F);
             }
 
-            level.playSound(null, pos, held.isEmpty() ? SoundEvents.ITEM_FRAME_REMOVE_ITEM : SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS, 0.8F, 1.1F);
             return InteractionResult.CONSUME;
          } else {
             return InteractionResult.PASS;

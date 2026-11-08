@@ -1,6 +1,5 @@
 package com.bmt.kaleidoscope_chinesefood;
 
-import com.bmt.kaleidoscope_chinesefood.config.ModConfig;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
@@ -8,6 +7,10 @@ import net.minecraft.network.chat.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * 内置资源包 / 数据包注册。
+ * 1.2.0:enableCustomPacks 配置删除,内置包改为始终注册(对齐官方)。
+ */
 public class ModBuiltInResourcePacks {
     private static final Logger LOGGER = LoggerFactory.getLogger(ModBuiltInResourcePacks.class);
 
@@ -23,16 +26,14 @@ public class ModBuiltInResourcePacks {
         if (!fridgePack) {
             LOGGER.warn("[KCF] Failed to register builtin resource pack old_fridge (folder resourcepacks/old_fridge missing)");
         }
-        if (ModConfig.enableCustomPacks) {
-            boolean fuzzyPack = ResourceManagerHelper.registerBuiltinResourcePack(
-                    KaleidoscopeChineseFood.id("fuzzy_cooking_recipes"),
-                    FabricLoader.getInstance().getModContainer(KaleidoscopeChineseFood.MODID).orElseThrow(),
-                    Component.translatable("resourcepack.kaleidoscope_chinesefood.fuzzy_cooking_recipes"),
-                    ResourcePackActivationType.ALWAYS_ENABLED
-            );
-            if (!fuzzyPack) {
-                LOGGER.warn("[KCF] Failed to register builtin datapack fuzzy_cooking_recipes (folder resourcepacks/fuzzy_cooking_recipes missing)");
-            }
+        boolean fuzzyPack = ResourceManagerHelper.registerBuiltinResourcePack(
+                KaleidoscopeChineseFood.id("fuzzy_cooking_recipes"),
+                FabricLoader.getInstance().getModContainer(KaleidoscopeChineseFood.MODID).orElseThrow(),
+                Component.translatable("resourcepack.kaleidoscope_chinesefood.fuzzy_cooking_recipes"),
+                ResourcePackActivationType.ALWAYS_ENABLED
+        );
+        if (!fuzzyPack) {
+            LOGGER.warn("[KCF] Failed to register builtin datapack fuzzy_cooking_recipes (folder resourcepacks/fuzzy_cooking_recipes missing)");
         }
     }
 }

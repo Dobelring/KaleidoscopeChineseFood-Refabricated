@@ -3,6 +3,9 @@ package com.bmt.kaleidoscope_chinesefood.item;
 import com.bmt.kaleidoscope_chinesefood.block.FirecrackerBlock;
 import com.bmt.kaleidoscope_chinesefood.entity.FirecrackerEntity;
 import com.bmt.kaleidoscope_chinesefood.init.ModBlocks;
+import java.util.List;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -11,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
@@ -56,5 +60,13 @@ public class FirecrackerItem extends Item {
       }
 
       return super.useOn(pContext);
+   }
+
+   /** tooltip 内联(1.2.0 删除 TooltipEvents,对齐官方在物品类自绘) */
+   public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
+      super.appendHoverText(stack, context, tooltip, flag);
+      tooltip.add(
+         Component.translatable("item.kaleidoscope_chinesefood.firecracker.tooltip").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)
+      );
    }
 }

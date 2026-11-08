@@ -96,8 +96,8 @@ public class KongmingLanternEntity extends Entity {
       Random rand = this.seededRandom();
       if (!this.spinInitialized) {
          this.spinInitialized = true;
-         this.visualYaw = 0.0F;
-         this.visualYawO = 0.0F;
+         this.visualYaw = this.getYRot();
+         this.visualYawO = this.getYRot();
          this.spinning = rand.nextBoolean();
          this.spinPhaseTicks = this.spinning ? 60 + rand.nextInt(181) : 30 + rand.nextInt(151);
          this.spinTargetSpeed = this.spinning ? nextSpinSpeed(rand) : 0.0F;
