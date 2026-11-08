@@ -13,9 +13,9 @@ public interface IPickleJar {
 
    void resetProgress();
 
-   void insertItem(ItemStack var1, Player var2);
+   boolean insertItem(ItemStack var1, Player var2);
 
-   void extractItem(Player var1);
+   boolean extractItem(Player var1, ItemStack var2);
 
    boolean isEmpty();
 }

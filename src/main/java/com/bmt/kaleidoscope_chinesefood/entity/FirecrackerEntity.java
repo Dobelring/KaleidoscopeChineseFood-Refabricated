@@ -38,6 +38,11 @@ public class FirecrackerEntity extends ThrowableItemProjectile {
       super(ModEntities.FIRECRACKER, pShooter, pLevel, new ItemStack(ModItems.FIRECRACKER));
    }
 
+   /** 1.2.0：发射器射出鞭炮（ProjectileItem.asProjectile 用的坐标构造）。 */
+   public FirecrackerEntity(Level pLevel, double pX, double pY, double pZ) {
+      super(ModEntities.FIRECRACKER, pX, pY, pZ, pLevel, new ItemStack(ModItems.FIRECRACKER));
+   }
+
    protected Item getDefaultItem() {
       return ModItems.FIRECRACKER;
    }

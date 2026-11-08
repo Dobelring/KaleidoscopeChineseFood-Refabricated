@@ -276,7 +276,7 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
       if (!level.isClientSide() && level.getBlockEntity(pos) instanceof CoupletBlockEntity be) {
          BlockPos owner = be.getOwnerPos();
          if (level.getBlockEntity(owner) instanceof CoupletBlockEntity master) {
-            if (stack.is(Items.GLOW_INK_SAC)) {
+            if (stack.is(Items.GLOW_INK_SAC) && !master.isGlowing()) {
                master.setGlowing(true);
                level.playSound(null, owner, SoundEvents.GLOW_INK_SAC_USE, SoundSource.BLOCKS);
                if (!player.isCreative()) {
@@ -286,7 +286,7 @@ public class CoupletBlock extends BaseEntityBlock implements SimpleWaterloggedBl
                return InteractionResult.SUCCESS;
             }
 
-            if (stack.is(Items.INK_SAC)) {
+            if (stack.is(Items.INK_SAC) && master.isGlowing()) {
                master.setGlowing(false);
                level.playSound(null, owner, SoundEvents.INK_SAC_USE, SoundSource.BLOCKS);
                if (!player.isCreative()) {

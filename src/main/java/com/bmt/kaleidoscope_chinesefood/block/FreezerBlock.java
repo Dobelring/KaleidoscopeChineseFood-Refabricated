@@ -124,6 +124,8 @@ public class FreezerBlock extends BaseEntityBlock {
    private void tryOpenMenu(Level level, BlockPos pos, Player player) {
       if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer) {
          if (level.getBlockEntity(pos) instanceof FreezerBlockEntity freezerBE) {
+            // 1.2.0：打开冰箱计入统计
+            com.bmt.kaleidoscope_chinesefood.init.ModStats.awardOpenFreezerStat(serverPlayer);
             serverPlayer.openMenu(freezerBE);
          }
       }

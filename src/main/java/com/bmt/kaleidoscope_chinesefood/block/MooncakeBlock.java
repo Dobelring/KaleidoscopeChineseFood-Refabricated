@@ -29,7 +29,7 @@ import net.minecraft.util.Prediction;
 
 public class MooncakeBlock extends Block {
    public static final IntegerProperty STACK_COUNT = IntegerProperty.create("stack_count", 0, 4);
-   private static final VoxelShape MOONCAKE_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 1.0, 14.0);
+   private static final VoxelShape MOONCAKE_SHAPE = Block.box(1.0, 0.0, 1.0, 15.0, 1.0, 15.0);
 
    public MooncakeBlock(Properties properties) {
       super(properties);
@@ -60,6 +60,10 @@ public class MooncakeBlock extends Block {
       @NotNull InteractionHand hand,
       @NotNull BlockHitResult hit
    ) {
+      // 1.2.0：只响应顶面蛋糕区域的点击，其余位置穿透交互
+      if (!isClickOnCake(pos, hit.getLocation())) {
+         return InteractionResult.PASS;
+      }
       if (hand != InteractionHand.MAIN_HAND) {
          return InteractionResult.TRY_WITH_EMPTY_HAND;
       }
@@ -86,7 +90,11 @@ public class MooncakeBlock extends Block {
    protected InteractionResult useWithoutItem(
       @NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hit
    ) {
-      if (player.getMainHandItem().isEmpty() && player.getOffhandItem().isEmpty()) {
+      // 1.2.0：只响应顶面蛋糕区域的点击，其余位置穿透交互；取回判据改为主手空
+      if (!isClickOnCake(pos, hit.getLocation())) {
+         return InteractionResult.PASS;
+      }
+      if (player.getMainHandItem().isEmpty()) {
          if (!level.isClientSide()) {
             int currentStack = (Integer)state.getValue(STACK_COUNT);
             ItemStack mooncake = new ItemStack(ModItems.MOONCAKE);
@@ -132,5 +140,14 @@ public class MooncakeBlock extends Block {
    @NotNull
    public VoxelShape getCollisionShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
       return this.getShape(state, level, pos, context);
+   }
+
+   /** 1.2.0：点击是否落在月饼顶面（x/z ∈ [0.124,0.876]，y ≤ 0.0635）。 */
+   public static boolean isClickOnCake(BlockPos pos, net.minecraft.world.phys.Vec3 clickLoc) {
+      double x = clickLoc.x - pos.getX();
+      double y = clickLoc.y - pos.getY();
+      double z = clickLoc.z - pos.getZ();
+      double eps = 0.001;
+      return x >= 0.124 && x <= 0.876 && y >= -eps && y <= 0.0635 && z >= 0.124 && z <= 0.876;
    }
 }

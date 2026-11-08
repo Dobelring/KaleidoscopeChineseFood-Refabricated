@@ -1,6 +1,7 @@
 package com.bmt.kaleidoscope_chinesefood.client;
 
 import com.bmt.kaleidoscope_chinesefood.client.gui.TextEditScreen;
+import com.bmt.kaleidoscope_chinesefood.compat.create.ContraptionBlockDataPayload;
 import com.bmt.kaleidoscope_chinesefood.network.TextEditOpenS2CPayload;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.Minecraft;
@@ -20,6 +21,11 @@ public class ClientNetworkHandlers {
                         payload.pos(), payload.text(), payload.maxChars(), payload.segmentCount(), payload.vertical()
                 ));
             });
+        });
+        // 1.2.0：Create 机械方块数据同步
+        ClientPlayNetworking.registerGlobalReceiver(ContraptionBlockDataPayload.TYPE, (payload, context) -> {
+            Minecraft mc = context.client();
+            mc.execute(() -> ContraptionBlockDataHandler.handle(payload));
         });
     }
 }

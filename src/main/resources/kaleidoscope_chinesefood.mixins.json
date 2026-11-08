@@ -11,6 +11,7 @@
     "EntityMixin",
     "FurnaceFuelMixin$BurnDurationMixin",
     "FurnaceFuelMixin$MenuFuelMixin",
+    "InstantSmeltingDropsMixin",
     "InstantSmeltingEffectMixin",
     "ItemMixin",
     "LavaFluidMixin",

@@ -42,7 +42,8 @@ public class PickleJarRecipe implements Recipe<PickleJarInput> {
                }, List::copyOf)
                .forGetter(r -> r.inputs),
             ItemStackTemplate.CODEC.fieldOf("result").forGetter(r -> r.output),
-            Codec.INT.optionalFieldOf("fermentTime", 200).forGetter(r -> r.fermentTime)
+            // 1.2.0：字段改名 fermentTime → ferment_time（对齐官方）
+            Codec.INT.optionalFieldOf("ferment_time", 200).forGetter(r -> r.fermentTime)
          )
          .apply(inst, PickleJarRecipe::new)
    );
@@ -67,7 +68,7 @@ public class PickleJarRecipe implements Recipe<PickleJarInput> {
    }
 
    public boolean matches(@NotNull PickleJarInput input, @NotNull Level level) {
-      List<ItemStack> containerItems = new ArrayList<>();
+      List<ItemStack> stacks = new ArrayList<>();
 
       for (int i = 0; i < 4; i++) {
          ItemStack stack = input.getItem(i);
@@ -76,31 +77,33 @@ public class PickleJarRecipe implements Recipe<PickleJarInput> {
                return false;
             }
 
-            containerItems.add(stack.copy());
+            stacks.add(stack);
          }
       }
 
-      if (containerItems.size() != this.inputs.size()) {
+      if (stacks.size() != this.inputs.size()) {
          return false;
-      } else {
-         for (Ingredient ingredient : this.inputs) {
-            boolean found = false;
+      }
+      // 1.2.0：贪心匹配改回溯匹配，多输入可互换时也能正确匹配；走 vanilla Ingredient.test
+      return this.matchFrom(0, stacks, new boolean[stacks.size()]);
+   }
 
-            for (int ix = 0; ix < containerItems.size(); ix++) {
-               if (ingredient.test(containerItems.get(ix))) {
-                  containerItems.remove(ix);
-                  found = true;
-                  break;
-               }
-            }
-
-            if (!found) {
-               return false;
-            }
-         }
-
+   private boolean matchFrom(int index, List<ItemStack> stacks, boolean[] used) {
+      if (index >= this.inputs.size()) {
          return true;
       }
+      Ingredient ingredient = this.inputs.get(index);
+      for (int i = 0; i < stacks.size(); i++) {
+         if (used[i] || !ingredient.test(stacks.get(i))) {
+            continue;
+         }
+         used[i] = true;
+         if (this.matchFrom(index + 1, stacks, used)) {
+            return true;
+         }
+         used[i] = false;
+      }
+      return false;
    }
 
    @NotNull
