@@ -6,16 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "kaleidoscope_chinesefood:freezer_light_blue",
-          "conditions": [
-            {
-              "condition": "minecraft:block_state_property",
-              "block": "kaleidoscope_chinesefood:freezer_light_blue",
-              "properties": {
-                "top": "false"
-              }
-            }
-          ]
+          "name": "kaleidoscope_chinesefood:freezer_light_blue"
         }
       ],
       "rolls": 1.0
