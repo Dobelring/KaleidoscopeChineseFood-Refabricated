@@ -7,6 +7,6 @@
   "result": {
     "item": "kaleidoscope_chinesefood:hk_milk_tea"
   },
-  "tea_fluid": "minecraft:milk",
+  "tea_fluid": "kaleidoscope_cookery:milk",
   "time": 240
 }
