@@ -24,6 +24,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.component.Consumable;
@@ -53,6 +54,8 @@ public class KCFBowlFoodBlockItem extends BlockItem {
     public KCFBowlFoodBlockItem(Block block, FoodProperties properties, Consumable consumable,
                                 @Nullable ItemLike usingConvertsTo, String name) {
         super(block, new Item.Properties().stacksTo(16).useBlockDescriptionPrefix()
+                // 对齐 cookery BowlFoodBlockItem：声明使用后返还的容器（默认碗），getContainerItem/腌菜坛返还容器均依赖它
+                .usingConvertsTo(usingConvertsTo == null ? Items.BOWL : usingConvertsTo.asItem())
                 .food(properties, consumable)
                 .setId(ResourceKey.create(net.minecraft.core.registries.Registries.ITEM,
                         KaleidoscopeChineseFood.id(name))));
