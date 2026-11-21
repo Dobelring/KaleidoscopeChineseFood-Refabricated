@@ -165,20 +165,27 @@ public class PickleJarBlockEntity extends BlockEntity implements IPickleJar {
 
     /**
      * 原 Forge 用 BlockEntity#onLoad 作为「实体被加入世界」的钩子，1.20.1 原版没有该方法。
-     * 这里用 setLevel 作等价时机：它在 load(NBT) 之后、方块实体进入世界时被调用，
-     * 对未经过 NBT 的新放置方块同样会触发。
+     * 这里不能在 setLevel 里同步做配方检查：区块 postLoad 窗口内 setChanged→getChunk(pos)
+     * 会与区块加载任务互等死锁（实测旧存档卡 Preparing spawn area 0%），改为首个服务端 tick 补查，
+     * 仅晚 1 tick，玩家不可感知。
      */
+    private boolean needsInitialRecipeCheck = false;
+
     @Override
     public void setLevel(Level level) {
         super.setLevel(level);
         if (this.level != null && !this.level.isClientSide) {
-            this.checkForValidRecipe();
+            this.needsInitialRecipeCheck = true;
         }
     }
 
     public static void tick(Level level, BlockPos pos, BlockState state, PickleJarBlockEntity be) {
         if (level.isClientSide) {
             return;
+        }
+        if (be.needsInitialRecipeCheck) {
+            be.needsInitialRecipeCheck = false;
+            be.checkForValidRecipe();
         }
         if (!(Boolean)state.getValue(PickleJarBlock.OPEN) && (Boolean)state.getValue(PickleJarBlock.FERMENTING)) {
             be.progress++;
